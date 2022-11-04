@@ -1,0 +1,407 @@
+\subsection{The syntax and semantics of the notation system}\label{sub:the_syntax_and_semantics_of_the_notation_system} % (fold)
+
+We now summarize a technical presentation of the calculus that
+embodies our theory of dynamics. The typical presentation of such a
+calculus follows the style of giving generators and relations on
+them. The grammar, below, describing term constructors, freely
+generates the set of processes, $\Proc$. This set is then quotiented
+by a relation known as structural congruence and it is over this set
+that the notion of dynamics is expressed. This presentation is
+essentially that of \cite{MeredithR05} with the addition of
+polyadicity and summation. For readability we have relegated some of
+the technical subtleties to an appendix.
+
+\subsubsection{Process grammar}\label{subsub:process_grammar}
+
+\begin{mathpar}
+\inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}( \arrvec{y} \leftarrow x )P \;\bm\; x\mathsf{!}(\arrvec{Q}) \;\bm\; \mathsf{*}x \;\bm\; P\mathsf{|}Q }
+\and
+\inferrule* [lab=name] {} {x, y \bc \mathsf{@}P }
+\end{mathpar}
+
+Note that $\arrvec{x}$ (resp. $\arrvec{P}$) denotes a vector of names
+(resp. processes) of length $|\arrvec{x}|$ (resp. $|\arrvec{P}|$). We adopt
+the following useful abbreviations.
+
+\begin{mathpar}
+  \Pi \arrvec{P} := \Pi_{i=1}^{|\arrvec{P}|}P_i := P_1 | \ldots | P_{|\arrvec{P}|}
+\end{mathpar}
+
+\begin{definition}
+\emph{Free and bound names} The calculation of the free names of a
+process, $P$, denoted $\freenames{P}$ is given recursively by
+
+\begin{mathpar}
+  \freenames{\pzero} = \emptyset
+  \and
+  \freenames{\mathsf{for}(\arrvec{y} \leftarrow x)(P)} = \{ x \} \cup \freenames{P}\setminus\{\arrvec{y}\}
+  \and
+  \freenames{x!(\arrvec{P})} = \{ x \} \cup \freenames{\arrvec{P}}
+  \and
+  \freenames{P|Q} = \freenames{P} \cup \freenames{Q}
+  \and
+  \freenames{\mathsf{}{x}} = \{ x \} \\
+\end{mathpar}
+
+where
+
+\begin{mathpar}
+  \{\arrvec{x}\} := \{x_1, \ldots, x_{|\arrvec{x}|}\}
+  \and \freenames{\arrvec{P}} := \bigcup \freenames{P_i}
+\end{mathpar}
+
+An occurrence of $x$ in a process $P$ is \textit{bound} if it is not
+free. The set of names occurring in a process (bound or free) is
+denoted by $\names{P}$.
+\end{definition}
+
+\subsection{Substitution}
+
+We use $\Proc$ for the set of processes, $\QProc$ for the set of
+names, and $\id{\{}\arrvec{y} / \arrvec{x} \id{\}}$ to denote partial maps,
+$s : \QProc \rightarrow \QProc$. A map, $s$ lifts, uniquely, to a map
+on process terms, $\widehat{s} : \Proc \rightarrow \Proc$ by the
+following equations.
+
+\begin{mathpar}
+  (0) \psubstp{Q}{P} := 0 \\
+  (R \juxtap S) \psubstp{Q}{P}
+  :=    
+  (R)\psubstp{Q}{P} \juxtap (S) \psubstp{Q}{P} \\
+  (\mathsf{for}(\arrvec{y} \leftarrow x)R) \psubstp{Q}{P}    
+  :=
+  \mathsf{for}(\arrvec{z} \leftarrow (x)\substp{Q}{P})((R \psubstn{\arrvec{z}}{\arrvec{y}}) \psubstp{Q}{P}) \\
+  (\lift{x}{R}) \psubstp{Q}{P}  
+  :=
+  \lift{(x)\substp{Q}{P}}{ R \psubstp{Q}{P} } \\
+%   (\dropn{x})  \psubstp{Q}{P}       
+%   := 
+%   \left\{ 
+%     \begin{array}{ccc} 
+%       \dropn{\quotep{Q}} & & x \nameeq \quotep{P} \\
+%       \dropn{x} & & otherwise \\
+%     \end{array}
+%   \right. 
+  (\dropn{x})  \psubstp{Q}{P}       
+  := 
+  \left\{ 
+    \begin{array}{ccc} 
+      Q & & x \nameeq \quotep{P} \\
+      \dropn{x} & & otherwise \\
+    \end{array}
+  \right.
+\end{mathpar} 
+
+where
+
+\begin{eqnarray}
+  (x)\id{\{} \quotep{Q} / \quotep{P} \id{\}}            = 
+  \left\{ 
+    \begin{array}{ccc}
+      \quotep{Q} & & x \nameeq \quotep{P} \\
+      x & & otherwise \\
+    \end{array}
+  \right. \nonumber
+\end{eqnarray}
+
+and $z$ is chosen distinct from $\quotep{P}$, $\quotep{Q}$, the free
+names in $Q$, and all the names in $R$. Our $\alpha$-equivalence will
+be built in the standard way from this substitution.
+
+\begin{definition}
+Then two processes, $P,Q$, are alpha-equivalent if $P = Q\{\arrvec{y}/\arrvec{x}\}$ for
+some $\arrvec{x} \in \boundnames{Q},\arrvec{y} \in \boundnames{P}$, where $Q\{\arrvec{y}/\arrvec{x}\}$
+denotes the capture-avoiding substitution of $\arrvec{y}$ for $\arrvec{x}$ in $Q$.
+\end{definition}
+
+\begin{definition}
+  The {\em structural congruence} $\equiv$
+  between processes \cite{SangiorgiWalker} is the least congruence containing
+  alpha-equivalence and satisfying the commutative monoid laws
+  (associativity, commutativity and $\pzero$ as identity) for parallel
+  composition $|$.
+\end{definition}
+
+\begin{definition}
+  The {\em name equivalence} $\nameeq$ is the least congruence
+  satisfying these equations
+  \begin{mathpar}
+  \inferrule*[lab=Quote-drop] {}{ \quotep{\dropn{x}} \nameeq x }
+  \and
+  \inferrule*[lab=Struct-equiv] { P \scong Q } { \quotep{P} \nameeq \quotep{Q} }
+  \end{mathpar}
+\end{definition}
+
+The astute reader will have noticed that the mutual recursion of names
+and processes imposes a mutual recursion on alpha-equivalence and
+structural equivalence via name-equivalence. Fortunately, all of this
+works out pleasantly and we may calculate in the natural way, free of
+concern. The reader interested in the details is referred to the
+appendix \ref{appendix:rho_details}.
+
+\begin{remark}\label{rem:no_self_referential_names}
+  One consequence of these definitions is that $\forall P. \quotep{P}
+  \not\in \freenames{P}$.
+\end{remark}
+
+Finally equipped with these standard features we can present the
+dynamics of the calculus.
+
+\subsection{Operational semantics}
+
+Finally, we introduce the computational dynamics. What marks these
+algebras as distinct from other more traditionally studied algebraic
+structures, e.g. vector spaces or polynomial rings, is the manner in
+which dynamics is captured. In traditional structures, dynamics is typically
+expressed through morphisms between such structures, as in linear maps
+between vector spaces or morphisms between rings. In algebras
+associated with the semantics of computation, the dynamics is
+expressed as part of the algebraic structure itself, through a
+reduction reduction relation typically denoted by $\red$. Below, we
+give a recursive presentation of this relation for the calculus used
+in the encoding.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{trgt} \nameeq x_{src}, |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{trgt} )P | x_{src}!(\arrvec{Q})
+  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}}
+  \and
+  \inferrule* [lab=PAR]{P \red P'}{P|Q \red P'|Q}
+  \and
+  \inferrule* [lab=EQUIV]{{P \scong P'} \andalso {P' \red Q'} \andalso {Q' \scong Q}}{P \red Q}
+\end{mathpar}
+
+We write $P\red$ if $\exists Q $ such that $ P \red Q$ and $P\not\red$, otherwise.
+
+\subsection{ Dynamic quote: an example }
+
+Anticipating something of what's to come, let $z = \quotep{P}$, $u = \quotep{Q}$, and $x = \quotep{\lift{y}{\dropn{z}}}$. Now consider applying the substitution,
+$\widehat{\id{\{}u / z \id{\}}}$, to the following pair of processes,
+$\lift{w}{y!(\dropn{z})}$ and $\lift{w}{\dropn{x}} = \lift{w}{\dropn{\quotep{\lift{y}{\dropn{z}}}}}$.
+
+\begin{eqnarray}
+	\lift{w}{\lift{y}{\dropn{z}}}\widehat{\id{\{}u / z \id{\}}}
+		& = &
+		\lift{w}{\lift{y}{Q}} \nonumber\\
+	\lift{w}{\dropn{x}} \widehat{ \id{\{}u / z \id{\}} }
+		& = &
+		\lift{w}{\dropn{x}} \nonumber
+\end{eqnarray}
+
+The body of the quoted process, $\quotep{\lift{y}{\dropn{z}}}$, is
+impervious to substitution, thus we get radically different
+answers. In fact, by examining the first process in an input context,
+e.g. $\mathsf{for}(z \leftarrow x)\lift{w}{\lift{y}{\dropn{z}}}$, we see that the process
+under the output operator may be shaped by prefixed inputs binding a
+name inside it. In this sense, the combination of input prefix binding
+and output operators will be seen as a way to dynamically construct
+processes before reifying them as names.
+
+\section{Replication}
+
+As mentioned before, it is known that replication (and hence
+recursion) can be implemented in a higher-order process algebra
+\cite{SangiorgiWalker}. As our first example of calculation with the
+machinery thus far presented we give the construction explicitly in
+the {\rhoc}.
+
+\begin{eqnarray}
+	D_{x} & := & \prefix{x}{y}{(\binpar{\outputp{x}{y}}{\dropn{y}})} \nonumber\\
+	\bangp_{x}{P} & := & \binpar{\lift{x}{\binpar{D_{x}}{P}}}{D_{x}} \nonumber
+\end{eqnarray}
+
+\begin{eqnarray}
+	\bangp_{x}{P} & & \nonumber\\
+	=
+	& \lift{x}{(\prefix{x}{y}{(\outputp{x}{y} | \dropn{y})) | P}} 
+	      | \prefix{x}{y}{(\outputp{x}{y} | \dropn{y})} & \nonumber\\
+	\red
+	& (\outputp{x}{y} | \dropn{y})\substn{\quotep{(\prefix{x}{y}{(\dropn{y} | \outputp{x}{y})) | P}}}{y} & \nonumber\\
+	=
+	& \outputp{x}{\quotep{(\prefix{x}{y}{(\outputp{x}{y} | \dropn{y})) | P}}}
+	  | {(\prefix{x}{y}{(\outputp{x}{y} | \dropn{y})) | P}} & \nonumber\\
+	\red
+	& \ldots & \nonumber\\
+	\red^*
+	& P | P | \ldots & \nonumber
+\end{eqnarray}
+
+Of course, this encoding, as an implementation, runs away, unfolding
+$\bangp{P}$ eagerly. A lazier and more implementable replication
+operator, restricted to input-guarded processes, may be obtained as follows.
+
+\begin{eqnarray}
+\bangp{\prefix{u}{v}{P}} 
+	:= 
+	\binpar{\lift{x}{\prefix{u}{v}{(\binpar{D(x)}{P})}}}{D(x)} \nonumber
+\end{eqnarray}
+
+\begin{remark}
+  Note that the lazier definition still does not deal with summation
+  or mixed summation (i.e. sums over input and output). The reader is
+  invited to construct definitions of replication that deal with these
+  features. 
+
+  Further, the definitions are parameterized in a name, $x$. Can you,
+  gentle reader, make a definition that eliminates this parameter and
+  guarantees no accidental interaction between the replication
+  machinery and the process being replicated -- i.e. no accidental
+  sharing of names used by the process to get its work done and the
+  name(s) used by the replication to effect copying. This latter
+  revision of the definition of replication is crucial to obtaining
+  the expected identity $!!P \sim !P$.
+\end{remark}
+
+\begin{remark}\label{rem:paradoxical_combinator}
+  The reader familiar with the lambda calculus will have noticed the
+  similarity between $D$ and the paradoxical combinator.
+
+  [Ed. note: the existence of this seems to suggest we have to be more
+  restrictive on the set of processes and names we admit if we are to
+  support no-cloning.]
+\end{remark}
+
+\subsubsection{Bisimulation}
+
+The computational dynamics gives rise to another kind of equivalence,
+the equivalence of computational behavior. As previously mentioned
+this is typically captured \emph{via} some form of bisimulation.
+
+% The notion we use in this paper is weak barbed bisimulation
+% \cite{milner91polyadicpi}.
+
+The notion we use in this paper is derived from weak barbed
+bisimulation \cite{milner91polyadicpi}. 
+
+\begin{definition}
+An \emph{observation relation}, $\downarrow_{\mathcal N}$, over a set
+of names, $\mathcal N$, is the smallest relation satisfying the rules
+below.
+
+\infrule[Out-barb]{y \in {\mathcal N}, \; x \nameeq y}
+		  {\outputp{x}{v} \downarrow_{\mathcal N} x}
+\infrule[Par-barb]{\mbox{$P\downarrow_{\mathcal N} x$ or $Q\downarrow_{\mathcal N} x$}}
+		  {\binpar{P}{Q} \downarrow_{\mathcal N} x}
+
+We write $P \Downarrow_{\mathcal N} x$ if there is $Q$ such that 
+$P \wred Q$ and $Q \downarrow_{\mathcal N} x$.
+\end{definition}
+
+\begin{definition}
+%\label{def.bbisim}
+An  ${\mathcal N}$-\emph{barbed bisimulation} over a set of names, ${\mathcal N}$, is a symmetric binary relation 
+${\mathcal S}_{\mathcal N}$ between agents such that $P\rel{S}_{\mathcal N}Q$ implies:
+\begin{enumerate}
+\item If $P \red P'$ then $Q \wred Q'$ and $P'\rel{S}_{\mathcal N} Q'$.
+\item If $P\downarrow_{\mathcal N} x$, then $Q\Downarrow_{\mathcal N} x$.
+\end{enumerate}
+$P$ is ${\mathcal N}$-barbed bisimilar to $Q$, written
+$P \wbbisim_{\mathcal N} Q$, if $P \rel{S}_{\mathcal N} Q$ for some ${\mathcal N}$-barbed bisimulation ${\mathcal S}_{\mathcal N}$.
+\end{definition}
+
+\subsubsection{Contexts}
+
+One of the principle advantages of computational calculi from the
+$\lambda$-calculus to the $\pi$-calculus is a well-defined notion of context,
+contextual-equivalence and a correlation between
+contextual-equivalence and notions of bisimulation. The notion of
+context allows the decomposition of a process into (sub-)process and
+its syntactic environment, its context. Thus, a context may be
+thought of as a process with a ``hole'' (written $\Box$) in it. The
+application of a context $M$ to a process $P$, written $M[P]$, is
+tantamount to filling the hole in $M$ with $P$. In this paper we do
+not need the full weight of this theory, but do make use of the notion
+of context in the proof the main theorem. 
+
+%% \begin{mathpar}
+%%   \inferrule* [lab=summation] {} {{M_{M},M_{N}} \bc \Box \;|\; x.M_{A} \;|\; M_{M}+M_{N}}
+%%   \and
+%%   \inferrule* [lab=agent] {} {{M_{A}} \bc (\arrvec{x})M_{P} \;| \; \clift{P_0,\ldots,M_{P},\ldots,P_N}}
+%%   \and \\
+%%   \inferrule* [lab=process] {} {{M_{P}} \bc M_{N} \;| \;P|M_{P} }
+%% \end{mathpar}
+
+\begin{mathpar}
+\inferrule* [lab=context] {} {M \bc \Box \;\bm\; \mathsf{for}( \arrvec{y} \leftarrow x )M \;\bm\; x\mathsf{!}(\arrvec{Q},M,\arrvec{Q'}) \;\bm\; M\mathsf{|}Q }
+\end{mathpar}
+
+\begin{definition}[contextual application] Given a context $M$, and
+  process $P$, we define the \emph{contextual application}, $M[P] :=
+  M\{P/\Box\}$. That is, the contextual application of M to P is the
+  substitution of $P$ for $\Box$ in $M$.
+\end{definition}
+
+\subsubsection{Contextual duality}
+
+Note that contexts extend the quotation operation to a family of
+operations from processes to names. Given a context, $M$, we can
+define a \emph{nominal context}, $\quotep{M}$ by $\quotep{M}[P] :=
+\quotep{(M[P])}$. To foreshadow what is to come we observe that these
+operations enjoy a duality with processes very much like the duality
+between vectors and maps from vectors to scalars.
+
+Further, because the calculus is essentially higher-order, we have a
+correspondence between contexts and processes. More specifically,
+given a name $x$ and a context $M$ we can construct $M^{*}_{x}$ such
+that 
+
+\begin{mathpar}
+  M^{*}_{x} | \lift{x}{P} \red M[P]
+\end{mathpar}
+
+namely,
+
+\begin{mathpar}
+  M^{*}_{x} := \prefix{x}{y}{M[\dropn{y}]}
+\end{mathpar}
+
+This correspondence mirrors the usual correspondence between vectors and duals, where given a vector $v$ we can produce its dual $w \mapsto v \cdot w$ taking a vector $w$ to the dot product $v \cdot w$.
+
+%% The dependence of $M^{*}_{x}$ on a name makes it an abstraction, 
+
+%% \begin{mathpar}
+%%   M^{*} := (x)x?(u).M[\dropn{u}]
+%% \end{mathpar}
+
+\subsection{Additional notation}
+
+It will sometimes be convenient to denote the process a name
+quotes. We already have the notation $x = \quotep{P}$, but it will be
+convenient to introduce an alternate notation, $\procn{x}$, when we
+want to emphasize the connection to the use of the name. Note that, by
+virtue of name equivalence, $\quotep{\procn{x}} \nameeq x$; so, the
+notation is consistent with previous definitions.
+
+Further, because names have structure it is possible to effect
+substitutions on the basis of that structure. This means we need to
+upgrade our notation for substitutions, which we accomplish by
+adapting comprehension notation. Thus,
+
+\begin{mathpar}
+  P\{ y / x : x \in S \}
+\end{mathpar}
+
+is interpreted to mean the process derived from P by replacing (in a
+capture-avoiding manner) each occurrence of $x$ in $S$ by $y$. For example,
+
+\begin{mathpar}
+  P\{ \quotep{\procn{x}|\procn{x}} / x : x \in \freenames{P} \}
+\end{mathpar}
+
+will replace each (occurrence) of a free name $x$ in $P$ by
+$\quotep{\procn{x}|\procn{x}}$.
+
+Also, we will avail ourselves of the notation $x^{L}$ and $x^{R}$ to
+denote injections of a name into disjoint copies of the name
+space. There are numerous ways to accomplish this. One example can be
+found in \cite{MeredithR05}. This notation overloads to vectors of
+names: $\arrvec{x}^{\pi} := (x_{i}^{\pi} \; : \; 0 \leq i < |\arrvec{x}| )$ where $\pi \in \{L,R\}$.
+
+We also use $P^{\Box} := P|\Box$.
+
+In \cite{MeredithR05} an interpretation of the new operator is
+given. It turns out that there are several possible interpretations
+all enjoying the requisite algebraic properties of the operator (see
+\cite{milner91polyadicpi}). We will therefore make liberal use of
+$(\nu\; \arrvec{x})P$.
+
+% subsection the_syntax_and_semantics_of_the_notation_system (end)   

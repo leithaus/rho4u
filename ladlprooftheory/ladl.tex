@@ -1,0 +1,704 @@
+\documentclass{llncs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{stmaryrd}
+\newcommand{\interp}[1]{\llbracket #1 \rrbracket}
+\newcommand{\maps}{\colon}
+\renewcommand{\:}{\colon}
+\newcommand{\FinSet}{\mathrm{FinSet}}
+\newcommand{\Set}{\mathrm{Set}}
+\newcommand{\Cat}{\mathrm{Cat}}
+\newcommand{\Calc}{\mathrm{Calc}}
+\newcommand{\Mon}{\mathrm{Mon}}
+\newcommand{\BoolAlg}{\mathrm{BoolAlg}}
+\renewcommand{\Form}{\mathrm{Form}}
+\newcommand{\leftu}{\mathrm{left}}
+\newcommand{\rightu}{\mathrm{right}}
+\newcommand{\send}{\mathrm{send}}
+\newcommand{\recv}{\mathrm{recv}}
+\newcommand{\comm}{\mathrm{comm}}
+\renewcommand{\quote}[1]{``#1"}
+\newcommand{\deref}[1]{\mathrm{eval}(#1)}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\pic}{$\pi$-calculus}
+
+\makeatletter
+\gdef\tshortstack{\@ifnextchar[\@tshortstack{\@tshortstack[c]}}
+\gdef\@tshortstack[#1]{%
+  \leavevmode
+  \vtop\bgroup
+    \baselineskip-\p@\lineskip 3\p@
+    \let\mb@l\hss\let\mb@r\hss
+    \expandafter\let\csname mb@#1\endcsname\relax
+    \let\\\@stackcr
+    \@ishortstack}
+\makeatother
+
+\title{Logic, resource, and reflection}
+\author{
+L.G. Meredith\inst{2}\\
+\and
+Michael Stay\inst{1}\\
+}
+\institute{
+  {Pyrofex Corp.}\\
+  \email{\fontsize{8}{8}\selectfont stay@pyrofex.net}\\
+  \and
+  {RChain Cooperative}\\
+  \email{\fontsize{8}{8}\selectfont lgreg.meredith@rchain.coop}
+}
+\begin{document}
+\maketitle
+\begin{abstract}
+\noindent
+  We present an algorithm for deriving a spatial-behavioral type
+  system and term assignment from a formal presentation of a
+  interactive computational calculus. This turns out to identify a
+  species of category which we offer an axiomatic characterization of
+  interaction categories.
+\end{abstract}
+
+\section{Introduction and motivation}
+
+In groundbreaking work, Abramsky, Gay, and Nagarajan put forward the
+idea of interaction categories to give a categorical framework for
+interactive models of computing. Indeed, interactive models of
+computation are relatively new and offer distinct insights because
+they include the computational environment as part of the
+computation. Examples include the {\pic}, in fact, all the mobile
+process calculi, as well as the lambda calculus. However, interaction
+categories fail to say axiomatically what interaction is.
+
+We put forward a simple, intuitive axiomatic characterization of
+interaction and use this to derive not only a logic but a proof theory
+and term assignment algorithm for all systems satisfying these
+axioms. The resulting structure identifies a species of category and
+we offer this as an axiomatic characterization of interaction
+categories.
+
+\subsection{Intuitions}
+
+The key idea in this construction is to use both the evaluation
+context of Meredith and Stay, and computational reflection, similar to
+what is found in Meredith and Radestock, to build a proof theory with
+a cut elimination that corresponds exactly with the notion of
+computation embodied in any interactive rewrite system.
+
+The requirement that the rewrite system is interactive means the left
+hand side of every rewrite rule will necessarily be a term
+constructor, say $\mathsf{K}$, taking at least two terms. That is, when
+viewed as a piece of syntax it is at least a tuple of terms. Then, by
+controlling evaluation with an evaluation context we can force a
+distinction between a tensor and a cut, where the cut forms the redex
+with an evaluation context supplied, and the tensor is denied the
+evaluation context, effectively rendering it a data structure. Of
+course, the data is inaccessible until there is a means to unpack it,
+and a par term is constructed as the principal means to extract the
+data from the tensor.
+
+The use of the term constructor that forms a redex as a data structure
+is the essential use of reflection. The lack of a reduction context
+gives us the ability to suspend computation. Having suspended it, we
+reify computation as data, and use par to unpack the data making up
+the computation. Completing the circle, the tensor-par cut rule
+constitutes the means to reflect computational data back into actual
+computations.
+
+It turns out that denying the evaluation context is not the only way
+to suspend computation. We can also form contexts. In this case, we
+only admit 1-holed contexts, ranged over by $\chi$. With contexts we can
+define a notion of rely-guarantee, two notions actually (indicated by
+the operations $(- \rhd -)$, and $(- \lhd -)$), as a redex term constructor
+might not be commutative. .
+
+\begin{eqnarray*}
+\tau \rhd_{\mathsf{K}} \tau’ & \triangleq & \{ u \quad | \quad \exists t. u = \mathsf{!}\mathsf{K}[]r(t, []),\forall u’ : \tau. (\exists \rho : u@u’ \rightarrow v) \Rightarrow v:\tau’ \} \\
+\tau’ \lhd_{\mathsf{K}} \tau & \triangleq & \{ t \quad | \quad \exists u. t = \mathsf{K}[]l([], u)\mathsf{!},\forall t’ : \tau. (\exists \rho: t@t’ \rightarrow v) \Rightarrow v : \tau’ \}
+\end{eqnarray*}
+
+In the sequel we drop the subscript on the triangles if it’s understood from
+context. We use the notation $\chi @ t$ to mean the term formed by
+substituting $t$ for hole in $\chi$. Thus, $\mathsf{K}(t, [])@u = \mathsf{K}(t, [])[u/[]] = \mathsf{K}(t,u)$ and similarly, $\mathsf{K}([], u)@t = \mathsf{K}([], u)[t/[]] = \mathsf{K}(t,u)$
+
+To give some examples, the comm rule of rho-calculus is given by
+
+\begin{equation*}
+  \mathsf{for}( y \leftarrow x )P \quad | \quad x\mathsf{!}(Q) \rightarrow P\{ @Q/y \}
+\end{equation*}
+
+In this case K is parallel composition, and the revised, resource
+constrained comm rule, looks like
+
+\begin{equation*}
+  R | \mathsf{for}( y \leftarrow x )P \quad | \quad x\mathsf{!}(Q) \rightarrow P\{ @Q/y \}
+\end{equation*}
+
+In the lambda calculus, $\beta$-reduction is given by
+
+\begin{equation*}
+  (\lambda x.M)N \rightarrow M\{ N/x \}
+\end{equation*}  
+
+$\mathsf{K}$ is application, and the revised, resource constrained $\beta$-reduction is given by
+
+\begin{equation*}
+  R((\lambda x.M)N) \rightarrow M\{ N/x \}
+\end{equation*}    
+
+In what follows we will focus on calculi that don’t employ binding
+operators and so-called nominal phenomena. This is not to say that we
+can’t handle nominal phenomena, just that the content is already
+complex enough and we want to focus on the core ideas.
+
+
+\subsection{Related work}
+In many ways this work is inspired by and derives from domain theory
+in logical form (DTLF). In much the same way that DTLF takes as input
+a notion of computation encoded in a domain theory and produces a
+logical system encoding the same notion of computation, but from the
+logical view, this is an algorithm that takes as input a notion of
+computation encoded as a Lawvere theory and produces a new Lawvere
+theory that is resource constrained and enjoys a type system that
+guarantees a range of security and liveness properties, while at the
+same time having the tightest possible conformance to the original
+notion of computation. In particular, the resulting type theory is
+also a logic enjoying a notion of cut-elimination and proof
+normalization that matches exactly with the operational semantics of
+the original theory. As such, it automatically enjoys a Curry-Howard
+correspondence.
+
+Other inspiration and guidance come from the two major branches in the
+development of behavioral types. One branch derives from the spatial
+logics of Caires, et al, while the other derives from the session
+types of Wadler, et al. The former is predominantly model theory
+based, while the latter is predominantly proof theory based. In the
+spatial logics branch the negation is largely set-based, while in the
+session types work the negation is related to the reduction of
+terms. This construction brings both branches together and offers both
+model theory and proof theory that enjoys a full abstraction-like
+property.
+
+The discussion would not be complete without mentioning
+blockchain. While the idea of resource limiting computation certainly
+has a long and illustrious history, inspired by catalysts in chemical
+and biochemical reactions, it has immediate practical application in
+blockchain platforms such as RChain and Ethereum. Here, the
+programming model is throttled by the existence of a resource. The
+cost of obtaining that resource constitutes a prophylactic against
+denial-of-service attacks. Specifically, an attacker attempting to
+deploy computations that run forever or take up infinite storage must
+pay for the corresponding infinite resources necessary to enable the
+infinite computations.
+
+\subsection{Notation}
+We use 
+
+\begin{itemize}
+  \item $\Gamma , \Delta , \Xi$  to range over type contexts;
+  \item $\rhd , \lhd$ for left and right residuation;
+  \item $(-)_{\perp}$ and $ _{\perp}(-)$  for left and right negations;
+  \item $!(-)$ and $(-)!$  for left and right abstractions; 
+  \item $\rho$ to range over rewrite rules;
+  \item $\chi$ to range over contexts;
+  \item $\bindnasrepma, \otimes, \sqcap, \sqcup$ for logical connectives derived from $K$; $\sqcap$ serial, $\otimes$ parallel
+  \item both double and single sided $\vdash$ for typing judgments;
+  \item $\Rightarrow$ for meta level logical implication.
+\end{itemize}
+
+\section{Construction}
+To illustrate the general construction we apply it to the simplest
+possible interactive rewrite theory, consisting of a single sort, $T$,
+for term, a single constant, $C$, and a single term constructor $K$, along
+with left and right identities for $K$ (which are, of course,
+constants). It has a single rewrite rule, $\rho$.
+
+We add a resource, $R$, which can be thought of as either an evaluation
+context, or as a constant. In the resourced theory, the rewrite rule
+only applies in an evaluation context.
+
+Then we add a notion of 1-holed context. We add a new sort, $\chi_{T}$, then a
+constant for the hole, together with left and right maps for placing
+the hole in either side of $K$, along with left and right maps $!(-)$ and
+$(-)!$ essentially for treating contexts as abstractions. We add a map
+$@(-,-)$ for substituting a term into a context marked as an
+abstraction.
+
+It is important to note that we do not allow the rewrite rule to
+operate on contexts. Thus, there are two ways to suspend computation:
+withholding a resource, or forming an abstraction.  Input to the
+algorithm It is to be understood that the initial theory is provided
+as input to the system. As mentioned earlier, this is an algorithm
+that takes as input a notion of computation encoded as a Lawvere
+theory and produces a new Lawvere theory that is resource constrained
+and enjoys a type system that guarantees a range of security and
+liveness properties.
+
+We encode term calculi as Lawvere theories by starting with the theory
+of reflexive directed multigraphs:
+
+\begin{itemize}
+  \item one sort $T$
+  \item function symbols $s, t: T \rightarrow T$
+  \item equations $ss = ts = s$, $st = tt = t$
+\end{itemize}
+
+To this theory, we add function symbols for each term constructor and
+reduction rule.  We also add equations for the source and target of
+each reduction rule.  For example, we can model the $\mathsf{SKI}$ combinator
+calculus by adding
+
+\begin{itemize}
+  \item $S, K, I : 1 \rightarrow T$
+  \item $(- -) : T^{2} \rightarrow T$
+  \item $\sigma : T^{3} \rightarrow T$
+  \item $\kappa : T^{2} \rightarrow T$
+  \item $\iota : T \rightarrow T$
+  \item $s\sigma(x, y, z) = (((S x) y) z$
+  \item $t\sigma(x, y, z) = ((x z) (y z))$
+  \item $s\kappa(x, y) = ((K x) y)$
+  \item $t\kappa(x, y) = x$
+  \item $s\iota(x) = (I x)$
+  \item $t\iota(x) = x$
+\end{itemize}
+
+We'll use the following symbols to talk about a generic term calculus
+with at least one binary term constructor and one rewrite rule that
+uses the term constructor as its source.
+
+\begin{itemize}
+  \item $C, l_{K}, r_{K} : 1 -> T$
+  \item $K : T^{2} \rightarrow T$
+  \item $\rho : T^{2} \rightarrow T$             %%//( \x -> M N) → M{N/x}     for( y <- x )P | x!(Q) → P{@Q/y}$
+  \item $K(l_{K}, u) = u$
+  \item $K(t, r_{K}) = t$
+  \item $s(\rho(t,u)) = K(t, u)$
+  \item $t(\rho(t,u)) = f(t,u)$
+\end{itemize}
+
+Note that K may not be commutative, so we ask for either a left
+identity, lK, or a right identity, rK, or if we have both they must
+coincide.
+
+We proceed in stages, producing first a resourced version of the
+theory that requires an evaluation context to run the rewrite rule,
+then producing a contextualized version of the theory.
+
+\subsubsection{Resourced theory}
+\begin{itemize}
+  \item $C, l_{K}, r_{K} : 1 \rightarrow T$
+  \item $K : T^{2} \rightarrow T$
+  \item $R : T \rightarrow T$
+  \item $\bindnasrepma_{\rho} : T^{2} \rightarrow T$
+  \item $\sqcup_{\rho} : T^{2} \rightarrow T$
+  \item $\rho : T^{2} \rightarrow T$             %%//( \x \rightarrow M N) → M{N/x}     for( y <- x )P | x!(Q) → P{@Q/y}
+  \item $K(l_{K}, u) = u$
+  \item $K(t, r_{K}) = t$
+  \item $s(\rho(t,u)) = RK(t, u)$
+  \item $t(\rho(t,u)) = f(t,u)$                    %%// f can mention R, e.g. if R is not a linear resource
+\end{itemize}
+
+%% \subsubsection{Contextualized Resourced theory}
+%% We add a new sort, 𝛘T, and the following maps
+
+%% C, lK, rK : 1 -> T
+%% K : T x T -> T
+%% [] : 1 -> 𝛘T
+%% K[]l : 𝛘T x T -> 𝛘T
+%% K[]r : T x 𝛘T -> 𝛘T
+%% !(-) : 𝛘T  -> T
+%% (-)! : 𝛘T  -> T
+%% @ : T x T -> T
+%% @[] : 𝛘T x T -> T
+%% R : T -> T
+%% ⅋ρ : T x T -> T
+%% ⊔ρ : T x T -> T
+%% ρ : T x T -> T             //( \x -> M N) -> M{N/x}     for( y <- x )P | x!(Q) -> P{@Q/y}
+%% s(ρ(t,u)) = RK(t, u) 
+%% t(ρ(t,u)) = f(t,u) // f can mention R, e.g. if R is not a linear resource
+%% K(lK, u) = u
+%% K(t, rK) = t
+%% @([]!,t) = t
+%% @(![],t) = t
+%% @(K[]l (χ, t)!, u) = K(@[(χ[, u), t)
+%% @(!K[]r (t, χ), u) = K(t, @[(χ[, u))
+
+%% As mentioned before, the basic notion of arrow is given by
+
+%% τ ▷K τ’ ≜ { u | ∃t. u = !K[]r(t, []),∀u’:τ. (∃ ρ: u@u’ → v) ⇒ v:τ’ }
+%% τ’ ◁K τ ≜ { t | ∃u. t = K[]l([], u)!,∀t’:τ. (∃ ρ: t@t’ → v) ⇒ v:τ’ } 
+
+%% However, they can be generalized to
+
+%% τ ▷K τ’ ≜ { u | ∃t,χ. u = !K[]r(t, χ),∀u’:τ. (∃ ρ: u@u’ → v) ⇒ v:τ’ }
+%% τ’ ◁K τ ≜ { t | ∃u,χ. t = K[]l(χ, u)!,∀t’:τ. (∃ ρ: t@t’ → v) ⇒ v:τ’ }
+
+%% which allows the hole to be buried, rather than at the top level,
+
+%% Types
+%% τ ::=  ⊤ | τ ▷ τ | τ ◁ τ | C | {} | τ ∪ τ | Rτ | K(τ,τ) | ρ⊗(τ,τ) | ρ⅋(τ,τ) | ρ⊓(τ,τ) | ρ⊔(τ,τ) 
+
+%% Abbreviations
+%% τ⊥ = τ ▷ rK, τ◦ = τ ▷ {}
+%% ⊥τ = lK ◁ τ, ◦τ = {} ◁ τ
+
+\section{Main theorems}
+In this section, we prove a cut-elimination theorem.
+\subsection{Cut-elimination}
+Every proof that uses a cut can be transformed into a proof that does
+not use a cut.  Compilation from contextualized resource theory back
+to original theory. In $lambda$-calculus and {\pic}, $\mathsf{K}$ is
+not directly interpreted as application or parallel,
+respectively. Instead, it turns into a data type so we can extract the
+info using a par term introduced in the contextualized resource
+theory.  In $\rho$, there's no need because it's reflective.  But either
+way, the term calculi are powerful enough to support the embedding of
+the new terms back into the original.
+
+It remains to show that the embedding is full and faithful.
+
+%% Intuitionistic Term assignment
+%% Terms, their types and cuts
+
+%% ———-- constants
+%% ⊢ C : C
+
+%% Γ ⊢ t : τ  Δ ⊢ u : τ’
+%% __________________ ρ tensor τ
+%% Γ, Δ ⊢ K(t, u) : ρ⊗(τ, τ’)
+
+%% Γ ⊢ t : τ, u : τ’
+%% __________________ ρ par
+%% Γ ⊢ ⅋ρ (t, u) : ρ⅋(τ, τ’)
+
+%% Γ ⊢ ⅋ρ (t’, u’) : ρ⅋(τ⊥, τ’⊥)  Δ ⊢ K(t, u) : ρ⊗(τ, τ’) 
+%% _____________________________________ ρ par-tensor-cut
+%% Γ, Δ ⊢ R(K(K(t’, t), K(u’, u))) : R(rK)
+%% τ ▷ τ' = { u | ∃t,χ. u = !K[]r(t, χ),∀u’:τ. (∃ ρ: u@u’ → v) ⇒ v:τ’ }
+%% τ⊥ = τ ▷ rK = { u | ∃t,χ. u = !K[]r(t, χ),∀u’:τ. (∃ ρ: u@u’ → v) ⇒ v:rK }
+
+%% Γ ⊢ t : τ, u : τ’
+%% _______________ ρ serialize
+%% Γ ⊢ K(t,u) : ρ⊓(τ,τ’)
+
+%% Γ ⊢ t : τ, u : τ’
+%% ______________ ρ deserialize
+%% Γ ⊢ ⊔(t,u) : ρ⊔(τ,τ’)
+
+%% Γ ⊢ ⊔ρ (t, u) : ρ⊔(τ’’ ▷ τ⊥, τ’’)  Δ ⊢ K(t', u') : ρ⊓(τ’ ▷ τ, τ’)
+%% -----------------------------------------------------------------------------------  ρ serialize-deserialize-cut
+%% Γ, Δ ⊢ R(K(K( t, u), K(t’, u’)) : R(rK)
+
+
+%% Γ ⊢ t’ : τ⊥, Δ ⊢ t : τ
+%% ---------------------------- ρ cut is the special case of ρ⊗ with ⅋ρ (rK, rK)
+%% Γ, Δ ⊢ R(K(t’,t)) : R(rK)
+%% Contexts, their types and cuts
+%% Below we identify the formation of each kind of context: tensor-parallel, tensor-serial, par-parallel, and par-serial.
+
+
+%% structure
+%% destructure
+%% parallel
+%% tensor (⊗)
+%% par (⅋)
+%% serial
+%% serialize (⊓)
+%% deserialize (⊔)
+
+%% Axiom
+
+%% —————— axiom
+%% [] : τ ⊢ [] : τ
+%% Left and right context formation and cut
+
+%% Γ, [] : τ  ⊢ χ : τ’
+%% --------------------
+%% Γ ⊢ χ! : τ’ ◁ τ
+
+%% Γ, [] : τ  ⊢ χ : τ’
+%% -------------------
+%% Γ ⊢ !χ : τ ▷ τ’
+
+%% Γ ⊢ K([],u)! : τ’ ◁ τ,  Δ ⊢ t : τ
+%% ------------------------------------- context-cut-left
+%% Γ, Δ ⊢ R(K(t,u)) : Rτ’
+
+
+
+
+%% Γ ⊢ !K(t,[]) : τ ▷ τ’,  Δ ⊢ u : τ
+%% -------------------------------------- context-cut-right
+%% Γ, Δ ⊢ R(K(t,u)) : Rτ’
+%% Classical Term assignment
+%% In the classical setting we transform double-sided sequents
+
+%% —————— axiom
+%% [] : τ ⊢ [] : τ
+
+%% to single sided sequents
+
+%% —————— axiom
+%% ⊢ [] : τ⊥, [] : τ
+
+%% And the interpretation of “,” is tensor, which is just the K constructor.
+
+%% K( [] : τ⊥, [] : τ )
+
+%% Expanding this out and instantiating K to application, we would get
+
+%% App( [] : τ ▷ lK, [] : τ )
+
+%% This yields exactly the property we are demanding.
+
+%% More formally, we adapt the Lawvere theory as follows.
+
+%% We add new sorts, 𝛘, and 𝛘, 𝛘𝛘, and the following maps
+
+%% C, lK, rK : 1 -> T
+%% K : T x T -> T
+%% KA : 1 -> 𝛘𝛘
+%% K[][] : 𝛘 x 𝛘 -> 𝛘𝛘
+%% K[]l : T x 𝛘𝛘 -> 𝛘𝛘
+%% K[]r :  𝛘𝛘 x T ->𝛘𝛘
+%% ?(-) : 𝛘𝛘  -> 𝛘
+%% (-)? : 𝛘𝛘  -> 𝛘
+%% !(-) : 𝛘  -> T
+%% (-)! : 𝛘  -> T
+%% @ : T x T -> T
+%% R : T -> T
+%% ⅋ρ : T x T -> T
+%% ⊔ρ : T x T -> T
+%% ρ : T x T -> T             //( \x -> M N) -> M{N/x}     for( y <- x )P | x!(Q) -> P{@Q/y}
+%% s(ρ(t,u)) = RK(t, u) 
+%% t(ρ(t,u)) = f(t,u) // f can mention R, e.g. if R is not a linear resource
+%% K(lK, u) = u
+%% K(t, rK) = t
+%% @([]!,t) = t
+%% @(![],t) = t
+%% @(K[]l (χ, t)!, u) = K(@(χ, u), t)
+%% @(!K[]r (t, χ), u) = K(t, @(χ, u))
+
+%% Terms, their types and cuts
+
+%% ———- constants
+%% ⊢ C : C
+
+%% ⊢ Γ, t : τ   ⊢ u : τ’, Δ
+%% __________________ ρ tensor
+%% ⊢ Γ, K(t, u) : ρ⊗(τ, τ’), Δ
+
+%% ⊢ Γ, t : τ, u : τ’
+%% __________________ ρ par
+%% ⊢ Γ, ⅋ρ (t, u) : ρ⅋(τ, τ’)
+
+%% ⊢ Γ, ⅋ρ (t’, u’) : ρ⅋(τ⊥, τ’⊥)  ⊢ K(t, u) : ρ⊗(τ, τ’), Δ
+%% _____________________________________ ρ par-tensor-cut
+%% ⊢ Γ, R(K(K(t’, t), K(u’, u))) : R(rK), Δ
+
+%% ⊢ Γ, t : τ, u : τ’
+%% _______________ ρ serialize
+%% ⊢ Γ, K(t,u) : ρ⊓(τ,τ’)
+
+%% ⊢ Γ, t : τ, u : τ’
+%% ______________ ρ deserialize
+%% ⊢ Γ, ⊔(t,u) : ρ⊔(τ,τ’)
+
+%% ⊢ Γ, ⊔ρ (t, u) : ρ⊔(D ▷ A⊥, u:D)  ⊢ K(t', u') : ρ⊓(C ▷ A, C), Δ 
+%% -----------------------------------------------------------------------------------  ρ serialize-deserialize-cut
+%% ⊢ Γ, R(K(K( t, u), K(t’, u’)) : R(rK), Δ 
+
+%% ⊢Γ,  t’ : τ⊥  ⊢ t : τ, Δ 
+%% ------------------------------ ρ cut is the special case of ρ⊗ with ⅋ρ (rK, rK)
+%% ⊢ Γ, R(K(t’,t)) : R(rK), Δ 
+%% Contexts, their types and cuts
+%% Below we identify the formation of each kind of context: tensor-parallel, tensor-serial, par-parallel, and par-serial.
+
+
+%% structure
+%% destructure
+%% parallel
+%% tensor (⊗)
+%% par (⅋)
+%% serial
+%% serialize (⊓)
+%% deserialize (⊔)
+
+
+%% Axiom
+
+%% —————— axiom
+%% ⊢ [] : τ⊥, [] : τ
+%% Tensor-parallel-context and cut
+
+%% ⊢ Γ, [] : τ , χ : τ’
+%% ---------------------
+%% ⊢ Γ, χ! : τ’ ◁ τ
+
+%% ⊢ Γ, [] : τ , χ : τ’
+%% --------------------
+%% ⊢ Γ, !χ : τ ▷ τ’
+
+%% ⊢ Γ, K([],u)! : τ’ ◁ τ,  ⊢ t : τ, Δ 
+%% --------------------------------- ρ⊗ context-cut-left
+%% ⊢ Γ, R(K(t,u)) : Rτ’, Δ 
+
+%% ⊢ Γ, !K(t,[]) : τ ▷ τ’,  Δ ⊢ u : τ
+%% -------------------------------- ρ⊗ context-cut-right
+%% ⊢ Γ, R(K(t,u)) : Rτ’, Δ 
+
+%% Examples
+%% Applying the algorithm
+%% Now that we’ve worked out the type system in general above, we need to redo this example using the refined notation.
+
+%% Below we give an example of the construction applied to the rho-combinators.
+%% Rho combinators
+%% Here is a relatively standard SoS presentation of the combinatorial system. 
+
+%% atom
+%% P ::= 0 | m(a,b) | d(a, b, c) | k(a) | fw(a, b) | br(a, b) | bl(a, b) | s(a, b, c)
+%% process
+%% | ∗ a | P|P
+
+%% nominal
+%% a ::= @P
+
+%% Rewrite rules
+%% d(a, b, c) | m(a,d) → m(b,d) | m(c,d)
+%% k(a)|m(a,b) → 0
+%% fw(a, b)|m(a,c) → m(b,c)
+%% br(a, b)|m(a,c) → fw(b,c)
+%% bl(a, b)|m(a,c) → fw(c, b)
+%% s(a, b, c)|m(a,d) → fw(b, c)
+%% ∗(a)|m(a,@P) → P
+
+%% P → P′   ⇒   P|Q → P′|Q
+
+%% P ≡ P′    ∧    P′ → Q′    ∧    Q′ ≡ Q    ⇒    P → Q
+
+%% To interpret this presentation as a multi-sorted Lawvere theory per the input format given above, we start with the Lawvere theory of reflexive directed multigraphs and add new sorts, function symbols, and equations.  The theory of reflexive directed multigraphs has
+
+%% one sort P
+%% function symbols src, trgt: P -> P
+%% equations src ○ src = trgt ○ src = src, trgt ○ trgt = src ○ trgt = trgt
+
+%% We adjoin a sort N for names. We express each of the syntactic generators as function symbols, thus 0 : 1 -> P, m : N x N -> P, @:P -> N, *:N -> P, |:P x P -> P, etc. The base case rewrite rules are given in terms of the src and trgt functions, thus 
+
+%% src( d(a, b, c) | m(a,d) → m(b,d) | m(c,d) ) = d(a, b, c) | m(a,d)
+%% trgt( d(a, b, c) | m(a,d) → m(b,d) | m(c,d) ) = m(b,d) | m(c,d)
+
+%% Note that rewrites do not occur within a name because there is no rule for making src and @ commute with each other.
+%% The inference rule P → P′ ⇒ P|Q → P′|Q is encoded as an equation involving src, trgt, and |:
+
+%% src( P | Q ) = src(P) | src(Q)
+%% trgt( P | Q ) = trgt(P) | trgt(Q)
+
+%% Structural congruence is encoded as equations:
+
+%% 0 | P = P
+%% P | Q = Q | P
+%% (P | (Q | R)) = ((P | Q) | R)
+%% *@P = P
+
+%% Given that congruence is equality, the final inference rule is an identity.
+%% SKI
+%% Below, we give an explicit example of the construction applied to the SKI calculus.
+
+%% Reduction contexts for tensor vs cut, with idempotent commutative monoids for collection
+%% T
+
+%% S, K, I, {}: 1 -> T
+%% R: T -> T
+%% (- -), ∪: T x T -> T
+%% // Pars & plusses come from LHS with ≥ 2 holes
+%% ⅋σ: T x T x T -> T 
+%% ⅋κ: T x T -> T
+%% ⊕σ: T x T x T -> T 
+%% ⊕κ: T x T -> T
+
+%% RR = R
+%% R(x y) = (Rx y)
+%% ∪, {} associative, commutative, unital, idempotent
+
+%% σ: (((RS x) y) z) ▷ ((Rx z) (y z))
+%% κ: ((rK x) y) ▷ Rx
+%% ι: (RI x) ▷ Rx
+
+%% [[-]]: Coll + (Term + Pars) ▷ Coll ○ (Term + Pars)
+
+%% Types
+%% τ ::=  T | τ ▷ τ | S | K | I | {} | Rτ | (τ τ) | τ ∪ τ | σ⅋(τ,τ,τ,τ,τ,τ) | σ⊕(τ,τ,τ) | (kappa versions of ⅋⊕)
+
+%% We use the abbreviations
+%% σ⊗(A,B,C) ≜ (((S A▷B▷C) A▷B) A) 
+%% σ&(A,B,C,C') ≜ (((S A▷B▷C'▷C) A▷B) A) 
+
+%% Inference rules
+
+%% Γ ⊢ x: A▷B▷C  Δ ⊢ y: A▷B,  Ξ ⊢ z: A
+%% ------------------------------------------------------------------------------- σ tensor
+%% Γ, Δ, Ξ ⊢ (((S x) y) z): σ⊗(A,B,C)
+
+%% Γ ⊢ x: A⇒D⇒E⇒F, y: B⇒D⇒E, z: C⇒D
+%% --------------------------------------------------------- σ par
+%% Γ ⊢ ⅋σ (x, y, z): σ⅋(A,B,C,D,E,F)
+
+%% Γ ⊢ ⅋σ (x, y, z): σ⅋(A,B,C,D,E,F)  Δ ⊢ (((S x') y') z'): σ⊗(A,B,C)
+%% ----------------------------------------------------------------------------------- σ par-tensor-cut
+%% Γ, Δ ⊢ R(((S (x x')) (y y')) (z z')): RF
+%% F is the property we'd like to hold at the end.
+
+
+
+%% Γ ⊢ x: A▷B▷C'▷C, y: A▷B, z: A
+%% ---------------------------------------------- σ with
+%% Γ, Δ, Ξ ⊢ (((S x) y) z): σ&(A,B,C',C)
+
+
+%% Γ ⊢ x: A▷B▷C, y: A▷B, z: A
+%% ------------------------------------------ σ plus
+%% Γ ⊢ ⊕(x, y, z): σ⊕(A,B,C)
+
+%% Γ ⊢ (((S x) y) z): σ&(A,B,C',C)   Δ ⊢ ⊕(x', y', z'): σ⊕(A',B',C')
+%% --------------------------------------------------------------------------------  σ with-plus-cut
+%% Γ, Δ ⊢ R((((S x) y) z) (((S x') y') z')): RC
+
+%% C is the property we'd like to hold at the end.
+
+
+%% Γ ⊢ x: A▷B▷C  Δ ⊢ y: A▷B,  Ξ ⊢ z: A
+%% ----------------------------------------------------- σ cut is the special case of σ⊗ with ⅋σ (I, I, I)
+%% Γ, Δ, Ξ ⊢ (((RS x) y) z): RC
+
+%% Some useful properties and their proofs
+%% TBD
+
+  
+
+\section{Conclusion and future work}
+
+The aim of this construction is to generate a logic and its proof
+theory from a notion of computation expressed as a graph-enriched
+Lawvere theory. The logic respects both a Curry-Howard correspondence,
+as well as realizability. Additionally, it enjoys a cut-elimination
+property, and proof normalization corresponds precisely to the
+operational semantics of the notion of computation provided in the
+graph-enriched Lawvere theory.
+
+We have not addressed nominal aspects of rewrite systems such as the
+$\lambda$-calculus or the {\pic}. We note that there are two very
+promising directions. One is captured in Clouston’s work on nominal
+Lawvere theories. The other is expressed in Fiore’s work on HOAS. It
+also bears mentioning that we can generate the names used by such a
+nominal theory using reflection, ala Meredith and Radestock.
+
+Also, in the spirit of Meredith and Radestock, we can seek to minimize
+risk taken on in the theory in the form of “outside influences.”
+
+
+\bibliographystyle{amsplain}
+\bibliography{ladl}
+\end{document}

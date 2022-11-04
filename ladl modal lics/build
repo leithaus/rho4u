@@ -1,0 +1,4 @@
+pdflatex modalics.tex
+bibtex modalics
+pdflatex modalics.tex
+pdflatex modalics.tex
