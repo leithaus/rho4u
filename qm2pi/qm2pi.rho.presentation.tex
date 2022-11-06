@@ -56,13 +56,15 @@ We use $\Proc$ for the set of processes, $\QProc$ for the set of
 names, and $\id{\{}\arrvec{y} / \arrvec{x} \id{\}}$ to denote partial
 maps, $s : \QProc \rightarrow \QProc$. A map, $s$ lifts, uniquely, to
 a map on process terms, $\widehat{s} : \Proc \rightarrow
-\Proc$. Historically, it is convention to write the application of a
-substitution, $\widehat{s}$ to a process, $P$ with the substitution on
-the right, $P\widehat{s}$, and the application of a substitution to a
-name using conventional function application notation. In this
-instance we choose not to swim against the tides of history. Thus, the
-lifting is given recursively by the following equations. Given $x =
-\quotep{P'}$ and $u = \quotep{Q'}$ and $\sigma = \psubstn{u}{x}$
+\Proc$. Historically, it is convention to use $\sigma$ to range over
+lifted subsitutions, $\widehat{s}$, to write the application of a
+substitution, $\sigma$ to a process, $P$, with the substitution on the
+right, $P\sigma$, and the application of a substitution, $s$, to a
+name, $x$, using standard function application notation, $s(x)$. In
+this instance we choose not to swim against the tides of
+history. Thus, given $x = \quotep{P'}$, $u = \quotep{Q'}$, $s =
+\substn{u}{x}$ we define the lifting of $s$ to $\widehat{s}$ (written
+below as $\sigma$) recursively by the following equations.
 
 \begin{mathpar}
   0 \sigma := 0 \\
@@ -135,7 +137,12 @@ appendix \ref{appendix:rho_details}.
 \begin{remark}\label{rem:no_self_referential_names}
   One particularly useful consequence of these definitions is that
   $\forall P. \quotep{P} \not\in \freenames{P}$. It gives us a
-  succinct way to construct a name that is locally free in $P$.
+  succinct way to construct a name that is distinct from all the names
+  in $P$ and hence fresh in the context of $P$. For those readers
+  familiar with the work of Pitts and Gabbay, this consequence allows
+  the system to completely obviate the need for a fresh operator, and
+  likewise provides a canonical approach to the semantics of
+  freshness.
 \end{remark}
 
 Finally equipped with these standard features we can present the
@@ -344,7 +351,7 @@ This correspondence mirrors the usual correspondence between vectors and duals, 
 
 \subsection{Additional notation}
 
-We achieve some not insignificant notational compression with the following convention
+We achieve some notational compression with the following convention
 
 \begin{mathpar}
   \mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P := \prefix{x_{1}}{y_{1}}{\prefix{x_{2}}{y_{2}}{\ldots \prefix{x_{n}}{y_{n}}{P}}}
@@ -391,7 +398,36 @@ all enjoying the requisite algebraic properties of the operator (see
 $(\mathsf{new}\; \arrvec{x})P$.
 
 \subsection{Extensions to the calculus}
+\subsubsection{Values}
+While it is standard in calculi such as the rho-calculus to define a
+variety of common values such as the natural numbers and booleans in
+terms of Church-numeral style encodings, it is equally common to
+simply embed values directly into the calculus. Not being
+higher-order, this presents some challenges for the $\pi$-calculus,
+but for the rho-calculus, everything works out very nicely if we treat
+values, the naturals, the booleans, the reals, etc as processes. This
+choice means we can meaninfully write expressions like
+$x!(\mathsf{5})$ or $u!(\mathsf{true})$, and in the context
+$\prefix{x}{y}P[*y] \mathsf{|} x!(\mathsf{5})$ the value $\mathsf{5}$
+will be substituted into $P$. Indeed, since operations like addition,
+multiplication, etc.  can also be defined in terms of processes, it is
+meaningful to write expressions like
+$\mathsf{5}\mathsf{|}\mathsf{+}\mathsf{|}\mathsf{1}$, and be confident
+that this expression will reduce to a process representing
+$\mathsf{6}$. Thus, we can also use standard mathematical expressions,
+such as $\mathsf{5+1}$, as processes, and know that these will
+evaluate to their expected values. Further, when combined with
+$\mathsf{for}$-comprehensions, we can write algebraic expressions,
+such as $\prefix{x}{y}5+*y$, and in contexts
+$(\prefix{x}{y}5+*y)\mathsf{|}\outputp{x}{1}$ this will evaluate as
+expected, producing the process (aka value) $\mathsf{6}$.
 
+With these conventions in place it is useful to reduce the
+proliferation of $\mathsf{*}$'s, by adopting a pattern-matching
+convention. Thus, we write $\prefix{x}{@v}{P}$ to denote binding $v$
+to the value passed and not the \emph{name} of the value.
+
+\subsubsection{Mixed summation}
 The presentation given so far is often referred to as the polyadic,
 asynchronous version of the rho-calculus. The current investigation is
 made simpler if we expand to a version of the calculus that includes
@@ -442,7 +478,7 @@ And contexts are likewise extended in the obvious manner.
   \and
   \inferrule* [lab=agent] {} {K_{A} \bc (\arrvec{x})K_{P} \;|\; [\arrvec{P},K_{P},\arrvec{P'}]Q \;|\; [\arrvec{P}]K_{P}}
   \and \\
-  \inferrule* [lab=process] {} {K_{P} \bc K_{M} \;|\; K_{P}|P}
+  \inferrule* [lab=process] {} {K_{P} \bc K_{M} \;|\; P\mathsf{|}K_{P}}
 \end{mathpar}
 
 The reader can check that all the notational conventions, such as $\mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P$, adopted above still make sense.
