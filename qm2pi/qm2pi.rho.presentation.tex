@@ -490,13 +490,21 @@ The $\mathsf{COMM}$ rule is modified to incorporate non-deterministic choice.
 And contexts are likewise extended in the obvious manner.
 
 \begin{mathpar}
-  \inferrule* [lab=summation] {} {{K_{M}} \bc \Box \;|\; x.K_{A} \;|\; K_{M}+M}
+  \inferrule* [lab=summation-context] {} {{K_{M}} \bc \Box \;|\; x.K_{A} \;|\; K_{M}+M}
   \and
-  \inferrule* [lab=agent] {} {K_{A} \bc (\arrvec{x})K_{P} \;|\; [\arrvec{P},K_{P},\arrvec{P'}]Q \;|\; [\arrvec{P}]K_{P}}
+  \inferrule* [lab=agent-context] {} {K_{A} \bc (\arrvec{x})K_{P} \;|\; [\arrvec{P},K_{P},\arrvec{P'}]Q \;|\; [\arrvec{P}]K_{P}}
   \and \\
-  \inferrule* [lab=process] {} {K_{P} \bc K_{M} \;|\; P\mathsf{|}K_{P}}
+  \inferrule* [lab=process-context] {} {K_{P} \bc K_{M} \;|\; P\mathsf{|}K_{P}}
 \end{mathpar}
 
-The reader can check that all the notational conventions, such as $\mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P$, adopted above still make sense.
+The reader can check that all the notational conventions, such as
+
+\begin{mathpar}
+  \mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P
+  \and \\
+  \mathsf{let}\; x_{1} \;\mathsf{=}\; v_{1} \mathsf{;}\; \ldots \mathsf{;}\; x_{n} \;\mathsf{=} \; v_{n}  \;\mathsf{in}\; P
+\end{mathpar}
+
+adopted above still make sense for the calculus extended with mixed summation.
 
 % subsection the_syntax_and_semantics_of_the_notation_system (end)   
