@@ -43,12 +43,7 @@ process, $P$, denoted $\freenames{P}$ is given recursively by
   \freenames{\mathsf{}{x}} = \{ x \} \\
 \end{mathpar}
 
-where
-
-\begin{mathpar}
-  \{\arrvec{x}\} := \{x_1, \ldots, x_{|\arrvec{x}|}\}
-  \and \freenames{\arrvec{P}} := \bigcup \freenames{P_i}
-\end{mathpar}
+where $\{\arrvec{x}\} := \{x_1, \ldots, x_{|\arrvec{x}|}\}$ and $\freenames{\arrvec{P}} := \bigcup \freenames{P_i}$.
 
 An occurrence of $x$ in a process $P$ is \textit{bound} if it is not
 free. The set of names occurring in a process (bound or free) is
@@ -58,36 +53,34 @@ denoted by $\names{P}$.
 \subsection{Substitution}
 
 We use $\Proc$ for the set of processes, $\QProc$ for the set of
-names, and $\id{\{}\arrvec{y} / \arrvec{x} \id{\}}$ to denote partial maps,
-$s : \QProc \rightarrow \QProc$. A map, $s$ lifts, uniquely, to a map
-on process terms, $\widehat{s} : \Proc \rightarrow \Proc$ by the
-following equations.
+names, and $\id{\{}\arrvec{y} / \arrvec{x} \id{\}}$ to denote partial
+maps, $s : \QProc \rightarrow \QProc$. A map, $s$ lifts, uniquely, to
+a map on process terms, $\widehat{s} : \Proc \rightarrow
+\Proc$. Historically, it is convention to write the application of a
+substitution, $\widehat{s}$ to a process, $P$ with the substitution on
+the right, $P\widehat{s}$, and the application of a substitution to a
+name using conventional function application notation. In this
+instance we choose not to swim against the tides of history. Thus, the
+lifting is given recursively by the following equations. Given $x =
+\quotep{P'}$ and $u = \quotep{Q'}$ and $\sigma = \psubstn{u}{x}$
 
 \begin{mathpar}
-  (0) \psubstp{Q}{P} := 0 \\
-  (R \juxtap S) \psubstp{Q}{P}
+  0 \sigma := 0 \\
+  (P \mathsf{|} Q) \sigma
   :=    
-  (R)\psubstp{Q}{P} \juxtap (S) \psubstp{Q}{P} \\
-  (\mathsf{for}(\arrvec{y} \leftarrow x)R) \psubstp{Q}{P}    
+  P\sigma \mathsf{|} Q\sigma \\
+  (\mathsf{for}(\arrvec{y} \leftarrow v)P) \sigma    
   :=
-  \mathsf{for}(\arrvec{z} \leftarrow (x)\substp{Q}{P})((R \psubstn{\arrvec{z}}{\arrvec{y}}) \psubstp{Q}{P}) \\
-  (\lift{x}{R}) \psubstp{Q}{P}  
+  \mathsf{for}(\arrvec{z} \leftarrow \sigma(v))((P \psubstn{\arrvec{z}}{\arrvec{y}}) \sigma) \\
+  (\lift{x}{Q}) \sigma  
   :=
-  \lift{(x)\substp{Q}{P}}{ R \psubstp{Q}{P} } \\
-%   (\dropn{x})  \psubstp{Q}{P}       
-%   := 
-%   \left\{ 
-%     \begin{array}{ccc} 
-%       \dropn{\quotep{Q}} & & x \nameeq \quotep{P} \\
-%       \dropn{x} & & otherwise \\
-%     \end{array}
-%   \right. 
-  (\dropn{x})  \psubstp{Q}{P}       
+  \lift{\sigma(x)}{ Q \sigma } \\
+  (\dropn{y})  \sigma       
   := 
   \left\{ 
     \begin{array}{ccc} 
-      Q & & x \nameeq \quotep{P} \\
-      \dropn{x} & & otherwise \\
+      Q' & & y \;\nameeq\; x \\
+      \dropn{y} & & otherwise \\
     \end{array}
   \right.
 \end{mathpar} 
@@ -95,10 +88,10 @@ following equations.
 where
 
 \begin{eqnarray}
-  (x)\id{\{} \quotep{Q} / \quotep{P} \id{\}}            = 
+  \psubstp{Q}{P}(x) = \id{\{} \quotep{Q} / \quotep{P} \id{\}}(x) = 
   \left\{ 
     \begin{array}{ccc}
-      \quotep{Q} & & x \nameeq \quotep{P} \\
+      \quotep{Q} & & x \;\nameeq\; \quotep{P} \\
       x & & otherwise \\
     \end{array}
   \right. \nonumber
