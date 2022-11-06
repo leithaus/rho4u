@@ -126,9 +126,9 @@ denotes the capture-avoiding substitution of $\arrvec{y}$ for $\arrvec{x}$ in $Q
   The {\em name equivalence} $\nameeq$ is the least congruence
   satisfying these equations
   \begin{mathpar}
-  \inferrule*[lab=Quote-drop] {}{ \quotep{\dropn{x}} \nameeq x }
+  \inferrule*[lab=Quote-drop] {}{ \quotep{\dropn{x}} \;\nameeq\; x }
   \and
-  \inferrule*[lab=Struct-equiv] { P \scong Q } { \quotep{P} \nameeq \quotep{Q} }
+  \inferrule*[lab=Struct-equiv] { P \;\scong\; Q } { \quotep{P} \;\nameeq\; \quotep{Q} }
   \end{mathpar}
 \end{definition}
 
@@ -140,8 +140,9 @@ concern. The reader interested in the details is referred to the
 appendix \ref{appendix:rho_details}.
 
 \begin{remark}\label{rem:no_self_referential_names}
-  One consequence of these definitions is that $\forall P. \quotep{P}
-  \not\in \freenames{P}$.
+  One particularly useful consequence of these definitions is that
+  $\forall P. \quotep{P} \not\in \freenames{P}$. It gives us a
+  succinct way to construct a name that is locally free in $P$.
 \end{remark}
 
 Finally equipped with these standard features we can present the
@@ -162,12 +163,12 @@ give a recursive presentation of this relation for the calculus used
 in the encoding.
 
 \begin{mathpar}
-  \inferrule* [lab=COMM] {x_{trgt} \nameeq x_{src}, |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{trgt} )P | x_{src}!(\arrvec{Q})
+  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{t} )P \;\mathsf{|}\; x_{s}!(\arrvec{Q})
   \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}}
   \and
-  \inferrule* [lab=PAR]{P \red P'}{P|Q \red P'|Q}
+  \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
   \and
-  \inferrule* [lab=EQUIV]{{P \scong P'} \andalso {P' \red Q'} \andalso {Q' \scong Q}}{P \red Q}
+  \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
 \end{mathpar}
 
 We write $P\red$ if $\exists Q $ such that $ P \red Q$ and $P\not\red$, otherwise.
@@ -307,51 +308,43 @@ contextual-equivalence and notions of bisimulation. The notion of
 context allows the decomposition of a process into (sub-)process and
 its syntactic environment, its context. Thus, a context may be
 thought of as a process with a ``hole'' (written $\Box$) in it. The
-application of a context $M$ to a process $P$, written $M[P]$, is
-tantamount to filling the hole in $M$ with $P$. In this paper we do
+application of a context $K$ to a process $P$, written $K[P]$, is
+tantamount to filling the hole in $K$ with $P$. In this paper we do
 not need the full weight of this theory, but do make use of the notion
 of context in the proof the main theorem. 
 
-%% \begin{mathpar}
-%%   \inferrule* [lab=summation] {} {{M_{M},M_{N}} \bc \Box \;|\; x.M_{A} \;|\; M_{M}+M_{N}}
-%%   \and
-%%   \inferrule* [lab=agent] {} {{M_{A}} \bc (\arrvec{x})M_{P} \;| \; \clift{P_0,\ldots,M_{P},\ldots,P_N}}
-%%   \and \\
-%%   \inferrule* [lab=process] {} {{M_{P}} \bc M_{N} \;| \;P|M_{P} }
-%% \end{mathpar}
-
 \begin{mathpar}
-\inferrule* [lab=context] {} {M \bc \Box \;\bm\; \mathsf{for}( \arrvec{y} \leftarrow x )M \;\bm\; x\mathsf{!}(\arrvec{Q},M,\arrvec{Q'}) \;\bm\; M\mathsf{|}Q }
+\inferrule* [lab=context] {} {K \bc \Box \;\bm\; \mathsf{for}( \arrvec{y} \leftarrow x )K \;\bm\; x\mathsf{!}(\arrvec{P},K,\arrvec{Q}) \;\bm\; K\mathsf{|}P }
 \end{mathpar}
 
-\begin{definition}[contextual application] Given a context $M$, and
-  process $P$, we define the \emph{contextual application}, $M[P] :=
-  M\{P/\Box\}$. That is, the contextual application of M to P is the
-  substitution of $P$ for $\Box$ in $M$.
+\begin{definition}[contextual application] Given a context $K$, and
+  process $P$, we define the \emph{contextual application}, $K[P] :=
+  K\{P/\Box\}$. That is, the contextual application of K to P is the
+  substitution of $P$ for $\Box$ in $K$.
 \end{definition}
 
 \subsubsection{Contextual duality}
 
 Note that contexts extend the quotation operation to a family of
-operations from processes to names. Given a context, $M$, we can
-define a \emph{nominal context}, $\quotep{M}$ by $\quotep{M}[P] :=
-\quotep{(M[P])}$. To foreshadow what is to come we observe that these
+operations from processes to names. Given a context, $K$, we can
+define a \emph{nominal context}, $\quotep{M}$ by $\quotep{K}[P] :=
+\quotep{(K[P])}$. To foreshadow what is to come we observe that these
 operations enjoy a duality with processes very much like the duality
 between vectors and maps from vectors to scalars.
 
 Further, because the calculus is essentially higher-order, we have a
 correspondence between contexts and processes. More specifically,
-given a name $x$ and a context $M$ we can construct $M^{*}_{x}$ such
+given a name $x$ and a context $K$ we can construct $K^{*}_{x}$ such
 that 
 
 \begin{mathpar}
-  M^{*}_{x} | \lift{x}{P} \red M[P]
+  K^{*}_{x} | \lift{x}{P} \red K[P]
 \end{mathpar}
 
 namely,
 
 \begin{mathpar}
-  M^{*}_{x} := \prefix{x}{y}{M[\dropn{y}]}
+  K^{*}_{x} := \prefix{x}{y}{K[\dropn{y}]}
 \end{mathpar}
 
 This correspondence mirrors the usual correspondence between vectors and duals, where given a vector $v$ we can produce its dual $w \mapsto v \cdot w$ taking a vector $w$ to the dot product $v \cdot w$.
@@ -364,8 +357,13 @@ This correspondence mirrors the usual correspondence between vectors and duals, 
 
 \subsection{Additional notation}
 
-It will sometimes be convenient to denote the process a name
-quotes. We already have the notation $x = \quotep{P}$, but it will be
+We achieve some not insignificant notational compression with the following convention
+
+\begin{mathpar}
+  \mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P := \prefix{x_{1}}{y_{1}}{\prefix{x_{2}}{y_{2}}{\ldots \prefix{x_{n}}{y_{n}}{P}}}
+\end{mathpar}
+
+Even though we already have the notation $x = \quotep{P}$, it will be
 convenient to introduce an alternate notation, $\procn{x}$, when we
 want to emphasize the connection to the use of the name. Note that, by
 virtue of name equivalence, $\quotep{\procn{x}} \nameeq x$; so, the
@@ -384,11 +382,11 @@ is interpreted to mean the process derived from P by replacing (in a
 capture-avoiding manner) each occurrence of $x$ in $S$ by $y$. For example,
 
 \begin{mathpar}
-  P\{ \quotep{\procn{x}|\procn{x}} / x : x \in \freenames{P} \}
+  P\{ \quotep{(\procn{x}\mathsf{|}\procn{x})} / x : x \in \freenames{P} \}
 \end{mathpar}
 
 will replace each (occurrence) of a free name $x$ in $P$ by
-$\quotep{\procn{x}|\procn{x}}$.
+$\quotep{(\procn{x}\mathsf{|}\procn{x})}$.
 
 Also, we will avail ourselves of the notation $x^{L}$ and $x^{R}$ to
 denote injections of a name into disjoint copies of the name
@@ -403,5 +401,62 @@ given. It turns out that there are several possible interpretations
 all enjoying the requisite algebraic properties of the operator (see
 \cite{milner91polyadicpi}). We will therefore make liberal use of
 $(\nu\; \arrvec{x})P$.
+
+\subsection{Extensions to the calculus}
+
+The presentation given so far is often referred to as the polyadic,
+asynchronous version of the rho-calculus. The current investigation is
+made simpler if we expand to a version of the calculus that includes
+mixed summation, that is non-deterministic choice over both guarded
+input ($\mathsf{for}$-comprehension) and output. Because Milner's
+presentation of the polyadic $\pi$-calculus with mixed summation is so
+parsimonious we use it as a template for a similar version of the
+rho-calculus.
+
+\begin{mathpar}
+  \inferrule* [lab=summation] {} {{M,N} \bc \pzero \;|\; x.A \;|\; M+N}
+  \and
+  \inferrule* [lab=agent] {} {A \bc (\arrvec{x})P \;| \; [\arrvec{P}]Q}
+  \and \\
+  \inferrule* [lab=process] {} {P,Q \bc M \;|\; P|Q \;|\; \mathsf{*}x}
+  \and
+  \inferrule* [lab=name] {} {x \bc \mathsf{@}P}
+\end{mathpar}
+
+In this presentation we adopt the syntactic conventions
+
+\begin{mathpar}
+  \mathsf{for(}\arrvec{y} \leftarrow x\mathsf{)}P := x.(\arrvec{y})P
+  \and
+  x\mathsf{!}(\arrvec{Q})\mathsf{;}P := x.[\arrvec{Q}]P
+\end{mathpar}
+
+The structural equivalence is modified thusly.
+
+\begin{definition}
+  The {\em structural congruence} $\equiv$ between processes is the
+  least congruence containing alpha-equivalence and satisfying the
+  commutative monoid laws (associativity, commutativity and $\pzero$
+  as identity) for parallel composition $|$ and summation $+$.
+\end{definition}
+
+The $\mathsf{COMM}$ rule is modified to incorporate non-deterministic choice.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{t} )P + R_1 \;\mathsf{|}\; x_{s}!(\arrvec{Q}).P' + R_2
+  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}\mathsf{|}P'}
+\end{mathpar}
+
+And contexts are likewise extended in the obvious manner.
+
+\begin{mathpar}
+  \inferrule* [lab=summation] {} {{K_{M}} \bc \Box \;|\; x.K_{A} \;|\; K_{M}+M}
+  \and
+  \inferrule* [lab=agent] {} {K_{A} \bc (\arrvec{x})K_{P} \;|\; [\arrvec{P},K_{P},\arrvec{P'}]Q \;|\; [\arrvec{P}]K_{P}}
+  \and \\
+  \inferrule* [lab=process] {} {K_{P} \bc K_{M} \;|\; K_{P}|P}
+\end{mathpar}
+
+The reader can check that all the notational conventions, such as $\mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P$, adopted above still make sense.
 
 % subsection the_syntax_and_semantics_of_the_notation_system (end)   

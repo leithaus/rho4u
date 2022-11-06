@@ -21,9 +21,13 @@ definition of inner product.
 
 \subsubsection{Multiplication}
 \begin{mathpar}
-  \quotep{Q} \cdot \quotep{R} := \quotep{Q|R}
+  \quotep{P} \cdot \quotep{Q} := \quotep{(P\mathsf{|}Q)}
+  \and equivalently
+  \and x \cdot y := \quotep{(\procn{x}\mathsf{|}\procn{y})}
   \and \\
-  \quotep{Q} \cdot P := P\{ \quotep{Q|R} / \quotep{R} : \quotep{R} \in \freenames{P} \}
+  \quotep{Q} \cdot P := P\{ \quotep{(Q\mathsf{|}R)} / \quotep{R} : \quotep{R} \in \freenames{P} \} \\
+  \and equivalently \\
+  \and x \cdot P := P\{ \quotep{(\procn{x}\mathsf{|}\procn{z})} / z : z \in \freenames{P} \}
 \end{mathpar}
 
 \paragraph{Discussion}
