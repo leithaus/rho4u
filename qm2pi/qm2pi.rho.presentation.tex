@@ -342,12 +342,6 @@ namely,
 
 This correspondence mirrors the usual correspondence between vectors and duals, where given a vector $v$ we can produce its dual $w \mapsto v \cdot w$ taking a vector $w$ to the dot product $v \cdot w$.
 
-%% The dependence of $M^{*}_{x}$ on a name makes it an abstraction, 
-
-%% \begin{mathpar}
-%%   M^{*} := (x)x?(u).M[\dropn{u}]
-%% \end{mathpar}
-
 \subsection{Additional notation}
 
 We achieve some not insignificant notational compression with the following convention
@@ -356,11 +350,12 @@ We achieve some not insignificant notational compression with the following conv
   \mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P := \prefix{x_{1}}{y_{1}}{\prefix{x_{2}}{y_{2}}{\ldots \prefix{x_{n}}{y_{n}}{P}}}
 \end{mathpar}
 
-Even though we already have the notation $x = \quotep{P}$, it will be
-convenient to introduce an alternate notation, $\procn{x}$, when we
-want to emphasize the connection to the use of the name. Note that, by
-virtue of name equivalence, $\quotep{\procn{x}} \nameeq x$; so, the
-notation is consistent with previous definitions.
+Even though we already have the notation $x = \quotep{P}$, allowing us
+to pick out the process a name quotes, it will be convenient to
+introduce an alternate notation, $\procn{x}$, when we want to
+emphasize the connection to the use of the name. Note that, by virtue
+of name equivalence, $\quotep{\procn{x}} \;\nameeq\; x$; so, the notation
+is consistent with previous definitions.
 
 Further, because names have structure it is possible to effect
 substitutions on the basis of that structure. This means we need to
@@ -393,7 +388,7 @@ In \cite{MeredithR05} an interpretation of the new operator is
 given. It turns out that there are several possible interpretations
 all enjoying the requisite algebraic properties of the operator (see
 \cite{milner91polyadicpi}). We will therefore make liberal use of
-$(\nu\; \arrvec{x})P$.
+$(\mathsf{new}\; \arrvec{x})P$.
 
 \subsection{Extensions to the calculus}
 
