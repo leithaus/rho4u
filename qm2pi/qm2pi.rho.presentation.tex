@@ -445,13 +445,32 @@ and generalized to nested expressions via
 
 \subsubsection{Mixed summation}
 The presentation given so far is often referred to as the polyadic,
-asynchronous version of the rho-calculus. The current investigation is
-made simpler if we expand to a version of the calculus that includes
-mixed summation, that is non-deterministic choice over both guarded
-input ($\mathsf{for}$-comprehension) and output. Because Milner's
-presentation of the polyadic $\pi$-calculus with mixed summation is so
-parsimonious we use it as a template for a similar version of the
-rho-calculus.
+asynchronous version of the rho-calculus. And all of the syntactic
+sugar is just that: sugar. Values and let expressions can be desugared
+back down to the original calculus. However, the current investigation
+is made simpler if we expand to a version of the calculus that
+includes mixed summation, that is non-deterministic choice over both
+guarded input ($\mathsf{for}$-comprehension) and output. Although
+there is an encoding of the calculus with mixed summation to the
+asynchronous polyadic calculus, it is not par-preserving. That is, if
+$\meaningof{-}_{async} : \MixSumProc \to \Proc$ is a mapping from the
+rho-calculus with mixed summation to the asynchronous polyadic
+rho-calulus, then it cannot be the case that
+
+\begin{mathpar}
+  \meaningof{P\mathsf{|}Q} = \meaningof{P}\mathsf{|}\meaningof{Q}
+\end{mathpar}
+
+for any such encoding. For good measure we throw in synchronous
+communication, but it is the mixed summation that constitutes the real
+jump in expressive power. We call this out because if we are going to
+relate quantum computing to concurrent computing, it is important to
+track the points where there are significant increases in expressive
+power of our target language.
+
+Because Milner's presentation of the polyadic $\pi$-calculus
+with mixed summation is so parsimonious we use it as a template for a
+similar version of the rho-calculus.
 
 \begin{mathpar}
   \inferrule* [lab=summation] {} {{M,N} \bc \pzero \;|\; x.A \;|\; M+N}
