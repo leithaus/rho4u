@@ -38,7 +38,8 @@ name by the scalar. Multiplication of a scalar (name) by a state
 over' by parallel composition with the process the scalar
 quotes. There is a subtlety that the bound names have to be
 manipulated so that multiplied names aren't accidentally
-captured. There are many ways to achieve this.
+captured. Since there are many ways to achieve this we simply demand
+that multiplication not accidentally capture free names.
 
 \begin{remark}\label{rem:multiplication_identities}
   The reader is invited to verify that for all $x,y,z \in \QProc$ and $P \in \Proc$
@@ -57,6 +58,57 @@ captured. There are many ways to achieve this.
     \and \\    
   \end{mathpar}
 \end{remark}
+
+\subsubsection{Contexts and duality}
+
+As mentioned previously, contexts are going to play in the role of
+duals to vectors. Or in Dirac's nomenclature, $K$ plays bra to $P$'s
+ket. As such, we will want something that acts like an inner product,
+$K \cdot P$. Note that if names are scalars, then we expect that $K
+\cdot P$ to yield a name.
+
+\begin{mathpar}
+  K \cdot P := \quotep{K[P]\{w \cdot x / x, w \cdot y / y : x \in \freenames{P}, y \in \freenames{K}, w = \quotep{(P\mathsf{|}K[0])}\}}
+\end{mathpar}
+
+The definition may not seem intuitive at first. However, all that's
+happening is guarding against unwarranted interaction, as we will see
+shortly.
+
+\begin{mathpar}
+  P^{\bot} := P\mathsf{|}\Box
+  \and
+  K^{\bot} := K[0]
+\end{mathpar}
+
+We can check that for all $P$ and for contexts of the form $K =
+P\mathsf{|}\Box$ for some $P$ the operation $(-)^{\bot}$ is
+involutive.
+
+\begin{mathpar}
+  (P^{\bot})^{\bot} = (P\mathsf{|}\Box)^{\bot} = P|0 = P
+  \and
+  (K^{\bot})^{\bot} = (K[0])^{\bot} = (P)^{\bot} = P\mathsf{|}\Box
+\end{mathpar}
+
+More generally, if $K$ is not of the form $P\mathsf{|}\Box$ then define
+
+\begin{mathpar}
+  K^{\bot} := K[\dropn{(\quotep{K[0]})}]
+\end{mathpar}
+
+Using the observation in remark () we note that $K^{\bot}$ has a
+\emph{unique} decomposition, because $K[0]$ cannot include a name of the
+form $\quotep{K[0]}$. Thus, we can provide a definition for $P^{\bot}$
+that replaces $\dropn{(\quotep{K[0]})}$ with $\Box$, i.e.
+
+\begin{mathpar}
+  P^{\bot} := P\{\Box / \dropn{(\quotep{K[0]})}\}
+\end{mathpar}
+
+The reader can check that this is involutive for all $P$ and $K$. We
+shall primarily be dealing with contexts of the form
+$P\mathsf{|}\Box$, and so will typically use the simpler definition.
 
 \subsubsection{Tensor product}
 
