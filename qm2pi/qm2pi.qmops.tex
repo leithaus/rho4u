@@ -73,7 +73,8 @@ $K \cdot P$. Note that if names are scalars, then we expect that $K
 
 The definition may not seem intuitive at first. However, all that's
 happening is guarding against unwarranted interaction, as we will see
-shortly.
+shortly. In the meantime let us formally specify the duality between
+contexts and processes.
 
 \begin{mathpar}
   P^{\bot} := P\mathsf{|}\Box
@@ -109,6 +110,43 @@ that replaces $\dropn{(\quotep{K[0]})}$ with $\Box$, i.e.
 The reader can check that this is involutive for all $P$ and $K$. We
 shall primarily be dealing with contexts of the form
 $P\mathsf{|}\Box$, and so will typically use the simpler definition.
+
+Following a similar line of reasoning we can define
+
+\begin{mathpar}
+  P^{\bot} \cdot \quotep{Q} := (\quotep{Q}\mathsf{|}P)^{\bot}
+\end{mathpar}
+
+Our definitions allow us to verify:
+
+\begin{mathpar}
+  P^{\bot} \cdot Q := \quotep{(P\mathsf{|}Q)\{w \cdot x / x, w \cdot y / y : x \in \freenames{P}, y \in \freenames{Q}, w = \quotep{(P\mathsf{|}Q)}\}}
+\end{mathpar}
+
+and in general adopt a notation that emphasizes the roles each object is playing.
+
+\begin{table}[htp]
+  \center{
+    \fbox{
+      \begin{tabular}{c|c|c}
+        quantum mechanics & & process calculus \\
+        \hline
+        $\ketp{P}$ & := & $P$ \\
+        $\brap{P}$ & := & $P^{\bot}$ \\
+        $\testp{P}{Q} \rangle$ & := & $P^{\bot} \cdot Q$\\
+      \end{tabular}
+    }
+  }
+  \caption{QM - process calculi correspondences}
+\end{table}
+
+These definitions respect the well known identities. For example
+
+\begin{mathpar}
+  \brap{P} (x\cdot \ketp{Q}) = (\brap{P} \cdot x) \ketp{Q}
+\end{mathpar}
+
+which allows us to write $\testnp{P}{x}{Q}$ unambiguously.
 
 \subsubsection{Tensor product}
 
