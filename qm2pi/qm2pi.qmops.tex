@@ -148,6 +148,20 @@ These definitions respect the well known identities. For example
 
 which allows us to write $\testnp{P}{x}{Q}$ unambiguously.
 
+We can define an outer product
+
+\begin{mathpar}
+  \ketp{P} \otimes \ketp{Q} := (P\mathsf{|}Q)\{w \cdot x / x, w \cdot y / y : x \in \freenames{P}, y \in \freenames{Q}, w = \quotep{(P\mathsf{|}Q)}\}
+\end{mathpar}
+
+which is consistent with inner product and respects the usual identities
+
+\begin{mathpar}
+  (x \cdot \ketp{P}) \otimes \ketp{Q} = \ketp{P} \otimes (x \cdot \ketp{Q})
+\end{mathpar}
+
+as the reader may quickly check.
+
 \subsubsection{Tensor product}
 
 We define a tensor product on processes by structural induction.
