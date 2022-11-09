@@ -144,9 +144,26 @@ which is consistent with inner product and respects the usual identities
 
 as the reader may quickly check.
 
+\subsubsection{Superposition as summation}
+
+In this interpretation superposition corresponds to summation. This
+suggests a definition for addition of scalars.
+
+\begin{mathpar}
+  x + y := \quotep{(\procn{x} \mathsf{+} \procn{y})}
+\end{mathpar}
+
+Intriguingly, in an interleaving-style operational semantics processes
+correspond to the sum of all paths (sequences of actions), which would
+give the usual identities for the distribution of multiplication and
+addition.
+
 \subsubsection{Dirac notation}
 
-and in general adopt a notation that emphasizes the roles each object is playing.
+Here we show the uncanny correspondence between the rho-calculus
+operators and the basic operators of quantum mechanics in Dirac style
+presentation and in general adopt a notation that emphasizes the roles
+each object is playing.
 
 \begin{table}[htp]
   \center{
@@ -172,13 +189,6 @@ These definitions respect the well known identities. For example
 \end{mathpar}
 
 which allows us to write $\testnp{P}{x}{Q}$ unambiguously.
-
-\subsubsection{Vector addition}
-
-Summation corresponds to superposition.
-
-
-\subsubsection{Full correspondence}
 
 
 %% \subsubsection{Tensor product}
