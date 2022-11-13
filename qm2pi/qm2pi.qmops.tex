@@ -74,8 +74,15 @@ $K \cdot P$. Note that if names are scalars, then we expect that $K
 \cdot P$ to yield a name.
 
 \begin{mathpar}
-  K \cdot P := \quotep{K[P]\{w \cdot x / x, w \cdot y / y : x \in \freenames{P}, y \in \freenames{K}, w = \quotep{(P\mathsf{|}K[0])}\}}
+  K \cdot P := \quotep{((K[P])\sigma_{\otimes}(K[\pzero],P))}
 \end{mathpar}
+
+where
+
+\begin{eqnarray}
+  \sigma_{\otimes}(P,Q) & := &\{w_{1} \cdot x / x, w_{2} \cdot y / y : x \in \freenames{P}, y \in \freenames{Q},  w_{1} = \mathsf{NF}(Q), w_{2} = \mathsf{NF}(P) \} \nonumber \\ 
+  \mathsf{NF}(P) & := & \quotep{\Pi_{u \in \freenames{P}}\procn{u}} \nonumber
+\end{eqnarray}
 
 The definition may not seem intuitive at first. However, all that's
 happening is guarding against unwarranted interaction, as we will see
@@ -126,14 +133,14 @@ Following a similar line of reasoning we can define
 Our definitions allow us to verify:
 
 \begin{mathpar}
-  P^{\bot} \cdot Q := \quotep{(P\mathsf{|}Q)\{w \cdot x / x, w \cdot y / y : x \in \freenames{P}, y \in \freenames{Q}, w = \quotep{(P\mathsf{|}Q)}\}}
+  P^{\bot} \cdot Q := \quotep{(P\mathsf{|}Q)\{w_{1} \cdot x / x, w_{2} \cdot y / y : x \in \freenames{P}, y \in \freenames{Q}, w_{1} = \mathsf{NF}(Q), w_{2} = \mathsf{NF}(P) \}}
 \end{mathpar}
 
 \subsubsection{Outer product}
 We can define an outer product of processes
 
 \begin{mathpar}
-  P \otimes Q := (P\mathsf{|}Q)\{w \cdot x / x, w \cdot y / y : x \in \freenames{P}, y \in \freenames{Q}, w = \quotep{(P\mathsf{|}Q)}\}
+  P \otimes Q := (P\mathsf{|}Q)\{w_{1} \cdot x / x, w_{2} \cdot y / y : x \in \freenames{P}, y \in \freenames{Q}, w_{1} = \mathsf{NF}(Q), w_{2} = \mathsf{NF}(P) \}
 \end{mathpar}
 
 which is consistent with inner product and respects the usual identities
@@ -184,9 +191,9 @@ each object is playing.
 
 These definitions respect the well known identities. For example
 
-\begin{mathpar}
-  \brap{P} (x\cdot \ketp{Q}) = (\brap{P} \cdot x) \ketp{Q}
-\end{mathpar}
+\begin{eqnarray}
+  \brap{P} (x\cdot \ketp{Q}) & = & (\brap{P} \cdot x) \ketp{Q} \nonumber
+\end{eqnarray}
 
 which allows us to write $\testnp{P}{x}{Q}$ unambiguously.
 

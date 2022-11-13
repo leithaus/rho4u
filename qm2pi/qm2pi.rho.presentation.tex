@@ -387,6 +387,13 @@ capture-avoiding manner) each occurrence of $x$ in $S$ by $y$. For example,
 will replace each (occurrence) of a free name $x$ in $P$ by
 $\quotep{(\procn{x}\mathsf{|}\procn{x})}$.
 
+Of course, dual to operators for expanding substitutions we need
+operators for contracting them.
+
+\begin{mathpar}
+  \{ y / x : x \in S \} \setminus S' := \{ y / x : x \in S \setminus S' \} 
+\end{mathpar}
+
 Also, we will avail ourselves of the notation $x^{L}$ and $x^{R}$ to
 denote injections of a name into disjoint copies of the name
 space. There are numerous ways to accomplish this. One example can be
