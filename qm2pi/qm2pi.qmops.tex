@@ -146,10 +146,23 @@ We can define an outer product of processes
 which is consistent with inner product and respects the usual identities
 
 \begin{mathpar}
-  (x \cdot P) \otimes Q = P \otimes (x \cdot Q)
+  (u \cdot P) \otimes Q = P \otimes (u \cdot Q)
 \end{mathpar}
 
 as the reader may quickly check.
+
+\begin{eqnarray}
+  (x \cdot P) \otimes Q & & \nonumber \\
+  & = & (u \cdot P\mathsf{|}Q)\sigma_{\otimes}((u \cdot P),Q) \nonumber \\
+  & = & (u \cdot P)\sigma_{\otimes}((u \cdot P),Q)\mathsf{|}Q\sigma_{\otimes}((u \cdot P),Q) \nonumber \\
+  & = & (u \cdot P)\{ \mathsf{NF}(Q)\cdot u \cdot x\}\mathsf{|}Q\{ \mathsf{NF}(u \cdot P)\cdot y\} \nonumber \\
+  & = & (u \cdot P)\{ y \cdot u \cdot x\}\mathsf{|}Q\{ (u \cdot x)\cdot y\} \nonumber \\
+  & = & P\{ (u \cdot y) \cdot x\}\mathsf{|}(u \cdot Q)\{ x \cdot (u \cdot y)\} \nonumber \\
+  & = & P\{ \mathsf{NF}(u\cdot Q) \cdot x\}\mathsf{|}(u \cdot Q)\{ \mathsf{NF}(P) \cdot (u \cdot y)\} \nonumber \\
+  & = & P\sigma_{\otimes}(P,(u \cdot Q))\mathsf{|}(u \cdot Q)\sigma_{\otimes}(P,(u \cdot Q)) \nonumber \\
+  & = & (P\mathsf{|}u\cdot Q)\sigma_{\otimes}(P,(u \cdot Q)) \nonumber \\
+  & = & P \otimes (u \cdot Q) \nonumber
+\end{eqnarray}
 
 \subsubsection{Superposition as summation}
 

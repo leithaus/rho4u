@@ -387,6 +387,12 @@ capture-avoiding manner) each occurrence of $x$ in $S$ by $y$. For example,
 will replace each (occurrence) of a free name $x$ in $P$ by
 $\quotep{(\procn{x}\mathsf{|}\procn{x})}$.
 
+When the context makes it clear that the substitution is over all of $\freenames{P}$ we drop the predicate, writing $P\{ f(x) \}$ instead of
+
+\begin{mathpar}
+  P\{ f(x) / x : x \in \freenames{P} \}
+\end{mathpar}
+
 Of course, dual to operators for expanding substitutions we need
 operators for contracting them.
 
