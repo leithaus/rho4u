@@ -22,47 +22,4 @@ Then a measurement at a specific name, $x$, is given by
   \testnp{T}{x}{S} = x \cdot (T^{\bot}[S]) = x \cdot (T|S)
 \end{mathpar}
 
-\subsection{The Born rule as an interpretation of non-determinism in the evolution of states}
 
-The $\mathsf{COMM}$-rule clearly admits non-deterministic evolution of
-states. Specifically, there are two basic forms of non-determinism
-typically referred to as \emph{races} in the classical interpretation
-of the rho-calculus. The first one is when there are more outputs than
-there are inputs, and the second is when there are more inputs than
-there are outputs. Symbolically,
-
-\begin{mathpar}
-  \prefix{x}{y_{1}}{P_{1}} \mathsf{|}\outputp{x}{Q}\mathsf{|} \prefix{x}{y_{2}}{P_{2}}
-  \and
-  \outputp{x}{Q_{1}} \mathsf{|}\prefix{x}{y}{P}\mathsf{|}\outputp{x}{Q_{2}}
-\end{mathpar}
-
-In the first case the two states reachable by reduction are
-$P_{1}\substn{\quotep{Q}}{y_{1}}$ and
-$P_{2}\substn{\quotep{Q}}{y_{2}}$; and in the second case the two
-states reachable by reduction are $P\substn{\quotep{Q_{1}}}{y}$ and
-$P\substn{\quotep{Q_{2}}}{y}$. In many implementations of the
-rho-calculus, such as in the RChain blockchain, the interpretation of
-this non-determinism is as a race. One of the communications beats the
-other on an either as an asynchronous communication over a standard
-protocol (such as TCP), or one pair of threads are scheduled to work
-over the other pair, in a threading library inside an executing
-process.
-
-In stochastic versions of these calculi the idea is to extend channels
-with \emph{rates}. Thus,
-
-\begin{mathpar}
-  \prefix{x}{y}{P} \mapsto \prefix{(x,r)}{y}{P}
-  \and
-  \outputp{x}{Q} \mapsto \outputp{(x,r)}{Q}
-\end{mathpar}
-
-The rates are used to determine a 1-norm probability distribution over
-the possible $\mathsf{COMM}$ events, at a given number of reduction
-steps from the starting expression.
-
-There is nothing in principle that prevents using 2-norm probability
-distributions, where the rates are given by complex numbers and
-contribute probability amplitudes. That's what we develop in the next
-section.
