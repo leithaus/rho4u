@@ -543,4 +543,47 @@ The reader can check that all the notational conventions, such as
 
 adopted above still make sense for the calculus extended with mixed summation.
 
+\subsubsection{Annihilation}
+Another important variation has to do with the rewrite rules. There is
+a recursive version of the $\mathsf{COMM}$-rule that aligns with
+intuitions about the recursive nature of behavior in compositionally
+defined agents. The maths make it clearer than the English. First, we
+define what it means for two processes to annihilate each other.
+
+\begin{definition}
+  Annihilation: Processes $P$ and $Q$ are said to annihilate one another, written $P \bot Q$, just when $\forall R. P \mathsf{|} Q \rightarrow^{*} R \Rightarrow R \rightarrow^{*} \pzero$.
+\end{definition}
+
+Thus, when $P \bot Q$, all rewrites out of $P \mathsf{|} Q$ eventually
+lead to $\pzero$. Evidently, $P \bot Q \iff Q \bot P$, and $\pzero
+\bot \pzero$. Naturally, we can extend annihilation to names: $x \bot
+y \iff \procn{x} \bot \procn{y}$.
+
+Annihilation affords a new version of the $\mathsf{COMM}$-rule:
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{t} \;\bot x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{t} )P + R_1 \;\mathsf{|}\; x_{s}!(\arrvec{Q}).P' + R_2
+  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}\mathsf{|}P'}
+\end{mathpar}
+
+Note that we can relativize annihilation.
+
+\begin{definition}
+  Relative annihilation: Processes $P$ and $Q$ are said to annihilate to $R$, written $R \vdash P \bot Q$, just when $\forall R'. P \mathsf{|} Q \rightarrow^{*} R' \Rightarrow R' \rightarrow^{*} R$.
+\end{definition}
+
+Clearly, when such an $R$ exists for $P$ and $Q$, it is unique. Thus,
+we can define a partial function, $P \odot Q$ via
+
+\begin{mathpar}
+  P \odot Q
+  :=
+  \left\{ 
+    \begin{array}{ccc} 
+      R & & \exists R. R \vdash P \bot Q \\
+      \bot & & otherwise \\
+    \end{array}
+  \right.
+\end{mathpar}
+
 % subsection the_syntax_and_semantics_of_the_notation_system (end)   
