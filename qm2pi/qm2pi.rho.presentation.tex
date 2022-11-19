@@ -519,7 +519,7 @@ The structural equivalence is modified thusly.
 The $\mathsf{COMM}$ rule is modified to incorporate non-deterministic choice.
 
 \begin{mathpar}
-  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{t} )P + R_1 \;\mathsf{|}\; x_{s}!(\arrvec{Q}).P' + R_2
+  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {(R_1 + \mathsf{for}( \arrvec{y} \leftarrow x_{t} )P) \;\mathsf{|}\; (x_{s}!(\arrvec{Q}).P' + R_2)
   \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}\mathsf{|}P'}
 \end{mathpar}
 
@@ -562,7 +562,7 @@ y \iff \procn{x} \bot \procn{y}$.
 Annihilation affords a new version of the $\mathsf{COMM}$-rule:
 
 \begin{mathpar}
-  \inferrule* [lab=COMM] {x_{t} \;\bot x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{t} )P + R_1 \;\mathsf{|}\; x_{s}!(\arrvec{Q}).P' + R_2
+  \inferrule* [lab=COMM] {x_{t} \;\bot x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {(R_1 + \mathsf{for}( \arrvec{y} \leftarrow x_{t} )P) \;\mathsf{|}\; (x_{s}!(\arrvec{Q}).P' + R_2)
   \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}\mathsf{|}P'}
 \end{mathpar}
 
@@ -573,7 +573,7 @@ Note that we can relativize annihilation.
 \end{definition}
 
 Clearly, when such an $R$ exists for $P$ and $Q$, it is unique. Thus,
-we can define a partial function, $P \odot Q$ via
+we can define a partial function, $(- \odot -) : \Proc \times \Proc \to \Proc_{\bot}$ via
 
 \begin{mathpar}
   P \odot Q
@@ -585,5 +585,8 @@ we can define a partial function, $P \odot Q$ via
     \end{array}
   \right.
 \end{mathpar}
+
+We can think of $\odot$ as a form of \emph{evaluation} for the confluent
+fragment of $\Proc$.
 
 % subsection the_syntax_and_semantics_of_the_notation_system (end)   
