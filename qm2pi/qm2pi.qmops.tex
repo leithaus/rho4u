@@ -305,11 +305,39 @@ If we fix
   \mathsf{rate}(x_{2}) = r_{2}
 \end{mathpar}
 
-then the probability of $S$ reducing via any interaction is $R = \Sigma r_{i}M_{i}M_{i+1}$. And the probability of interacting via $x_{i}$ is $r_{i}M_{i}M_{i+1}/R$. We can apply Gillespie's algorithm to simulate how $S$ evolves.
+then the probability of $S$ reducing via any interaction is $R =
+\Sigma r_{i}M_{i}M_{i+1}$. And the probability of interacting via
+$x_{i}$ is $r_{i}M_{i}M_{i+1}/R$. Having specified our interpretation
+as a CMTC, we can apply Gillespie's algorithm to simulate how $S$
+evolves.
+
+The same method works for the rho-calculus. Note that the method is
+oblivious to the structure of names, as it must be to interpret the
+$\pi$-calculus, which hides all structure of names. However, there is
+an intriguing option when using the annihilation version of reduction.
 
 \paragraph{Xu, et al's method}
 Xu, et al \cite{Xu2021} have developed an analog of Gillespie's method
-for quantum continuous time Markov chains.
+for quantum continuous time Markov chains. We follow their
+presentation closely.
+
+\begin{definition}
+  A quantum continuous Markov chain, $\mathcal{D}$, with a finite set
+  $S$ of classical states is a pair $(\mathcal{H}_{cq},\mathcal{L})$,
+  such that
+  \begin{itemize}
+     \item $\mathcal{H}_{cq} := \mathcal{C} \times \mathcal{H}$ where
+       \begin{itemize}
+          \item $\mathcal{C} := span(\{ \mathsf{|}s\rangle : s \in S\})$
+          \item $\mathcal{H}$ a Hilbert space.
+       \end{itemize}
+     \item $\mathcal{L}$ is a transition generator function given by a
+       Hermitian operator $\mathsf{H}$ and a finite set of linear
+       operator, $\mathsf{L}_{j}$, on $\mathcal{H}_{cq}$.
+  \end{itemize}
+\end{definition}
+
+We need a lemma allowing us to convert a CMTC to a QCMTC.
 
 
 %% \subsubsection{Tensor product}
