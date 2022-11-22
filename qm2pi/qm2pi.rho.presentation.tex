@@ -28,26 +28,26 @@ the following useful abbreviations.
 \end{mathpar}
 
 \begin{definition}
-\emph{Free and bound names} The calculation of the free names of a
-process, $P$, denoted $\freenames{P}$ is given recursively by
-
-\begin{mathpar}
-  \freenames{\pzero} = \emptyset
-  \and
-  \freenames{\mathsf{for}(\arrvec{y} \leftarrow x)(P)} = \{ x \} \cup \freenames{P}\setminus\{\arrvec{y}\}
-  \and
-  \freenames{x!(\arrvec{P})} = \{ x \} \cup \freenames{\arrvec{P}}
-  \and
-  \freenames{P|Q} = \freenames{P} \cup \freenames{Q}
-  \and
-  \freenames{\mathsf{}{x}} = \{ x \} \\
-\end{mathpar}
-
-where $\{\arrvec{x}\} := \{x_1, \ldots, x_{|\arrvec{x}|}\}$ and $\freenames{\arrvec{P}} := \bigcup \freenames{P_i}$.
-
-An occurrence of $x$ in a process $P$ is \textit{bound} if it is not
-free. The set of names occurring in a process (bound or free) is
-denoted by $\names{P}$.
+  \emph{Free and bound names} The calculation of the free names of a
+  process, $P$, denoted $\freenames{P}$ is given recursively by
+  
+  \begin{mathpar}
+    \freenames{\pzero} = \emptyset
+    \and
+    \freenames{\mathsf{for}(\arrvec{y} \leftarrow x)(P)} = \{ x \} \cup \freenames{P}\setminus\{\arrvec{y}\}
+    \and
+    \freenames{x!(\arrvec{P})} = \{ x \} \cup \freenames{\arrvec{P}}
+    \and
+    \freenames{P|Q} = \freenames{P} \cup \freenames{Q}
+    \and
+    \freenames{\mathsf{}{x}} = \{ x \} \\
+  \end{mathpar}
+  
+  where $\{\arrvec{x}\} := \{x_1, \ldots, x_{|\arrvec{x}|}\}$ and $\freenames{\arrvec{P}} := \bigcup \freenames{P_i}$.
+  
+  An occurrence of $x$ in a process $P$ is \textit{bound} if it is not
+  free. The set of names occurring in a process (bound or free) is
+  denoted by $\names{P}$.
 \end{definition}
 
 \subsection{Substitution}
@@ -62,42 +62,45 @@ substitution, $\sigma$ to a process, $P$, with the substitution on the
 right, $P\sigma$, and the application of a substitution, $s$, to a
 name, $x$, using standard function application notation, $s(x)$. In
 this instance we choose not to swim against the tides of
-history. Thus, given $x = \quotep{P'}$, $u = \quotep{Q'}$, $s =
-\substn{u}{x}$ we define the lifting of $s$ to $\widehat{s}$ (written
-below as $\sigma$) recursively by the following equations.
+history. Thus, 
 
-\begin{mathpar}
-  0 \sigma := 0 \\
-  (P \mathsf{|} Q) \sigma
-  :=    
-  P\sigma \mathsf{|} Q\sigma \\
-  (\mathsf{for}(\arrvec{y} \leftarrow v)P) \sigma    
-  :=
-  \mathsf{for}(\arrvec{z} \leftarrow \sigma(v))((P \psubstn{\arrvec{z}}{\arrvec{y}}) \sigma) \\
-  (\lift{x}{Q}) \sigma  
-  :=
-  \lift{\sigma(x)}{ Q \sigma } \\
-  (\dropn{y})  \sigma       
-  := 
-  \left\{ 
-    \begin{array}{ccc} 
-      Q' & & y \;\nameeq\; x \\
-      \dropn{y} & & otherwise \\
-    \end{array}
-  \right.
-\end{mathpar} 
+\begin{definition}
+  given $x = \quotep{P'}$, $u = \quotep{Q'}$, $s =
+  \substn{u}{x}$ we define the lifting of $s$ to $\widehat{s}$ (written
+  below as $\sigma$) recursively by the following equations.
+  \begin{mathpar}
+    0 \sigma := 0 \\
+    (P \mathsf{|} Q) \sigma
+    :=    
+    P\sigma \mathsf{|} Q\sigma \\
+    (\mathsf{for}(\arrvec{y} \leftarrow v)P) \sigma    
+    :=
+    \mathsf{for}(\arrvec{z} \leftarrow \sigma(v))((P \psubstn{\arrvec{z}}{\arrvec{y}}) \sigma) \\
+    (\lift{x}{Q}) \sigma  
+    :=
+    \lift{\sigma(x)}{ Q \sigma } \\
+    (\dropn{y})  \sigma       
+    := 
+    \left\{ 
+      \begin{array}{ccc} 
+        Q' & & y \;\nameeq\; x \\
+        \dropn{y} & & otherwise \\
+      \end{array}
+      \right.
+  \end{mathpar} 
 
-where
+  where
 
-\begin{eqnarray}
-  \psubstp{Q}{P}(x) = \id{\{} \quotep{Q} / \quotep{P} \id{\}}(x) = 
-  \left\{ 
-    \begin{array}{ccc}
-      \quotep{Q} & & x \;\nameeq\; \quotep{P} \\
-      x & & otherwise \\
-    \end{array}
-  \right. \nonumber
-\end{eqnarray}
+  \begin{eqnarray}
+    \psubstp{Q}{P}(x) = \id{\{} \quotep{Q} / \quotep{P} \id{\}}(x) = 
+    \left\{ 
+      \begin{array}{ccc}
+        \quotep{Q} & & x \;\nameeq\; \quotep{P} \\
+        x & & otherwise \\
+      \end{array}
+      \right. \nonumber
+  \end{eqnarray}
+\end{definition}
 
 and $z$ is chosen distinct from $\quotep{P}$, $\quotep{Q}$, the free
 names in $Q$, and all the names in $R$. Our $\alpha$-equivalence will
@@ -145,8 +148,41 @@ appendix \ref{appendix:rho_details}.
   freshness.
 \end{remark}
 
-Finally equipped with these standard features we can present the
-dynamics of the calculus.
+\subsubsection{Structural complexity}
+Because all processes ground out in $\pzero$, we can define a notion
+of structural complexity via a recursive function.
+
+\begin{definition}
+  The structural complexity of a process (resp. name) is defined
+  recursively via
+  \begin{eqnarray}
+    \#(\pzero) & := & 0 \nonumber \\
+    \#(\prefix{x}{y}{P}) & := & \#(x) + \#(P) + 1 \nonumber \\
+    \#(\output{x}{P}) & := & \#(x) + \#(P) + 1 \nonumber \\
+    \#(P\mathsf{|}Q) & := & \#(P) + \#(Q) + 1 \nonumber \\
+    \#(\dropn{x}) & := & \#(x) + 1 \nonumber \\
+    \#(\quotep{P}) & := & \#(P) + 1 \nonumber
+  \end{eqnarray}
+\end{definition}
+
+\begin{example}
+  Thus $\#(\prefix{\quotep{\pzero}}{\pzero}{\pzero}) = \#(\quotep{\pzero} + 0 + 1) = 1 + 1 = 2$
+\end{example}
+
+Building on the structural complexity of a term, we can define the
+structural complexity of a substitution and the cost of applying a
+substitution, respectively.
+
+\begin{definition}
+  \begin{eqnarray}
+    \#(\substn{y}{x}:\sigma) & := & \#(y) + \#(x) + \#(\sigma) \nonumber \\
+    \#(P\substn{y}{x}:\sigma) & := & \#(\substn{y}{x}) * \mathsf{occurs}(P,x) + \#(P\sigma) \nonumber
+  \end{eqnarray}
+  where $\mathsf{occurs}(P,x)$ is the number of occurrences of $x$ in $P$.
+\end{definition}
+
+Equipped with the structural features of the term language we can
+present the dynamics of the calculus.
 
 \subsection{Operational semantics}
 
@@ -172,6 +208,23 @@ in the encoding.
 \end{mathpar}
 
 We write $P\red$ if $\exists Q $ such that $ P \red Q$ and $P\not\red$, otherwise.
+
+\begin{definition}
+  $\mathsf{COMM}$-events: when $P \red P'$ we can record the information
+  justifying this reduction step with an expression of the form
+  $\mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, leaving off the subscript
+  $_{(P,P')}$ when the context makes the source ($P$) and target
+  ($P'$) states clear. Likewise, if $c = \mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, we write $\mathsf{src}(c) = P$, $\mathsf{trgt}(c) = P'$, $\mathsf{src_{N}}(c) = x_{s}$, and $\mathsf{trgt_{N}}(c) = x_{t}$ and $P \stackrel{c} P'$.
+\end{definition}
+
+We use $\alpha, \beta, ...$ to range over reduction
+\emph{paths}. Thus, if $P_{1} \stackrel{\mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1})}{\red} P_{2} \stackrel{\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2})}{\red} \cdots \stackrel{\mathsf{COMM}(x_{t_{n}},x_{s_{n}},\sigma_{n})}{\red} P_{n}$,
+then we may write $\alpha = \mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1}):\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2}):\ldots : \mathsf{COMM}(x_{t_{n}},x_{s_{n}},\sigma_{n})$. Further, we write
+$\alpha(i)$ for the $i$ element of the sequence.
+
+\begin{definition}
+  The set of paths between $P$ and $Q$, written $\mathsf{paths}(P,Q)$ is defined by $\mathsf{paths}(P,Q) := \{ c:\alpha \; : P \stackrel{c}{\red} P', \alpha \in \mathsf{paths}(P',Q) \}$ and $\epsilon$ denotes the empty path.
+\end{definition}
 
 \subsection{ Dynamic quote: an example }
 
@@ -568,31 +621,47 @@ Annihilation affords a new version of the $\mathsf{COMM}$-rule:
 
 All annihilation-based reduction happens in terms of reductions that
 happen at a lower degree of quotation, and grounds out in the fact
-that $0 \bot 0$ and thus $\quotep{0} \bot \quotep{0}$. For example,
-let $P_{1} := \prefix{\quotep{0}}{0}{0} \mathsf{|} \outputp{\quotep{0}}{0}$. Then $P_{1} \red \pzero$ because $0 \bot
-0$. Suppose now that we set $x_{0}^{-}, x_{0}^{+} := \quotep{0}$. Then, we can write $P_{1}$ as
-$\prefix{x_{0}^{-}}{0}{0} \mathsf{|} \outputp{x_{0}^{+}}{0}$. Now, set
+that $\pzero \bot \pzero$ and thus $\quotep{\pzero} \bot \quotep{\pzero}$.
+
+\begin{example}
+  For example, let $P_{1} := \prefix{\quotep{\pzero}}\quotep{\pzero}{\pzero} \mathsf{|} \outputp{\quotep{\pzero}}{\pzero}$. Then $P_{1} \red \pzero$ because $\pzero \bot
+\pzero$. Suppose now that we set $x_{0}^{-}, x_{0}^{+} := \quotep{\pzero}$. Then, we can write $P_{1}$ as
+$\prefix{x_{0}^{-}}{x_{0}^{-}}{\pzero} \mathsf{|} \outputp{x_{0}^{+}}{\pzero}$. Now, set
 
 \begin{mathpar}
-  x_{1}^{-}:= \quotep{(\prefix{x_{0}^{-}}{0}{0})}
+  x_{1}^{-}:= \quotep{(\prefix{x_{0}^{-}}{x_{0}^{-}}{\pzero})}
   \and
-  x_{1}^{+} := \quotep{(\outputp{x_{0}^{+}}{0})}
+  x_{1}^{+} := \quotep{(\outputp{x_{0}^{+}}{\pzero})}
 \end{mathpar}
 
 Then define 
-$P_{2} := \prefix{x_{1}^{-}}{0}{0} \mathsf{|} \outputp{x_{1}^{+}}{0}$. Then $P_{2} \red 0$ because $x_{1}^{-} \bot x_{1}^{+}$,
-and hence $\prefix{x_{1}^{-}}{0}{0} \bot \outputp{x_{1}^{+}}{0}$.
+$P_{2} := \prefix{x_{1}^{-}}{x_{1}^{-}}{\pzero} \mathsf{|} \outputp{x_{1}^{+}}{\pzero}$. Then $P_{2} \red \pzero$ because $x_{1}^{-} \bot x_{1}^{+}$,
+and hence $\prefix{x_{1}^{-}}{x_{1}^{-}}{\pzero} \bot \outputp{x_{1}^{+}}{\pzero}$.
 
 More generally, set
 
 \begin{mathpar}
-  x_{i}^{-} := \quotep{(\prefix{x_{i-1}^{-}}{0}{0})}
+  x_{i}^{-} := \quotep{(\prefix{x_{i-1}^{-}}{x_{i-1}^{-}}{\pzero})}
   \and
-  x_{i}^{+} := \quotep{\outputp{x_{i-1}^{+}}{0}} \\
-  \and P_{i} := \prefix{\quotep{x_{i-1}^{-}}}{0}{0} \mathsf{|} \outputp{\quotep{x_{i-1}^{+}}}{0}
+  x_{i}^{+} := \quotep{\outputp{x_{i-1}^{+}}{\pzero}} \\
+  \and P_{i} := \prefix{\quotep{x_{i-1}^{-}}}{x_{i-1}^{-}}{\pzero} \mathsf{|} \outputp{\quotep{x_{i-1}^{+}}}{\pzero}
 \end{mathpar}
 
-Then $P_{i} \red 0$ and hence $x_{i}^{-} \bot x_{i}^{+}$.
+Then $P_{i} \red \pzero$ and hence $x_{i}^{-} \bot x_{i}^{+}$.
+\end{example}
+This allows
+for a measure of reduction complexity. 
+
+\begin{definition}
+  Define the complexity of a $\mathsf{COMM}$-event
+  $c = \mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$ in terms of the recursive
+  function
+  \begin{eqnarray}
+    \#(c) & := & \Sigma_{\alpha \in \mathsf{paths}(\procn{x_{t}}\mathsf{|}\procn{x_{s}},\pzero)} \#(P',\sigma) + \#(\alpha) \nonumber \\
+    \#(c : \alpha) & := & \#(c) + \#(\alpha) \nonumber \\
+    \#(\epsilon) & := & 0 \nonumber
+  \end{eqnarray}  
+\end{definition}
 
 Note that we can relativize annihilation.
 
