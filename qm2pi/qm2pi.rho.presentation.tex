@@ -11,12 +11,15 @@ essentially that of \cite{MeredithR05} with the addition of
 polyadicity and summation. For readability we have relegated some of
 the technical subtleties to an appendix.
 
+\paragraph{Notational interlude} when it is clear that some expression $t$ is a sequence (such as a list or a vector), and $a$ is an object that might be meaningfully and safely prefixed to that sequence then we write $a:t$ for the sequence with $a$ prefixed (aka ``consed'') to $t$. We write $t(i)$ for the $i$th element of $t$.
+
 \subsubsection{Process grammar}\label{subsub:process_grammar}
 
 \begin{mathpar}
-\inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}( \arrvec{y} \leftarrow x )P \;\bm\; x\mathsf{!}(\arrvec{Q}) \;\bm\; \mathsf{*}x \;\bm\; P\mathsf{|}Q }
-\and
-\inferrule* [lab=name] {} {x, y \bc \mathsf{@}P }
+\inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
+  \arrvec{y} \leftarrow x )P \;\bm\; x\mathsf{!}(\arrvec{Q}) \;\bm\;
+  \mathsf{*}x \;\bm\; P\mathsf{|}Q } \and \inferrule* [lab=name] {}
+            {x, y \bc \mathsf{@}P }
 \end{mathpar}
 
 Note that $\arrvec{x}$ (resp. $\arrvec{P}$) denotes a vector of names
@@ -217,10 +220,17 @@ We write $P\red$ if $\exists Q $ such that $ P \red Q$ and $P\not\red$, otherwis
   ($P'$) states clear. Likewise, if $c = \mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, we write $\mathsf{src}(c) = P$, $\mathsf{trgt}(c) = P'$, $\mathsf{src_{N}}(c) = x_{s}$, and $\mathsf{trgt_{N}}(c) = x_{t}$ and $P \stackrel{c}{\red} P'$.
 \end{definition}
 
-We use $\alpha, \beta, ...$ to range over reduction
-\emph{paths}. Thus, if $P_{1} \stackrel{\mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1})}{\red} P_{2} \stackrel{\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2})}{\red} \cdots \stackrel{\mathsf{COMM}(x_{t_{n}},x_{s_{n}},\sigma_{n})}{\red} P_{n}$,
-then we may write $\alpha = \mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1}):\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2}):\ldots : \mathsf{COMM}(x_{t_{n}},x_{s_{n}},\sigma_{n})$. Further, we write
-$\alpha(i)$ for the $i$ element of the sequence.
+We use $\alpha, \beta, ...$ to range over reduction \emph{paths}. That is, if
+
+\begin{mathpar}
+  P_{1} \stackrel{\mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1})}{\red} P_{2} \stackrel{\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2})}{\red} \cdots \stackrel{\mathsf{COMM}(x_{t_{n-1}},x_{s_{n-1}},\sigma_{n-1})}{\red} P_{n},
+\end{mathpar}
+
+then we may write
+
+\begin{mathpar}
+  \alpha = \mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1}):\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2}):\ldots : \mathsf{COMM}(x_{t_{n-1}},x_{s_{n-1}},\sigma_{n-1}).
+\end{mathpar}
 
 \begin{definition}
   The set of paths between $P$ and $Q$, written $\mathsf{paths}(P,Q)$ is defined by $\mathsf{paths}(P,Q) := \{ c:\alpha \; : P \stackrel{c}{\red} P', \alpha \in \mathsf{paths}(P',Q) \}$ and $\epsilon$ denotes the empty path.
