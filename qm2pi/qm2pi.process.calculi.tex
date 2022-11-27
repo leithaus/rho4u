@@ -7,8 +7,7 @@ processes began with Milner's Calculus for Communicating Systems (CCS)
 (CSP) \cite{DBLP:books/ph/Hoare85}, and continue
 through the development of the so-called mobile process calculi,
 e.g. Milner, Parrow and Walker's $\pi$-calculus \cite{DBLP:journals/iandc/MilnerPW92a}, \cite{DBLP:journals/iandc/MilnerPW92b},
-Cardelli and Caires's spatial logic \cite{DBLP:conf/fossacs/Caires04} \cite{DBLP:journals/iandc/CairesC03} \cite{DBLP:journals/tcs/CairesC04}
-\cite{Caires04}, or Meredith and Radestock's reflective calculi
+Cardelli and Caires's spatial logic \cite{DBLP:conf/fossacs/Caires04} \cite{DBLP:journals/iandc/CairesC03} \cite{DBLP:journals/tcs/CairesC04}, or Meredith and Radestock's reflective calculi
 \cite{DBLP:journals/entcs/MeredithR05} \cite{DBLP:conf/tgc/MeredithR05}. The process-calculus-based
 algebraical specification of processes has expanded its scope of
 applicability to include the specification, analysis, simulation and
@@ -30,7 +29,7 @@ execution of processes in domains such as:
 \cite{DBLP:conf/fossacs/LaneveZ05}
 \cite{DBLP:conf/wise/Meredith03};
 \item{blockchain}
-  \cite{RChain2022}
+  \cite{meredith_2017}
 \item and biological systems
 \cite{DBLP:conf/cmsb/Cardelli04}
 \cite{DBLP:conf/esop/DanosL03}
@@ -42,7 +41,7 @@ Among the many reasons for the continued success of this approach are
 two central points. First, the process algebras provide a
 compositional approach to the specification, analysis and execution of
 concurrent and distributed systems. Owing to Milner's original
-insights into computation as interaction \cite{Milner93}, the process
+insights into computation as interaction \cite{DBLP:journals/cacm/Milner93}, the process
 calculi are so organized that the behavior ---the semantics--- of a
 system may be composed from the behavior of its components
 \cite{Fokkink}. This means that specifications can be constructed in
@@ -51,12 +50,11 @@ assembled into increasingly complete descriptions.
 
 The second central point is that process algebras have a potent proof
 principle, yielding a wide range of effective and novel proof
-techniques \cite{MilnerS92} \cite{SangiorgiWalker} \cite{Sangiorgi95}
-\cite{hop}. In particular, \emph{bisimulation} encapsulates an effective
+techniques \cite{DBLP:conf/concur/SangiorgiM92} \cite{DBLP:conf/fmco/Sangiorgi05} \cite{DBLP:journals/toplas/Sangiorgi09}. In particular, \emph{bisimulation} encapsulates an effective
 notion of process equivalence that has been used in applications as
 far-ranging as algorithmic games semantics
-\cite{Abramsky2005Algorithmic-Gam} and the construction of
-model-checkers \cite{Caires04}. The essential notion can be stated in
+\cite{DBLP:conf/sas/Abramsky05} and the construction of
+model-checkers \cite{caires_2004}. The essential notion can be stated in
 an intuitively recursive formulation: a \emph{bisimulation} between two
 processes $P$ and $Q$ is an equivalence relation $E$ relating $P$
 and $Q$ such that: whatever action of $P$ can be observed, taking it
@@ -66,6 +64,6 @@ $Q$ are \emph{bisimilar} if there is some bisimulation relating
 them. Part of what makes this notion so robust and widely applicable
 is that it is parameterized in the actions observable of processes
 $P$ and $Q$, thus providing a framework for a broad range of
-equivalences and up-to techniques \cite{milner92techniques} all governed by the same core
-principle \cite{SangiorgiWalker} \cite{Sangiorgi95} \cite{hop}.
+equivalences and up-to techniques \cite{DBLP:conf/concur/SangiorgiM92} all governed by the same core
+principle \cite{DBLP:journals/toplas/Sangiorgi09}.
 % section concurrent_process_calculi_and_spatial_logics_ (end)
