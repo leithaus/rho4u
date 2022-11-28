@@ -317,7 +317,7 @@ $\pi$-calculus, which hides all structure of names. However, there is
 an intriguing option when using the annihilation-based version of
 reduction. 
 
-\paragraph{Xu, et al's method}
+\paragraph{Quantum Continuous-Time Markov Chains}
 Xu, et al \cite{DBLP:journals/corr/abs-2105-00382} have developed an analog of Gillespie's method
 for quantum continuous time Markov chains. We follow their
 presentation closely.
@@ -338,8 +338,11 @@ presentation closely.
   \end{itemize}
 \end{definition}
 
-We need a lemma allowing us to convert a CMTC to a QCMTC.
+We need a lemma allowing us to convert a CTMC to a QCTMC.
 
+\begin{lemma}
+  A continuous-time Markov chain $\mathcal{C} = (S,\bold{Q})$ can be faithfully modeled by a QCMTC $(\widehat{\mathcal{C}} \otimes \mathcal{H}, \mathcal{L})$ where $\widehat{\mathcal{C}} := \{ \mathsf{|}s\rangle : s \in S\}$ and $\mathsf{dim}(\mathcal{H}) = 1$.
+\end{lemma}
 
 %% \subsubsection{Tensor product}
 
