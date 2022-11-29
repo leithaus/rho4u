@@ -169,7 +169,7 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
 In this section, for clarity, we illustrate the procedure for lifting
 the rules of a specific rewrite system by way of
 example. Specifically, we illustrate the procedure lifting the
-rho-calculus theory to the $\mathsf{NT}(\mathsf{CC})$ level.
+rho-calculus theory to the $\mathsf{NT}(\mathsf{CCC})$ level.
 
 \subsubsection{Lifted term constuctors}
 Note that because of the lifted-singleton rule, it is not necessary to
@@ -188,9 +188,18 @@ give a typing for the $\pzero$ term.
 
 \subsubsection{Lifted redex constuctors}
 \begin{mathpar}
-  \inferrule* [lab=COMM] {\Gamma_{1} \vdash x : \mathbf{V} : \mathbf{N} \;\;\; y : \mathbf{V} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W}_{1} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{W}_{1} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W_{1}}{W_{2}} : \mathbf{R}} \\
+  \inferrule* [lab=COMM] {\Gamma_{1} \vdash x : \mathbf{V} : \mathbf{N} \;\;\; y : \mathbf{V} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}} \\
   \and
   \inferrule* [lab=Eval] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R}}  
 \end{mathpar}
 
 \subsubsection{Reductions from the $\lambda$-theory}
+\begin{mathpar}
+  \inferrule* [lab=COMM-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\commr{x}{y}{P}{Q}) = \prefix{x}{y}{P} \mathsf{|} \outputp{x}{Q} : \prefixt{U}{V}{W} \mathbf{|} \outputt{U}{V} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=COMM-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\commr{x}{y}{P}{Q}) = P\substn{\quotep{Q}}{y} : \mathbf{W} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Eval-Src] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{src}(\mathsf{eval}(P)) = \dropn{\quotep{P}} : \dropt{\quotet{U}} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Eval-Trgt] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{trgt}(\mathsf{eval}(P)) = P : \mathbf{U} : \mathbf{P}}  
+\end{mathpar}
