@@ -1,0 +1,135 @@
+\section{The algorithm}
+\subsection{Notation}
+$P, Q, R$ range over terms, while $p, q, r$ range over term variables,
+$e$ ranging over terms and variables.  $\bold{U}, \bold{V}, \bold{W}$
+range over filters $\bold{\{ Q \}}$ characteristic filter of process
+$Q$.  $\bold{X}, \bold{Y}, \bold{Z}$ range over sorts.  $\bold{P}$ is
+the sort of process terms.  $\bold{R}$ is the sort of reduction terms
+(redexes).
+
+Type assertions are of the form $e : \bold{U} : \bold{X}$ where
+$\bold{X}$ may be considered a \emph{kind} and $\bold{U}$ is a type
+interpreted as a \emph{filter} on the kind. Contexts are sequences of
+type assertions. Judgments are written in more or less standard form
+$\Gamma \vdash P : \bold{U} : \bold{X}$. Because there are rather a
+bit more of them, inference rules are written in a somewhat
+non-standard form. When space allows, we adopt a horizontal rather
+than vertical syntax. Thus for an inference rule with judgments $J_{1}
+\; \ldots \; J_{n}$ as the hypotheses, and $J$ as the consequent, we
+write $J_{1} \; \ldots \; J_{n} \Vdash J$. When there are no
+hypotheses, we write $\Vdash J$. When horizontal space is at a
+premium, then we opt for the more traditional format
+
+\begin{mathpar}
+  \inferrule* [lab=Rule] {J_{1} \; \ldots \; J_{n}} {J}
+\end{mathpar}
+
+Consider the following recipe. Given a category, $C$, we apply Yoneda
+to it, resulting in a category of presheaves. To this we apply a
+construction $\mathsf{sub}$ to the representables, converting them to
+complete Heyting algebras. To this we apply the Grothendieck
+construction. In symbols
+
+\begin{eqnarray}
+  \mathsf{NT} & := & \int \mathsf{sub} \; \mathsf{Y} \nonumber
+\end{eqnarray}
+
+This is the core construction of native types.
+
+It treats models of computation as presented by some rewrite system
+with binders, and thus begins with a meta-theory, $\mathsf{CCC}$, the
+2-category of Cartesian closed categories. It treats $\mathsf{NT}$ as
+an endofunctor on $\mathsf{CCC}$, deriving a new meta theory
+$\mathsf{NT(C)}$ for each category, $C$, in $\mathsf{|CCC|}$. The
+language presented below is a syntax for the derived meta-theory.
+
+In general, we assume no ``heating'' rules in the rewrite
+systems. That is, without loss of generality, every redex must be a
+term built from a binary term constructor, with one of the terms
+playing in the role of program and one playing in the role of
+environment. For example, in $\lambda$-calculus application is the
+binary term construction, the term in function position is the
+program, and the term in argument position is environment. In the
+rho-calculus parallel composition is the binary term constructor and
+one of the subterms is program and the other is environment (it does
+not matter which).
+
+\subsection{Generic types}
+
+\subsubsection{Boundaries}
+\begin{mathpar}
+  \inferrule* [lab=Axiom] {}{\Vdash p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} \\
+  \and
+  \inferrule* [lab=Character] {} {\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{\{ Q \}} : \mathbf {X}}
+  \and
+  \inferrule* [lab=Top] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{\top} : \mathbf {X}} \\
+  \and
+  \inferrule* [lab=Composition] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf {X}, \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash Q \substn{P}{p} : \mathbf{V} : \mathbf {Y}} \\
+\end{mathpar}
+
+\subsubsection{Disjunctions}
+\begin{mathpar}
+  \inferrule* [lab=Union] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U \vee V} : \mathbf {X}} \\
+  \and
+  \inferrule* [lab=InL,Right=(V:Y)] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{in}_{L} P : \mathbf{U+V} : \mathbf {X + Y}}
+  \and
+  \inferrule* [lab=InR,Right=(V:Y)] {} {\Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma \vdash \mathsf{in}_{R} Q : \mathbf{U+V} : \mathbf {X + Y}} \\
+  \and
+  \inferrule* [lab=Match-Case] {p : \mathbf{U} : \mathbf {X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; q : \mathbf{V} : \mathbf {Y}, \Delta \vdash Q : \mathbf{W} : \mathbf {Z}} {r : \mathbf{U+V} : \mathbf{X+Y}, \Gamma, \Delta \vdash \mathsf{match} \; r \; \mathsf{case} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; q \Rightarrow Q : \mathbf{W} : \mathbf {Z}}
+\end{mathpar}
+
+\subsubsection{Conjunctions}
+\begin{mathpar}
+  \inferrule* [lab=Intersection] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Gamma \vdash P : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U \wedge V} : \mathbf {X}} \\
+  \and
+  \inferrule* [lab=Product] {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash P \times Q : \mathbf{U \times V} : \mathbf{X \times Y}} \\
+  \and
+  \inferrule* [lab=Proj1] {} {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \Vdash r : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}, \Gamma \vdash \mathsf{let} \; r \; = \; \langle p, \_ \rangle \; \mathsf{in}\; P : \mathbf{W} : \mathbf {Z}} \\
+  \and
+  \inferrule* [lab=Proj2] {} {q : \mathbf{V} : \mathbf{Y}, \Gamma \vdash Q : \mathbf{W} : \mathbf {Z} \Vdash r : \mathbf{U \times V} : \mathbf{X} \times \mathbf{Y}, \Gamma \vdash \mathsf{let} \; r \; = \; \langle \_, q \rangle \; \mathsf{in} \; Q : \mathbf{W} : \mathbf {Z}}
+\end{mathpar}
+
+\subsubsection{Implications}
+\begin{mathpar}
+  \inferrule* [lab=Implication1] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}}
+  \and
+  \inferrule* [lab=Implication2] {}{\Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
+  \and
+  \inferrule* [lab=Separation,Right=(V:Y)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X+Y}} \\
+  \and
+  \inferrule* [lab=Abstraction] {}{p : \mathbf{U} : \mathbf {X}, \Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma \vdash \lambda p . Q : \mathbf{U}\to \mathbf{V} : \mathbf{X} \to \mathbf{Y}} \\
+  \and
+\inferrule* [lab=Application] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \;\;\; p : \mathbf{U} : \mathbf {X}, \Delta \vdash P : \mathbf{W} : \mathbf{Z} \Vdash \Gamma, r : \mathbf{U} \to \mathbf{V} : \mathbf{X} \to \mathbf{Y}, \Delta \vdash Q \substn{r(P)}{p} : \mathbf{W} : \mathbf{Z}}
+\end{mathpar}
+
+\subsubsection{Internalized operations}
+\begin{mathpar}
+  \inferrule* [lab=Pair] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash \langle P,Q \rangle : \langle \mathbf{U}, \mathbf{V} \rangle : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=Fst] {}{\Vdash \; \vdash \pi_{1} : \{ \mathbf{\pi}_{1} \} : \mathbf {P}}
+  \and
+  \inferrule* [lab=Snd] {}{\Vdash \; \vdash \pi_{2} : \{ \mathbf{\pi}_{2} \} : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=TagL,Right=(V:P)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{in}_{L} \; P : \mathsf{U} \oplus \mathbf{V} : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=TagR,Right=(V:P)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{in}_{R} \; Q : \mathsf{U} \oplus \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=Sum] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash [ P,Q] : [ \mathbf{U}, \mathbf{V} ] : \mathbf {P}}
+\end{mathpar}
+
+\subsubsection{Internalized redex constuctors}
+
+\subsubsection{Equations from $\mathsf{NT(CCC)}$}
+
+\subsubsection{Reductions from $\mathsf{NT(CCC)}$}
+
+\subsubsection{Modal operators}
+
+\subsection{Lifted types}
+
+\subsubsection{Lifted term constuctors}
+
+\subsubsection{Lifted redex constuctors}
+
+\subsubsection{Lifted equations from the $\lambda$-theory}
+
+\subsubsection{Reductions from the $\lambda$-theory}

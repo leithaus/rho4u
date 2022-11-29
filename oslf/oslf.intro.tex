@@ -1,0 +1,42 @@
+\section{Introduction}\label{sec:introduction} % (fold)
+
+Programmers who work on large scale deployments, like Facebook,
+Google, or Microsoft services, know that it is just not cost effective
+to write code at scale in an untyped language. Why waste human time
+and effort on writing tests (and debugging them) and worrying about
+coverage for cases that a compiler can completely and exhaustively
+automate? That is why the big three (Facebook, Google, and Microsoft)
+all spent tens of millions of dollars each developing typed versions
+of javascript. It's cheaper than continuing to throw good money
+after bad on commercial development in at industrial scale in an
+untyped language. All told, the cost to the industry of this one issue
+alone is in the hundreds of millions of dollars.
+
+But, as we move deeper and deeper into the era of distributed
+concurrent computing, the sorts of errors that mainstream programming
+languages catch with their type systems are only the tip of the
+iceberg. The Java type system cannot catch liveness errors. The Rust
+type system cannot catch security errors. However, the programming
+language semantics community has known for 30 years about techniques
+for catching a much wider range of safety and liveness errors. Session
+types, spatial and behavioral types are well explored areas bearing
+considerable fruit on just these sorts of issues. And, just like with
+javascript, it is taking the community ages to get these techniques
+into the hands of front line developers.
+
+What if it didn't have to be this way? What if the type system for
+spatial and behavioral types could be algorithmically generated from
+the specification of the programming language? That's what this paper
+is about: an algorithm that takes as input a description of a model of
+computation as a rewrite system and \emph{generates} as output a
+spatial-behavioral type system for the model.
+
+\subsection{Summary of contributions and outline of paper}
+
+\subsubsection{Summary of contributions}
+TBD
+
+\subsubsection{Outline of paper}
+TBD
+
+% section introduction (end)

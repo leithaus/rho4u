@@ -1,0 +1,3 @@
+latex qm2pi
+dvips qm2pi.dvi
+ps2pdf qm2pi.ps

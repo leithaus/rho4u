@@ -1,0 +1,86 @@
+\documentclass[12pt]{llncs}
+%\documentclass{jktr}
+
+\usepackage[pdftex]{hyperref}                   
+\usepackage {mathpartir}
+\usepackage{bigpage}
+\usepackage{bcprules}
+\usepackage {listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{latexsym}
+\usepackage{longtable}
+\usepackage{stmaryrd}
+\usepackage{graphicx} 
+%\usepackage[margins=2.5cm,nohead,nofoot]{geometry}
+%\usepackage{geometry}
+\usepackage{color}
+
+
+%\include{myPreamble}
+\include{oslf.local} 
+
+%\ifpdf
+%\usepackage[pdftex]{graphicx}
+%\else
+%\usepackage{graphicx}
+%\fi
+
+ % \ifpdf
+%  \usepackage{pdfsync}
+%  \if
+
+
+%\title{Brief Article}
+%\author{David F. Snyder}
+%\author{L.G. Meredith}
+
+%\address{Dept. of Math., Texas State University--San Marcos, San Marcos, TX 78666}
+       
+\pagestyle{empty}
+
+
+\begin{document}
+
+\lstset{language=[Objective]Caml,frame=shadowbox}
+
+\input{oslf.front}
+
+% section front matter (end)
+
+\input{oslf.intro}
+
+\input{oslf.monoidal.logic} 
+
+\input{oslf.hoas}
+
+\input{oslf.native.types}
+
+\input{oslf.type.system}
+
+% section process calculi (end)
+
+% section rho presentation (end)
+
+\input{oslf.rholang}
+
+\input{oslf.conc}
+
+% section conclusion (end)
+
+\input{oslf.ack} 
+
+% section acknowledgments (end)
+
+\newpage
+
+
+\bibliographystyle{plain}   
+\bibliography{oslf.bib}
+
+%\input{oslf.rhodetails}
+
+\end{document}
+
