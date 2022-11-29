@@ -135,6 +135,8 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
   \inferrule* [lab=MatchL-Trgt] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {R}} \\
   \and
   \inferrule* [lab=MatchR-Src] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = \mathsf{in}_{R}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {R}} \\
+  \and
+  \inferrule* [lab=MatchR-Trgt] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {R}}
 \end{mathpar}
 
 \subsubsection{Modal operators}
