@@ -121,9 +121,9 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
   \inferrule* [lab=MatchL-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf {R}} \\
   \and
   \inferrule* [lab=MatchR-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf {R}} \\
-  \inferrule* [lab=Proj1-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(P_{1},P_{2}) : \mathbf {R}} \\
+  \inferrule* [lab=Proj1-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(P_{1},P_{2}) : \mathbf {R}} \\
   \and
-  \inferrule* [lab=Proj2-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(P_{1},P_{2}) : \mathbf {R}}
+  \inferrule* [lab=Proj2-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(P_{1},P_{2}) : \mathbf {R}}
 \end{mathpar}
 
 \subsubsection{Equations from $\mathsf{NT(CCC)}$}
@@ -140,6 +140,11 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
 \end{mathpar}
 
 \subsubsection{Modal operators}
+\begin{mathpar}
+  \inferrule* [lab=Step-Future] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{src}(R) : \lozenge \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
+  \and
+  \inferrule* [lab=Step-History] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{trgt}(R) : \blacklozenge \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+\end{mathpar}
 
 \subsection{Lifted types}
 
