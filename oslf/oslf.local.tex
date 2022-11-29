@@ -47,12 +47,16 @@
 %\newcommand{\lift}[2]{\texttt{lift} \; #1 \concat #2}
 \newcommand{\binpar}[2]{#1 \mathsf{|} #2}
 \newcommand{\outputp}[2]{#1\mathsf{!}(#2)}
+\newcommand{\outputt}[2]{\mathbf{#1}\mathsf{!}(\mathbf{#2})}
 \newcommand{\prefix}[3]{\mathsf{for(}#2 \leftarrow #1 \mathsf{)} #3}
+\newcommand{\prefixt}[3]{\mathbf{for}\mathbf{(}\mathbf{#2} \leftarrow \mathbf{#1} \mathbf{)} \mathbf{#3}}
 %%\newcommand{\lift}[2]{#1 \lliftb #2 \rliftb}
 \newcommand{\lift}[2]{#1 \mathsf{!}(#2)}
 \newcommand{\clift}[1]{\lliftb #1 \rliftb}
 \newcommand{\quotep}[1]{\mathsf{@} #1}
+\newcommand{\quotet}[1]{\mathbf{@} \mathbf{#1}}
 \newcommand{\dropn}[1]{\mathsf{*} #1}
+\newcommand{\dropt}[1]{\mathbf{*} \mathbf{#1}}
 \newcommand{\procn}[1]{\stackrel{\cdot}{#1}}
 
 \newcommand{\newp}[2]{(\newkw \; #1 ) #2}

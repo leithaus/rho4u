@@ -172,6 +172,16 @@ example. Specifically, we illustrate the procedure lifting the
 rho-calculus theory to the $\mathsf{NT}(\mathsf{CC})$ level.
 
 \subsubsection{Lifted term constuctors}
+\begin{mathpar}
+  \inferrule* [lab=For-Comprehension] {}{y : \mathbf{W} : \mathbf{N}, \Gamma \vdash P : \mathbf{U} : \mathbf{P} \;\;\; \Delta \vdash x : \mathbf{V} : \mathbf{N} \Vdash \Gamma, \Delta \vdash \prefix{x}{y}{P} : \prefixt{V}{W}{U}} \\
+  \and
+  \inferrule* [lab=Output] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash \outputp{x}{Q} : \outputt{U}{V}} \\
+  \and
+  \inferrule* [lab=Parallel] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} : \mathbf{U} \mathbf{|} \mathbf{V}} \\
+  \and
+  \inferrule* [lab=Deref] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \Vdash \Gamma \vdash \dropn{x} : \dropt{U}} \\
+\inferrule* [lab=Quote] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \quotep{x} : \quotet{U}} \\
+\end{mathpar}
 
 \subsubsection{Lifted redex constuctors}
 
