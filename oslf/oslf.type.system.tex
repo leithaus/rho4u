@@ -52,7 +52,7 @@ binary term construction, the term in function position is the
 program, and the term in argument position is environment. In the
 rho-calculus parallel composition is the binary term constructor and
 one of the subterms is program and the other is environment (it does
-not matter which).
+not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for that binary term.
 
 \subsection{Generic types}
 
@@ -117,10 +117,25 @@ not matter which).
 \end{mathpar}
 
 \subsubsection{Internalized redex constuctors}
+\begin{mathpar}
+  \inferrule* [lab=MatchL-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf {R}} \\
+  \and
+  \inferrule* [lab=MatchR-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf {R}} \\
+  \inferrule* [lab=Proj1-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(P_{1},P_{2}) : \mathbf {R}} \\
+  \and
+  \inferrule* [lab=Proj2-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(P_{1},P_{2}) : \mathbf {R}}
+\end{mathpar}
 
 \subsubsection{Equations from $\mathsf{NT(CCC)}$}
 
 \subsubsection{Reductions from $\mathsf{NT(CCC)}$}
+\begin{mathpar}
+  \inferrule* [lab=MatchL-Src] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = \mathsf{in}_{L}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {R}} \\
+  \and
+  \inferrule* [lab=MatchL-Trgt] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {R}} \\
+  \and
+  \inferrule* [lab=MatchR-Src] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = \mathsf{in}_{R}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {R}} \\
+\end{mathpar}
 
 \subsubsection{Modal operators}
 
