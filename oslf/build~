@@ -1,3 +1,0 @@
-latex rhocomb
-dvips rhocomb.dvi
-ps2pdf rhocomb.ps
