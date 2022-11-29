@@ -127,6 +127,17 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
 \end{mathpar}
 
 \subsubsection{Equations from $\mathsf{NT(CCC)}$}
+\begin{mathpar}
+  \inferrule* [lab=MatchL-Eqn] {\Gamma \vdash R : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf{X}, \Delta_{1} \vdash P : \mathbf{W} : \mathbf{Z} \;\;\; q : \mathbf{V} : \mathbf{Y}, \Delta_{2} \vdash Q : \mathbf{W} : \mathbf{Z}}{\Gamma,\Delta_{1}, \Delta_{2} \vdash (\mathsf{match} \; \mathsf{in}_{L}\; R \; \mathsf{case} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; q \Rightarrow Q) = P\substn{R}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \and
+  \inferrule* [lab=MatchR-Eqn] {\Gamma \vdash R : \mathbf{V} : \mathbf {Y} \;\;\; p : \mathbf{U} : \mathbf{X}, \Delta_{1} \vdash P : \mathbf{W} : \mathbf{Z} \;\;\; q : \mathbf{V} : \mathbf{Y}, \Delta_{2} \vdash Q : \mathbf{W} : \mathbf{Z}}{\Gamma,\Delta_{1}, \Delta_{2} \vdash (\mathsf{match} \; \mathsf{in}_{R}\; R \; \mathsf{case} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; q \Rightarrow Q) = Q\substn{R}{q} : \mathbf{W} : \mathbf {Z}} \\
+  \and
+  \inferrule* [lab=Proj1-Eqn] {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta \vdash Q_{1} \times Q_{2} : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}}{ \Gamma, \Delta \vdash (\mathsf{let} \; Q_{1} \times Q_{2} \; = \; \langle p, \_ \rangle \; \mathsf{in}\; P) = P\substn{Q_{1}}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \and
+  \inferrule* [lab=Proj2-Eqn] {p : \mathbf{V} : \mathbf{Y}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta \vdash Q_{1} \times Q_{2} : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}}{ \Gamma, \Delta \vdash (\mathsf{let} \; Q_{1} \times Q_{2} \; = \; \langle \_, p \rangle \; \mathsf{in}\; P) = P\substn{Q_{2}}{p} : \mathbf{W} : \mathbf {Z}} \\
+\end{mathpar}
+
+\subsubsection{Lifted equations from the $\lambda$-theory}
 
 \subsubsection{Reductions from $\mathsf{NT(CCC)}$}
 \begin{mathpar}
@@ -156,7 +167,5 @@ rho-calculus theory to the $\mathsf{NT}(\mathsf{CC})$ level.
 \subsubsection{Lifted term constuctors}
 
 \subsubsection{Lifted redex constuctors}
-
-\subsubsection{Lifted equations from the $\lambda$-theory}
 
 \subsubsection{Reductions from the $\lambda$-theory}
