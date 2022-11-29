@@ -172,6 +172,9 @@ example. Specifically, we illustrate the procedure lifting the
 rho-calculus theory to the $\mathsf{NT}(\mathsf{CC})$ level.
 
 \subsubsection{Lifted term constuctors}
+Note that because of the lifted-singleton rule, it is not necessary to
+give a typing for the $\pzero$ term.
+
 \begin{mathpar}
   \inferrule* [lab=For-Comprehension] {}{y : \mathbf{W} : \mathbf{N}, \Gamma \vdash P : \mathbf{U} : \mathbf{P} \;\;\; \Delta \vdash x : \mathbf{V} : \mathbf{N} \Vdash \Gamma, \Delta \vdash \prefix{x}{y}{P} : \prefixt{V}{W}{U}} \\
   \and
