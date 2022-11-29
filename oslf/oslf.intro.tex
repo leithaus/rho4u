@@ -31,6 +31,34 @@ is about: an algorithm that takes as input a description of a model of
 computation as a rewrite system and \emph{generates} as output a
 spatial-behavioral type system for the model.
 
+The formalization of the rewrite system uses Fiore's higher-order
+abstract syntax to specify the syntax with binders. This is augmented
+with a theory of graphs specifying the source and targets of the
+rewrite rules. This yields what amounts to a Cartesian closed category
+($\mathsf{CCC}$), call it $\mathcal{C}$. To $\mathcal{C}$ we apply the
+following recipe. First we hit is with Yoneda, resulting in a category
+of presheaves. We then hit that with a construction described below
+turning the homs into complete Heyting algebras. Finally, we take the
+Grothendieck construction. Thus result is that types are pairs
+$(\mathbf{U}, \mathbf{X})$ consisting of a sort, $\mathbf{X}$, from
+the original lambda theory and a filter on it, $\mathbf{U}$.
+
+The resulting category, denoted by $\mathsf{NT}(\mathcal{C})$, enjoys
+a rich logical structure (in fact, it is a topos) and thus provides a
+stable means for combining collections of witnesses of various
+properties in various ways. Specifically the homs are complete Heyting
+algebras and hence enjoy that particular menu of lattice
+operations. Additionally, there are products and sums, which can be
+made to interact coherently with the lattice operations. Likewise, we
+have two different forms of implication.
+
+Further, because the rewrites have been explicitly encoded we get
+typed versions of redex constructors, as well as typed versions of
+reduction, and modal operators ala Hennessy-Milner logics, all of this
+mechanism delivers a powerful behavioral typing
+apparatus. Additionally, we find that there are typed versions of the
+term constructors. These play in the role of spatial types. 
+
 \subsection{Summary of contributions and outline of paper}
 
 \subsubsection{Summary of contributions}
