@@ -24,24 +24,12 @@ premium, then we opt for the more traditional format
   \inferrule* [lab=Rule] {J_{1} \; \ldots \; J_{n}} {J}
 \end{mathpar}
 
-Consider the following recipe. Given a category, $C$, we apply Yoneda
-to it, resulting in a category of presheaves. To this we apply a
-construction $\mathsf{sub}$ to the representables, converting them to
-complete Heyting algebras. To this we apply the Grothendieck
-construction. In symbols
-
-\begin{eqnarray}
-  \mathsf{NT} & := & \int \mathsf{sub} \; \mathsf{Y} \nonumber
-\end{eqnarray}
-
-This is the core construction of native types.
-
-It treats models of computation as presented by some rewrite system
-with binders, and thus begins with a meta-theory, $\mathsf{CCC}$, the
-2-category of Cartesian closed categories. It treats $\mathsf{NT}$ as
-an endofunctor on $\mathsf{CCC}$, deriving a new meta theory
-$\mathsf{NT(C)}$ for each category, $C$, in $\mathsf{|CCC|}$. The
-language presented below is a syntax for the derived meta-theory.
+Note that the input is a $CCC$ presented as a $\lambda$-theory, and
+hence also enjoys a judgment style presentation. Much of the machinery
+below is simply lifting those judgments to the
+$\mathsf{NT}(\mathsf{CCC})$ level. Likewise, it is possible to project
+back down. We adopt the following notation to denote the projection:
+$\Gamma_{\lambda} \vdash_{\lambda} e : \mathbf{X}$.
 
 In general, we assume no ``heating'' rules in the rewrite
 systems. That is, without loss of generality, every redex must be a
@@ -162,44 +150,4 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
   \inferrule* [lab=Step-Future] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{src}(R) : \lozenge \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
   \and
   \inferrule* [lab=Step-History] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{trgt}(R) : \blacklozenge \mathsf{src}(\mathbf{E}) : \mathbf {P}}
-\end{mathpar}
-
-\subsection{Lifted types}
-
-In this section, for clarity, we illustrate the procedure for lifting
-the rules of a specific rewrite system by way of
-example. Specifically, we illustrate the procedure lifting the
-rho-calculus theory to the $\mathsf{NT}(\mathsf{CCC})$ level.
-
-\subsubsection{Lifted term constuctors}
-Note that because of the lifted-singleton rule, it is not necessary to
-give a typing for the $\pzero$ term.
-
-\begin{mathpar}
-  \inferrule* [lab=For-Comprehension] {}{y : \mathbf{W} : \mathbf{N}, \Gamma \vdash P : \mathbf{U} : \mathbf{P} \;\;\; \Delta \vdash x : \mathbf{V} : \mathbf{N} \Vdash \Gamma, \Delta \vdash \prefix{x}{y}{P} : \prefixt{V}{W}{U} : \mathbf{P}} \\
-  \and
-  \inferrule* [lab=Output] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash \outputp{x}{Q} : \outputt{U}{V} : \mathbf{P}} \\
-  \and
-  \inferrule* [lab=Parallel] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} : \mathbf{U} \mathbf{|} \mathbf{V} : \mathbf{P}} \\
-  \and
-  \inferrule* [lab=Deref] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \Vdash \Gamma \vdash \dropn{x} : \dropt{U} : \mathbf{P}} \\
-\inferrule* [lab=Quote] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \quotep{x} : \quotet{U} : \mathbf{P}} \\
-\end{mathpar}
-
-\subsubsection{Lifted redex constuctors}
-\begin{mathpar}
-  \inferrule* [lab=COMM] {\Gamma_{1} \vdash x : \mathbf{V} : \mathbf{N} \;\;\; y : \mathbf{V} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}} \\
-  \and
-  \inferrule* [lab=Eval] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R}}  
-\end{mathpar}
-
-\subsubsection{Reductions from the $\lambda$-theory}
-\begin{mathpar}
-  \inferrule* [lab=COMM-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\commr{x}{y}{P}{Q}) = \prefix{x}{y}{P} \mathsf{|} \outputp{x}{Q} : \prefixt{U}{V}{W} \mathbf{|} \outputt{U}{V} : \mathbf{P}} \\
-  \and
-  \inferrule* [lab=COMM-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\commr{x}{y}{P}{Q}) = P\substn{\quotep{Q}}{y} : \mathbf{W} : \mathbf{P}} \\
-  \and
-  \inferrule* [lab=Eval-Src] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{src}(\mathsf{eval}(P)) = \dropn{\quotep{P}} : \dropt{\quotet{U}} : \mathbf{P}} \\
-  \and
-  \inferrule* [lab=Eval-Trgt] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{trgt}(\mathsf{eval}(P)) = P : \mathbf{U} : \mathbf{P}}  
 \end{mathpar}

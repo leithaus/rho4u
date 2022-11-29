@@ -1,4 +1,45 @@
-\section{Concurrent process calculi and spatial logics }\label{sec:concurrent_process_calculi_and_spatial_logics_} % (fold) 
+\section{Concurrent process calculi and spatial logics }\label{sec:concurrent_process_calculi_and_spatial_logics_} % (fold)
+
+\subsection{Lifted types} 
+
+In this section, for clarity, we illustrate the procedure for lifting
+the rules of a specific rewrite system by way of
+example. Specifically, we illustrate the procedure lifting the
+rho-calculus theory to the $\mathsf{NT}(\mathsf{CCC})$ level.
+
+\subsubsection{Lifted term constuctors}
+Note that because of the lifted-singleton rule, it is not necessary to
+give a typing for the $\pzero$ term.
+
+\begin{mathpar}
+  \inferrule* [lab=For-Comprehension] {}{y : \mathbf{W} : \mathbf{N}, \Gamma \vdash P : \mathbf{U} : \mathbf{P} \;\;\; \Delta \vdash x : \mathbf{V} : \mathbf{N} \Vdash \Gamma, \Delta \vdash \prefix{x}{y}{P} : \prefixt{V}{W}{U} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Output] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash \outputp{x}{Q} : \outputt{U}{V} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Parallel] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} : \mathbf{U} \mathbf{|} \mathbf{V} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Deref] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \Vdash \Gamma \vdash \dropn{x} : \dropt{U} : \mathbf{P}} \\
+\inferrule* [lab=Quote] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \quotep{x} : \quotet{U} : \mathbf{P}} \\
+\end{mathpar}
+
+\subsubsection{Lifted redex constuctors}
+\begin{mathpar}
+  \inferrule* [lab=COMM] {\Gamma_{1} \vdash x : \mathbf{V} : \mathbf{N} \;\;\; y : \mathbf{V} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}} \\
+  \and
+  \inferrule* [lab=Eval] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R}}  
+\end{mathpar}
+
+\subsubsection{Reductions from the $\lambda$-theory}
+\begin{mathpar}
+  \inferrule* [lab=COMM-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\commr{x}{y}{P}{Q}) = \prefix{x}{y}{P} \mathsf{|} \outputp{x}{Q} : \prefixt{U}{V}{W} \mathbf{|} \outputt{U}{V} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=COMM-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\commr{x}{y}{P}{Q}) = P\substn{\quotep{Q}}{y} : \mathbf{W} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Eval-Src] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{src}(\mathsf{eval}(P)) = \dropn{\quotep{P}} : \dropt{\quotet{U}} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Eval-Trgt] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{trgt}(\mathsf{eval}(P)) = P : \mathbf{U} : \mathbf{P}}  
+\end{mathpar}
+
 In the last thirty years the process calculi have matured into a
 remarkably powerful analytic tool for reasoning about concurrent and
 distributed systems. Process-calculus-based algebraical specification of
