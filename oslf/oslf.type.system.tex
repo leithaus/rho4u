@@ -176,16 +176,21 @@ Note that because of the lifted-singleton rule, it is not necessary to
 give a typing for the $\pzero$ term.
 
 \begin{mathpar}
-  \inferrule* [lab=For-Comprehension] {}{y : \mathbf{W} : \mathbf{N}, \Gamma \vdash P : \mathbf{U} : \mathbf{P} \;\;\; \Delta \vdash x : \mathbf{V} : \mathbf{N} \Vdash \Gamma, \Delta \vdash \prefix{x}{y}{P} : \prefixt{V}{W}{U}} \\
+  \inferrule* [lab=For-Comprehension] {}{y : \mathbf{W} : \mathbf{N}, \Gamma \vdash P : \mathbf{U} : \mathbf{P} \;\;\; \Delta \vdash x : \mathbf{V} : \mathbf{N} \Vdash \Gamma, \Delta \vdash \prefix{x}{y}{P} : \prefixt{V}{W}{U} : \mathbf{P}} \\
   \and
-  \inferrule* [lab=Output] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash \outputp{x}{Q} : \outputt{U}{V}} \\
+  \inferrule* [lab=Output] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash \outputp{x}{Q} : \outputt{U}{V} : \mathbf{P}} \\
   \and
-  \inferrule* [lab=Parallel] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} : \mathbf{U} \mathbf{|} \mathbf{V}} \\
+  \inferrule* [lab=Parallel] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} : \mathbf{U} \mathbf{|} \mathbf{V} : \mathbf{P}} \\
   \and
-  \inferrule* [lab=Deref] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \Vdash \Gamma \vdash \dropn{x} : \dropt{U}} \\
-\inferrule* [lab=Quote] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \quotep{x} : \quotet{U}} \\
+  \inferrule* [lab=Deref] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \Vdash \Gamma \vdash \dropn{x} : \dropt{U} : \mathbf{P}} \\
+\inferrule* [lab=Quote] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \quotep{x} : \quotet{U} : \mathbf{P}} \\
 \end{mathpar}
 
 \subsubsection{Lifted redex constuctors}
+\begin{mathpar}
+  \inferrule* [lab=COMM] {\Gamma_{1} \vdash x : \mathbf{V} : \mathbf{N} \;\;\; y : \mathbf{V} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W}_{1} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{W}_{1} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W_{1}}{W_{2}} : \mathbf{R}} \\
+  \and
+  \inferrule* [lab=Eval] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R}}  
+\end{mathpar}
 
 \subsubsection{Reductions from the $\lambda$-theory}
