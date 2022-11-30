@@ -3,17 +3,19 @@ In this section we develop a (not so) toy example that motivated your
 author's search for an algorithm of this generality. We present a
 logic for reasoning about monoids.
 
-\subsection{Finitely generated monoids}
+\subsection{Freely generated monoids}
 \begin{mathpar}
   \inferrule* [lab=Monoid-Expr] {} {M[G] \bc \mathsf{e} \;\bm\; g \;\bm\; M[G] \mathsf{*} M[G]}
 \end{mathpar}
 
 where $g \in G$. The syntax is only slightly unusual. It's almost
 standard $\mathsf{BNF}$ except that the grammar is parametric in a set
-$G$ of generators. This freely generates a collection of expressions
-over $G$ involving $\mathsf{*}$ and $e$, which we write
-$\mathcal{L}(M[G])$. We must whack this collection down by the
-familiar relations.
+$G$ of generators. Readers familiar with parametric types found in
+languages like OCaml, F$\#$, Scala, Haskell, Java, etc should be very
+comfortable with this notation. The grammar freely generates a
+collection of expressions over $G$ involving $\mathsf{*}$ and $e$,
+which we write $\mathcal{L}(M[G])$. We must whack this collection down
+by the familiar relations.
 
 \begin{eqnarray*}
   e \mathsf{*} m & = m = & m \mathsf{*} e \\
@@ -29,9 +31,11 @@ In other words, formally the monoid is $\mathcal{L}(M[G])/=$.
 \end{eqnarray*}
 
 \begin{eqnarray*}
+  & collection \; operations & \\
   \meaningof{\mathsf{true}} & = & \mathcal{L}(M[G]) \\
   \meaningof{\neg \phi} & = & \mathcal{L}(M[G]) \backslash \meaningof{\phi} \\
   \meaningof{\phi \& \psi} & = & \meaningof{\phi} \cap \meaningof{\psi} \\
+  & spatial \; operations & \\
   \meaningof{\mathbf{e}} & = & \{ m \in \mathcal{L}(M[G]) : m = \mathsf{e} \} \\
   \meaningof{\mathbf{g}} & = & \{ m \in \mathcal{L}(M[G]) : m = g \} \\
   \meaningof{\phi \mathbf{*} \psi} & = & \{ m \in \mathcal{L}(M[G]) : \exists m_{1}, m_{2}.m = m_{1} \mathsf{*} m_{2}, m_{1} \in \meaningof{\phi}, m_{2} \in \meaningof{\psi} \}
@@ -39,14 +43,13 @@ In other words, formally the monoid is $\mathcal{L}(M[G])/=$.
 
 The logic neatly divides into operations on collections of witnesses
 (the usual boolean connectives, interpreted as operations on sets),
-and logical operations derived from the syntax of monoid
-\emph{expressions}. It is completely algorithmically generated. Any
-theory presented via generators and relations like this (and hence any
-Lawvere theory, and hence a certain class of monads) has a
-corresponding logic.
+and spatial operations, i.e. logical operations derived from the
+syntax of monoid \emph{expressions}. It is completely algorithmically
+generated. Any theory presented via generators and relations like this
+(and hence any Lawvere theory, and hence a certain class of monads)
+has a corresponding logic.
 
 Yet, it is is very expressive. Consider the following formula.
-
 \begin{eqnarray*}
   prime & := & \neg \mathbf{e} \; \& \; \neg (\neg \mathbf{e} \; \mathbf{*}\; \neg \mathbf{e})
 \end{eqnarray*}
@@ -55,11 +58,12 @@ As the reader may verify, this picks out exactly the primes of any
 monoid generated from a set $G$ of generators. In fact, an extension
 of this algorithm was used to \emph{generate} namespace logic. The
 extension adds a third section to the logic that provides an
-algorithmic treatment of the Hennessy-Milner style modal
-connectives. Monoidal logic is a proper fragement of namespace logic
-and the formula for primes defined above can also be used to pick out
-\emph{single-threaded} processes in the rho-calculus, illustrating an
-unexpected connection between primality and sequentiality.
+algorithmic treatment of the Hennessy-Milner style modal connectives
+corresponding to the rewrite rules of the rho-calculus. Monoidal logic
+is a proper fragement of namespace logic and the formula for primes
+defined above can also be used to pick out \emph{single-threaded}
+processes in the rho-calculus, illustrating an unexpected connection
+between primality and sequentiality.
 
 This analysis was the beginning of a search for the proper expression
 of the algorithm that captures not only model-checking semantics like
@@ -80,14 +84,23 @@ collection. However, that is not the only choice. In fact, it is not
 the only natural choice.
 
 This perspective becomes clear when we think about the other role that
-logic plays. Logic is also the basis of query. Imagine querying
-Github, which is currently only searchable in terms meta-data, using
-types. Given a type, a program that type checks is a match, otherwise
+logic plays. Logic is also the basis of query. Currently, Github is
+only searchable in terms meta-data. Imagine querying it using
+types: given a type, a program that type checks is a match, otherwise
 a miss. The developers of Hoogle tried this for searching Haskell's
 Cabal package system. The problem with Hoogle is that the type system
-is too coarse. Both $\mathsf{sort} : \mathsf{list}\; \mathsf{int} \to \mathsf{list} \; \mathsf{int}$ and $\mathsf{shuffle} : \mathsf{list}\; \mathsf{int} \to \mathsf{list} \; \mathsf{int}$ bear the same type signature, but they do opposite
-things. Spatial behavioral types, however, yield a considerably more
-expressive query language.
+is too coarse. Both
+\begin{mathpar}
+  \inferrule* {}{\mathsf{sort} : \mathsf{list}\; \mathsf{int} \to \mathsf{list} \; \mathsf{int}}\\
+  \and
+  and \\
+  \and
+  \inferrule* {} {\; \mathsf{shuffle} : \mathsf{list}\;\mathsf{int} \to \mathsf{list} \; \mathsf{int}}
+\end{mathpar}
+
+bear the same type signature, but they do opposite things. Spatial
+behavioral types, however, yield a considerably more expressive query
+language.
 
 Note, however, that Github repos are not \emph{sets}. They undergo
 update, including insertion, deletion, and modification. Being able to
