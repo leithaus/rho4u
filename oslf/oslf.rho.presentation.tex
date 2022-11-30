@@ -1,15 +1,15 @@
 \subsection{The syntax and semantics of the notation system}\label{sub:the_syntax_and_semantics_of_the_notation_system} % (fold)
 
 We now summarize a technical presentation of the calculus that
-embodies our theory of dynamics. The typical presentation of such a
+embodies the core of rholang. The typical presentation of such a
 calculus follows the style of giving generators and relations on
 them. The grammar, below, describing term constructors, freely
 generates the set of processes, $\Proc$. This set is then quotiented
 by a relation known as structural congruence and it is over this set
 that the notion of dynamics is expressed. This presentation is
-essentially that of \cite{DBLP:journals/entcs/MeredithR05} with the addition of
-polyadicity and summation. For readability we have relegated some of
-the technical subtleties to an appendix.
+essentially that of \cite{DBLP:journals/entcs/MeredithR05} with the
+addition of polyadicity and summation. For readability we have
+relegated some of the technical subtleties to an appendix.
 
 \paragraph{Notational interlude} when it is clear that some expression $t$ is a sequence (such as a list or a vector), and $a$ is an object that might be meaningfully and safely prefixed to that sequence then we write $a:t$ for the sequence with $a$ prefixed (aka ``consed'') to $t$. We write $t(i)$ for the $i$th element of $t$.
 
@@ -151,39 +151,6 @@ appendix \ref{appendix:rho_details}.
   freshness.
 \end{remark}
 
-\subsubsection{Structural complexity}
-Because all processes ground out in $\pzero$, we can define a notion
-of structural complexity via a recursive function.
-
-\begin{definition}
-  The structural complexity of a process (resp. name) is defined
-  recursively via
-  \begin{eqnarray}
-    \#(\pzero) & := & 0 \nonumber \\
-    \#(\prefix{x}{y}{P}) & := & \#(x) + \#(P) + 1 \nonumber \\
-    \#(\output{x}{P}) & := & \#(x) + \#(P) + 1 \nonumber \\
-    \#(P\mathsf{|}Q) & := & \#(P) + \#(Q) + 1 \nonumber \\
-    \#(\dropn{x}) & := & \#(x) + 1 \nonumber \\
-    \#(\quotep{P}) & := & \#(P) + 1 \nonumber
-  \end{eqnarray}
-\end{definition}
-
-\begin{example}
-  Thus $\#(\prefix{\quotep{\pzero}}{\pzero}{\pzero}) = \#(\quotep{\pzero} + 0 + 1) = 1 + 1 = 2$
-\end{example}
-
-Building on the structural complexity of a term, we can define the
-structural complexity of a substitution and the cost of applying a
-substitution, respectively.
-
-\begin{definition}
-  \begin{eqnarray}
-    \#(\substn{y}{x}:\sigma) & := & \#(y) + \#(x) + \#(\sigma) \nonumber \\
-    \#(P\substn{y}{x}:\sigma) & := & \#(\substn{y}{x}) * \mathsf{occurs}(P,x) + \#(P\sigma) \nonumber
-  \end{eqnarray}
-  where $\mathsf{occurs}(P,x)$ is the number of occurrences of $x$ in $P$.
-\end{definition}
-
 Equipped with the structural features of the term language we can
 present the dynamics of the calculus.
 
@@ -318,10 +285,6 @@ operator, restricted to input-guarded processes, may be obtained as follows.
 \begin{remark}\label{rem:paradoxical_combinator}
   The reader familiar with the lambda calculus will have noticed the
   similarity between $D$ and the paradoxical combinator.
-
-  [Ed. note: the existence of this seems to suggest we have to be more
-  restrictive on the set of processes and names we admit if we are to
-  support no-cloning.]
 \end{remark}
 
 \subsubsection{Bisimulation}
@@ -389,32 +352,6 @@ of context in the proof the main theorem.
 \begin{remark}
   Note that we can extend the definition of free and bound names to contexts.
 \end{remark}
-
-\subsubsection{Contextual duality}
-
-Note that contexts extend the quotation operation to a family of
-operations from processes to names. Given a context, $K$, we can
-define a \emph{nominal context}, $\quotep{M}$ by $\quotep{K}[P] :=
-\quotep{(K[P])}$. To foreshadow what is to come we observe that these
-operations enjoy a duality with processes very much like the duality
-between vectors and maps from vectors to scalars.
-
-Further, because the calculus is essentially higher-order, we have a
-correspondence between contexts and processes. More specifically,
-given a name $x$ and a context $K$ we can construct $K^{*}_{x}$ such
-that 
-
-\begin{mathpar}
-  K^{*}_{x} | \lift{x}{P} \red K[P]
-\end{mathpar}
-
-namely,
-
-\begin{mathpar}
-  K^{*}_{x} := \prefix{x}{y}{K[\dropn{y}]}
-\end{mathpar}
-
-This correspondence mirrors the usual correspondence between vectors and duals, where given a vector $v$ we can produce its dual $w \mapsto v \cdot w$ taking a vector $w$ to the dot product $v \cdot w$.
 
 \subsection{Additional notation}
 
