@@ -20,7 +20,7 @@ familiar relations.
   (m_{1} \mathsf{*} m_{2}) \mathsf{*} m_{3} & = & m_{1} \mathsf{*} (m_{2} \mathsf{*} m_{3})
 \end{eqnarray*}
 
-In other words, formally the monoid is $\mathcal{L}(M[G])\\=$.
+In other words, formally the monoid is $\mathcal{L}(M[G])/=$.
 
 \subsection{Monoid logic: syntax and semantics}
 \begin{eqnarray*}
@@ -64,6 +64,33 @@ category theoretic treatment. Originally, it seemed that the approach
 might be captured by distributive laws amongst monads. However, some
 recent no-go theorems for distributive laws showed that the approach
 could not work for the parameterization contemplated.
+
+In this connection, it is worth describing the intuitions that have
+lead to the algorithmic in its current form and scope. The reality is
+that when taken together Curry-Howard and realizability force a
+particular shape to the semantics of logical formulae. They must be
+collections of witnesses, where the witnesses are computations
+evincing the properties they bear witness to. Traditionally, logicians
+and computer scientists alike have chosen sets as the natural form of
+collection. However, that is not the only choice. In fact, it is not
+the only natural choice.
+
+This perspective becomes clear when we think about the other role that
+logic plays. Logic is also the basis of query. Imagine querying
+Github, which is currently only searchable in terms meta-data, using
+types. Given a type, a program that type checks is a match, otherwise
+a miss. The developers of Hoogle tried this for searching Haskell's
+Cabal package system. The problem with Hoogle is that the type system
+is too coarse. Both $\mathsf{sort} : \mathsf{list}\; \mathsf{int} \to \mathsf{list} \; \mathsf{int}$ and $\mathsf{shuffle} : \mathsf{list}\; \mathsf{int} \to \mathsf{list} \; \mathsf{int}$ bear the same type signature, but they do opposite
+things. Spatial behavioral types, however, yield a considerably more
+expressive query language.
+
+Note, however, that Github repos are not \emph{sets}. They undergo
+update, including insertion, deletion, and modification. Being able to
+parameterize the algorithm to take as input the kind of collections
+used to collect witnesses, and thereby generate the corresponding
+logical connectives is vital to be able to consider query applications
+like the one contemplated here.
 
 Christian Williams and Mike Stay devised the core of the formalization
 of the algorithm considered here. However, there are some key
