@@ -48,14 +48,18 @@ corresponding logic.
 Yet, it is is very expressive. Consider the following formula.
 
 \begin{eqnarray*}
-  prime & = & \neg \mathbf{e} \; \& \; \neg (\neg \mathbf{e} \; \mathbf{*}\; \neg \mathbf{e})
+  prime & := & \neg \mathbf{e} \; \& \; \neg (\neg \mathbf{e} \; \mathbf{*}\; \neg \mathbf{e})
 \end{eqnarray*}
 
 As the reader may verify, this picks out exactly the primes of any
-finitely generated monoid. In fact, an extension of this algorithm was
-used to \emph{generate} namespace logic. The extension adds a third
-section to the logic that provides an algorithmic treatment of the
-Hennessy-Milner style modal connectives.
+monoid generated from a set $G$ of generators. In fact, an extension
+of this algorithm was used to \emph{generate} namespace logic. The
+extension adds a third section to the logic that provides an
+algorithmic treatment of the Hennessy-Milner style modal
+connectives. Monoidal logic is a proper fragement of namespace logic
+and the formula for primes defined above can also be used to pick out
+\emph{single-threaded} processes in the rho-calculus, illustrating an
+unexpected connection between primality and sequentiality.
 
 This analysis was the beginning of a search for the proper expression
 of the algorithm that captures not only model-checking semantics like
@@ -66,7 +70,7 @@ recent no-go theorems for distributive laws showed that the approach
 could not work for the parameterization contemplated.
 
 In this connection, it is worth describing the intuitions that have
-lead to the algorithmic in its current form and scope. The reality is
+lead to the algorithm in its current form and scope. The reality is
 that when taken together Curry-Howard and realizability force a
 particular shape to the semantics of logical formulae. They must be
 collections of witnesses, where the witnesses are computations
