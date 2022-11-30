@@ -62,9 +62,42 @@ term constructors. These play in the role of spatial types.
 \subsection{Summary of contributions and outline of paper}
 
 \subsubsection{Summary of contributions}
-TBD
+In principle, everything here could be derived by a careful analysis
+of native types. However, the native types paper rushes to introduce
+advanced features, like dependent types, while missing certain key
+points. For example, the derived meta theory introduces new terms that
+are not covered by the reduction relation of the
+calculus. Specifically, the product and sum terms introduced have no
+corresponding reductions and thus the type judgments presented in the
+paper are effectively useless for real programs because they will
+never reduce. Moreover, it is actually important to pay attention to
+the fact that there are two forms of conjunctions, disjunctions, and
+implication, mirroring the sort of structure typically found in
+semantics for linear logic.
+
+Fortunately, it is possible to expand the reduction relation in a
+natural way to include the reduction of these terms. Additionally, one
+of the main goals of this work has been to provide an algorithm
+parametric in the kind of collections used to gather witnesses. Here
+we illustrate that the use of Yoneda and $\mathsf{sub}$ can be
+modified to provide a much wider range of collections, and yielding
+logical connectives corresponding to the usual operations on those
+collections.
+
+Finally, we set up a discussion regarding the proper role and shape of
+the derived meta theory. In native types this meta theory is decidedly
+sequential. This means that the logic is at odds with computational
+models like the $\pi$-calculus and the rho-calculus that are
+\emph{concurrent}. What is needed is an analog of the topos that is
+fundamentally concurrent, a rho-pos, if you will. This is because
+concurrency is more fundamental that sequentiality.
 
 \subsubsection{Outline of paper}
-TBD
+First we provide an intuitive motivating example. Then we review Fiore's higher order abstract syntax as a mechanism for providing a categorical model for syntax with binders. To this we add a theory of graphs to capture the operational semantics. Then we review the native types construction in more detail.
+
+The review out of the way we present the algorithm. Then illustrate it
+by deriving a type system for the core of rholang. We prove a
+substitutability theorem. We consider some examples types. Finally we
+conclude with some future directions for research.
 
 % section introduction (end)

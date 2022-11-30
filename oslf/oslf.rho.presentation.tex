@@ -179,29 +179,29 @@ in the encoding.
 
 We write $P\red$ if $\exists Q $ such that $ P \red Q$ and $P\not\red$, otherwise.
 
-\begin{definition}
-  $\mathsf{COMM}$-events: when $P \red P'$ we can record the information
-  justifying this reduction step with an expression of the form
-  $\mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, leaving off the subscript
-  $_{(P,P')}$ when the context makes the source ($P$) and target
-  ($P'$) states clear. Likewise, if $c = \mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, we write $\mathsf{src}(c) = P$, $\mathsf{trgt}(c) = P'$, $\mathsf{src_{N}}(c) = x_{s}$, and $\mathsf{trgt_{N}}(c) = x_{t}$ and $P \stackrel{c}{\red} P'$.
-\end{definition}
+%% \begin{definition}
+%%   $\mathsf{COMM}$-events: when $P \red P'$ we can record the information
+%%   justifying this reduction step with an expression of the form
+%%   $\mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, leaving off the subscript
+%%   $_{(P,P')}$ when the context makes the source ($P$) and target
+%%   ($P'$) states clear. Likewise, if $c = \mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, we write $\mathsf{src}(c) = P$, $\mathsf{trgt}(c) = P'$, $\mathsf{src_{N}}(c) = x_{s}$, and $\mathsf{trgt_{N}}(c) = x_{t}$ and $P \stackrel{c}{\red} P'$.
+%% \end{definition}
 
-We use $\alpha, \beta, ...$ to range over reduction \emph{paths}. That is, if
+%% We use $\alpha, \beta, ...$ to range over reduction \emph{paths}. That is, if
 
-\begin{mathpar}
-  P_{1} \stackrel{\mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1})}{\red} P_{2} \stackrel{\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2})}{\red} \cdots \stackrel{\mathsf{COMM}(x_{t_{n-1}},x_{s_{n-1}},\sigma_{n-1})}{\red} P_{n},
-\end{mathpar}
+%% \begin{mathpar}
+%%   P_{1} \stackrel{\mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1})}{\red} P_{2} \stackrel{\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2})}{\red} \cdots \stackrel{\mathsf{COMM}(x_{t_{n-1}},x_{s_{n-1}},\sigma_{n-1})}{\red} P_{n},
+%% \end{mathpar}
 
-then we may write
+%% then we may write
 
-\begin{mathpar}
-  \alpha = \mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1}):\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2}):\ldots : \mathsf{COMM}(x_{t_{n-1}},x_{s_{n-1}},\sigma_{n-1}).
-\end{mathpar}
+%% \begin{mathpar}
+%%   \alpha = \mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1}):\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2}):\ldots : \mathsf{COMM}(x_{t_{n-1}},x_{s_{n-1}},\sigma_{n-1}).
+%% \end{mathpar}
 
-\begin{definition}
-  The set of paths between $P$ and $Q$, written $\mathsf{paths}(P,Q)$ is defined by $\mathsf{paths}(P,Q) := \{ c:\alpha \; : P \stackrel{c}{\red} P', \alpha \in \mathsf{paths}(P',Q) \}$ and $\epsilon$ denotes the empty path.
-\end{definition}
+%% \begin{definition}
+%%   The set of paths between $P$ and $Q$, written $\mathsf{paths}(P,Q)$ is defined by $\mathsf{paths}(P,Q) := \{ c:\alpha \; : P \stackrel{c}{\red} P', \alpha \in \mathsf{paths}(P',Q) \}$ and $\epsilon$ denotes the empty path.
+%% \end{definition}
 
 \subsection{ Dynamic quote: an example }
 
