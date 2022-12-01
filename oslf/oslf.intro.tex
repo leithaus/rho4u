@@ -6,11 +6,12 @@ to write code at scale in an untyped language. Why waste human time
 and effort on writing tests (and debugging them) and worrying about
 coverage for cases that a compiler can completely and exhaustively
 automate? That is why the big three (Facebook, Google, and Microsoft)
-all spent tens of millions of dollars each developing typed versions
-of javascript. It's cheaper than continuing to throw good money
-after bad on commercial development at industrial scale in an
-untyped language. All told, the cost to the industry of this one issue
-alone is in the hundreds of millions of dollars.
+\cite{chauduri_2017} \cite{DBLP:conf/oopsla/Bak15} \cite{guo_2022} all
+spent tens of millions of dollars each developing typed versions of
+javascript. It's cheaper than continuing to throw good money after bad
+on commercial development at industrial scale in an untyped
+language. All told, the cost to the industry of this one issue alone
+is in the hundreds of millions of dollars.
 
 But, as we move deeper and deeper into the era of distributed
 concurrent computing, the sorts of errors that mainstream programming
@@ -32,48 +33,55 @@ computation as a rewrite system and \emph{generates} as output a
 spatial-behavioral type system for the model.
 
 The formalization of the rewrite system uses Fiore's higher-order
-abstract syntax to specify the syntax with binders. This is augmented
-with a theory of graphs specifying the source and targets of the
-rewrite rules. This yields what amounts to a Cartesian closed category
-($\mathsf{CCC}$), call it $\mathcal{C}$. To $\mathcal{C}$ we apply the
-following recipe. First we hit is with Yoneda, resulting in a category
-of presheaves. We then hit that with a construction described below
-turning the homs into complete Heyting algebras. Finally, we take the
-Grothendieck construction. The result is that types are pairs
-$(\mathbf{U}, \mathbf{X})$ consisting of a sort, $\mathbf{X}$, from
-the original lambda theory and a filter on it, $\mathbf{U}$.
+abstract syntax to specify the syntax with binders
+\cite{DBLP:conf/csl/FioreH10} \cite{DBLP:conf/mfcs/FioreM10}. This is
+augmented with a theory of graphs specifying the source and targets of
+the rewrite rules. This yields what amounts to a Cartesian closed
+category ($\mathsf{CCC}$) \cite{lambek1988introduction}, call it
+$\mathcal{C}$. To $\mathcal{C}$ we apply the following recipe. First
+we hit is with Yoneda \cite{DBLP:books/daglib/0068767}, resulting in a
+category of presheaves \cite{maclane2012sheaves}. We then hit that
+with a construction described below turning the homs into complete
+Heyting algebras \cite{johnstone1982stone}. Finally, we take the
+Grothendieck construction \cite{maclane2012sheaves}. The result is
+that types are pairs $(\mathbf{U}, \mathbf{X})$ consisting of a sort,
+$\mathbf{X}$, from the original lambda theory and a filter on it,
+$\mathbf{U}$.
 
 The resulting category, denoted by $\mathsf{NT}(\mathcal{C})$, enjoys
-a rich logical structure (in fact, it is a topos) and thus provides a
-stable means for combining collections of witnesses of various
-properties in various ways. Specifically the homs are complete Heyting
-algebras and hence enjoy that particular menu of lattice
-operations. Additionally, there are products and sums, which can be
-made to interact coherently with the lattice operations. Likewise, we
-have two different forms of implication.
+a rich logical structure (in fact, it is a topos
+\cite{DBLP:books/daglib/0067551}) and thus provides a stable means for
+combining collections of witnesses of various properties in various
+ways. Specifically the homs are complete Heyting algebras and hence
+enjoy that particular menu of lattice operations. Additionally, there
+are products and sums, which can be made to interact coherently with
+the lattice operations. Likewise, we have two different forms of
+implication.
 
 Further, because the rewrites have been explicitly encoded we get
 typed versions of redex constructors, as well as typed versions of
-reduction, and modal operators ala Hennessy-Milner logics, all of this
-mechanism delivers a powerful behavioral typing
-apparatus. Additionally, we find that there are typed versions of the
-term constructors. These play in the role of spatial types. 
+reduction, and modal operators ala Hennessy-Milner logics
+\cite{milner91polyadicpi}, all of this mechanism delivers a powerful
+behavioral typing apparatus. Additionally, we find that there are
+typed versions of the term constructors. These play in the role of
+spatial types.
 
 \subsection{Summary of contributions and outline of paper}
 
 \subsubsection{Summary of contributions}
 In principle, everything here could be derived by a careful analysis
-of native types. However, the native types paper rushes to introduce
-advanced features, like dependent types, while missing certain key
-points. For example, the derived meta theory introduces new terms that
-are not covered by the reduction relation of the
-calculus. Specifically, the product and sum terms introduced have no
-corresponding reductions and thus the type judgments presented in the
-paper are effectively useless for real programs because they will
+of Williams and Stay's native types
+\cite{DBLP:journals/corr/abs-2102-04672}. However, the native types
+paper rushes to introduce advanced features, like dependent types,
+while missing certain key points. For example, the derived meta theory
+introduces new terms that are not covered by the reduction relation of
+the calculus. Specifically, the product and sum terms introduced have
+no corresponding reductions and thus the type judgments presented in
+the paper are effectively useless for real programs because they will
 never reduce. Moreover, it is actually important to pay attention to
 the fact that there are two forms of conjunctions, disjunctions, and
 implication, mirroring the sort of structure typically found in
-semantics for linear logic.
+semantics for linear logic \cite{DBLP:journals/tcs/Abramsky93}.
 
 Fortunately, it is possible to expand the reduction relation in a
 natural way to include the reduction of these terms. Additionally, one
@@ -87,17 +95,25 @@ collections.
 Finally, we set up a discussion regarding the proper role and shape of
 the derived meta theory. In native types this meta theory is decidedly
 sequential. This means that the logic is at odds with computational
-models like the $\pi$-calculus and the rho-calculus that are
+models like the $\pi$-calculus \cite{milner91polyadicpi} and the
+rho-calculus \cite{DBLP:journals/entcs/MeredithR05} that are
 \emph{concurrent}. What is needed is an analog of the topos that is
 fundamentally concurrent, a rho-pos, if you will. This is because
-concurrency is more fundamental that sequentiality.
+concurrency is more fundamental than sequentiality.
 
 \subsubsection{Outline of paper}
-First we provide an intuitive motivating example. Then we review Fiore's higher order abstract syntax as a mechanism for providing a categorical model for syntax with binders. To this we add a theory of graphs to capture the operational semantics. Then we review the native types construction in more detail.
+First we provide an intuitive motivating example. Then we review
+Fiore's higher order abstract syntax \cite{DBLP:conf/csl/FioreH10}
+\cite{DBLP:conf/mfcs/FioreM10} as a mechanism for providing a
+categorical model for syntax with binders. To this we add a theory of
+graphs to capture the operational semantics. Then we review the native
+types construction \cite{DBLP:journals/corr/abs-2102-04672} in more
+detail.
 
 The review out of the way we present the algorithm. Then illustrate it
-by deriving a type system for the core of rholang. We prove a
-substitutability theorem. We consider some examples types. Finally we
-conclude with some future directions for research.
+by deriving a type system for the core of rholang
+\cite{meredith__rholang_2017}. We prove a substitutability theorem
+\cite{DBLP:conf/oopsla/Liskov87}. We consider some examples
+types. Finally we conclude with some future directions for research.
 
 % section introduction (end)
