@@ -50,7 +50,7 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
   \and
   \inferrule* [lab=Character] {} {\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{\{ Q \}} : \mathbf {X}}
   \and
-  \inferrule* [lab=Top] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{\top} : \mathbf {X}} \\
+  \inferrule* [lab=Top] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{\top} : \mathbf {X}} \\
   \and
   \inferrule* [lab=Composition] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf {X}, \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash Q \substn{P}{p} : \mathbf{V} : \mathbf {Y}} \\
 \end{mathpar}
@@ -61,9 +61,9 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
   \and
   \inferrule* [lab=InL,Right=(V:Y)] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{in}_{L} P : \mathbf{U+V} : \mathbf {X + Y}}
   \and
-  \inferrule* [lab=InR,Right=(V:Y)] {} {\Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma \vdash \mathsf{in}_{R} Q : \mathbf{U+V} : \mathbf {X + Y}} \\
+  \inferrule* [lab=InR,Right=(U:X)] {} {\Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma \vdash \mathsf{in}_{R} Q : \mathbf{U+V} : \mathbf {X + Y}} \\
   \and
-  \inferrule* [lab=Match-Case] {p : \mathbf{U} : \mathbf {X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; q : \mathbf{V} : \mathbf {Y}, \Delta \vdash Q : \mathbf{W} : \mathbf {Z}} {r : \mathbf{U+V} : \mathbf{X+Y}, \Gamma, \Delta \vdash \mathsf{match} \; r \; \mathsf{case} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; q \Rightarrow Q : \mathbf{W} : \mathbf {Z}}
+  \inferrule* [lab=Match-Case] {p : \mathbf{U} : \mathbf {X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; q : \mathbf{V} : \mathbf {Y}, \Delta \vdash Q : \mathbf{W} : \mathbf {Z}} {r : \mathbf{U+V} : \mathbf{X+Y}, \Gamma, \Delta \vdash \mathsf{match} \; r \; \mathsf{case} \; \mathsf{in}_{L}\; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; \mathsf{in}_{R} \; q \Rightarrow Q : \mathbf{W} : \mathbf {Z}}
 \end{mathpar}
 
 \subsubsection{Conjunctions}
@@ -72,22 +72,22 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
   \and
   \inferrule* [lab=Product] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash P \times Q : \mathbf{U \times V} : \mathbf{X \times Y}} \\
   \and
-  \inferrule* [lab=Proj1] {} {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \Vdash r : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}, \Gamma \vdash \mathsf{let} \; r \; = \; \langle p, \_ \rangle \; \mathsf{in}\; P : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=Proj1] {} {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \Vdash r : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}, \Gamma \vdash \mathsf{let} \; \langle p, \_ \rangle \; = \; r \; \mathsf{in}\; P : \mathbf{W} : \mathbf {Z}} \\
   \and
-  \inferrule* [lab=Proj2] {} {q : \mathbf{V} : \mathbf{Y}, \Gamma \vdash Q : \mathbf{W} : \mathbf {Z} \Vdash r : \mathbf{U \times V} : \mathbf{X} \times \mathbf{Y}, \Gamma \vdash \mathsf{let} \; r \; = \; \langle \_, q \rangle \; \mathsf{in} \; Q : \mathbf{W} : \mathbf {Z}}
+  \inferrule* [lab=Proj2] {} {q : \mathbf{V} : \mathbf{Y}, \Gamma \vdash Q : \mathbf{W} : \mathbf {Z} \Vdash r : \mathbf{U \times V} : \mathbf{X} \times \mathbf{Y}, \Gamma \vdash \mathsf{let} \; \langle \_, q \rangle \; = \; r \; \mathsf{in} \; Q : \mathbf{W} : \mathbf {Z}}
 \end{mathpar}
 
 \subsubsection{Implications}
 \begin{mathpar}
-  \inferrule* [lab=Implication1] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}}
+  \inferrule* [lab=Implication1,Right=(U:X)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}}
   \and
-  \inferrule* [lab=Implication2] {}{\Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
+  \inferrule* [lab=Implication2,Right=(U:X)] {}{\Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
   \and
   \inferrule* [lab=Separation,Right=(V:Y)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X+Y}} \\
   \and
   \inferrule* [lab=Abstraction] {}{p : \mathbf{U} : \mathbf {X}, \Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma \vdash \lambda p . Q : \mathbf{U}\to \mathbf{V} : \mathbf{X} \to \mathbf{Y}} \\
   \and
-\inferrule* [lab=Application] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \;\;\; p : \mathbf{U} : \mathbf {X}, \Delta \vdash P : \mathbf{W} : \mathbf{Z} \Vdash \Gamma, r : \mathbf{U} \to \mathbf{V} : \mathbf{X} \to \mathbf{Y}, \Delta \vdash Q \substn{r(P)}{p} : \mathbf{W} : \mathbf{Z}}
+\inferrule* [lab=Application] {}{q : \mathbf{W} : \mathbf {Z}, \Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \;\;\; \Delta \vdash P : \mathbf{U} : \mathbf{X} \Vdash \Gamma, r : \mathbf{U} \to \mathbf{W} : \mathbf{X} \to \mathbf{Z}, \Delta \vdash Q \substn{r(P)}{q} : \mathbf{V} : \mathbf{Y}}
 \end{mathpar}
 
 \subsubsection{Internalized operations}
@@ -98,9 +98,9 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
   \and
   \inferrule* [lab=Snd] {}{\Vdash \; \vdash \pi_{2} : \{ \mathbf{\pi}_{2} \} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=TagL,Right=(V:P)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{in}_{L} \; P : \mathsf{U} \oplus \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=TagL,Right=(V:P)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{L} \; P : \mathsf{U} \oplus \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=TagR,Right=(V:P)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{in}_{R} \; Q : \mathsf{U} \oplus \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=TagR,Right=(V:P)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{R} \; Q : \mathsf{U} \oplus \mathbf{V} : \mathbf {P}} \\
   \inferrule* [lab=Sum] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash [ P,Q] : [ \mathbf{U}, \mathbf{V} ] : \mathbf {P}}
 \end{mathpar}
 
@@ -116,13 +116,13 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
 
 \subsubsection{Equations from $\mathsf{NT(CCC)}$}
 \begin{mathpar}
-  \inferrule* [lab=MatchL-Eqn] {\Gamma \vdash R : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf{X}, \Delta_{1} \vdash P : \mathbf{W} : \mathbf{Z} \;\;\; q : \mathbf{V} : \mathbf{Y}, \Delta_{2} \vdash Q : \mathbf{W} : \mathbf{Z}}{\Gamma,\Delta_{1}, \Delta_{2} \vdash (\mathsf{match} \; \mathsf{in}_{L}\; R \; \mathsf{case} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; q \Rightarrow Q) = P\substn{R}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=MatchL-Eqn] {\Gamma \vdash R : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf{X}, \Delta_{1} \vdash P : \mathbf{W} : \mathbf{Z} \;\;\; q : \mathbf{V} : \mathbf{Y}, \Delta_{2} \vdash Q : \mathbf{W} : \mathbf{Z}}{\Gamma,\Delta_{1}, \Delta_{2} \vdash (\mathsf{match} \; \mathsf{in}_{L}\; R \; \mathsf{case} \; \mathsf{in}_{L} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; \mathsf{in}_{R} \; q \Rightarrow Q) = P\substn{R}{p} : \mathbf{W} : \mathbf {Z}} \\
   \and
-  \inferrule* [lab=MatchR-Eqn] {\Gamma \vdash R : \mathbf{V} : \mathbf {Y} \;\;\; p : \mathbf{U} : \mathbf{X}, \Delta_{1} \vdash P : \mathbf{W} : \mathbf{Z} \;\;\; q : \mathbf{V} : \mathbf{Y}, \Delta_{2} \vdash Q : \mathbf{W} : \mathbf{Z}}{\Gamma,\Delta_{1}, \Delta_{2} \vdash (\mathsf{match} \; \mathsf{in}_{R}\; R \; \mathsf{case} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; q \Rightarrow Q) = Q\substn{R}{q} : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=MatchR-Eqn] {\Gamma \vdash R : \mathbf{V} : \mathbf {Y} \;\;\; p : \mathbf{U} : \mathbf{X}, \Delta_{1} \vdash P : \mathbf{W} : \mathbf{Z} \;\;\; q : \mathbf{V} : \mathbf{Y}, \Delta_{2} \vdash Q : \mathbf{W} : \mathbf{Z}}{\Gamma,\Delta_{1}, \Delta_{2} \vdash (\mathsf{match} \; \mathsf{in}_{R}\; R \; \mathsf{case} \; \mathsf{in}_{L} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; \mathsf{in}_{R} \; q \Rightarrow Q) = Q\substn{R}{q} : \mathbf{W} : \mathbf {Z}} \\
   \and
-  \inferrule* [lab=Proj1-Eqn] {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta \vdash Q_{1} \times Q_{2} : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}}{ \Gamma, \Delta \vdash (\mathsf{let} \; Q_{1} \times Q_{2} \; = \; \langle p, \_ \rangle \; \mathsf{in}\; P) = P\substn{Q_{1}}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=Proj1-Eqn] {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta \vdash Q_{1} \times Q_{2} : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}}{ \Gamma, \Delta \vdash (\mathsf{let} \; \langle p, \_ \rangle \; = \; Q_{1} \times Q_{2} \; \mathsf{in}\; P) = P\substn{Q_{1}}{p} : \mathbf{W} : \mathbf {Z}} \\
   \and
-  \inferrule* [lab=Proj2-Eqn] {p : \mathbf{V} : \mathbf{Y}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta \vdash Q_{1} \times Q_{2} : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}}{ \Gamma, \Delta \vdash (\mathsf{let} \; Q_{1} \times Q_{2} \; = \; \langle \_, p \rangle \; \mathsf{in}\; P) = P\substn{Q_{2}}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=Proj2-Eqn] {p : \mathbf{V} : \mathbf{Y}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta \vdash Q_{1} \times Q_{2} : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}}{ \Gamma, \Delta \vdash (\mathsf{let} \; \langle \_, p \rangle \; = \; Q_{1} \times Q_{2} \; \mathsf{in}\; P) = P\substn{Q_{2}}{p} : \mathbf{W} : \mathbf {Z}} \\
 \end{mathpar}
 
 \subsubsection{Liftings from the $\lambda$-theory}
@@ -136,14 +136,16 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
 
 \subsubsection{Reductions from $\mathsf{NT(CCC)}$}
 \begin{mathpar}
-  \inferrule* [lab=MatchL-Src] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = \mathsf{in}_{L}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {R}} \\
+  \inferrule* [lab=MatchL-Src] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = \mathsf{tag}_{L}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchL-Trgt] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {R}} \\
+  \inferrule* [lab=MatchL-Trgt] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchR-Src] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = \mathsf{in}_{R}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {R}} \\
+  \inferrule* [lab=MatchR-Src] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = \mathsf{tag}_{R}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchR-Trgt] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {R}}
+  \inferrule* [lab=MatchR-Trgt] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {P}}
 \end{mathpar}
+
+Put in proj reductions.
 
 \subsubsection{Modal operators}
 \begin{mathpar}
