@@ -40,7 +40,7 @@ binary term construction, the term in function position is the
 program, and the term in argument position is environment. In the
 rho-calculus parallel composition is the binary term constructor and
 one of the subterms is program and the other is environment (it does
-not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for that binary term.
+not matter which). Without loss of generality, we write $P \odot Q$ for that binary term.
 
 \subsection{Generic types}
 
@@ -136,16 +136,22 @@ not matter which). Without loss of generality, we write $P \mathsf{|} Q$ for tha
 
 \subsubsection{Reductions from $\mathsf{NT(CCC)}$}
 \begin{mathpar}
-  \inferrule* [lab=MatchL-Src] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = \mathsf{tag}_{L}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {P}} \\
+  \inferrule* [lab=MatchL-Src,Right=(V:P)] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = [P_{2},P_{3}] \;  \; \odot \; \mathsf{tag}_{L} \; P_{1} : [\mathbf{U}_{2},\mathbf{U}_{3}] \; \odot \; \mathbf{U}_{1} \oplus \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchL-Trgt] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {P}} \\
+  \inferrule* [lab=MatchL-Trgt] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = P_{2} \; \odot \; P_{1} : \mathbf{U}_{2} \; \odot \; \mathbf{U}_{1} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchR-Src] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = \mathsf{tag}_{R}\; P_{1} \; \mathsf{|} \; [P_{2},P_{3}] : \mathbf{U}_{1} \oplus \mathbf{V} \; \mathsf{|} \; [\mathbf{U}_{2},\mathbf{U}_{3}] : \mathbf {P}} \\
+  \inferrule* [lab=MatchR-Src,Right=(V:P)] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = [P_{2},P_{3}]  \; \odot \; \mathsf{tag}_{R}\; P_{1} : [\mathbf{U}_{2},\mathbf{U}_{3}] \; \odot \; \mathbf{U}_{1} \oplus \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchR-Trgt] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = P_{1} \; \mathsf{|} \; P_{2} : \mathbf{U}_{1} \; \mathsf{|} \; \mathbf{U}_{2} : \mathbf {P}}
+  \inferrule* [lab=MatchR-Trgt] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = P_{3} \; \odot \; P_{1} : \mathbf{U}_{3} \; \odot \; \mathbf{U}_{1} : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=Proj1-Src] {\Gamma \vdash \mathsf{Proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{1}(P_{1},P_{2})) = \pi_{1} \;  \; \odot \; \langle P_{1}, P_{2} \rangle : \{ \pi_{1} \} \; \odot \; \langle \mathbf{U}_{1},\mathbf{U}_{2} \rangle : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=Proj1-Trgt] {\Gamma \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{1}(P_{1},P_{2})) = P_{1} : \mathbf{U}_{1} : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=Proj2-Src] {\Gamma \vdash \mathsf{Proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{2}(P_{1},P_{2})) = \pi_{2} \;  \; \odot \; \langle P_{1}, P_{2} \rangle : \{ \pi_{2} \} \; \odot \; \langle \mathbf{U}_{1},\mathbf{U}_{2} \rangle : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=Proj1-Trgt] {\Gamma \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{2}(P_{1},P_{2})) = P_{2} : \mathbf{U}_{2} : \mathbf {P}}
 \end{mathpar}
-
-Put in proj reductions.
 
 \subsubsection{Modal operators}
 \begin{mathpar}
