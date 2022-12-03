@@ -1,3 +1,14 @@
 \section{Specifying a model of computation: lambda theories and higher order abstract syntax}
 
-We follow Fiore closely.
+We follow Fiore and Hur \cite{DBLP:conf/csl/FioreH10} closely.
+
+\begin{definition}
+  A second order signature $\Sigma$ enjoys the following data $\Sigma = (T,O,|-|)$ with
+  \begin{itemize}
+    \item $T$ a set of types
+    \item $O$ a set of operators
+      \item $|-| : (T^{*} \times T^{*} \to T)$ and arity function.
+  \end{itemize}  
+\end{definition}
+
+We write $o : (\arrvec{\sigma_{1}})\tau_{1} \times \ldots \times (\arrvec{\sigma_{n}})\tau_{n} \to \tau$ when $|o| = ((\arrvec{\sigma_{1}})\tau_{1}, \ldots, (\arrvec{\sigma_{n}})\tau_{n}, \tau)$
