@@ -451,20 +451,25 @@ give a typing for the $\pzero$ term.
 
 \subsubsection{Lifted redex constuctors}
 \begin{mathpar}
-  \inferrule* [lab=COMM] {\Gamma_{1} \vdash x : \mathbf{V} : \mathbf{N} \;\;\; y : \mathbf{V} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}} \\
+  \inferrule* [lab=Comm] {\Gamma_{1} \vdash x : \mathbf{V} : \mathbf{N} \;\;\; y : \mathbf{V} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}} \\
+  \and  
+  \inferrule* [lab=Eval] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R}} \\
   \and
-  \inferrule* [lab=Eval] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R}}  
+  \inferrule* [lab=Par] {}{\Gamma \vdash R : \mathbf{E} : \mathbf{R} \;\;\; \Delta \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma, \Delta \vdash \mathsf{par}(R, P) : \binpart{E}{U} : \mathbf{R}}
 \end{mathpar}
 
 \subsubsection{Reductions from the $\lambda$-theory}
 \begin{mathpar}
-  \inferrule* [lab=COMM-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\commr{x}{y}{P}{Q}) = \prefix{x}{y}{P} \mathsf{|} \outputp{x}{Q} : \prefixt{U}{V}{W} \mathbf{|} \outputt{U}{V} : \mathbf{P}} \\
+  \inferrule* [lab=Comm-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\commr{x}{y}{P}{Q}) = \prefix{x}{y}{P} \mathsf{|} \outputp{x}{Q} : \prefixt{U}{V}{W} \mathbf{|} \outputt{U}{V} : \mathbf{P}} \\
   \and
-  \inferrule* [lab=COMM-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\commr{x}{y}{P}{Q}) = P\substn{\quotep{Q}}{y} : \mathbf{W} : \mathbf{P}} \\
+  \inferrule* [lab=Comm-Trgt] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\commr{x}{y}{P}{Q}) = P\substn{\quotep{Q}}{y} : \mathbf{W} : \mathbf{P}} \\
   \and
   \inferrule* [lab=Eval-Src] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{src}(\mathsf{eval}(P)) = \dropn{\quotep{P}} : \dropt{\quotet{U}} : \mathbf{P}} \\
   \and
-  \inferrule* [lab=Eval-Trgt] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{trgt}(\mathsf{eval}(P)) = P : \mathbf{U} : \mathbf{P}}  
+  \inferrule* [lab=Eval-Trgt] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{trgt}(\mathsf{eval}(P)) = P : \mathbf{U} : \mathbf{P}} \\
+  \inferrule* [lab=Par-Src] {\Gamma \vdash \binparx{R}{P} : \binpart{E}{U} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\binparx{R}{P}) = \mathsf{src}(R) : \binpart{src(E)}{U} : \mathbf{R}} \\
+  \and
+  \inferrule* [lab=Par-Trgt] {\Gamma \vdash \binparx{R}{P} : \binpart{E}{U} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\binparx{R}{P}) = \binparx{\mathsf{trgt}(R)}{P} : \binpart{trgt(E)}{U} : \mathbf{R}} \\
 \end{mathpar}
 
 % section rholang (end)
