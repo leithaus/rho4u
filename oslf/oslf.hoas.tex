@@ -12,3 +12,12 @@ We follow Fiore and Hur \cite{DBLP:conf/csl/FioreH10} closely.
 \end{definition}
 
 We write $o : (\arrvec{\sigma_{1}})\tau_{1} \times \ldots \times (\arrvec{\sigma_{n}})\tau_{n} \to \tau$ when $|o| = ((\arrvec{\sigma_{1}})\tau_{1}, \ldots, (\arrvec{\sigma_{n}})\tau_{n}, \tau)$
+
+\subsection{Typing contexts}
+ We will consider terms in typing contexts. Typing contexts have two
+ zones, each respectively typing variables and metavariables. Variable
+ typings are types. Metavariable typings are parameterised types: a
+ metavariable of type $[\sigma_{1},\ldots,\sigma_{n}]\tau$, , when
+ parameterised by terms of type $\sigma_{1},\ldots,\sigma_{n}$ yield a
+ term of type $\tau$. Thus, we use the following representation for
+ typing contexts $m_{1} : [\arrvec{\sigma_{1}}]\tau_{1}, \ldots m_{j}: [\arrvec{\sigma_{j}}]\tau_{j} \rhd x_{1} : \sigma'_{1}, \ldots, x_{k} : \sigma'_{k}$.
