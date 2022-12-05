@@ -449,6 +449,19 @@ give a typing for the $\pzero$ term.
 \inferrule* [lab=Quote] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \quotep{x} : \quotet{U} : \mathbf{P}} \\
 \end{mathpar}
 
+\subsubsection{Equations}
+\begin{mathpar}
+  \inferrule* [lab=ParMonoidId] {\Gamma \vdash P : \mathbf{P}}{\Gamma \vdash \binpar{P}{0} = P : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=ParMonoidAssoc] {\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} : \mathbf{P} : \mathbf{P}}{\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} = \binpar{P}{(\binpar{Q}{R})} : \mathbf{P}}
+  \and
+  \inferrule* [lab=ParMonoidAssoc] {\Gamma \vdash \binpar{P}{(\binpar{Q}{R})} : \mathbf{P}}{\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} = \binpar{P}{(\binpar{Q}{R})} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=ParMonoidComm] {\Gamma \vdash \binpar{P}{Q} : \mathbf{P}}{\Gamma \vdash \binpar{P}{Q} = \binpar{Q}{P} : \mathbf{P}}
+  \and
+  \inferrule* [lab=ParMonoidComm] {\Gamma \vdash \binpar{Q}{P} : \mathbf{P}}{\Gamma \vdash \binpar{Q}{P} = \binpar{P}{Q} : \mathbf{P}}
+\end{mathpar}
+
 \subsubsection{Lifted redex constuctors}
 \begin{mathpar}
   \inferrule* [lab=Comm] {\Gamma_{1} \vdash x : \mathbf{V} : \mathbf{N} \;\;\; y : \mathbf{\quotep{V}} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W} : \mathbf{R}} \\
