@@ -26,3 +26,12 @@ typing contexts $m_{1} : [\arrvec{\sigma_{1}}]\tau_{1}, \ldots, m_{j}: [\arrvec{
  Signatures give rise to terms. These are built up by means of operators
 from both variables and metavariables, and hence referred to as second-order.
 Terms are considered up to $\alpha$-equivalence by stipulating that for every operator $o$ in the term $o(\ldots,(\arrvec{x}_{i})t_{i},\ldots)$ the $\arrvec{x}_{i}$ are bound in $t_{i}$.
+
+\subsection{Judgments}
+\begin{mathpar}
+  \inferrule* [lab=Variable]{}{\Vdash \Theta \rhd x : \tau,\Gamma \vdash x : \tau} \\
+  \and
+  \inferrule* [lab=Meta-variable]{}{m : [\tau_{1},\ldots,\tau_{n}]\tau, \Theta \rhd \Gamma \vdash t_{i} : \tau_{i} \Vdash m : [\tau_{1},\ldots,\tau_{n}]\tau, \Theta \rhd \Gamma \vdash m[t_{1},\ldots,t_{n}] : \tau} \\
+  \and
+  \inferrule* [lab=Operator]{\Theta \rhd \arrvec{x}_{1} : \arrvec{t}_{1},\ldots,\arrvec{x}_{n} : \arrvec{t}_{n}, \Gamma \vdash t_{i} : \tau_{i} \;\;\; o : (\arrvec{\sigma_{1}})\tau_{1} \times \ldots \times (\arrvec{\sigma_{n}})\tau_{n} \to \tau}{\Theta \rhd \Gamma \vdash o(\arrvec{x}_{1},\ldots,\arrvec{x}_{n}) : \tau} 
+\end{mathpar}
