@@ -33,5 +33,10 @@ Terms are considered up to $\alpha$-equivalence by stipulating that for every op
   \and
   \inferrule* [lab=Meta-variable]{}{m : [\tau_{1},\ldots,\tau_{n}]\tau, \Theta \rhd \Gamma \vdash t_{i} : \tau_{i} \Vdash m : [\tau_{1},\ldots,\tau_{n}]\tau, \Theta \rhd \Gamma \vdash m[t_{1},\ldots,t_{n}] : \tau} \\
   \and
-  \inferrule* [lab=Operator]{\Theta \rhd \arrvec{x}_{1} : \arrvec{t}_{1},\ldots,\arrvec{x}_{n} : \arrvec{t}_{n}, \Gamma \vdash t_{i} : \tau_{i} \;\;\; o : (\arrvec{\sigma_{1}})\tau_{1} \times \ldots \times (\arrvec{\sigma_{n}})\tau_{n} \to \tau}{\Theta \rhd \Gamma \vdash o(\arrvec{x}_{1},\ldots,\arrvec{x}_{n}) : \tau} 
+  \inferrule* [lab=Abstraction]{\Theta \rhd \arrvec{x}_{1} : \arrvec{t}_{1},\ldots,\arrvec{x}_{n} : \arrvec{t}_{n}, \Gamma \vdash t_{i} : \tau_{i} \;\;\; o : (\arrvec{\sigma_{1}})\tau_{1} \times \ldots \times (\arrvec{\sigma_{n}})\tau_{n} \to \tau}{\Theta \rhd \Gamma \vdash o(\arrvec{x}_{1},\ldots,\arrvec{x}_{n}) : \tau} \\
+  \and
+  \inferrule* [lab=Application]{\Theta \rhd \arrvec{x}_{1} : \arrvec{t}_{1},\ldots,\arrvec{x}_{n} : \arrvec{t}_{n}, \Gamma \vdash t : \tau \;\;\; \Theta \rhd \Gamma \vdash t_{i} : \tau_{i}}{\Theta \rhd \Gamma \vdash t\substn{t_{i}}{x_{i}} : \tau}
 \end{mathpar}
+
+\subsection{Substitution}
+TBD
