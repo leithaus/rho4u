@@ -27,7 +27,33 @@ typing contexts $m_{1} : [\arrvec{\sigma_{1}}]\tau_{1}, \ldots, m_{j}: [\arrvec{
 from both variables and metavariables, and hence referred to as second-order.
 Terms are considered up to $\alpha$-equivalence by stipulating that for every operator $o$ in the term $o(\ldots,(\arrvec{x}_{i})t_{i},\ldots)$ the $\arrvec{x}_{i}$ are bound in $t_{i}$.
 
-\subsection{Judgments}
+\subsection{Judgments and inference rules}
+
+\subsubsection{Judgments}
+Judgments have a two part context, one for metavariables ($\Theta$),
+and the other for variables ($\Gamma$), and a single type inference
+for the consequence. Symbolically, we write $\Theta \rhd\Gamma \vdash t : \tau$, pronouncing it ``$\Theta$ and $\Gamma$ think that $t$ is of type $\tau$.''
+
+\subsubsection{Inference rules}
+Because we have inference rules both for lambda theories and also the
+meta theory, there are rather a bit more of them, hence we allow a bit
+of flexibility in the format. When space allows, we adopt a horizontal
+rather than vertical syntax. Thus for an inference rule with judgments
+$J_{1} \; \ldots \; J_{n}$ as the hypotheses, and $J$ as the
+consequent, we write $J_{1} \; \ldots \; J_{n} \Vdash J$. When there
+are no hypotheses, we write $\Vdash J$. When horizontal space is at a
+premium, then we opt for the more traditional format
+
+\begin{mathpar}
+  \inferrule* [lab=Rule] {J_{1} \; \ldots \; J_{n}} {J}
+\end{mathpar}
+
+\subsubsection{Typed term formation}
+
+The reader familiar with the ordinary simply typed $\lambda$-calculus
+will see the family resemblance. The key difference is that we have
+metavariables which enriches contexts, abstraction, and application.
+
 \begin{mathpar}
   \inferrule* [lab=Variable]{ }{\Theta \rhd x : \tau,\Gamma \vdash x : \tau} \\
   \and

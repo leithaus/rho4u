@@ -11,18 +11,7 @@ Type assertions are of the form $e : \bold{U} : \bold{X}$ where
 $\bold{X}$ may be considered a \emph{kind} and $\bold{U}$ is a type
 interpreted as a \emph{filter} on the kind. Contexts are sequences of
 type assertions. Judgments are written in more or less standard form
-$\Gamma \vdash P : \bold{U} : \bold{X}$. Because there are rather a
-bit more of them, inference rules are written in a somewhat
-non-standard form. When space allows, we adopt a horizontal rather
-than vertical syntax. Thus for an inference rule with judgments $J_{1}
-\; \ldots \; J_{n}$ as the hypotheses, and $J$ as the consequent, we
-write $J_{1} \; \ldots \; J_{n} \Vdash J$. When there are no
-hypotheses, we write $\Vdash J$. When horizontal space is at a
-premium, then we opt for the more traditional format
-
-\begin{mathpar}
-  \inferrule* [lab=Rule] {J_{1} \; \ldots \; J_{n}} {J}
-\end{mathpar}
+$\Gamma \vdash P : \bold{U} : \bold{X}$. 
 
 Note that the input is a $CCC$ presented as a $\lambda$-theory, and
 hence also enjoys a judgment style presentation. Much of the machinery
