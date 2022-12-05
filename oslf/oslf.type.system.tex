@@ -98,9 +98,9 @@ not matter which). Without loss of generality, we write $P \odot Q$ for that bin
   \and
   \inferrule* [lab=Snd] {}{\Vdash \; \vdash \pi_{2} : \{ \mathbf{\pi}_{2} \} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=TagL,Right=(V:P)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{L} \; P : \mathsf{U} \oplus \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=TagL,Right=(V:P)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{L} \; P : \mathbf{U} \oplus \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=TagR,Right=(V:P)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{R} \; Q : \mathsf{U} \oplus \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=TagR,Right=(U:P)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{R} \; Q : \mathbf{U} \oplus \mathbf{V} : \mathbf {P}} \\
   \inferrule* [lab=Sum] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash [ P,Q] : [ \mathbf{U}, \mathbf{V} ] : \mathbf {P}}
 \end{mathpar}
 
