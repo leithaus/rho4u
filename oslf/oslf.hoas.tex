@@ -61,8 +61,25 @@ metavariables which enriches contexts, abstraction, and application.
   \and
   \inferrule* [lab=Abstraction]{\Theta \rhd \arrvec{x}_{1} : \arrvec{t}_{1},\ldots,\arrvec{x}_{n} : \arrvec{t}_{n}, \Gamma \vdash t_{i} : \tau_{i} \;\;\; o : (\arrvec{\sigma_{1}})\tau_{1} \times \ldots \times (\arrvec{\sigma_{n}})\tau_{n} \to \tau}{\Theta \rhd \Gamma \vdash o((\arrvec{x}_{1})t_{i},\ldots,(\arrvec{x}_{n})t_{n}) : \tau} \\
   \and
-  \inferrule* [lab=Application]{\Theta \rhd \arrvec{x}_{1} : \arrvec{t}_{1},\ldots,\arrvec{x}_{n} : \arrvec{t}_{n}, \Gamma \vdash t : \tau \;\;\; \Theta \rhd \Gamma \vdash t_{i} : \tau_{i}}{\Theta \rhd \Gamma \vdash t\substn{t_{i}}{x_{i}} : \tau}
+  \inferrule* [lab=Application]{\Theta \rhd \arrvec{x}_{1} : \arrvec{t}_{1},\ldots,\arrvec{x}_{n} : \arrvec{t}_{n}, \Gamma \vdash t : \tau \;\;\; \Theta \rhd \Gamma \vdash t_{i} : \tau_{i}}{\Theta \rhd \Gamma \vdash t\substn{t_{i}}{x_{i}} : \tau} \\
+  \and
+  \inferrule* [lab=Meta-application]{m_{1} : [\arrvec{\sigma}_{1}]\tau_{1},\ldots, m_{n} : [\arrvec{\sigma}_{n}]\tau_{n} \rhd \Gamma \vdash t : \tau \;\;\; \Theta \rhd \arrvec{x}_{1} : \arrvec{\sigma}_{1},\ldots,\arrvec{x}_{n} : \arrvec{\sigma}_{n}, \Gamma \vdash t_{i} : \tau_{i}}{\Theta \rhd \Gamma \vdash t\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} : \tau}
 \end{mathpar}
 
-\subsection{Substitution}
-TBD
+\subsubsection{Substitution}
+\begin{mathpar}
+  \inferrule* {}{x_{j}\substn{t_{i}}{x_{i}} = t_{j}} \\
+  \and
+  \inferrule* {}{m[\ldots,s,\ldots]\substn{t_{i}}{x_{i}} = m[\ldots,s\substn{t_{i}}{x_{i}},\ldots]} \\
+  \and
+  \inferrule* {}{(o(\ldots,(y_{1},\ldots,y_{k})s,\ldots))\substn{t_{i}}{x_{i}} = o(\ldots,(z_{1},\ldots,z_{k})((s\substn{z_{j}}{y_{j}})\substn{t_{i}}{x_{i}}),\ldots)}
+\end{mathpar}
+
+\subsubsection{Meta-substitution}
+\begin{mathpar}
+  \inferrule* {}{x\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} = x} \\
+  \and
+  \inferrule* {}{m_{k}[s_{1},\ldots,s_{m}]\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} = t_{k}[(s_{j}\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}})\substn{t_{i}}{x_{i,j}}]} \\
+  \and
+  \inferrule* {}{(o(\ldots,(\arrvec{x})s,\ldots))\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} = o(\ldots,(\arrvec{x})s\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}},\ldots)}
+\end{mathpar}
