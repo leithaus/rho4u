@@ -79,7 +79,7 @@ metavariables which enriches contexts, abstraction, and application.
 \begin{mathpar}
   \inferrule* {}{x\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} = x} \\
   \and
-  \inferrule* {}{m_{k}[s_{1},\ldots,s_{m}]\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} = t_{k}[(s_{j}\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}})\substn{t_{i}}{x_{i,j}}]} \\
+  \inferrule* {}{m_{k}[s_{1},\ldots,s_{m}]\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} = t_{k}\substn{(s_{j}\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}})}{x_{i,j}}} \\
   \and
   \inferrule* {}{(o(\ldots,(\arrvec{x})s,\ldots))\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} = o(\ldots,(\arrvec{x})s\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}},\ldots)}
 \end{mathpar}
