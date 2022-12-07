@@ -83,3 +83,26 @@ metavariables which enriches contexts, abstraction, and application.
   \and
   \inferrule* {}{(o(\ldots,(\arrvec{x})s,\ldots))\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}} = o(\ldots,(\arrvec{x})s\msubstn{(\arrvec{x}_{i})t_{i}}{m_{i}},\ldots)}
 \end{mathpar}
+
+\subsection{Equations}
+\begin{mathpar}
+  \inferrule* [lab=Axiom-Eq] { }{f : X \to TY, g: X \to TY, E \vdash f = g : X \to TY} \\
+  \and
+  \inferrule* [lab=Reflexivity-Eq] {f : X \to TY}{E \vdash f = f : X \to TY}
+  \and
+  \inferrule* [lab=Symmetry-Eq] {E \vdash f = g : X \to TY}{E \vdash g = f : X \to TY} \\
+  \and
+  \inferrule* [lab=Transivity-Eq] {E \vdash f = g : X \to TY \;\;\; E \vdash g = h : X \to TY}{E \vdash f = h : X \to TY} \\
+  \and
+  \inferrule* [lab=Composition-Eq] {E \vdash f_{1} = g_{1} : X \to TY \;\;\; E \vdash f_{2} = g_{2} : y \to TZ}{E \vdash f_{1}[f_{2}] = g_{1}[g_{2}] : X \to TZ} \\
+  \and
+  \inferrule* [lab=Parameterization-Eq] {E \vdash f = g : X \to TY}{E \vdash f\langle P \rangle = g\langle P \rangle : X \to TY}
+  \and
+  \inferrule* [lab=Local-Character-Eq] {E \vdash f \; e_{i} = g \; e_{i} : X_{i} \to TY}{E \vdash f = g : X \to TY}
+\end{mathpar}
+
+Where given $h : X \to TY$
+\begin{mathpar}
+  h\langle P \rangle := X \otimes P \stackrel{h\otimes id}{\to} TY \otimes P \to T(Y \otimes P) \\
+  \{ e_{i} : X_{i} \to X \}\; are\; jointly\; epi
+\end{mathpar}
