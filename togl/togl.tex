@@ -484,7 +484,7 @@ bundling of wires and establish that our contexts have multiple holes.
 We can define a cut rule for graph variables just as we defined a cut
 rule for vertex variables.
 
-\[\frac{ \mathsf{G}[X,V]; \Gamma_1; \mathcal{G}_1 \vdash g_1 \; \;\mathsf{G}[X,V]; \Gamma_2; \mathcal{G}_2, B \vdash g_2}{ \mathsf{G}[X,V]; \vec{A}, \vec{C} \vdash \mathsf{let}\; B = g_1 \; \mathsf{in}\; g_2}Cut\]
+\[\frac{ \mathsf{G}[X,V]; \Gamma_1; \mathcal{G}_1 \vdash g_1 \; \;\mathsf{G}[X,V]; \Gamma_2; \mathcal{G}_2, B \vdash g_2}{ \mathsf{G}[X,V]; \mathcal{G}_{1}, \mathcal{G}_{2} \vdash \mathsf{let}\; B = g_1 \; \mathsf{in}\; g_2}Cut\]
 
 This in turn makes it possible to describe a wide range of graphs with
 recursive structure. In particular, prior to the addition of graph
