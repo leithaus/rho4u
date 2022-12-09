@@ -94,7 +94,7 @@ metavariables which enriches contexts, abstraction, and application.
   \and
   \inferrule* [lab=Transivity-Eq] {E \vdash f = g : X \to TY \;\;\; E \vdash g = h : X \to TY}{E \vdash f = h : X \to TY} \\
   \and
-  \inferrule* [lab=Composition-Eq] {E \vdash f_{1} = g_{1} : X \to TY \;\;\; E \vdash f_{2} = g_{2} : y \to TZ}{E \vdash f_{1}[f_{2}] = g_{1}[g_{2}] : X \to TZ} \\
+  \inferrule* [lab=Composition-Eq] {E \vdash f_{1} = g_{1} : X \to TY \;\;\; E \vdash f_{2} = g_{2} : Y \to TZ}{E \vdash f_{1};f_{2} = g_{1};g_{2} : X \to TZ} \\
   \and
   \inferrule* [lab=Parameterization-Eq] {E \vdash f = g : X \to TY}{E \vdash f\langle P \rangle = g\langle P \rangle : X \to TY}
   \and
@@ -103,6 +103,6 @@ metavariables which enriches contexts, abstraction, and application.
 
 Where given $h : X \to TY$
 \begin{mathpar}
-  h\langle P \rangle := X \otimes P \stackrel{h\otimes id}{\to} TY \otimes P \to T(Y \otimes P) \\
+  h\langle P \rangle := X \otimes P \xrightarrow{h\otimes id} TY \otimes P \xrightarrow{strength_{T}} T(Y \otimes P) \\
   \{ e_{i} : X_{i} \to X \}\; are\; jointly\; epi
 \end{mathpar}

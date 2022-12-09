@@ -451,15 +451,11 @@ give a typing for the $\pzero$ term.
 
 \subsubsection{Equations}
 \begin{mathpar}
-  \inferrule* [lab=ParMonoidId] {\Gamma \vdash P : \mathbf{P}}{\Gamma \vdash \binpar{P}{0} = P : \mathbf{P}} \\
+  \inferrule* [lab=ParMonoidId] {\Gamma \vdash P : \mathbf{U} : \mathbf{P}}{\Gamma \vdash \binpar{P}{0} = P : \mathbf{U} : \mathbf{P}} \\
   \and
-  \inferrule* [lab=ParMonoidAssoc] {\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} : \mathbf{P} : \mathbf{P}}{\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} = \binpar{P}{(\binpar{Q}{R})} : \mathbf{P}}
+  \inferrule* [lab=ParMonoidAssoc] {\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} : \mathbf{U} : \mathbf{P}}{\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} = \binpar{P}{(\binpar{Q}{R})} : \mathbf{U} : \mathbf{P}} \\
   \and
-  \inferrule* [lab=ParMonoidAssoc] {\Gamma \vdash \binpar{P}{(\binpar{Q}{R})} : \mathbf{P}}{\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} = \binpar{P}{(\binpar{Q}{R})} : \mathbf{P}} \\
-  \and
-  \inferrule* [lab=ParMonoidComm] {\Gamma \vdash \binpar{P}{Q} : \mathbf{P}}{\Gamma \vdash \binpar{P}{Q} = \binpar{Q}{P} : \mathbf{P}}
-  \and
-  \inferrule* [lab=ParMonoidComm] {\Gamma \vdash \binpar{Q}{P} : \mathbf{P}}{\Gamma \vdash \binpar{Q}{P} = \binpar{P}{Q} : \mathbf{P}}
+  \inferrule* [lab=ParMonoidComm] {\Gamma \vdash \binpar{P}{Q} : \mathbf{U} : \mathbf{P}}{\Gamma \vdash \binpar{P}{Q} = \binpar{Q}{P} : \mathbf{U} : \mathbf{P}}
 \end{mathpar}
 
 \subsubsection{Lifted redex constuctors}
