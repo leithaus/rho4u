@@ -150,7 +150,7 @@ sequences. Thus, given \(\Gamma_1 = x_{11},\ldots,x_{1m}\) and
 
 A graph expression is given by the grammar
 
-\[g,h ::= 0 \;|\; v|g \;|\; g \otimes h \; |\;\mathsf{let}\; x = v \; \mathsf{in}\; g \;|\; \langle \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g, \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; h\rangle\]
+\[g,h ::= 0 \;|\; v|g \;|\; x|g \;|\; g \otimes h \; |\;\mathsf{let}\; x = v \; \mathsf{in}\; g \;|\; \langle \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g, \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; h\rangle\]
 
 \hypertarget{pronunciation}{%
 \subsubsection{Pronunciation}\label{pronunciation}}
@@ -176,6 +176,8 @@ The graph constructors are pronounced as follows.
   from \(x_1\) to \(x_2\)''; or, ``connect \(g_1\) to \(g_2\) with and
   edge from \(x_1\) to \(x_2\)''.
 \end{itemize}
+
+We say $x$ is fresh in $g$ if $x$ does not occur in $g$.
 
 The judgment \(\mathsf{G}[X,V]; \Gamma \vdash g\) is pronounced
 ``\(\mathsf{G}[X,V]\) thinks that \(g\) is well-formed, given
@@ -204,7 +206,7 @@ graph is well formed are as follows
 
 \[\frac{ \mathsf{G}[X,V]; \Gamma_1 \vdash g_1 \; \mathsf{G}[X,V]; \Gamma_2 \vdash g_2}{ \mathsf{G}[X,V]; \Gamma_1, \Gamma_2 \vdash g_1 \otimes g_2}Juxtaposition[\Gamma_1 \cap \Gamma_2 = \emptyset]\]
 
-\[\frac{ \mathsf{G}[X,V]; \Gamma,x \vdash g \; \;\mathsf{G}[X,V]; () \vdash v}{ \mathsf{G}[X,V]; \Gamma \vdash \mathsf{let}\; x = v \; \mathsf{in}\; g}Nomination\]
+\[\frac{ \mathsf{G}[X,V]; \Gamma,x \vdash v|g}{ \mathsf{G}[X,V]; \Gamma \vdash \mathsf{let}\; x = v \; \mathsf{in}\; g}Nomination[x \;fresh\; in\; g]\]
 
 \[\frac{ \mathsf{G}[X,V]; \Gamma_1 \vdash \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g_1 \; \;\mathsf{G}[X,V]; \Gamma_2 \vdash \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; g_2}{ \mathsf{G}[X,V]; \Gamma_1,\Gamma_2 \vdash \langle \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g_1, \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; g_2 \rangle}Connection[\Gamma_1 \cap \Gamma_2 = \emptyset]\]
 
@@ -252,7 +254,7 @@ graph is well formed are as follows
 Notice that the intuitive interpretation for \(Nomination\) matches the
 pronunciation.
 
-\[\frac{ \mathsf{G}[X,V];\Gamma,x \vdash g \; \;\mathsf{G}[X,V]; () \vdash v}{ \mathsf{G}[X,V]; \Gamma \vdash \mathsf{let}\; x = v \; \mathsf{in}\; g}Nomination\]
+\[\frac{ \mathsf{G}[X,V];\Gamma,x \vdash v|g}{ \mathsf{G}[X,V]; \Gamma \vdash \mathsf{let}\; x = v \; \mathsf{in}\; g}NewNomination\]
 
 ``Nomination concludes that \(\mathsf{G}[X,V]\) thinks that the graph
 that lets \(x\) stand for \(v\) in \(g\) is well formed given \(\Gamma\)
@@ -484,7 +486,7 @@ bundling of wires and establish that our contexts have multiple holes.
 We can define a cut rule for graph variables just as we defined a cut
 rule for vertex variables.
 
-\[\frac{ \mathsf{G}[X,V]; \Gamma_1; \mathcal{G}_1 \vdash g_1 \; \;\mathsf{G}[X,V]; \Gamma_2; \mathcal{G}_2, B \vdash g_2}{ \mathsf{G}[X,V]; \mathcal{G}_{1}, \mathcal{G}_{2} \vdash \mathsf{let}\; B = g_1 \; \mathsf{in}\; g_2}Cut\]
+\[\frac{ \mathsf{G}[X,V]; \Gamma_1; \mathcal{G}_1 \vdash g_1 \; \;\mathsf{G}[X,V]; \Gamma_2; \mathcal{G}_2, B \vdash g_2}{ \mathsf{G}[X,V]; \mathcal{G}_{1}, \mathcal{G}_{2} \vdash \mathsf{let}\; B = g_1 \; \mathsf{in}\; g_2}Cut[B\;fresh\; in\; g_{2}]\]
 
 This in turn makes it possible to describe a wide range of graphs with
 recursive structure. In particular, prior to the addition of graph
