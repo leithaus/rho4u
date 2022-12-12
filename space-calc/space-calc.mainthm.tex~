@@ -1,0 +1,25 @@
+\section{Main theorem: substitutability}
+The Liskov substitution principle \cite{DBLP:conf/oopsla/Liskov87} is
+vitally important for a type systems, especially if we want our type
+system to provide guidance for automated refactoring and other kinds
+of support we might expect of a type-directed interactive design
+environment, such as IntelliJ or Eclipse. In Milner's polyadic
+$\pi$-calculus tutorial \cite{milner91polyadicpi} he demonstrates
+exactly the sort of theorem for his logic that we need to formalize
+Liskov's principle.
+
+\begin{mathpar}
+  P \wbbisim Q \iff \forall \phi.( P \vDash \phi \iff Q \vDash \phi)
+\end{mathpar}
+
+As Caires points out, spatial connectives can see structural
+properties that Milner's logic cannot. In particular, bisimulation
+cannot distinguish parallel composition from the summ of all
+interleavings. Fortunately, by including proved versions of the
+structural equalities we recover Milner's theorem.
+
+\begin{theorem}[substitutability]
+  \begin{mathpar}
+    P \wbbisim Q \iff \forall (\mathbf{U},\mathbf{X}).( P : (\mathbf{U},\mathbf{X}) \iff Q : (\mathbf{U},\mathbf{X}))
+  \end{mathpar}
+\end{theorem}

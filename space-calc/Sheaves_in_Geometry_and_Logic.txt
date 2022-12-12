@@ -1,0 +1,10 @@
+@book{maclane2012sheaves,
+  title={Sheaves in Geometry and Logic: A First Introduction to Topos Theory},
+  author={MacLane, S. and Moerdijk, I.},
+  isbn={9781461209270},
+  lccn={91033709},
+  series={Universitext},
+  url={https://books.google.com/books?id=LZWLBAAAQBAJ},
+  year={2012},
+  publisher={Springer New York}
+}

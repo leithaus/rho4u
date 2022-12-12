@@ -1,0 +1,45 @@
+\section{Introduction}\label{sec:introduction} % (fold)
+
+One of the notable things about the Einstein field equations
+\cite{Misner1973} is their mutual recursion. The stress energy tensor
+describing the distribution of matter and energy informs the metric
+tensor, which in turn informs the stress energy tensor. Any red
+blooded computer scientist sees this and immediately wants to express
+it as a couple of mutually recursive functions and/or data structures.
+
+Meanwhile, in computer science a revolution in the notion of location
+has happened and all but gone unnoticed. On the one hand, Huet's
+zipper \cite{DBLP:journals/jfp/Huet97} generalizes the intuitions of
+the Dedekind cut for all differentiable data structures. Specifically,
+for a data structure described by a differentiable functor, $T$, an
+element of the data type $\partial \; T \times T$ describes a location
+in an element of $T$ \cite{DBLP:conf/popl/McBride08}.
+
+On the other, Milner's $\pi$-calculus transforms the
+$\lambda$-calculus by reifying the site of interaction as a channel,
+and introducing parallel composition \cite{milner91polyadicpi}. This
+change simultaneously gives computations autonomy and a means of
+finding each other. Meredith's rho-calculus takes Milner's insight a
+step further \cite{DBLP:journals/entcs/MeredithR05}, making the
+reified site of interaction into a fully first class entity with a
+complexity of structure equivalent to computations.
+
+A question worth exploring is whether these two notions of location
+can be combined, yielding a site of interaction corresponding to a
+location in a computation. The thought is that such a reconciliation
+of the two ideas would allow for a computational calculus enjoying
+something like the intuitions underlying the dynamics in Einstein's
+field equations.
+
+\subsection{Summary of contributions and outline of paper}
+
+\subsubsection{Summary of contributions}
+We present a calculus, dubbed the space calculus (from outer space!)
+whose primitives are channels built from locations in computations
+reified as data structures. This gives us the ability to model a
+variety of space-like phenomena.
+
+\subsubsection{Outline of paper}
+TBD
+
+% section introduction (end)

@@ -1,0 +1,37 @@
+\def\lastname{Meredith}
+
+\title{Operational semantics in logical form}
+\titlerunning{oslf}
+
+\author{ Lucius Gregory Meredith\inst{1} \\
+         \and 
+         Mike Stay\inst{2}
+}
+\institute{
+        {Managing Partner, RTech Unchained 9336 California Ave SW, Seattle, WA 98103, USA} \\
+  \email{ lgreg.meredith@gmail.com } \\
+  \and
+  {CTO, Pyrofex} \\
+  \email{ metaweta@gmail.com } 
+}
+ 
+
+\maketitle              % typeset the title of the contribution
+
+%%% ----------------------------------------------------------------------
+
+\begin{abstract}
+
+  We describe an algorithm that takes as input a model of computation
+  specified as a rewrite system and generates as output a
+  spatial-behavioral type system for the model.
+
+\end{abstract}
+
+%\keywords{Process calculi, knots, invariants}
+
+% \begin{keyword}
+% concurrency, message-passing, process calculus, reflection, program logic
+% \end{keyword}
+
+%\end{frontmatter}
