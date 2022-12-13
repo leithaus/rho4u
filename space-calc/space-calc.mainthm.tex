@@ -22,6 +22,36 @@ calculus showing a substitution-based calculus can enjoy much of the same charac
   \inferrule* [lab=action] {} {m \bc \mathsf{in}\; n \;\bm\; \mathsf{out}\; n \;\bm\; \mathsf{open}\; n }
 \end{mathpar}
 
+\subsubsection{Free and bound names}
+\begin{definition}
+  \emph{Free and bound names} The calculation of the free names of a
+  process, $P$, denoted $\freenames{P}$ is given recursively by
+  
+  \begin{mathpar}
+    \freenames{\pzero} = \emptyset
+    \and
+    \freenames{n[P]} = \{ n \} \cup \freenames{P} \\
+    \and
+    \freenames{M\mathsf{.}P} = \freenames{M} \cup \freenames{P}
+    \and
+    \freenames{(\mathsf{new}\; n)P} = \freenames{P} \setminus \{ n \}
+    \and
+    \freenames{\binpar{P}{Q}} = \freenames{P} \cup \freenames{Q}
+    \and
+    \freenames{\mathsf{!}P} =  \freenames{P} \\
+    \and
+    \freenames{\mathsf{in}\; n} = \{ n \}
+    \and 
+    \freenames{\mathsf{out}\; n} = \{ n \}
+    \and
+    \freenames{\mathsf{open}\; n} = \{ n \}
+  \end{mathpar}
+  
+  An occurrence of $x$ in a process $P$ is \textit{bound} if it is not
+  free. The set of names occurring in a process (bound or free) is
+  denoted by $\names{P}$.
+\end{definition}
+
 \subsubsection{Structural equivalence}
 \begin{mathpar}
   P = P \\
@@ -39,6 +69,23 @@ calculus showing a substitution-based calculus can enjoy much of the same charac
   \binpar{P}{\pzero} \\
   (\mathsf{new}\; n)\pzero = \pzero \\
   \mathsf{!}\pzero = \pzero \\
+\end{mathpar}
+
+\subsubsection{Operational semantics}
+\begin{mathpar}
+  \inferrule* [lab=in]{}{\binpar{n[\binpar{\mathsf{in}\; m\mathsf{.}P}{Q}]}{m[R]} \red m[\binpar{n[\binpar{P}{Q}]}{R}]}
+  \and
+  \inferrule* [lab=out]{}{m[\binpar{\binpar{n[\binpar{\mathsf{out}\; m\mathsf{.}P}{Q}]}}{R}] \red \binpar{n[\binpar{P}{Q}]}{m[R]}}
+  \and
+  \inferrule* [lab=open]{}{\binpar{\mathsf{open}\; n\mathsf{.}P}{n[Q]} \red \binpar{P}{Q}} \\
+  \and
+  \inferrule* [lab=new]{P \red P'}{(\mathsf{new})P \red (\mathsf{new})P'}
+  \and
+  \inferrule* [lab=ambient]{P \red P'}{n[P] \red n[P']}
+  \and
+  \inferrule* [lab=par]{P \red P'}{\binpar{P}{Q} \red \binpar{P'}{Q}} \\
+  \and
+  \inferrule* [lab=struct]{P = P', P' \red Q', Q' = Q}{P \red Q}
 \end{mathpar}
 
 \subsection{Encoding}
