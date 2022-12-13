@@ -50,12 +50,12 @@ in terms of a domain equation and its fixpoint.
   R = P[R]
 \end{mathpar}
 
-The domain equation is indeed a differentiable functor, and this we
+The domain equation is indeed a differentiable functor, and thus we
 can provide a notion of location in a process term, that is $L[X] := P[X] \times \partial P[X]$. This allows us to reconcile channels as
 locations in a computation.
 
 \begin{mathpar}
-  LP = P[P[LP] \times \partial P[LP]]
+  LP = P[L[LP]] = P[P[LP] \times \partial P[LP]]
 \end{mathpar}
 
 Your author wrote down this equation in 2008 and could not find a
