@@ -1,26 +1,16 @@
 \section{Main theorem}
-TBD
-%% The Liskov substitution principle \cite{DBLP:conf/oopsla/Liskov87} is
-%% vitally important for a type systems, especially if we want our type
-%% system to provide guidance for automated refactoring and other kinds
-%% of support we might expect of a type-directed interactive design
-%% environment, such as IntelliJ or Eclipse. In Milner's polyadic
-%% $\pi$-calculus tutorial \cite{milner91polyadicpi} he demonstrates
-%% exactly the sort of theorem for his logic that we need to formalize
-%% Liskov's principle.
+There are calculi that emphasize space. In particular, Cardelli and
+Gordon proposed the ambient calculus \cite{DBLP:journals/entcs/CardelliG97}. It is strikingly different from
+the $\pi$ and rho-calculus. Specifically, the engine of computation in
+Milner's and Meredith's calculi is substitution. This is a local
+transformation of a single term. The pure ambient calculus evolution
+does not use substitution, but whole term tree rewrite. This is
+astonishingly expressive. In fact, Cardelli has often pointed out that
+there is fully abstract encoding of the ambient calculus into the
+$pi$-calculus. Beyond the ambient calculus, Cardelli has proposed his brane calculi \cite{DBLP:conf/cmsb/Cardelli04}.
 
-%% \begin{mathpar}
-%%   P \wbbisim Q \iff \forall \phi.( P \vDash \phi \iff Q \vDash \phi)
-%% \end{mathpar}
+We don't address this more recent development. Instead, we demonstrate
+a fully abstract encoding of the ambient calculus into the space
+calculus showing a substitution-based calculus can enjoy much of the same characteristics of a whole tree term rewrite calculus.
 
-%% As Caires points out, spatial connectives can see structural
-%% properties that Milner's logic cannot. In particular, bisimulation
-%% cannot distinguish parallel composition from the summ of all
-%% interleavings. Fortunately, by including proved versions of the
-%% structural equalities we recover Milner's theorem.
 
-%% \begin{theorem}[substitutability]
-%%   \begin{mathpar}
-%%     P \wbbisim Q \iff \forall (\mathbf{U},\mathbf{X}).( P : (\mathbf{U},\mathbf{X}) \iff Q : (\mathbf{U},\mathbf{X}))
-%%   \end{mathpar}
-%% \end{theorem}

@@ -175,8 +175,19 @@ in the encoding.
 
 We write $P\red$ if $\exists Q $ such that $ P \red Q$ and $P\not\red$, otherwise.
 
-\subsection{ Dynamic quote: an example }
-TBD
+\subsection{ Movement in space: an example }
+In the following example let $x = \spacen{\bigbox}{\pzero}$ and $y = \spacen{K}{Q}$ for some $K$ and $Q$.
+\begin{eqnarray*}
+  & \binpar{\binpar{\prefix{x}{y}{\dropn{y}}}{\outputp{x}{P}}}{\mathsf{COMM}(K_{1})} & \\
+  \red & & \\
+  & \dropn{y}\substn{\spacen{K_{1}}{P}}{y} & \\
+  \red & & \\
+  & K_{1}[P] &
+\end{eqnarray*}
+
+Now, if $K_{1}$ is also of the form $\binpar{\binpar{\binpar{\prefix{x'}{y'}{\dropn{y'}}}{\outputp{x'}{\bigbox}}}{\mathsf{COMM}(K_{2})}}{R}$, then $P$ will move to the location $\binpar{K_{2}[P]}{R}$. That is, $K_{1}[P] \red \binpar{K_{2}[P]}{R}$. And if $K_{2}$ is likewise of the form $\binpar{\binpar{\binpar{\prefix{x''}{y''}{\dropn{y''}}}{\outputp{x''}{\bigbox}}}{\mathsf{COMM}(K_{3})}}{R'}$, then $P$ will move to the location $\binpar{K_{3}[P]}{\binpar{R}{R'}}$.
+
+Thus, we have a means to describe movement of a process from location to location.
 
 %% Anticipating something of what's to come, let $z = \quotep{P}$, $u = \quotep{Q}$, and $x = \quotep{\lift{y}{\dropn{z}}}$. Now consider applying the substitution,
 %% $\widehat{\id{\{}u / z \id{\}}}$, to the following pair of processes,
