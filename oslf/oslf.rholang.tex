@@ -443,7 +443,7 @@ give a typing for the $\pzero$ term.
   \and
   \inferrule* [lab=Output] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash \outputp{x}{Q} : \outputt{U}{V} : \mathbf{P}} \\
   \and
-  \inferrule* [lab=Parallel] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{N} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} : \mathbf{U} \mathbf{|} \mathbf{V} : \mathbf{P}} \\
+  \inferrule* [lab=Parallel] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf{P} \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} : \mathbf{U} \mathbf{|} \mathbf{V} : \mathbf{P}} \\
   \and
   \inferrule* [lab=Deref] {}{\Gamma \vdash x : \mathbf{U} : \mathbf{N} \Vdash \Gamma \vdash \dropn{x} : \dropt{U} : \mathbf{P}} \\
 \inferrule* [lab=Quote] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \quotep{x} : \quotet{U} : \mathbf{P}} \\
