@@ -18,18 +18,29 @@ in an element of $T$ \cite{DBLP:conf/popl/McBride08}.
 On the other, Milner's $\pi$-calculus transforms the
 $\lambda$-calculus by reifying the site of interaction as a channel,
 and introducing parallel composition \cite{milner91polyadicpi}. This
-change simultaneously gives computations autonomy and a means of
-finding each other. Meredith's rho-calculus takes Milner's insight a
-step further \cite{DBLP:journals/entcs/MeredithR05}, making the
-reified site of interaction into a fully first class entity with a
-complexity of structure equivalent to computations.
+change simultaneously gives computations autonomy, allowing them to
+roam far outside the bounds of mere textual juxtaposition, and yet a
+means of finding each other to effect data exchange and computational
+evolution. Meredith's rho-calculus takes Milner's insight a step
+further \cite{DBLP:journals/entcs/MeredithR05}, making the reified
+site of interaction into a fully first class entity with a complexity
+of structure equivalent to computations.
 
 A question worth exploring is whether these two notions of location
 can be combined, yielding a site of interaction corresponding to a
 location in a computation. The thought is that such a reconciliation
 of the two ideas would allow for a computational calculus enjoying
-something like the intuitions underlying the dynamics in Einstein's
-field equations.
+something like the intuitions underlying the mutually recursive
+dynamics in Einstein's field equations. Specifically, locations say
+where computation is distributed, computation changes where things are
+located.
+
+In this paper we describe a calculus that does effect a reconciliation
+of the two notions of location. It provides a sandbox for exploring a
+wide range of discrete space-like phenomena in a fairly traditional,
+compact and tractable calculus. In particular, it enjoys a notion of
+bisimulation, allowing one to reason equationally about computational
+behavior, and by extension about spatial phenomena.
 
 \subsection{Summary of contributions and outline of paper}
 
@@ -37,7 +48,11 @@ field equations.
 We present a calculus, dubbed the space calculus (from outer space!)
 whose primitives are channels built from locations in computations
 reified as data structures. This gives us the ability to model a
-variety of space-like phenomena.
+variety of space-like phenomena. One important feature of the calculus
+is that space \emph{emerges} from computation. This makes it very
+distinct from work like Cardelli and Gardner's processes in space
+\cite{DBLP:conf/cie/CardelliG10} where they embed more standard
+geometric primitives in a process calculus setting.
 
 \subsubsection{Outline of paper}
 TBD

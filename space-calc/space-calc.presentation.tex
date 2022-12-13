@@ -163,12 +163,12 @@ give a recursive presentation of this relation for the calculus used
 in the encoding.
 
 \begin{mathpar}
-  \inferrule* [lab=Comm] {x_{t} \;\nameeq\; x_{s}} {\mathsf{COMM}(K) \;\mathsf{|}\; \mathsf{for}( y \leftarrow x_{t} )P \;\mathsf{|}\; x_{s}!(Q)
-    \red P\substn{\quotep{\langle K,Q \rangle}}{y}}
-  \and
   \inferrule* [lab=Catalyze] {} {\mathsf{U}(x) \;\mathsf{|}\; \dropn{\quotep{\langle K,Q \rangle}} \red \mathsf{COMM}(K) \;\mathsf{|}\; x\mathsf{!}(Q)} \\
   \and
-  \inferrule* [lab=Par]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  \inferrule* [lab=Comm] {x_{t} \;\nameeq\; x_{s}} {\mathsf{COMM}(K) \;\mathsf{|}\; \mathsf{for}( y \leftarrow x_{t} )P \;\mathsf{|}\; x_{s}!(Q)
+    \red P\substn{\quotep{\langle K,Q \rangle}}{y}} \\
+  \and
+  \inferrule* [lab=Par]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q} \\
   \and
   \inferrule* [lab=Equiv]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
 \end{mathpar}
