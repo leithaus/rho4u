@@ -15,10 +15,30 @@ calculus showing a substitution-based calculus can enjoy much of the same charac
 
 \subsection{Review of the ambient calculus}
 
+\subsubsection{Syntax}
 \begin{mathpar}
-  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; n[P] \;\bm\; M\mathsf{.}(P) \;\bm\; (\mathsf{new}\; n)P \;\bm\; P\mathsf{|}Q }
+  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; n[P] \;\bm\; M\mathsf{.}(P) \;\bm\; (\mathsf{new}\; n)P \;\bm\; \mathsf{!}P \;\bm\; P\mathsf{|}Q }
   \and
   \inferrule* [lab=action] {} {m \bc \mathsf{in}\; n \;\bm\; \mathsf{out}\; n \;\bm\; \mathsf{open}\; n }
+\end{mathpar}
+
+\subsubsection{Structural equivalence}
+\begin{mathpar}
+  P = P \\
+  P = Q \Rightarrow Q = P \\
+  P = Q \Rightarrow (\mathsf{new}\; n)P = (\mathsf{new}\; n)Q \\
+  P = Q \Rightarrow \mathsf{!}P = \mathsf{!}Q \\
+  P = Q \Rightarrow n[P] = n[Q] \\
+  P = Q \Rightarrow M\mathsf{.}P = M\mathsf{.}Q \\
+  \binpar{P}{Q} = \binpar{Q}{P} \\
+  \binpar{P}{(\binpar{Q}{R})} = \binpar{(\binpar{P}{Q})}{R} \\
+  \mathsf{!}P = \binpar{P}{\mathsf{!}P} \\
+  (\mathsf{new}\; m)(\mathsf{new}\; n)P = (\mathsf{new}\; n)(\mathsf{new}\; m)P \\
+  \binpar{((\mathsf{new}\; n)P)}{Q} = (\mathsf{new}\; n)(\binpar{P}{Q}) \; if \; n \notin \freenames{Q} \\
+  (\mathsf{new}\; n)(m[P]) = m[(\mathsf{new}\; n)P] \; if \; m \neq n \\
+  \binpar{P}{\pzero} \\
+  (\mathsf{new}\; n)\pzero = \pzero \\
+  \mathsf{!}\pzero = \pzero \\
 \end{mathpar}
 
 \subsection{Encoding}
