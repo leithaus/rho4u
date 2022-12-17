@@ -1,0 +1,77 @@
+\documentclass[12pt]{llncs}
+
+\usepackage[pdftex]{hyperref}                   
+\usepackage {mathpartir}
+\usepackage{bigpage}
+\usepackage{bcprules}
+\usepackage {listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{latexsym}
+\usepackage{longtable}
+\usepackage{stmaryrd}
+%\usepackage{fdsymbol}
+\usepackage{graphicx} 
+%\usepackage[margins=2.5cm,nohead,nofoot]{geometry}
+%\usepackage{geometry}
+\usepackage{color}
+\usepackage{xcolor}
+
+
+%\include{myPreamble}
+\include{rset.local} 
+
+%\ifpdf
+%\usepackage[pdftex]{graphicx}
+%\else
+%\usepackage{graphicx}
+%\fi
+
+ % \ifpdf
+%  \usepackage{pdfsync}
+%  \if
+
+
+%\title{Brief Article}
+%\author{David F. Snyder}
+%\author{L.G. Meredith}
+
+%\address{Dept. of Math., Texas State University--San Marcos, San Marcos, TX 78666}
+       
+\pagestyle{empty}
+
+
+\begin{document}
+
+\lstset{language=[Objective]Caml,frame=shadowbox}
+
+
+\input{rset.front}
+
+In the early 2000's Pitts and Gabbay's use of Fraenkl-Mostowski set
+theory (FM set theory), a theory of sets with atoms, to model nominal phenomena,
+sparked a vibrant line of research. \cite{DBLP:journals/fac/GabbayP02}
+\cite{DBLP:journals/jcss/Clouston14}. As Chaitin points out, the
+axioms and assumptions of a theory comprise its risk
+\cite{chaitin1999unknowable}. This observation raises an interesting
+point: is it possible to have a set theory with atoms without taking
+on \emph{infinite} risk? It turns out it is.
+
+We describe a theory of sets that enjoys both the cleanliness of
+$\mathsf{ZF}$, that is arising only from the empty set, and yet with
+an infinite supply of atoms.
+
+\input{rset.intuitions}
+
+\input{rset.presentation}
+
+\input{rset.conc}
+
+\input{rset.ack}
+
+\bibliographystyle{plain}   
+\bibliography{rset.bib}
+
+\end{document}

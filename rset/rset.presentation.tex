@@ -1,0 +1,46 @@
+\section{Formal theory}
+The judgment \(\mathsf{S}[X]; \Gamma \vdash S\) is pronounced
+``\(\mathsf{S}[X]\) thinks that \(S\) is well-formed, given
+dependencies, \(\Gamma\) .'' Similarly,
+\(\mathsf{S}[X]; \Gamma \vdash x\) is pronounced
+``\(\mathsf{S}[X]\) thinks that \(x\) is an admissible atom, given
+dependencies, \(\Gamma\).''
+
+A rule of the form
+
+\[\frac{ H_1, \ldots , H_n }{ C }R\]
+
+is pronounced ``\(R\) concludes that \(C\) given \(H_1\), \(\ldots\),
+\(H_n\)''.
+
+We use $e,f,\ldots$ to range over sets and atoms.
+
+The rules for judging when an atom is admissible or set is well
+formed are as follows
+
+\[\frac{ }{ \mathsf{S}[X]; () \vdash \emptyset}Foundation\]
+
+\[\frac{ x \in X }{ \mathsf{S}[X]; () \vdash \{ x \}}Atomicity\]
+
+\[\frac{ \mathsf{S}[X]; \Gamma_1 \vdash S_1 \; \mathsf{S}[X]; \Gamma_2 \vdash S_2}{ \mathsf{S}[X]; \Gamma_1, \Gamma_2 \vdash S_1 \cup S_2}Union\]
+
+\[\frac{ \mathsf{S}[X]; \Gamma_1 \vdash S_1 \; \mathsf{S}[X]; \Gamma_2 \vdash S_2}{ \mathsf{S}[X]; \Gamma_1, \Gamma_2 \vdash S_1 \cap S_2}Intersection\]
+
+\[\frac{ \mathsf{S}[X]; \Gamma_1 \vdash S_1 \; \mathsf{S}[X]; \Gamma_2 \vdash S_2}{ \mathsf{S}[X]; \Gamma_1, \Gamma_2 \vdash S_1 \setminus S_2}Subtraction\]
+
+\[\frac{ \mathsf{S}[X]; \Gamma \vdash S \; \mathsf{S}[X]; \Gamma_{1} \vdash S_{1} \;\ldots\; \mathsf{S}[X]; \Gamma_{n} \vdash S_{2}\; \mathsf{S}[X]; \Delta \vdash f : S_{1} \times \ldots \times S_{n} \to S }{ \mathsf{S}[X]; \Gamma,\Gamma_{1},\ldots, \Gamma_{n},\Delta \vdash \{ f(s_{1},\ldots,s_{n}) \; : \; s_1 \in S_{1},\; \ldots\;, s_{n} \in S_{n}\}}Comprehension\]
+
+\subsection{Equations}\label{equations}
+
+The syntactic theory is too fine grained. It makes syntactic
+distinctions that do not correspond to distinct sets. We erase these
+syntactic distinctions with a set of equations on set expressions.
+
+\[\frac{ \mathsf{S}[X]; \Gamma \vdash e }{ \mathsf{S}[X]; \Gamma  \vdash e = e}Identity\]
+\[\frac{\mathsf{S}[X]; \Gamma_{1} \vdash _{1}\; \mathsf{S}[X]; \Gamma_{2} \vdash e_{2}\; \mathsf{S}[X]; \Gamma_{3}  \vdash e_{1} = e_{2}}{ \mathsf{S}[X]; \Gamma_{3}  \vdash e_{1} = e_{2}}Symmetry\]
+\[\frac{\mathsf{S}[X]; \Gamma_{1}  \vdash e_{1}\; \mathsf{S}[X]; \Gamma_{2}  \vdash e_{2}\; \mathsf{S}[X]; \Gamma_{3} \vdash e_{3}\; \mathsf{S}[X]; \Gamma_{4}  \vdash e_{1} = e_{2} \; \mathsf{S}[X]; \Gamma_{5}  \vdash e_{2} = e_{3}}{ \mathsf{S}[X]; \Gamma_{4},\Gamma_{5}  \vdash e_{1} = e_{3}}Transitivity\]
+
+\[\frac{\mathsf{S}[X]; \Gamma  \vdash S}{\mathsf{S}[X]; \Gamma \vdash S \cup S =  S}Idempotence_{union}\]
+\[\frac{\mathsf{S}[X]; \Gamma  \vdash S}{\mathsf{S}[X]; \Gamma \vdash S \cap S =  S}Idempotence_{intersection}\]
+
+
