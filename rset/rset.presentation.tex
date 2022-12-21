@@ -30,7 +30,7 @@ formed are as follows
 
 \[\frac{ }{ \mathsf{S}[X]; () \vdash \emptyset}Foundation\]
 
-\[\frac{ (x,\Sigma) = \mathsf{take}(\mathsf{S}[X],1)}{ \Sigma; x \vdash \{ x \}}Atomicity\]
+\[\frac{ (x,\Sigma') = \mathsf{take}(\Sigma,1) \; \Sigma; \Gamma \vdash S}{ \Sigma'; x,\Gamma \vdash \{ x \} \cup S}Atomicity\]
 
 \[\frac{ \Sigma; \Gamma \vdash S }{ \Sigma; \Gamma \vdash \{ S \}}Nesting\]
 
