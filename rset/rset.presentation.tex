@@ -1,10 +1,20 @@
 \section{Formal theory}
-The judgment \(\mathsf{S}[X]; \Gamma \vdash S\) is pronounced
-``\(\mathsf{S}[X]\) thinks that \(S\) is well-formed, given
+The judgment \(\Sigma; \Gamma \vdash S\) is pronounced
+``\(\Sigma\) thinks that \(S\) is well-formed, given
 dependencies, \(\Gamma\) .'' Similarly,
-\(\mathsf{S}[X]; \Gamma \vdash x\) is pronounced
-``\(\mathsf{S}[X]\) thinks that \(x\) is an admissible atom, given
+\(\Sigma; \Gamma \vdash x\) is pronounced
+``\(\Sigma\) thinks that \(x\) is an admissible atom, given
 dependencies, \(\Gamma\).''
+
+We think of $X$ as some infinite supply of ``atoms'' and
+$\mathsf{S}[X]$ as a \emph{stream} of atoms drawn from $X$. We assume
+basic stream operations on $\mathsf{S}[X]$, such as
+$\mathsf{take}(\mathsf{S}[X],n)$ which returns the pair
+$(\sigma,\Sigma)$ where $\sigma = x_{1}:\ldots:x_{n}$ and $\Sigma = \mathsf{drop}(\mathsf{S}[X],n)$. Given $\rho = \{j_{1}/i_{1}:\ldots:j_{n}/i_{n}\}$ the operation
+$\mathsf{swap}(\mathsf{S}[X],\rho)$ denotes the application of the
+permutation $\rho$ to $\mathsf{S}[X]$.
+
+Thus, $\mathsf{S}[X]$ may be thought of as an ordering on $X$.
 
 A rule of the form
 
@@ -20,15 +30,17 @@ formed are as follows
 
 \[\frac{ }{ \mathsf{S}[X]; () \vdash \emptyset}Foundation\]
 
-\[\frac{ x \in X }{ \mathsf{S}[X]; () \vdash \{ x \}}Atomicity\]
+\[\frac{ (x,\Sigma) = \mathsf{take}(\mathsf{S}[X],1)}{ \Sigma; x \vdash \{ x \}}Atomicity\]
 
-\[\frac{ \mathsf{S}[X]; \Gamma_1 \vdash S_1 \; \mathsf{S}[X]; \Gamma_2 \vdash S_2}{ \mathsf{S}[X]; \Gamma_1, \Gamma_2 \vdash S_1 \cup S_2}Union\]
+\[\frac{ \Sigma; \Gamma \vdash S }{ \Sigma; \Gamma \vdash \{ S \}}Nesting\]
 
-\[\frac{ \mathsf{S}[X]; \Gamma_1 \vdash S_1 \; \mathsf{S}[X]; \Gamma_2 \vdash S_2}{ \mathsf{S}[X]; \Gamma_1, \Gamma_2 \vdash S_1 \cap S_2}Intersection\]
+\[\frac{ \Sigma; \Gamma_1 \vdash S_1 \; \Sigma; \Gamma_2 \vdash S_2}{ \Sigma; \Gamma_1, \Gamma_2 \vdash S_1 \cup S_2}Union\]
 
-\[\frac{ \mathsf{S}[X]; \Gamma_1 \vdash S_1 \; \mathsf{S}[X]; \Gamma_2 \vdash S_2}{ \mathsf{S}[X]; \Gamma_1, \Gamma_2 \vdash S_1 \setminus S_2}Subtraction\]
+\[\frac{ \Sigma; \Gamma_1 \vdash S_1 \; \Sigma; \Gamma_2 \vdash S_2}{ \Sigma; \Gamma_1, \Gamma_2 \vdash S_1 \cap S_2}Intersection\]
 
-\[\frac{ \mathsf{S}[X]; \Gamma \vdash S \; \mathsf{S}[X]; \Gamma_{1} \vdash S_{1} \;\ldots\; \mathsf{S}[X]; \Gamma_{n} \vdash S_{2}\; \mathsf{S}[X]; \Delta \vdash f : S_{1} \times \ldots \times S_{n} \to S }{ \mathsf{S}[X]; \Gamma,\Gamma_{1},\ldots, \Gamma_{n},\Delta \vdash \{ f(s_{1},\ldots,s_{n}) \; : \; s_1 \in S_{1},\; \ldots\;, s_{n} \in S_{n}\}}Comprehension\]
+\[\frac{ \Sigma; \Gamma_1 \vdash S_1 \; \Sigma; \Gamma_2 \vdash S_2}{ \Sigma; \Gamma_1, \Gamma_2 \vdash S_1 \setminus S_2}Subtraction\]
+
+\[\frac{ \Sigma; \Gamma \vdash S \; \Sigma; \Gamma_{1} \vdash S_{1} \;\ldots\; \Sigma; \Gamma_{n} \vdash S_{2}\; \Sigma; \Delta \vdash f : S_{1} \times \ldots \times S_{n} \to S }{ \Sigma; \Gamma,\Gamma_{1},\ldots, \Gamma_{n},\Delta \vdash \{ f(s_{1},\ldots,s_{n}) \; : \; s_1 \in S_{1},\; \ldots\;, s_{n} \in S_{n}\}}Comprehension\]
 
 \subsection{Equations}\label{equations}
 
@@ -36,11 +48,11 @@ The syntactic theory is too fine grained. It makes syntactic
 distinctions that do not correspond to distinct sets. We erase these
 syntactic distinctions with a set of equations on set expressions.
 
-\[\frac{ \mathsf{S}[X]; \Gamma \vdash e }{ \mathsf{S}[X]; \Gamma  \vdash e = e}Identity\]
-\[\frac{\mathsf{S}[X]; \Gamma_{1} \vdash _{1}\; \mathsf{S}[X]; \Gamma_{2} \vdash e_{2}\; \mathsf{S}[X]; \Gamma_{3}  \vdash e_{1} = e_{2}}{ \mathsf{S}[X]; \Gamma_{3}  \vdash e_{1} = e_{2}}Symmetry\]
-\[\frac{\mathsf{S}[X]; \Gamma_{1}  \vdash e_{1}\; \mathsf{S}[X]; \Gamma_{2}  \vdash e_{2}\; \mathsf{S}[X]; \Gamma_{3} \vdash e_{3}\; \mathsf{S}[X]; \Gamma_{4}  \vdash e_{1} = e_{2} \; \mathsf{S}[X]; \Gamma_{5}  \vdash e_{2} = e_{3}}{ \mathsf{S}[X]; \Gamma_{4},\Gamma_{5}  \vdash e_{1} = e_{3}}Transitivity\]
+\[\frac{ \Sigma; \Gamma \vdash e }{ \Sigma; \Gamma  \vdash e = e}Identity\]
+\[\frac{\Sigma; \Gamma_{1} \vdash _{1}\; \Sigma; \Gamma_{2} \vdash e_{2}\; \Sigma; \Gamma_{3}  \vdash e_{1} = e_{2}}{ \Sigma; \Gamma_{3}  \vdash e_{1} = e_{2}}Symmetry\]
+\[\frac{\Sigma; \Gamma_{1}  \vdash e_{1}\; \Sigma; \Gamma_{2}  \vdash e_{2}\; \Sigma; \Gamma_{3} \vdash e_{3}\; \Sigma; \Gamma_{4}  \vdash e_{1} = e_{2} \; \Sigma; \Gamma_{5}  \vdash e_{2} = e_{3}}{ \Sigma; \Gamma_{4},\Gamma_{5}  \vdash e_{1} = e_{3}}Transitivity\]
 
-\[\frac{\mathsf{S}[X]; \Gamma  \vdash S}{\mathsf{S}[X]; \Gamma \vdash S \cup S =  S}Idempotence_{union}\]
-\[\frac{\mathsf{S}[X]; \Gamma  \vdash S}{\mathsf{S}[X]; \Gamma \vdash S \cap S =  S}Idempotence_{intersection}\]
+\[\frac{\Sigma; \Gamma  \vdash S}{\Sigma; \Gamma \vdash S \cup S =  S}Idempotence_{\cup}\]
+\[\frac{\Sigma; \Gamma  \vdash S}{\Sigma; \Gamma \vdash S \cap S =  S}Idempotence_{\cap}\]
 
 

@@ -68,11 +68,11 @@ not matter which). Without loss of generality, we write $P \odot Q$ for that bin
 
 \subsubsection{Implications}
 \begin{mathpar}
-  \inferrule* [lab=Implication1,Right=(U:X)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}}
+  \inferrule* [lab=Implication1,Right=(U:X)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
   \and
   \inferrule* [lab=Implication2,Right=(U:X)] {}{\Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
   \and
-  \inferrule* [lab=Separation,Right=(V:Y)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X+Y}} \\
+  \inferrule* [lab=Separation,Right=(V:Y)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{in}_{L} P : \mathbf{V} \Rightarrow \bot : \mathbf {X+Y}} \\
   \and
   \inferrule* [lab=Abstraction] {}{p : \mathbf{U} : \mathbf {X}, \Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma \vdash \lambda p . Q : \mathbf{U}\to \mathbf{V} : \mathbf{X} \to \mathbf{Y}} \\
   \and
