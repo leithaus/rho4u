@@ -109,9 +109,9 @@ not matter which). Without loss of generality, we write $P \odot Q$ for that bin
   \and
   \inferrule* [lab=MatchR-Eqn] {\Gamma \vdash R : \mathbf{V} : \mathbf {Y} \;\;\; p : \mathbf{U} : \mathbf{X}, \Delta_{1} \vdash P : \mathbf{W} : \mathbf{Z} \;\;\; q : \mathbf{V} : \mathbf{Y}, \Delta_{2} \vdash Q : \mathbf{W} : \mathbf{Z}}{\Gamma,\Delta_{1}, \Delta_{2} \vdash (\mathsf{match} \; \mathsf{in}_{R}\; R \; \mathsf{case} \; \mathsf{in}_{L} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; \mathsf{in}_{R} \; q \Rightarrow Q) = Q\substn{R}{q} : \mathbf{W} : \mathbf {Z}} \\
   \and
-  \inferrule* [lab=Proj1-Eqn] {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta \vdash Q_{1} \times Q_{2} : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}}{ \Gamma, \Delta \vdash (\mathsf{let} \; \langle p, \_ \rangle \; = \; Q_{1} \times Q_{2} \; \mathsf{in}\; P) = P\substn{Q_{1}}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=Proj1-Eqn] {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta_{1} \vdash Q_{1} : \mathbf{U} : \mathbf{X} \;\;\; \Delta_{2} \vdash Q_{2} : \mathbf{V} : \mathbf{Y}}{ \Gamma, \Delta_{1},\Delta_{2} \vdash (\mathsf{let} \; \langle p, \_ \rangle \; = \; Q_{1} \times Q_{2} \; \mathsf{in}\; P) = P\substn{Q_{1}}{p} : \mathbf{W} : \mathbf {Z}} \\
   \and
-  \inferrule* [lab=Proj2-Eqn] {p : \mathbf{V} : \mathbf{Y}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta \vdash Q_{1} \times Q_{2} : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}}{ \Gamma, \Delta \vdash (\mathsf{let} \; \langle \_, p \rangle \; = \; Q_{1} \times Q_{2} \; \mathsf{in}\; P) = P\substn{Q_{2}}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=Proj2-Eqn] {p : \mathbf{V} : \mathbf{Y}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta_{1} \vdash Q_{1} : \mathbf{U} : \mathbf{X} \;\; \Delta_{2} \vdash Q_{2} : \mathbf{V} : \mathbf{Y}}{ \Gamma, \Delta_{1},\Delta_{2} \vdash (\mathsf{let} \; \langle \_, p \rangle \; = \; Q_{1} \times Q_{2} \; \mathsf{in}\; P) = P\substn{Q_{2}}{p} : \mathbf{W} : \mathbf {Z}} \\
 \end{mathpar}
 
 \subsubsection{Liftings from the $\lambda$-theory}
