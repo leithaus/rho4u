@@ -29,7 +29,8 @@ binary term construction, the term in function position is the
 program, and the term in argument position is environment. In the
 rho-calculus parallel composition is the binary term constructor and
 one of the subterms is program and the other is environment (it does
-not matter which). Without loss of generality, we write $P \odot Q$ for that binary term.
+not matter which). Without loss of generality, we write $P \odot Q$
+for that binary term.
 
 \subsection{Generic types}
 
@@ -90,7 +91,13 @@ not matter which). Without loss of generality, we write $P \odot Q$ for that bin
   \inferrule* [lab=TagL,Right=(V:P)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{L} \; P : \mathbf{U} \oplus \mathbf{V} : \mathbf {P}} \\
   \and
   \inferrule* [lab=TagR,Right=(U:P)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{R} \; Q : \mathbf{U} \oplus \mathbf{V} : \mathbf {P}} \\
-  \inferrule* [lab=Sum] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash [ P,Q] : [ \mathbf{U}, \mathbf{V} ] : \mathbf {P}}
+  \inferrule* [lab=Sum] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash [ P,Q] : [ \mathbf{U}, \mathbf{V} ] : \mathbf {P}}\\
+  \and
+  \mathsf{int}^{+} : P + P \to P \and \mathsf{int}^{-} : ((P + P) \to P) \to P \\
+  \and
+  \mathsf{tag}_{i} P := \mathsf{int}^{+}(\mathsf{in}_{i} P) \\
+  \and
+  [P,Q] := \mathsf{int}^{-}(\lambda r.\mathsf{match}\; r \;\mathsf{case}\; \mathsf{in}_{L}\; p \Rightarrow P \odot p\mathsf{;}\; \mathsf{case}\; \mathsf{in}_{R}\; q \Rightarrow Q \odot q)
 \end{mathpar}
 
 \subsubsection{Internalized redex constuctors}
