@@ -73,7 +73,7 @@ for that binary term.
   \and
   \inferrule* [lab=Implication2,Right=(U:X)] {}{\Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
   \and
-  \inferrule* [lab=Separation,Right=(V:Y)] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{in}_{L} P : \mathbf{V} \Rightarrow \bot : \mathbf {X+Y}} \\
+  \inferrule* [lab=Separation] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{in}_{L} P : ((\mathbf{U} \Rightarrow \bot_{X}) + \mathbf{\top}_{Y}) \Rightarrow \bot_{X+Y} : \mathbf {X+Y}} \\
   \and
   \inferrule* [lab=Abstraction] {}{p : \mathbf{U} : \mathbf {X}, \Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma \vdash \lambda p . Q : \mathbf{U}\to \mathbf{V} : \mathbf{X} \to \mathbf{Y}} \\
   \and
