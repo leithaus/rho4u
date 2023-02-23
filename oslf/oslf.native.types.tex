@@ -18,3 +18,112 @@ an endofunctor on $\mathsf{CCC}$, deriving a new meta theory
 $\mathsf{NT(C)}$ for each category, $\mathcal{C}$, in $\mathsf{|CCC|}$, the
 objects of $\mathsf{CCC}$. The language presented below is a syntax
 for the derived meta-theory.
+
+\subsection{The topos}
+
+First, let's review how subobject classifiers work in a topos. 
+
+Given a category $C = 1 \xrightarrow{f} M$, where 1 is terminal, $C$ has five morphisms: $\{1, M, f, !, f!\}$, where $!\colon M \to 1$ and $f!\colon M \xrightarrow{!} 1 \xrightarrow{f} M.$
+
+\subsubsection{The subobject classifier: $\Omega$.}
+
+To understand the subobject classifier $\Omega$ in the topos $\hat{C} = {\rm Set}^{C^{\rm op}}$, let's consider the behavior on objects and morphisms.
+
+\paragraph{Behavior on objects.}
+
+$\Omega(1)$ is the set of sieves on $1$, the set of subsets of morphisms into $1$ that are closed under precomposition with morphisms in $C$.
+$\{1, !\}= \top$
+$\{\} = \bot$
+We can't have $1$ without $! = 1!$.  We can't have $!$ without $1 = !f$.
+
+$\Omega(M)$ is the set of sieves on $M$, the set of subsets of morphisms into $M$ that are closed under precomposition with morphisms in $C$.
+$\{M, f, f!\} = \top$
+$\{f, f!\}$
+$\{\} = \bot$
+We can't have $M$ without $f=Mf$ and $f!=Mf!$.  We can't have $f$ without $f!$.  We can't have $f!$ without $f = f!f$.
+
+\paragraph{Behavior on morphisms.}
+
+$\Omega(f)(S) =$ union of morphisms $g\in\{1, !\}$ such that $fg \in S$
+$\begin{array}{rrcl}\Omega(f)\colon & \Omega(M) & \to & \Omega(1) \\ &\{M, f, f!\} & \mapsto & \{1, !\} \\ & \{f, f!\} & \mapsto & \{1, !\} \\ & \{\} & \mapsto & \{\}\end{array}$
+
+$\Omega(!)(S) =$ union of morphisms $g\in\{M, f, f!\}$ such that $!g \in S$
+$\begin{array}{rrcl}\Omega(!)\colon & \Omega(1) & \to & \Omega(M) \\ & \{1, !\} & \mapsto & \{M, f, f!\} \\ & \{\} & \mapsto & \{\}\end{array}$
+
+$\Omega(f!)(S) =$ union of morphisms $g\in\{M, f, f!\}$ such that $f!g \in S$
+$\begin{array}{rrcl}\Omega(M)\colon & \Omega(M) & \to & \Omega(M) \\ & \{M, f, f!\} & \mapsto & \{M, f, f!\} \\ & \{f, f!\} & \mapsto & \{M, f, f!\} \\ & \{\} & \mapsto & \{\}\end{array}$
+
+Also, obviously, $\Omega$ of an identity morphism is the identity function on the set $S$.
+
+\subsubsection{Logical operations}
+
+\paragraph{Negation.}
+In this section, $!$ is redefined temporarily: $\neg\colon\Omega \to \Omega$ is the character of $\bot\colon 1\to \Omega$, where $\bot$ is the character of $!\colon 0 \to 1$.
+
+\begin{remark} The object 0 in the topos
+  $\begin{array}{rcl}0:C^{\rm op} &\to& {\rm Set}\\c & \mapsto & \emptyset\end{array}$
+\end{remark}
+
+\begin{remark}
+The object 1 in the topos
+  $\begin{array}{rcl}1:C^{\rm op} &\to& {\rm Set}\\c & \mapsto & 1\end{array}$
+\end{remark}
+
+\begin{remark}
+The natural transformation $!\colon 0\to 1$
+  The natural transformation $!\colon 0\to 1$ assigns to each object the trivial function $!\colon \emptyset \to 1$.
+\end{remark}  
+
+\begin{remark}
+The character $\bot\colon 1 \to \Omega$ of $!$
+  The character $\bot\colon 1 \to \Omega$ of $!$ is a natural transformation that assigns to every object $X$ the function that maps $\bullet \in 1$ to $\bot \in \Omega(X)$.  It has to send $1$ to $\bot$ because if it didn't, the pullback would be $1$, not $0$ as given.
+\end{remark}
+
+\begin{remark}
+The character $\neg\colon \Omega \to \Omega$ of $\bot$
+The character $\neg\colon \Omega \to \Omega$ of $\bot$ is a natural transformation assigning to each object the function that takes $\bot$ to $\top$ and everything else to $\bot$. If anything other than $\bot$ mapped to $\top$, the pullback would be bigger than $1$.
+$\begin{array}{cc}1&\begin{array}{rcl}\neg_1\colon\Omega(1)&\to&\Omega(1)\\ \top &\mapsto &\bot\\ \bot &\mapsto & \top\end{array}\\\\ M & \begin{array}{rcl}\neg_M\colon\Omega(M)&\to&\Omega(M)\\\top & \mapsto & \bot \\ \{f,f!\} & \mapsto & \bot \\\bot & \mapsto & \top\end{array}\end{array}$
+\end{remark}
+
+\paragraph{Conjunction.}
+TBD
+
+\paragraph{Disjunction.}
+TBD
+
+\subsection{Once again, but with monoids}
+
+%% Th
+%% - one generating sort M
+%% - n+2 term constructors:
+%% - n generators g_i: 1 -> M
+%% - identity e: 1 -> M
+%% - multiplication *: M x M -> M
+%% - equations for assoc, unit laws
+
+%% Ω: Th^op -> Set
+%%       c |-> sieves(c)
+%% f:c<-c' |-> Ω(f): Ω(c')
+%%     -> Ω(c)
+%%                   subset of morphisms into c' closed under
+%% precomposition |-> union_{g:d->c' in Ω(c')} preimage of g under C(c',
+%% f)
+%%   with anything in Th
+
+%% Ω(M) = sieves on M
+%% = set of subsets of morphisms in Th into M that are closed under precomposition
+%% e.g.
+%% all morphisms that factor into a head and a tail that is a particular
+%% morphism, like a generator or the identity or multiplication or a term
+%% context  ... -> 1 -g_i-> M
+%% all morphisms that factor into a head and a tail that is in a set of
+%% morphisms, like a subset of the generators or a set of term contexts
+
+%% (can't) Ω(M)^k ⊆ Ω(M^k) (can have entangled tuples) (I think)
+
+\subsubsection{Interpretation of the logic of monoids}
+
+In section \ref{oslf:monoidal-logic} we introduced a logic of monoids
+naively generated from sets of monoid expressions. Here we show how to
+interpret the formulae of that logic via the native type theory
+construction.
