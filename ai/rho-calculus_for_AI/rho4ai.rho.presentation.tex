@@ -1,0 +1,635 @@
+\subsection{The syntax and semantics of the notation system}\label{sub:the_syntax_and_semantics_of_the_notation_system} % (fold)
+
+We now summarize a technical presentation of the calculus that
+embodies the core of rholang. The typical presentation of such a
+calculus follows the style of giving generators and relations on
+them. The grammar, below, describing term constructors, freely
+generates the set of processes, $\Proc$. This set is then quotiented
+by a relation known as structural congruence and it is over this set
+that the notion of dynamics is expressed. This presentation is
+essentially that of \cite{DBLP:journals/entcs/MeredithR05} with the
+addition of polyadicity and summation. For readability we have
+relegated some of the technical subtleties to an appendix.
+
+\paragraph{Notational interlude} when it is clear that some expression $t$ is a sequence (such as a list or a vector), and $a$ is an object that might be meaningfully and safely prefixed to that sequence then we write $a:t$ for the sequence with $a$ prefixed (aka ``consed'') to $t$. We write $t(i)$ for the $i$th element of $t$.
+
+\subsubsection{Process grammar}\label{subsub:process_grammar}
+
+\begin{mathpar}
+\inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
+  \arrvec{y} \leftarrow x )P \;\bm\; x\mathsf{!}(\arrvec{Q}) \;\bm\;
+  \mathsf{*}x \;\bm\; P\mathsf{|}Q } \and \inferrule* [lab=name] {}
+            {x, y \bc \mathsf{@}P }
+\end{mathpar}
+
+Note that $\arrvec{x}$ (resp. $\arrvec{P}$) denotes a vector of names
+(resp. processes) of length $|\arrvec{x}|$ (resp. $|\arrvec{P}|$). We adopt
+the following useful abbreviations.
+
+\begin{mathpar}
+  \Pi \arrvec{P} := \Pi_{i=1}^{|\arrvec{P}|}P_i := P_1 | \ldots | P_{|\arrvec{P}|}
+\end{mathpar}
+
+\begin{definition}
+  \emph{Free and bound names} The calculation of the free names of a
+  process, $P$, denoted $\freenames{P}$ is given recursively by
+  
+  \begin{mathpar}
+    \freenames{\pzero} = \emptyset
+    \and
+    \freenames{\mathsf{for}(\arrvec{y} \leftarrow x)(P)} = \{ x \} \cup \freenames{P}\setminus\{\arrvec{y}\}
+    \and
+    \freenames{x!(\arrvec{P})} = \{ x \} \cup \freenames{\arrvec{P}}
+    \and
+    \freenames{P|Q} = \freenames{P} \cup \freenames{Q}
+    \and
+    \freenames{\mathsf{}{x}} = \{ x \} \\
+  \end{mathpar}
+  
+  where $\{\arrvec{x}\} := \{x_1, \ldots, x_{|\arrvec{x}|}\}$ and $\freenames{\arrvec{P}} := \bigcup \freenames{P_i}$.
+  
+  An occurrence of $x$ in a process $P$ is \textit{bound} if it is not
+  free. The set of names occurring in a process (bound or free) is
+  denoted by $\names{P}$.
+\end{definition}
+
+\subsection{Substitution}
+
+We use $\Proc$ for the set of processes, $\QProc$ for the set of
+names, and $\id{\{}\arrvec{y} / \arrvec{x} \id{\}}$ to denote partial
+maps, $s : \QProc \rightarrow \QProc$. A map, $s$ lifts, uniquely, to
+a map on process terms, $\widehat{s} : \Proc \rightarrow
+\Proc$. Historically, it is convention to use $\sigma$ to range over
+lifted subsitutions, $\widehat{s}$, to write the application of a
+substitution, $\sigma$ to a process, $P$, with the substitution on the
+right, $P\sigma$, and the application of a substitution, $s$, to a
+name, $x$, using standard function application notation, $s(x)$. In
+this instance we choose not to swim against the tides of
+history. Thus, 
+
+\begin{definition}
+  given $x = \quotep{P'}$, $u = \quotep{Q'}$, $s =
+  \substn{u}{x}$ we define the lifting of $s$ to $\widehat{s}$ (written
+  below as $\sigma$) recursively by the following equations.
+  \begin{mathpar}
+    0 \sigma := 0 \\
+    (P \mathsf{|} Q) \sigma
+    :=    
+    P\sigma \mathsf{|} Q\sigma \\
+    (\mathsf{for}(\arrvec{y} \leftarrow v)P) \sigma    
+    :=
+    \mathsf{for}(\arrvec{z} \leftarrow \sigma(v))((P \psubstn{\arrvec{z}}{\arrvec{y}}) \sigma) \\
+    (\lift{x}{Q}) \sigma  
+    :=
+    \lift{\sigma(x)}{ Q \sigma } \\
+    (\dropn{y})  \sigma       
+    := 
+    \left\{ 
+      \begin{array}{ccc} 
+        Q' & & y \;\nameeq\; x \\
+        \dropn{y} & & otherwise \\
+      \end{array}
+      \right.
+  \end{mathpar} 
+
+  where
+
+  \begin{eqnarray}
+    \psubstp{Q}{P}(x) = \id{\{} \quotep{Q} / \quotep{P} \id{\}}(x) = 
+    \left\{ 
+      \begin{array}{ccc}
+        \quotep{Q} & & x \;\nameeq\; \quotep{P} \\
+        x & & otherwise \\
+      \end{array}
+      \right. \nonumber
+  \end{eqnarray}
+\end{definition}
+
+and $z$ is chosen distinct from $\quotep{P}$, $\quotep{Q}$, the free
+names in $Q$, and all the names in $R$. Our $\alpha$-equivalence will
+be built in the standard way from this substitution.
+
+\begin{definition}
+Then two processes, $P,Q$, are alpha-equivalent if $P = Q\{\arrvec{y}/\arrvec{x}\}$ for
+some $\arrvec{x} \in \boundnames{Q},\arrvec{y} \in \boundnames{P}$, where $Q\{\arrvec{y}/\arrvec{x}\}$
+denotes the capture-avoiding substitution of $\arrvec{y}$ for $\arrvec{x}$ in $Q$.
+\end{definition}
+
+\begin{definition}
+  The {\em structural congruence} $\equiv$
+  between processes \cite{DBLP:books/daglib/0004377} is the least congruence containing
+  alpha-equivalence and satisfying the commutative monoid laws
+  (associativity, commutativity and $\pzero$ as identity) for parallel
+  composition $|$.
+\end{definition}
+
+\begin{definition}
+  The {\em name equivalence} $\nameeq$ is the least congruence
+  satisfying these equations
+  \begin{mathpar}
+  \inferrule*[lab=Quote-drop] {}{ \quotep{\dropn{x}} \;\nameeq\; x }
+  \and
+  \inferrule*[lab=Struct-equiv] { P \;\scong\; Q } { \quotep{P} \;\nameeq\; \quotep{Q} }
+  \end{mathpar}
+\end{definition}
+
+The astute reader will have noticed that the mutual recursion of names
+and processes imposes a mutual recursion on alpha-equivalence and
+structural equivalence via name-equivalence. Fortunately, all of this
+works out pleasantly and we may calculate in the natural way, free of
+concern. The reader interested in the details is referred to the
+appendix \ref{appendix:rho_details}.
+
+\begin{remark}\label{rem:no_self_referential_names}
+  One particularly useful consequence of these definitions is that
+  $\forall P. \quotep{P} \not\in \freenames{P}$. It gives us a
+  succinct way to construct a name that is distinct from all the names
+  in $P$ and hence fresh in the context of $P$. For those readers
+  familiar with the work of Pitts and Gabbay, this consequence allows
+  the system to completely obviate the need for a fresh operator, and
+  likewise provides a canonical approach to the semantics of
+  freshness.
+\end{remark}
+
+Equipped with the structural features of the term language we can
+present the dynamics of the calculus.
+
+\subsection{Operational semantics}
+
+Finally, we introduce the computational dynamics. What marks these
+algebras as distinct from other more traditionally studied algebraic
+structures, e.g. vector spaces or polynomial rings, is the manner in
+which dynamics is captured. In traditional structures, dynamics is typically
+expressed through morphisms between such structures, as in linear maps
+between vector spaces or morphisms between rings. In algebras
+associated with the semantics of computation, the dynamics is
+expressed as part of the algebraic structure itself, through a
+reduction reduction relation typically denoted by $\red$. Below, we
+give a recursive presentation of this relation for the calculus used
+in the encoding.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{t} )P \;\mathsf{|}\; x_{s}!(\arrvec{Q})
+  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}}
+  \and
+  \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  \and
+  \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
+\end{mathpar}
+
+We write $P\red$ if $\exists Q $ such that $ P \red Q$ and $P\not\red$, otherwise.
+
+%% \begin{definition}
+%%   $\mathsf{COMM}$-events: when $P \red P'$ we can record the information
+%%   justifying this reduction step with an expression of the form
+%%   $\mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, leaving off the subscript
+%%   $_{(P,P')}$ when the context makes the source ($P$) and target
+%%   ($P'$) states clear. Likewise, if $c = \mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$, we write $\mathsf{src}(c) = P$, $\mathsf{trgt}(c) = P'$, $\mathsf{src_{N}}(c) = x_{s}$, and $\mathsf{trgt_{N}}(c) = x_{t}$ and $P \stackrel{c}{\red} P'$.
+%% \end{definition}
+
+%% We use $\alpha, \beta, ...$ to range over reduction \emph{paths}. That is, if
+
+%% \begin{mathpar}
+%%   P_{1} \stackrel{\mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1})}{\red} P_{2} \stackrel{\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2})}{\red} \cdots \stackrel{\mathsf{COMM}(x_{t_{n-1}},x_{s_{n-1}},\sigma_{n-1})}{\red} P_{n},
+%% \end{mathpar}
+
+%% then we may write
+
+%% \begin{mathpar}
+%%   \alpha = \mathsf{COMM}(x_{t_{1}},x_{s_{1}},\sigma_{1}):\mathsf{COMM}(x_{t_{2}},x_{s_{2}},\sigma_{2}):\ldots : \mathsf{COMM}(x_{t_{n-1}},x_{s_{n-1}},\sigma_{n-1}).
+%% \end{mathpar}
+
+%% \begin{definition}
+%%   The set of paths between $P$ and $Q$, written $\mathsf{paths}(P,Q)$ is defined by $\mathsf{paths}(P,Q) := \{ c:\alpha \; : P \stackrel{c}{\red} P', \alpha \in \mathsf{paths}(P',Q) \}$ and $\epsilon$ denotes the empty path.
+%% \end{definition}
+
+\subsection{ Dynamic quote: an example }
+
+Anticipating something of what's to come, let $z = \quotep{P}$, $u = \quotep{Q}$, and $x = \quotep{\lift{y}{\dropn{z}}}$. Now consider applying the substitution,
+$\widehat{\id{\{}u / z \id{\}}}$, to the following pair of processes,
+$\lift{w}{y!(\dropn{z})}$ and $\lift{w}{\dropn{x}} = \lift{w}{\dropn{\quotep{\lift{y}{\dropn{z}}}}}$.
+
+\begin{eqnarray}
+	\lift{w}{\lift{y}{\dropn{z}}}\widehat{\id{\{}u / z \id{\}}}
+		& = &
+		\lift{w}{\lift{y}{Q}} \nonumber\\
+	\lift{w}{\dropn{x}} \widehat{ \id{\{}u / z \id{\}} }
+		& = &
+		\lift{w}{\dropn{x}} \nonumber
+\end{eqnarray}
+
+The body of the quoted process, $\quotep{\lift{y}{\dropn{z}}}$, is
+impervious to substitution, thus we get radically different
+answers. In fact, by examining the first process in an input context,
+e.g. $\mathsf{for}(z \leftarrow x)\lift{w}{\lift{y}{\dropn{z}}}$, we see that the process
+under the output operator may be shaped by prefixed inputs binding a
+name inside it. In this sense, the combination of input prefix binding
+and output operators will be seen as a way to dynamically construct
+processes before reifying them as names.
+
+\section{Replication}
+
+As mentioned before, it is known that replication (and hence
+recursion) can be implemented in a higher-order process algebra
+\cite{DBLP:books/daglib/0004377}. As our first example of calculation with the
+machinery thus far presented we give the construction explicitly in
+the {\rhoc}.
+
+\begin{eqnarray}
+	D_{x} & := & \prefix{x}{y}{(\binpar{\outputp{x}{y}}{\dropn{y}})} \nonumber\\
+	\bangp_{x}{P} & := & \binpar{\lift{x}{\binpar{D_{x}}{P}}}{D_{x}} \nonumber
+\end{eqnarray}
+
+\begin{eqnarray}
+	\bangp_{x}{P} & & \nonumber\\
+	=
+	& \lift{x}{(\prefix{x}{y}{(\outputp{x}{y} | \dropn{y})) | P}} 
+	      | \prefix{x}{y}{(\outputp{x}{y} | \dropn{y})} & \nonumber\\
+	\red
+	& (\outputp{x}{y} | \dropn{y})\substn{\quotep{(\prefix{x}{y}{(\dropn{y} | \outputp{x}{y})) | P}}}{y} & \nonumber\\
+	=
+	& \outputp{x}{\quotep{(\prefix{x}{y}{(\outputp{x}{y} | \dropn{y})) | P}}}
+	  | {(\prefix{x}{y}{(\outputp{x}{y} | \dropn{y})) | P}} & \nonumber\\
+	\red
+	& \ldots & \nonumber\\
+	\red^*
+	& P | P | \ldots & \nonumber
+\end{eqnarray}
+
+Of course, this encoding, as an implementation, runs away, unfolding
+$\bangp{P}$ eagerly. A lazier and more implementable replication
+operator, restricted to input-guarded processes, may be obtained as follows.
+
+\begin{eqnarray}
+\bangp{\prefix{u}{v}{P}} 
+	:= 
+	\binpar{\lift{x}{\prefix{u}{v}{(\binpar{D(x)}{P})}}}{D(x)} \nonumber
+\end{eqnarray}
+
+\begin{remark}
+  Note that the lazier definition still does not deal with summation
+  or mixed summation (i.e. sums over input and output). The reader is
+  invited to construct definitions of replication that deal with these
+  features. 
+
+  Further, the definitions are parameterized in a name, $x$. Can you,
+  gentle reader, make a definition that eliminates this parameter and
+  guarantees no accidental interaction between the replication
+  machinery and the process being replicated -- i.e. no accidental
+  sharing of names used by the process to get its work done and the
+  name(s) used by the replication to effect copying. This latter
+  revision of the definition of replication is crucial to obtaining
+  the expected identity $!!P \sim !P$.
+\end{remark}
+
+\begin{remark}\label{rem:paradoxical_combinator}
+  The reader familiar with the lambda calculus will have noticed the
+  similarity between $D$ and the paradoxical combinator.
+\end{remark}
+
+\subsubsection{Bisimulation}
+
+The computational dynamics gives rise to another kind of equivalence,
+the equivalence of computational behavior. As previously mentioned
+this is typically captured \emph{via} some form of bisimulation.
+
+% The notion we use in this paper is weak barbed bisimulation
+% \cite{milner91polyadicpi}.
+
+The notion we use in this paper is derived from weak barbed
+bisimulation \cite{milner91polyadicpi}. 
+
+\begin{definition}
+An \emph{observation relation}, $\downarrow_{\mathcal N}$, over a set
+of names, $\mathcal N$, is the smallest relation satisfying the rules
+below.
+
+\infrule[Out-barb]{y \in {\mathcal N}, \; x \nameeq y}
+		  {\outputp{x}{v} \downarrow_{\mathcal N} x}
+\infrule[Par-barb]{\mbox{$P\downarrow_{\mathcal N} x$ or $Q\downarrow_{\mathcal N} x$}}
+		  {\binpar{P}{Q} \downarrow_{\mathcal N} x}
+
+We write $P \Downarrow_{\mathcal N} x$ if there is $Q$ such that 
+$P \wred Q$ and $Q \downarrow_{\mathcal N} x$.
+\end{definition}
+
+\begin{definition}
+%\label{def.bbisim}
+An  ${\mathcal N}$-\emph{barbed bisimulation} over a set of names, ${\mathcal N}$, is a symmetric binary relation 
+${\mathcal S}_{\mathcal N}$ between agents such that $P\rel{S}_{\mathcal N}Q$ implies:
+\begin{enumerate}
+\item If $P \red P'$ then $Q \wred Q'$ and $P'\rel{S}_{\mathcal N} Q'$.
+\item If $P\downarrow_{\mathcal N} x$, then $Q\Downarrow_{\mathcal N} x$.
+\end{enumerate}
+$P$ is ${\mathcal N}$-barbed bisimilar to $Q$, written
+$P \wbbisim_{\mathcal N} Q$, if $P \rel{S}_{\mathcal N} Q$ for some ${\mathcal N}$-barbed bisimulation ${\mathcal S}_{\mathcal N}$.
+\end{definition}
+
+\subsubsection{Contexts}
+
+One of the principle advantages of computational calculi from the
+$\lambda$-calculus to the $\pi$-calculus is a well-defined notion of context,
+contextual-equivalence and a correlation between
+contextual-equivalence and notions of bisimulation. The notion of
+context allows the decomposition of a process into (sub-)process and
+its syntactic environment, its context. Thus, a context may be
+thought of as a process with a ``hole'' (written $\Box$) in it. The
+application of a context $K$ to a process $P$, written $K[P]$, is
+tantamount to filling the hole in $K$ with $P$. In this paper we do
+not need the full weight of this theory, but do make use of the notion
+of context in the proof the main theorem. 
+
+\begin{mathpar}
+\inferrule* [lab=context] {} {K \bc \Box \;\bm\; \mathsf{for}( \arrvec{y} \leftarrow x )K \;\bm\; x\mathsf{!}(\arrvec{P},K,\arrvec{Q}) \;\bm\; K\mathsf{|}P }
+\end{mathpar}
+
+\begin{definition}[contextual application] Given a context $K$, and
+  process $P$, we define the \emph{contextual application}, $K[P] :=
+  K\{P/\Box\}$. That is, the contextual application of K to P is the
+  substitution of $P$ for $\Box$ in $K$.
+\end{definition}
+
+\begin{remark}
+  Note that we can extend the definition of free and bound names to contexts.
+\end{remark}
+
+\subsection{Additional notation}
+
+We achieve some notational compression with the following convention
+
+\begin{mathpar}
+  \mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P := \prefix{x_{1}}{y_{1}}{\prefix{x_{2}}{y_{2}}{\ldots \prefix{x_{n}}{y_{n}}{P}}}
+\end{mathpar}
+
+Even though we already have the notation $x = \quotep{P}$, allowing us
+to pick out the process a name quotes, it will be convenient to
+introduce an alternate notation, $\procn{x}$, when we want to
+emphasize the connection to the use of the name. Note that, by virtue
+of name equivalence, $\quotep{\procn{x}} \;\nameeq\; x$; so, the notation
+is consistent with previous definitions.
+
+Further, because names have structure it is possible to effect
+substitutions on the basis of that structure. This means we need to
+upgrade our notation for substitutions, which we accomplish by
+adapting comprehension notation. Thus,
+
+\begin{mathpar}
+  P\{ y / x : x \in S \}
+\end{mathpar}
+
+is interpreted to mean the process derived from P by replacing (in a
+capture-avoiding manner) each occurrence of $x$ in $S$ by $y$. For example,
+
+\begin{mathpar}
+  P\{ \quotep{(\procn{x}\mathsf{|}\procn{x})} / x : x \in \freenames{P} \}
+\end{mathpar}
+
+will replace each (occurrence) of a free name $x$ in $P$ by
+$\quotep{(\procn{x}\mathsf{|}\procn{x})}$.
+
+When the context makes it clear that the substitution is over all of $\freenames{P}$ we drop the predicate, writing $P\{ f(x) \}$ instead of
+
+\begin{mathpar}
+  P\{ f(x) / x : x \in \freenames{P} \}
+\end{mathpar}
+
+Of course, dual to operators for expanding substitutions we need
+operators for contracting them.
+
+\begin{mathpar}
+  \{ y / x : x \in S \} \setminus S' := \{ y / x : x \in S \setminus S' \} 
+\end{mathpar}
+
+Also, we will avail ourselves of the notation $x^{L}$ and $x^{R}$ to
+denote injections of a name into disjoint copies of the name
+space. There are numerous ways to accomplish this. One example can be
+found in \cite{DBLP:journals/entcs/MeredithR05}. This notation overloads to vectors of
+names: $\arrvec{x}^{\pi} := (x_{i}^{\pi} \; : \; 0 \leq i < |\arrvec{x}| )$ where $\pi \in \{L,R\}$.
+
+We also use $P^{\Box} := P|\Box$.
+
+In \cite{DBLP:journals/entcs/MeredithR05} an interpretation of the new operator is
+given. It turns out that there are several possible interpretations
+all enjoying the requisite algebraic properties of the operator (see
+\cite{milner91polyadicpi}). We will therefore make liberal use of
+$(\mathsf{new}\; \arrvec{x})P$.
+
+\subsection{Extensions to the calculus}
+\subsubsection{Values}
+While it is standard in calculi such as the $\lambda$-calculus to
+define a variety of common values such as the natural numbers and
+booleans in terms of Church-numeral style encodings, it is equally
+common to simply embed values directly into the calculus. Not being
+higher-order, this presents some challenges for the $\pi$-calculus,
+but for the rho-calculus, everything works out very nicely if we treat
+values, e.g. the naturals, the booleans, the reals, etc as processes. This
+choice means we can meaninfully write expressions like
+$x!(\mathsf{5})$ or $u!(\mathsf{true})$, and in the context
+$\prefix{x}{y}P[*y] \mathsf{|} x!(\mathsf{5})$ the value $\mathsf{5}$
+will be substituted into $P$. Indeed, since operations like addition,
+multiplication, etc.  can also be defined in terms of processes, it is
+meaningful to write expressions like
+$\mathsf{5}\mathsf{|}\mathsf{+}\mathsf{|}\mathsf{1}$, and be confident
+that this expression will reduce to a process representing
+$\mathsf{6}$. Thus, we can also use standard mathematical expressions,
+such as $\mathsf{5+1}$, as processes, and know that these will
+evaluate to their expected values. Further, when combined with
+$\mathsf{for}$-comprehensions, we can write algebraic expressions,
+such as $\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y$, and in
+contexts like
+$(\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y)\mathsf{|}\outputp{x}{\mathsf{1}}$
+this will evaluate as expected, producing the process (aka value)
+$\mathsf{6}$.
+
+With these conventions in place it is useful to reduce the
+proliferation of $\mathsf{*}$'s, by adopting a pattern-matching
+convention. Thus, we write $\prefix{x}{@v}{P}$ to denote binding $v$
+to the value passed and not the \emph{name} of the value. Hence, we
+may write $\prefix{x}{@v}{\mathsf{5+v}}$ without any loss of clarity,
+confident that this translates unambiguously into the formal calculus
+presented above. We achieve even greater compression and a more
+familiar notation if we also adopt the notation
+
+\begin{mathpar}
+  \mathsf{let}\; x \;\mathsf{=}\; v \;\mathsf{in}\; P := (\mathsf{new} \; u)(\prefix{u}{@x}P)\mathsf{|}\outputp{u}{v}
+\end{mathpar}
+
+and generalized to nested expressions via
+
+\begin{mathpar}
+  \mathsf{let}\; x_{1} \;\mathsf{=}\; v_{1} \mathsf{;}\; \ldots \mathsf{;}\; x_{n} \;\mathsf{=} \; v_{n}  \;\mathsf{in}\; P := (\mathsf{new} \; \arrvec{u})\mathsf{for(}{x_{1}}\leftarrow{u_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{x_{n}}\leftarrow{u_{n}}\mathsf{)}P \mathsf{|}\Pi\outputp{u_{i}}{v_{i}}
+\end{mathpar}
+
+\subsubsection{Mixed summation}
+The presentation given so far is often referred to as the polyadic,
+asynchronous version of the rho-calculus. And all of the syntactic
+sugar is just that: sugar. Values and let expressions can be desugared
+back down to the original calculus. However, the current investigation
+is made simpler if we expand to a version of the calculus that
+includes mixed summation, that is non-deterministic choice over both
+guarded input ($\mathsf{for}$-comprehension) and output. Although
+there is an encoding of the calculus with mixed summation to the
+asynchronous polyadic calculus, it is not par-preserving. That is, if
+$\meaningof{-}_{async} : \MixSumProc \to \Proc$ is a mapping from the
+rho-calculus with mixed summation to the asynchronous polyadic
+rho-calulus, then it cannot be the case that
+
+\begin{mathpar}
+  \meaningof{P\mathsf{|}Q} = \meaningof{P}\mathsf{|}\meaningof{Q}
+\end{mathpar}
+
+for any such encoding. For good measure we throw in synchronous
+communication, but it is the mixed summation that constitutes the real
+jump in expressive power. We call this out because if we are going to
+relate quantum computing to concurrent computing, it is important to
+track the points where there are significant increases in expressive
+power of our target language.
+
+Because Milner's presentation of the polyadic $\pi$-calculus
+with mixed summation is so parsimonious we use it as a template for a
+similar version of the rho-calculus.
+
+\begin{mathpar}
+  \inferrule* [lab=summation] {} {{M,N} \bc \pzero \;|\; x.A \;|\; M+N}
+  \and
+  \inferrule* [lab=agent] {} {A \bc (\arrvec{x})P \;| \; [\arrvec{P}]Q}
+  \and \\
+  \inferrule* [lab=process] {} {P,Q \bc M \;|\; P|Q \;|\; \mathsf{*}x}
+  \and
+  \inferrule* [lab=name] {} {x \bc \mathsf{@}P}
+\end{mathpar}
+
+In this presentation we adopt the syntactic conventions
+
+\begin{mathpar}
+  \mathsf{for(}\arrvec{y} \leftarrow x\mathsf{)}P := x.(\arrvec{y})P
+  \and
+  x\mathsf{!}(\arrvec{Q})\mathsf{;}P := x.[\arrvec{Q}]P
+\end{mathpar}
+
+The structural equivalence is modified thusly.
+
+\begin{definition}
+  The {\em structural congruence} $\equiv$ between processes is the
+  least congruence containing alpha-equivalence and satisfying the
+  commutative monoid laws (associativity, commutativity and $\pzero$
+  as identity) for parallel composition $|$ and summation $+$.
+\end{definition}
+
+The $\mathsf{COMM}$ rule is modified to incorporate non-deterministic choice.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {(R_1 + \mathsf{for}( \arrvec{y} \leftarrow x_{t} )P) \;\mathsf{|}\; (x_{s}!(\arrvec{Q}).P' + R_2)
+  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}\mathsf{|}P'}
+\end{mathpar}
+
+And contexts are likewise extended in the obvious manner.
+
+\begin{mathpar}
+  \inferrule* [lab=summation-context] {} {{K_{M}} \bc \Box \;|\; x.K_{A} \;|\; K_{M}+M}
+  \and
+  \inferrule* [lab=agent-context] {} {K_{A} \bc (\arrvec{x})K_{P} \;|\; [\arrvec{P},K_{P},\arrvec{P'}]Q \;|\; [\arrvec{P}]K_{P}}
+  \and \\
+  \inferrule* [lab=process-context] {} {K_{P} \bc K_{M} \;|\; P\mathsf{|}K_{P}}
+\end{mathpar}
+
+The reader can check that all the notational conventions, such as
+
+\begin{mathpar}
+  \mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P
+  \and \\
+  \mathsf{let}\; x_{1} \;\mathsf{=}\; v_{1} \mathsf{;}\; \ldots \mathsf{;}\; x_{n} \;\mathsf{=} \; v_{n}  \;\mathsf{in}\; P
+\end{mathpar}
+
+adopted above still make sense for the calculus extended with mixed summation.
+
+\subsubsection{Annihilation}
+Another important variation has to do with the rewrite rules. There is
+a recursive version of the $\mathsf{COMM}$-rule that aligns with
+intuitions about the recursive nature of behavior in compositionally
+defined agents. The maths make it clearer than the English. First, we
+define what it means for two processes to annihilate each other.
+
+\begin{definition}
+  Annihilation: Processes $P$ and $Q$ are said to annihilate one another, written $P \bot Q$, just when $\forall R. P \mathsf{|} Q \rightarrow^{*} R \Rightarrow R \rightarrow^{*} \pzero$.
+\end{definition}
+
+Thus, when $P \bot Q$, all rewrites out of $P \mathsf{|} Q$ eventually
+lead to $\pzero$. Evidently, $P \bot Q \iff Q \bot P$, and $\pzero
+\bot \pzero$. Naturally, we can extend annihilation to names: $x \bot
+y \iff \procn{x} \bot \procn{y}$.
+
+Annihilation affords a new version of the $\mathsf{COMM}$-rule:
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{t} \;\bot x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {(R_1 + \mathsf{for}( \arrvec{y} \leftarrow x_{t} )P) \;\mathsf{|}\; (x_{s}!(\arrvec{Q}).P' + R_2)
+  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}\mathsf{|}P'}
+\end{mathpar}
+
+All annihilation-based reduction happens in terms of reductions that
+happen at a lower degree of quotation, and grounds out in the fact
+that $\pzero \bot \pzero$ and thus $\quotep{\pzero} \bot \quotep{\pzero}$.
+
+\begin{example}
+  For example, let $P_{1} := \prefix{\quotep{\pzero}}{\quotep{\pzero}}{\pzero} \mathsf{|} \outputp{\quotep{\pzero}}{\pzero}$. Then $P_{1} \red \pzero$ because $\pzero \bot
+\pzero$. Suppose now that we set $x_{0}^{-}, x_{0}^{+} := \quotep{\pzero}$. Then, we can write $P_{1}$ as
+$\prefix{x_{0}^{-}}{x_{0}^{-}}{\pzero} \mathsf{|} \outputp{x_{0}^{+}}{\pzero}$. Now, set
+
+\begin{mathpar}
+  x_{1}^{-}:= \quotep{(\prefix{x_{0}^{-}}{x_{0}^{-}}{\pzero})}
+  \and
+  x_{1}^{+} := \quotep{(\outputp{x_{0}^{+}}{\pzero})}
+\end{mathpar}
+
+Then define 
+$P_{2} := \prefix{x_{1}^{-}}{x_{1}^{-}}{\pzero} \mathsf{|} \outputp{x_{1}^{+}}{\pzero}$. Then $P_{2} \red \pzero$ because $x_{1}^{-} \bot x_{1}^{+}$,
+and hence $\prefix{x_{1}^{-}}{x_{1}^{-}}{\pzero} \bot \outputp{x_{1}^{+}}{\pzero}$.
+
+More generally, set
+
+\begin{mathpar}
+  x_{i}^{-} := \quotep{(\prefix{x_{i-1}^{-}}{x_{i-1}^{-}}{\pzero})}
+  \and
+  x_{i}^{+} := \quotep{\outputp{x_{i-1}^{+}}{\pzero}} \\
+  \and P_{i} := \prefix{\quotep{x_{i-1}^{-}}}{x_{i-1}^{-}}{\pzero} \mathsf{|} \outputp{\quotep{x_{i-1}^{+}}}{\pzero}
+\end{mathpar}
+
+Then $P_{i} \red \pzero$ and hence $x_{i}^{-} \bot x_{i}^{+}$.
+\end{example}
+This allows
+for a measure of reduction complexity. 
+
+\begin{definition}
+  Define the complexity of a $\mathsf{COMM}$-event
+  $c = \mathsf{COMM}_{(P,P')}(x_t,x_s,\sigma)$ in terms of the recursive
+  function
+  \begin{eqnarray}
+    \#(c) & := & \Sigma_{\alpha \in \mathsf{paths}(\procn{x_{t}}\mathsf{|}\procn{x_{s}},\pzero)} \#(P',\sigma) + \#(\alpha) \nonumber \\
+    \#(c : \alpha) & := & \#(c) + \#(\alpha) \nonumber \\
+    \#(\epsilon) & := & 0 \nonumber
+  \end{eqnarray}  
+\end{definition}
+
+Note that we can relativize annihilation.
+
+\begin{definition}
+  Relative annihilation: Processes $P$ and $Q$ are said to annihilate to $R$, written $R \vdash P \bot Q$, just when $\forall R'. P \mathsf{|} Q \rightarrow^{*} R' \Rightarrow R' \rightarrow^{*} R$.
+\end{definition}
+
+Clearly, when such an $R$ exists for $P$ and $Q$, it is unique. Thus,
+we can define a partial function, $(- \odot -) : \Proc \times \Proc \to \Proc_{\bot}$ via
+
+\begin{mathpar}
+  P \odot Q
+  :=
+  \left\{ 
+    \begin{array}{ccc} 
+      R & & \exists R. R \vdash P \bot Q \\
+      \bot & & otherwise \\
+    \end{array}
+  \right.
+\end{mathpar}
+
+We can think of $\odot$ as a form of \emph{evaluation} for the confluent, terminating fragment of $\Proc$\footnote{Indeed, confluent and terminating computations are probably as good a candidate, as any, for the notion of \emph{data}.}.
+
+% subsection the_syntax_and_semantics_of_the_notation_system (end)   

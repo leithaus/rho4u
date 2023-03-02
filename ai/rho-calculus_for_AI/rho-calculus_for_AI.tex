@@ -6,6 +6,16 @@
 %\documentclass[10pt]{report}
 \documentclass[runningheads]{llncs}
 
+\usepackage {mathpartir}
+\usepackage{bigpage}
+\usepackage{bcprules}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{latexsym}
+\usepackage{longtable}
+\usepackage{stmaryrd}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[normalem]{ulem}
@@ -16,22 +26,24 @@
 
 \setlength\parindent{0pt}
 \renewcommand{\arraystretch}{1.3}
-
-
-\title{The rho-calculus for AI}
-\date{}
-\author{}
-
+\include{rho4ai.local} 
 
 \begin{document}
-\maketitle
+\input{rho4ai.front}
 
-%\chapter{Lucius Gregory Meredith}
+\section{Multi-agent System and AI}
+Multi-agent systems are at least as old as AI, and have enjoyed active research in a number of fields. Among the various research programmes, concurrency theory has produced one of the most advanced versions of mult-agent systems. More specifically, the mobile process calculi formalize a notion of multi-agent systems that is simultaneously a foundation for computing, in general, and has been used in a wide range of successful applications. Surprisingly, the AI community has not adopted these formalisms, despite the fact that they enjoy features for reasoning about and executing multi-agent specifications not found in any other framework.
 
-\begin{center}
-Jan 22, 2023
-\end{center}
+Notable among these features are
+\begin{itemize}
+  \item an effective notion of equality of ensembles of agents (bisimulation) that comes with powerful proof techniques;
+  \item a notion of spatial and behavioral types allowing for exceptionally powerful and fine-grained classification of the structure and behavior of ensembles of agents;
+  \item a theorem relating the notion of equality to classification, affording a Liskov-style substitution principle saying when an agent or ensemble of agents may be substituted in for another such without change to the behavior of the overall ensemble.
+\end{itemize}
 
+In this paper we will argue that these features, together with computational reflection, constitute the smallest formalism necessary to develop a plausible theory of mind.
+
+\input{rho4ai.process.calculi}
 
 \vspace{1\baselineskip}
 \section{Consciousness as the colonization of the brain}
@@ -76,7 +88,7 @@ In summary code and data are both just syntax that represents a state upon which
 The rho-calculus has a syntactic representation of the distinction between computation and code. It has an operation that expresses packaging up a computation as a piece of code so that it can be operated on, transforming it into new code. It also has an operation for turning a piece of code back into a computation. Whoah, you might say, that is some next level sh!t. But, as we mentioned Lisp programmers, and Java programmers have been doing this sort of metaprogramming for a long time. They have to. The reason has to do with scale. It is impossible for human teams to manage codebases involving millions and millions of lines of code without automated support. They use computer programs to write computer programs. They use computer programs to build computer program deployments. Metaprogramming is a necessity in today’s world.
 
 \vspace{1\baselineskip}
-But way back in the ‘80’s, still the early days of AI, a researcher named \href{https://en.wikipedia.org/wiki/Brian_Cantwell_Smith#:~:text=Brian\%20Cantwell\%20Smith\%20is\%20a,\%2C\%20and\%20philosophy\%2C\%20especially\%20ontology.}{\uline{\textcolor[HTML]{1155CC}{Brian Cantwell Smith}}} made an observation that resonated with me and many other people in AI and AI-adjacent fields. Smith’s argument is that introspection, the ability for the mind to look at the mind’s own process, is a key feature of intelligence. For some this is even the defining feature of intelligence. To make this idea of introspection, which he called computational reflection, concrete, \href{https://www.ics.uci.edu/~jajones/INF102-S18/readings/17_Smith84.pdf}{\uline{\textcolor[HTML]{1155CC}{Smith designed a language called 3-Lisp that has the same operators that the rho-calculus has}}}. Specifically, 3-Lisp has syntax to represent reifying a computation into code, and syntax for reflecting code back into running computation.
+But way back in the ‘80’s, still the early days of AI, a researcher named \href{https://en.wikipedia.org/wiki/Brian_Cantwell_Smith#:~:text=Brian\%20Cantwell\%20Smith\%20is\%20a,\%2C\%20and\%20philosophy\%2C\%20especially\%20ontology.}{\uline{\textcolor[HTML]{1155CC}{Brian Cantwell Smith}}} made an observation that resonated with me and many other people in AI and AI-adjacent fields. Smith’s argument is that introspection, the ability for the mind to look at the mind’s own process, is a key feature of intelligence. For some this is even the defining feature of intelligence. To make this idea of introspection, which he called computational reflection, concrete, Smith designed \href{https://www.ics.uci.edu/~jajones/INF102-S18/readings/17_Smith84.pdf}{\uline{\textcolor[HTML]{1155CC}{a language called 3-Lisp}}} that has the same operators that the rho-calculus has. Specifically, 3-Lisp has syntax to represent reifying a computation into code, and syntax for reflecting code back into running computation.
 
 \vspace{1\baselineskip}
 Now, there is a good reason to suspect that there is a connection between the problem of scale that today’s developers face and the problem of modeling our reflective, introspective capacity as reasoning beings. In particular, managing the complexity of representing our own reasoning becomes tractable in the presence of computational reflection. We can apply all of our algorithmic tricks to representations of our own reasoning to obtain better reasoning. This observation is amplified in the context of what evolutionary biologists and psychologists call \href{https://en.wikipedia.org/wiki/Theory_of_mind}{\uline{\textcolor[HTML]{1155CC}{theory of mind}}}. 
@@ -92,6 +104,8 @@ In fact, Smith’s ideas about computational reflection and its role in intellig
 
 \vspace{1\baselineskip}
 Around the same time Smith was developing his ideas of computational reflection \href{https://en.wikipedia.org/wiki/Marvin_Minsky}{\uline{\textcolor[HTML]{1155CC}{Marvin Minsky}}} was developing his famous \href{https://en.wikipedia.org/wiki/Society_of_Mind}{\uline{\textcolor[HTML]{1155CC}{Society of Mind}}} thesis. My take on Minsky’s proposal is that the mind is something like the US Congress, or any other deliberative body. It consists of a bunch of independent agents who are all vying for different resources (such as funding from the tax base). What we think of as a conscious decision is more like the result of a long deliberative process amongst a gaggle of independent, autonomous agents that often goes on well below conscious experience. But, the deliberative process results in a binding vote, and that binding vote is what is experienced as a conscious decision.
+
+\input{rho4ai.rho.presentation}
 
 \vspace{1\baselineskip}
 How can this view, which puts most of the computation outside of conscious reasoning, be reconciled with a view of the mind as essentially, indeed definitionally reflective? The rho-calculus was designed with an answer to this question in mind. The rho-calculus says that computational agents come in just six shapes:
