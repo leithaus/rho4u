@@ -32,16 +32,39 @@
 \input{rho4ai.front}
 
 \section{Multi-agent System and AI}
-Multi-agent systems are at least as old as AI, and have enjoyed active research in a number of fields. Among the various research programmes, concurrency theory has produced one of the most advanced versions of mult-agent systems. More specifically, the mobile process calculi formalize a notion of multi-agent systems that is simultaneously a foundation for computing, in general, and has been used in a wide range of successful applications. Surprisingly, the AI community has not adopted these formalisms, despite the fact that they enjoy features for reasoning about and executing multi-agent specifications not found in any other framework.
+Multi-agent systems are at least as old as AI, and have enjoyed active
+research in a number of fields. Among the various research programmes,
+concurrency theory has produced one of the most advanced versions of
+mult-agent systems. More specifically, the mobile process calculi
+formalize a notion of multi-agent systems that is simultaneously a
+foundation for computing, in general, and has been used in a wide
+range of successful applications. Surprisingly, the AI community has
+not adopted these formalisms, despite the fact that they enjoy
+features for reasoning about and executing multi-agent specifications
+not found in any other framework.
 
 Notable among these features are
 \begin{itemize}
-  \item an effective notion of equality of ensembles of agents (bisimulation) that comes with powerful proof techniques;
-  \item a notion of spatial and behavioral types allowing for exceptionally powerful and fine-grained classification of the structure and behavior of ensembles of agents;
-  \item a theorem relating the notion of equality to classification, affording a Liskov-style substitution principle saying when an agent or ensemble of agents may be substituted in for another such without change to the behavior of the overall ensemble.
+  \item an effective notion of equality of ensembles of agents
+    (bisimulation) that comes with powerful proof techniques;
+  \item a notion of spatial and behavioral types allowing for
+    exceptionally powerful and fine-grained classification of the
+    structure and behavior of ensembles of agents;
+  \item a theorem relating the notion of equality to classification,
+    affording a Liskov-style substitution principle saying when an
+    agent or ensemble of agents may be substituted in for another such
+    without change to the behavior of the overall ensemble in which
+    the substitution was effected.
 \end{itemize}
 
-In this paper we will argue that these features, together with computational reflection, constitute the smallest formalism necessary to develop a plausible theory of mind.
+We present a formalism for multi-agent systems sporting these features
+while also enjoying the kind of computational reflection Brian Smith
+argued for in 3-Lisp. This combination of powers allows for agents to
+reason effectively about ensembles of agents, that is to build
+internal models of the society of minds they observe in their
+environment. In fact, we will argue that these features, constitute
+the smallest formalism necessary to develop a plausible theory of
+mind.
 
 \input{rho4ai.process.calculi}
 
@@ -149,5 +172,7 @@ This may have gone by a little fast, but think about it. This is the smallest se
 
 This argument is why it is plausible for a model of computation like the rho-calculus to find purchase on the hardware in Alice’s brain. She needs all the elements of this model to compete with other members of her species who are likewise racing to model the behavior of their social context. This is why, very much to the contrary of Joscha’s position, i would argue that mobile concurrency is at the heart of artificial general intelligence.
 
+\bibliographystyle{plain}   
+\bibliography{rho4ai.bib}
 
 \end{document}
