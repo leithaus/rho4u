@@ -1,7 +1,7 @@
 \section{Concurrent process calculi and spatial logics }\label{sec:concurrent_process_calculi_and_spatial_logics_} % (fold) 
 In the last thirty years the process calculi have matured into a
 remarkably powerful analytic tool for reasoning about concurrent and
-distributed systems. Process-calculus-based algebraical specification of
+distributed systems. Process-calculus-based algebraic specification of
 processes began with Milner's Calculus for Communicating Systems (CCS)
 \cite{DBLP:books/sp/Milner80} and Hoare's Communicating Sequential Processes
 (CSP) \cite{DBLP:books/ph/Hoare85}, and continue
@@ -9,7 +9,7 @@ through the development of the so-called mobile process calculi,
 e.g. Milner, Parrow and Walker's $\pi$-calculus \cite{DBLP:journals/iandc/MilnerPW92a}, \cite{DBLP:journals/iandc/MilnerPW92b},
 Cardelli and Caires's spatial logic \cite{DBLP:conf/fossacs/Caires04} \cite{DBLP:journals/iandc/CairesC03} \cite{DBLP:journals/tcs/CairesC04}, or Meredith and Radestock's reflective calculi
 \cite{DBLP:journals/entcs/MeredithR05} \cite{DBLP:conf/tgc/MeredithR05}. The process-calculus-based
-algebraical specification of processes has expanded its scope of
+algebraic specification of processes has expanded its scope of
 applicability to include the specification, analysis, simulation and
 execution of processes in domains such as:
 
@@ -38,16 +38,20 @@ execution of processes in domains such as:
 \end{itemize}
 
 Among the many reasons for the continued success of this approach are
-two central points. First, the process algebras provide a
+three central points.
+
+\subsubsection{Compositionality} First, the process algebras provide a
 compositional approach to the specification, analysis and execution of
 concurrent and distributed systems. Owing to Milner's original
-insights into computation as interaction \cite{DBLP:journals/cacm/Milner93}, the process
-calculi are so organized that the behavior ---the semantics--- of a
-system may be composed from the behavior of its components. This means that specifications can be constructed in
-terms of components ---without a global view of the system--- and
-assembled into increasingly complete descriptions.
+insights into computation as interaction
+\cite{DBLP:journals/cacm/Milner93}, the process calculi are so
+organized that the behavior ---the semantics--- of a system may be
+composed from the behavior of its components. This means that
+specifications can be constructed in terms of components ---without a
+global view of the system--- and assembled into increasingly complete
+descriptions.
 
-The second central point is that process algebras have a potent proof
+\subsubsection{Bisimulation} The second central point is that process algebras have a potent proof
 principle, yielding a wide range of effective and novel proof
 techniques \cite{DBLP:conf/concur/SangiorgiM92} \cite{DBLP:conf/fmco/Sangiorgi05} \cite{DBLP:journals/toplas/Sangiorgi09}. In particular, \emph{bisimulation} encapsulates an effective
 notion of process equivalence that has been used in applications as
@@ -65,4 +69,41 @@ is that it is parameterized in the actions observable of processes
 $P$ and $Q$, thus providing a framework for a broad range of
 equivalences and up-to techniques \cite{DBLP:conf/concur/SangiorgiM92} all governed by the same core
 principle \cite{DBLP:journals/toplas/Sangiorgi09}.
+
+\subsubsection{Spatial and behavioral logics} The third central point is that process calculi have ushered in a new way of thinking about type systems and typing. Beginning with the Hennessy-Milner logics, the process calculi have joined Kripke's many world's interpretation of modal logic with the state transition behavior of processes to deliver a power tool for classifying and proving properties about ensembles of agents. Continuing from there the spatial logics have expanded the purview of typing to see into the structure of ensembles of agents, allowing for the classification of these ensembles in terms of the structure they enjoy. This extends to being able to determine which subcommunities are privy to which information, which has been widely employed in establishing security properties of protocols.
+
+\subsubsection{Mobility} Another important feature of the mobile process calculi is that the
+concurrency model is explicitly mobile, meaning agents can discover
+each other. In other words, the communication topology (who knows whom
+and who is talking to whom) is evolving. This model is very different
+from a model where computational elements are soldered together like
+components on a motherboard. Mobile concurrency is more like the
+Internet or the telephony networks where people who just met for the
+first time learn each other’s websites, email addresses, and phone
+numbers.
+
+\subsection{Comparison to other formalisms}
+In the context of AGI it is worth a brief review of what singles the mobile process calculi out from other formalisms, notably the $\lambda$-calculus. The key point is driven home when we consider multi-agent systems, and in particular, multi-agent systems of agents that are themselves compositions of agents. These 
+
+\paragraph{$\lambda$-calculus} The $\lambda$-calculus is sequential (Berry's theorem) and confluent. Neither of these facts lend it to modeling autonomous agents. Autonomy of execution has to be simulated in the $\lambda$-calculus, using techniques, like co-routines, and continuations. In the tower of encoding necessary to simulate autonomous execution it becomes difficult to sort out what is encoding and what is important agent behavior. Specifically, the encodings unavoidably leak into the types of agent behavior as the Morgan Stanley team recently reported.
+
+Likewise, the most basic property of multi-agent systems is that they are not confluent. First come, first serve is not just a property of airline reservation systems, but of biological systems at all scales. First come, first serve is fundamentally not confluent: it is a different state if Alice gets the last seat on the plane than if Bob does. Again, this makes the $\lambda$-calculus far from ideal to represent systems of autonomously executing agents.
+
+Of course, these same comments apply to Turing machines as originally conceived. In fact, they apply generally to formalisms that do not have concurrent composition as a first class operation. Composition is the operative word. Petri nets, for example, are concurrent, but that concurrency is not expressed as a composition of nets, which makes them awkward for modeling compositions of agents, and especially agents which are themselves compositions of agents.
+
+Compositionality, or the lack of it, also applies to continuous
+classical formalisms, such as differential equations. For example,
+given a chemical solution in beaker A and a different chemical
+solution in beaker B, the stoichiometric differential models cannot
+combined to produce a model of pouring the contents of A and B into a
+third beaker. However, the stochastic $\pi$-calculus models, say
+$\meaningof{A}$ and $\meaningof{B}$ can be combined via parallel
+composition, $\meaningof{A}|\meaningof{B}$ to produce a model of the
+contents of the third beaker.
+
+In what follows below, we argue that adding reflection to the
+primitives of the mobile process calculi yields a model specifically
+suited for AI. In particular, the model is the smallest such that
+accounts for a theory of mind.
+
 % section concurrent_process_calculi_and_spatial_logics_ (end)
