@@ -1,0 +1,17 @@
+\section{A presentation of the semantics of MeTTa}
+
+A presentation of the semantics of MeTTa must therefore provide a monad describing the algebra of states, a structural equivalence quotienting the algebra of states, and some rewrite rules describing state transitions. Such a description is the minimal description that meets the standard for describing models of computation. 
+
+Note that to present such a description requires at least that much expressive power in the system used to formalize the presentation. That is, the system used to present a model of computation is itself a model of computation admitting a presentation in terms of an algebra of states and some rewrites. This is why a meta-circular evaluator is a perfectly legitimate presentation. That is, a presentation of MeTTa’s semantics in MeTTa is perfectly legitimate. Meta-circular presentations are more difficult to unpack, which is why such presentations are typically eschewed, but they are admissible. In fact, a meta-circular evaluator may be the most pure form of presentation.
+
+But, this fact has an important consequence. No model that is at least Turing complete can be “lower level” than any 
+
+\subsection{Rationale for such a presentation}
+
+The rationale for such a presentation is not simply that this is the way it’s done. Instead, the benefits include
+
+\begin{itemize}
+  \item an effective (if undecidable) notion of program equality;
+  \item an independent specification allowing implementations;
+  \item meta-level computation, including type checking, model checking, macros, computational reflection, etc.
+\end{itemize}
