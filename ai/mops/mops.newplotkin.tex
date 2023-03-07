@@ -78,12 +78,14 @@ parallel composition $|$.
   \inferrule* [lab=STRUCT]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
 \end{mathpar}
 
+\pagebreak
 \subsubsection{The JVM}
 
 While its complexity far exceeds the presentations above, the JVM specification respects this same shape. Here is an example from one of the specification of what the operation aaload does.
 
 \begin{figure}[h!]
-  \includegraphics[width=\linewidth]{JVMSpecAALOAD.jpg}
+  \scalebox{0.75}{\includegraphics[width=\linewidth]{JVMSpecAALOAD.jpg}}
   \caption{AALOAD instruction specification}
   \label{fig:AALOADSpec}
 \end{figure}
+
