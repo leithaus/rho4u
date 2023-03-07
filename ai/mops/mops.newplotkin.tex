@@ -1,4 +1,4 @@
-\section{Towards a common language}
+\section{Towards a common language for computational dynamics}
 Three of the most successful branches of scientific discourse all agree on the shape of a model adequate for expressing and effecting computation. Physics, computer science, and mathematics all use the same standard shape. A model adequate for computation comes with an algebra of states and “laws of motion.”
 
 One paradigmatic example from physics is Hilbert spaces and the Schroedinger equation. In computer science and mathematics the algebra of states is further broken down into a monad (the free algebra of states) and an algebra of the monad recorded as some equations on the free algebra.
@@ -94,9 +94,11 @@ While its complexity far exceeds the presentations above, the JVM specification 
   \label{fig:AALOADSpec}
 \end{figure}
 
-One important point about the JVM versus the previous three
+\paragraph{WYSIWYG semantics}One important point about the JVM versus the previous three
 examples. The first three examples are examples of WYSIWYG operational
 semantics in the sense that the states \emph{are} the terms of the
 calculi. In the case of the JVM the terms in the language are only
 part of the state, which includes the stack, the heap, and several
-registers. WYSIWYG models make static analysis dramatically simpler. Specifically, an analyzer only has to look at terms in the language.
+registers. WYSIWYG models make static analysis dramatically
+simpler. Specifically, an analyzer only has to look at terms in the
+language.
