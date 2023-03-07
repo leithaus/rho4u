@@ -4,7 +4,7 @@ A presentation of the semantics of MeTTa must therefore provide a monad describi
 
 Note that to present such a description requires at least that much expressive power in the system used to formalize the presentation. That is, the system used to present a model of computation is itself a model of computation admitting a presentation in terms of an algebra of states and some rewrites. This is why a meta-circular evaluator is a perfectly legitimate presentation. That is, a presentation of MeTTa’s semantics in MeTTa is perfectly legitimate. Meta-circular presentations are more difficult to unpack, which is why such presentations are typically eschewed, but they are admissible. In fact, a meta-circular evaluator may be the most pure form of presentation.
 
-But, this fact has an important consequence. No model that is at least Turing complete can be “lower level” than any 
+But, this fact has an important consequence. No model that is at least Turing complete can be “lower level” than any other.
 
 \subsection{Rationale for such a presentation}
 
@@ -15,3 +15,104 @@ The rationale for such a presentation is not simply that this is the way it’s 
   \item an independent specification allowing implementations;
   \item meta-level computation, including type checking, model checking, macros, computational reflection, etc.
 \end{itemize}
+
+\subsection{MeTTa Operational Semantics}
+
+\subsubsection{Algebra of States}
+
+%% Non-terminals are enclosed between $<$ and $>$. 
+%% The symbols -$>$ (production),  \textbf{$|$}  (union) 
+%% and \textbf{eps} (empty rule) belong to the BNF notation. 
+%% All other symbols are terminals.
+
+\paragraph{Expressions}
+\begin{eqnarray*}
+  Expr & \bc & \mathsf{(} Expr \; [Expr] \mathsf{)} \\
+  & \;\bm\; & \mathsf{\{} Expr \; [Expr] \mathsf{\}} \\
+  & \;\bm\; & \mathsf{(} Expr{} \;\mathsf{|}\; [Receipt] \; \mathsf{.} \; [Expr] \mathsf{)} \\
+ & \;\bm\; & \mathsf{\{} Expr \;\mathsf{|}\; [Receipt] \; \mathsf{.} \; [Expr] \mathsf{\}} \\
+& \;\bm\; & Atom
+\end{eqnarray*}
+
+\paragraph{Expression sequences}
+\begin{eqnarray*}
+  [Expr] & \bc & \epsilon \\
+  & \;\bm \; & Expr \\
+  & \;\bm \; & Expr `` `` [Expr]
+\end{eqnarray*}
+
+\paragraph{Bindings}
+\begin{eqnarray*}
+  Receipt & \bc & ReceiptLinearImpl \\
+  & \;\bm \; & ReceiptRepeatedImpl \\
+  & \;\bm \; & ReceiptPeekImpl
+\end{eqnarray*}
+\begin{eqnarray*}
+  [Receipt] & \bc & Receipt \\
+  & \;\bm \; & Receipt \mathsf{;} [Receipt]
+\end{eqnarray*}
+\begin{eqnarray*}
+  ReceiptLinearImpl & \bc & [LinearBind] \\
+  LinearBind & \bc & [Name] NameRemainder \mathsf{\leftarrow} AtomSource
+\end{eqnarray*}
+\begin{eqnarray*}
+  [LinearBind] & \bc & LinearBind \\
+  & \;\bm \; & LinearBind \mathsf{\&} [LinearBind]
+\end{eqnarray*}
+\begin{eqnarray*}
+  AtomSource & \bc & Name \\
+  & \;\bm \; & Name \mathsf{?!} \\
+  & \;\bm \; & Name \mathsf{!?} \mathsf{(} [Expr] \mathsf{)} \\
+  ReceiptRepeatedImpl & \bc & [RepeatedBind] \\
+  RepeatedBind & \bc & [Name] NameRemainder \mathsf{\Leftarrow} Atom
+\end{eqnarray*}
+\begin{eqnarray*}
+  [RepeatedBind] & \bc & RepeatedBind \\
+  & \;\bm \; & RepeatedBind \mathsf{\&} [RepeatedBind] \\
+  ReceiptPeekImpl & \bc & [PeekBind] \\
+  PeekBind & \bc & [Name] NameRemainder \mathsf{\leftharpoonup} Atom
+\end{eqnarray*}
+\begin{eqnarray*}
+  [PeekBind] & \bc & PeekBind \\
+  & \;\bm \; & PeekBind \mathsf{\&} [PeekBind]
+\end{eqnarray*}
+\begin{eqnarray*}
+  ExprRemainder & \bc & \mathsf{...} ExprVar \\
+ & \;\bm \; & \epsilon \\
+  NameRemainder & \bc & \mathsf{...} \mathsf{@} ExprVar \\
+& \;\bm \; & \epsilon
+\end{eqnarray*}
+
+\paragraph{Literals and builtins}
+\begin{eqnarray*}
+  Atom & \bc & Ground \\
+  & \;\bm \; & Builtin \\
+  & \;\bm \; & Var \\
+  Name & \bc & \mathsf{\_} \\
+  & \;\bm \; & Var \\
+  & \;\bm \; & \mathsf{@} Expr
+\end{eqnarray*}
+\begin{eqnarray*}  
+  [Name] & \bc & \epsilon \\
+  & \;\bm \; & Name \\
+  & \;\bm \; & Name \mathsf{,} [Name] \\
+  BoolLiteral & \bc & \mathsf{true} \\
+ & \;\bm \; & \mathsf{false} \\
+  Ground & \bc & BoolLiteral \\
+  & \;\bm \; & LongLiteral \\
+  & \;\bm \; & StringLiteral \\
+  & \;\bm \; & UriLiteral \\
+  Builtin & \bc & \mathsf{\bc} \\
+ & \;\bm \; & \mathsf{=} \\
+ & \;\bm \; & \mathsf{:} \\
+  ExprVar & \bc & \mathsf{\_} \\
+  & \;\bm \; & Var \\
+\end{eqnarray*}
+
+\subsubsection{Rewrite Rules}
+
+\begin{mathpar}
+  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t_{i},t')}{\langle !t', \ldots \rangle \langle \ldots, (= t_{1} u_{1}), \ldots, (= t_{k} u_{k}), \ldots \rangle \langle \ldots \rangle \to \langle \ldots \rangle \langle \ldots, (= t_{1} u_{1}), \ldots, (= t_{k} u_{k}), \ldots \rangle \langle \ldots, u_{i}\sigma_{i} \rangle}
+\end{mathpar}
+
+
