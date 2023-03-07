@@ -1,25 +1,89 @@
 \section{Towards a common language}
 Three of the most successful branches of scientific discourse all agree on the shape of a model adequate for expressing and effecting computation. Physics, computer science, and mathematics all use the same standard shape. A model adequate for computation comes with an algebra of states and “laws of motion.”
 
+
 One paradigmatic example from physics is Hilbert spaces and the Schroedinger equation. In computer science and mathematics the algebra of states is further broken down into a monad (the free algebra of states) and an algebra of the monad recorded as some equations on the free algebra.
 
+
 Computer science represents laws of motion, aka state transitions, as rewrite rules exploiting the structure of states to determine transitions to new states. Mainstream mathematics is a more recognizable generalization of physics, coding state transitions, aka behavior, via morphisms (including automorphisms) between state spaces.
+
 
 But all three agree to a high degree of specificity on what ingredients go into a formal presentation adequate for effecting computation.
 
 \subsection{Examples from computer science}
+Since Milner's seminal Functions as processes paper, the gold standard for a presentation of an operational semantics is to present the algebra of states via a grammar and a structural congruence, and the rewrite rules in Plotkin-style SOS format.
 
 \subsubsection{$\lambda$-calculus}
 
-TBD
+\begin{eqnarray*}
+  Term[V] & \bc & V \\
+  & \;\bm\; & \lambda V.Term[V] \\
+  & \;\bm\; & \mathsf{(} Term[V] \; Term[V] \mathsf{)}
+\end{eqnarray*}
+
+The structural congruence is the usual $\alpha$-equivalence, namely that $\lambda x.M \scong \lambda y.(M\{y / x\})$ when $y$ not free in $M$.
+
+The rewrite rule is
+\begin{mathpar}
+  \inferrule* [lab=Beta]{}{((\lambda x.M)N) \to M\{N / x\}}
+\end{mathpar}
 
 \subsubsection{$\pi$-calculus}
 
-TBD
+\begin{eqnarray*}
+  Term[N] & \bc & \mathsf{0} \\
+  & \;\bm\; & \mathsf{for}\mathsf{(}N \leftarrow N\mathsf{)}Term[N] \\
+  & \;\bm\; & N\mathsf{!}\mathsf{(}N\mathsf{)} \\
+  & \;\bm\; & \mathsf{(}\mathsf{new}\; N\mathsf{)}Term[N] \\
+  & \;\bm\; & Term[V] \; \mathsf{|}\; Term[V] \\
+  & \;\bm\; & \mathsf{!}Term[V]
+\end{eqnarray*}
+
+The structural congruence is the smallest equivalence relation including $\alpha$-equivalence making $(Term[N],\;\mathsf{|}\;,\mathsf{0})$ a commutative monoid, and respecting
+
+\begin{eqnarray*}
+  \mathsf{(}\mathsf{new}\; x\mathsf{)}\mathsf{(}\mathsf{new}\; x\mathsf{)}P & \scong & \mathsf{(}\mathsf{new}\; x\mathsf{)}P \\
+  \mathsf{(}\mathsf{new}\; x\mathsf{)}\mathsf{(}\mathsf{new}\; y\mathsf{)}P & \scong & \mathsf{(}\mathsf{new}\; y\mathsf{)}\mathsf{(}\mathsf{new}\; x\mathsf{)}P \\
+  (\mathsf{(}\mathsf{new}\; x\mathsf{)}P)\mathsf{|}Q & \scong & \mathsf{(}\mathsf{new}\; x\mathsf{)}(P\mathsf{|}Q), x \notin \freenames{Q}
+\end{eqnarray*}  
+
+The rewrite rules are
+\begin{mathpar}
+  \inferrule* [lab=COMM]{}{\mathsf{for}\mathsf{(}y \leftarrow x\mathsf{)}P \mathsf{|} x\mathsf{!}\mathsf{(}z\mathsf{)} \to P\{ z / y \}} \\
+  \and  
+  \inferrule* [lab=PAR]{P \to P'}{P\mathsf{|}Q \to P'\mathsf{|}Q}
+  \and
+  \inferrule* [lab=STRUCT]{P \scong P' \to Q' \scong Q}{P \to Q}
+\end{mathpar}
 
 \subsubsection{rho-calculus}
+\begin{mathpar}
+\inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
+  y \leftarrow x )P \;\bm\; x\mathsf{!}(Q) \;\bm\;
+  \mathsf{*}x \;\bm\; P\mathsf{|}Q } \and \inferrule* [lab=name] {}
+            {x, y \bc \mathsf{@}P }
+\end{mathpar}
+
+The structural congruence between processes is the least congruence
+containing $\alpha$-equivalence and satisfying the commutative monoid
+laws (associativity, commutativity and $\pzero$ as identity) for
+parallel composition $|$.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}} {\mathsf{for}(y \leftarrow x_{t} )P \;\mathsf{|}\; x_{s}!(Q)
+  \red P\substn{\quotep{Q}}{y}}
+  \and
+  \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  \and
+  \inferrule* [lab=STRUCT]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
+\end{mathpar}
 
 \subsubsection{The JVM}
 
-TBD
+While its complexity far exceeds the presentations above, the JVM specification respects this same shape. Here is an example from one of the specification of what the operation aaload does.
 
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{JVMSpecAALOAD.jpg}
+  \caption{AALOAD instruction specification}
+  \label{fig:AALOADSpec}
+\end{figure}

@@ -25,20 +25,22 @@ The rationale for such a presentation is not simply that this is the way it’s 
 %% and \textbf{eps} (empty rule) belong to the BNF notation. 
 %% All other symbols are terminals.
 
-\paragraph{Expressions}
+\paragraph{Terms}
 \begin{eqnarray*}
-  Expr & \bc & \mathsf{(} Expr \; [Expr] \mathsf{)} \\
-  & \;\bm\; & \mathsf{\{} Expr \; [Expr] \mathsf{\}} \\
-  & \;\bm\; & \mathsf{(} Expr{} \;\mathsf{|}\; [Receipt] \; \mathsf{.} \; [Expr] \mathsf{)} \\
- & \;\bm\; & \mathsf{\{} Expr \;\mathsf{|}\; [Receipt] \; \mathsf{.} \; [Expr] \mathsf{\}} \\
+  Term & \bc & \mathsf{(} Term \; [Term] \mathsf{)} \\
+  & \;\bm\; & \mathsf{\{} Term \; [Term] \mathsf{\}} \\
+  & \;\bm\; & \mathsf{(} Term{} \;\mathsf{|}\; [Receipt] \; \mathsf{.} \; [Term] \mathsf{)} \\
+  & \;\bm\; & \mathsf{\{} Term \;\mathsf{|}\; [Receipt] \; \mathsf{.} \; [Term] \mathsf{\}} \\
 & \;\bm\; & Atom
 \end{eqnarray*}
 
-\paragraph{Expression sequences}
+We impose the equation $\mathsf{\{} \ldots, t, u, \ldots \mathsf{\}} = \mathsf{\{} \ldots, u, t, \ldots \mathsf{\}}$, making terms of this form multisets. Note that for multiset comprehensions this amounts to non-determinism in the order of the terms delivered, but they are still streams. We use $\mathsf{\{}Term\mathsf{\}}$ to denote the set of terms that are (extensionally or intensionally) defined multisets, and $\mathsf{(}Term\mathsf{)}$ to denote the set of terms that are (extensionally or intensionally) defined lists.
+
+\paragraph{Term sequences}
 \begin{eqnarray*}
-  [Expr] & \bc & \epsilon \\
-  & \;\bm \; & Expr \\
-  & \;\bm \; & Expr `` `` [Expr]
+  [Term] & \bc & \epsilon \\
+  & \;\bm \; & Term \\
+  & \;\bm \; & Term \; [Term]
 \end{eqnarray*}
 
 \paragraph{Bindings}
@@ -49,37 +51,37 @@ The rationale for such a presentation is not simply that this is the way it’s 
 \end{eqnarray*}
 \begin{eqnarray*}
   [Receipt] & \bc & Receipt \\
-  & \;\bm \; & Receipt \mathsf{;} [Receipt]
+  & \;\bm \; & Receipt \mathsf{;}\; [Receipt]
 \end{eqnarray*}
 \begin{eqnarray*}
   ReceiptLinearImpl & \bc & [LinearBind] \\
-  LinearBind & \bc & [Name] NameRemainder \mathsf{\leftarrow} AtomSource
+  LinearBind & \bc & [Name] \; NameRemainder \; \mathsf{\leftarrow} \; AtomSource
 \end{eqnarray*}
 \begin{eqnarray*}
   [LinearBind] & \bc & LinearBind \\
-  & \;\bm \; & LinearBind \mathsf{\&} [LinearBind]
+  & \;\bm \; & LinearBind \;\mathsf{\&}\; [LinearBind]
 \end{eqnarray*}
 \begin{eqnarray*}
   AtomSource & \bc & Name \\
   & \;\bm \; & Name \mathsf{?!} \\
-  & \;\bm \; & Name \mathsf{!?} \mathsf{(} [Expr] \mathsf{)} \\
+  & \;\bm \; & Name \mathsf{!?} \mathsf{(} [Term] \mathsf{)} \\
   ReceiptRepeatedImpl & \bc & [RepeatedBind] \\
-  RepeatedBind & \bc & [Name] NameRemainder \mathsf{\Leftarrow} Atom
+  RepeatedBind & \bc & [Name] \; NameRemainder \; \mathsf{\Leftarrow} \; Atom
 \end{eqnarray*}
 \begin{eqnarray*}
   [RepeatedBind] & \bc & RepeatedBind \\
-  & \;\bm \; & RepeatedBind \mathsf{\&} [RepeatedBind] \\
+  & \;\bm \; & RepeatedBind \; \mathsf{\&}\; [RepeatedBind] \\
   ReceiptPeekImpl & \bc & [PeekBind] \\
-  PeekBind & \bc & [Name] NameRemainder \mathsf{\leftharpoonup} Atom
+  PeekBind & \bc & [Name] \; NameRemainder \; \mathsf{\leftharpoonup}\; Atom
 \end{eqnarray*}
 \begin{eqnarray*}
   [PeekBind] & \bc & PeekBind \\
-  & \;\bm \; & PeekBind \mathsf{\&} [PeekBind]
+  & \;\bm \; & PeekBind \; \mathsf{\&}\; [PeekBind]
 \end{eqnarray*}
 \begin{eqnarray*}
-  ExprRemainder & \bc & \mathsf{...} ExprVar \\
+  TermRemainder & \bc & \mathsf{...} \; TermVar \\
  & \;\bm \; & \epsilon \\
-  NameRemainder & \bc & \mathsf{...} \mathsf{@} ExprVar \\
+  NameRemainder & \bc & \mathsf{...} \; \mathsf{@} TermVar \\
 & \;\bm \; & \epsilon
 \end{eqnarray*}
 
@@ -90,7 +92,7 @@ The rationale for such a presentation is not simply that this is the way it’s 
   & \;\bm \; & Var \\
   Name & \bc & \mathsf{\_} \\
   & \;\bm \; & Var \\
-  & \;\bm \; & \mathsf{@} Expr
+  & \;\bm \; & \mathsf{@} Term
 \end{eqnarray*}
 \begin{eqnarray*}  
   [Name] & \bc & \epsilon \\
@@ -105,14 +107,21 @@ The rationale for such a presentation is not simply that this is the way it’s 
   Builtin & \bc & \mathsf{\bc} \\
  & \;\bm \; & \mathsf{=} \\
  & \;\bm \; & \mathsf{:} \\
-  ExprVar & \bc & \mathsf{\_} \\
+  TermVar & \bc & \mathsf{\_} \\
   & \;\bm \; & Var \\
 \end{eqnarray*}
+
+\paragraph{States}
+\begin{eqnarray*}
+  State & \bc & \langle \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \rangle
+\end{eqnarray*}
+
+We will use $S, T, U$ to range over states and $\mathsf{i} := \pi_{1}$, $\mathsf{k} := \pi_{2}$, and $\mathsf{o} := \pi_{3}$ for the first, second, and third projections as accessors for the components of states. Substitutions are ranged over by $\sigma$, and as is standard, substitution application will be written postfix, e.g. $t\sigma$.
 
 \subsubsection{Rewrite Rules}
 
 \begin{mathpar}
-  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t_{i},t')}{\langle !t', \ldots \rangle \langle \ldots, (= t_{1} u_{1}), \ldots, (= t_{k} u_{k}), \ldots \rangle \langle \ldots \rangle \to \langle \ldots \rangle \langle \ldots, (= t_{1} u_{1}), \ldots, (= t_{k} u_{k}), \ldots \rangle \langle \ldots, u_{i}\sigma_{i} \rangle}
+  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t_{i},t')}{\langle \mathsf{!}t', \ldots \rangle \langle \ldots, (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}), \ldots \rangle \langle \ldots \rangle \to \langle \ldots \rangle \langle \ldots, (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}), \ldots \rangle \langle \ldots, u_{i}\sigma_{i} \rangle}
 \end{mathpar}
 
 
