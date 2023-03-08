@@ -126,13 +126,20 @@ We will use $S, T, U$ to range over states and $\mathsf{i} := \pi_{1}$, $\mathsf
 \subsubsection{Rewrite Rules}
 
 \begin{mathpar}
-  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t_{i},t')}{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k, o \rangle \to \langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k, \mathsf{\{} u_{i}\sigma_{i} \mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t',t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k', \mathsf{insensitive}(t',k')}{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, k, o \rangle \to \langle i, k, \mathsf{\{} u_{i}\sigma_{i} \mathsf{\}} \pplus o \rangle} \\
   \and
-  \inferrule* [lab=Transform]{\sigma_{i} = \mathsf{unify}(t_{i},t')}{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{k} \mathsf{\}} \pplus k, o \rangle \to \langle i, \mathsf{\{} t_{1}, \ldots, t_{k} \mathsf{\}} \pplus k, \mathsf{\{} u\sigma_{i} \mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=Chain]{\sigma_{i} = \mathsf{unify}(u,t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k', \mathsf{insensitive}(u,k')}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus o \rangle \to \langle i, k, \mathsf{\{} u_{i}\sigma_{i} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=Transform]{\sigma_{i} = \mathsf{unify}(t,t_{i}), k = \mathsf{\{} t_{1}, \ldots, t_{k} \mathsf{\}} \pplus k',\mathsf{insensitive}(t,k')}{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, k, o \rangle \to \langle i, k, \mathsf{\{} u\sigma_{i} \mathsf{\}} \pplus o \rangle} \\
   \and
   \inferrule* [lab=AddAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \to \langle i, k \pplus \mathsf{\{} t\mathsf{\}},  \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
   \and
-  \inferrule* [lab=AddAtom2]{\langle i_{1}, k_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}, t\mathsf{\}} \pplus k_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle}
+  \inferrule* [lab=AddAtom2]{\langle i_{1}, k_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}, t\mathsf{\}} \pplus k_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
+  \inferrule* [lab=RemAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o \rangle \to \langle i, k,  \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=RemAtom2]{\langle i_{1}, k_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
 \end{mathpar}
+
+Where $\mathsf{insensitive}(t,k)$ means that $\mathsf{(} \mathsf{=}\; t'\; u \mathsf{)} \in k \Rightarrow \neg \mathsf{unify}(t,t')$.
 
 
