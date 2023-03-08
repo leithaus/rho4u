@@ -17,5 +17,24 @@ Satoshi’s discovery of a new class of economically secured, leaderless distrib
 Like the Internet-facing APIs launched all throughout the 00’s and beyond, Ethereum’s distributed computer is accessible to anyone with an Internet connection. And, as such, without protection would be vulnerable to denial of service  attacks. In fact, it’s potentially even more vulnerable because a request to the Ethereum distributed computer is a piece of code. This code could, in principle, run forever, or take up infinite storage space. Vitalik’s clever idea, building on the established practice of network access tokens, is to require tokens for each computational or storage step to prevent such abuses.
 
 \subsection{MeTTa effort objects}
-MeTTa takes the same approach. Transitions in the operational semantics cost a computational resource (effort objects, or EOs, for short) that are ``purchases'' with tokens. This section reprises the operational semantics with the cost of each step spelled out in terms of the structure of EOs.
+MeTTa takes the same approach. Transitions in the operational semantics cost a computational resource (effort objects, or EOs, for short) that are ``purchased'' with tokens. This section reprises the operational semantics with the cost of each step spelled out in terms of the structure of EOs.
+
+\subsubsection{Resource-bounded Rewrite Rules}
+
+We assume a polymorphic cost function $\mathsf{\#}$ taking values in the domain of EOs. We assume the domain of EOs supports a notion of $+$ making it a \emph{commutative} monoid.
+
+\begin{mathpar}
+  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t',t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k', \mathsf{insensitive}(t',k')}{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, k, o \rangle \xrightarrow{\Sigma_{i}\mathsf{\#}(\sigma_{i}) + \Sigma_{i}\mathsf{\#}(u_{i}\sigma_{i})} \langle i, k, \mathsf{\{} u_{i}\sigma_{i} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=Chain]{\sigma_{i} = \mathsf{unify}(u,t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k', \mathsf{insensitive}(u,k')}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus o \rangle \xrightarrow{\Sigma_{i}\mathsf{\#}(\sigma_{i}) + \Sigma_{i}\mathsf{\#}(u_{i}\sigma_{i})} \langle i, k, \mathsf{\{} u_{i}\sigma_{i} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=Transform]{\sigma_{i} = \mathsf{unify}(t,t_{i}), k = \mathsf{\{} t_{1}, \ldots, t_{k} \mathsf{\}} \pplus k',\mathsf{insensitive}(t,k') }{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, k, o \rangle \xrightarrow{\Sigma_{i}\mathsf{\#}(\sigma_{i}) + \Sigma_{i}\mathsf{\#}(u\sigma_{i})} \langle i, k, \mathsf{\{} u\sigma_{i} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=AddAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \xrightarrow{\mathsf{\#}(t)} \langle i, k \pplus \mathsf{\{} t\mathsf{\}},  \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=AddAtom2]{\langle i_{1}, k_{1}, o_{1}\rangle \xrightarrow{c} \langle i_{2}, k_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, o_{1}\rangle \xrightarrow{\mathsf{\#}(t)} \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}, t\mathsf{\}} \pplus k_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
+  \inferrule* [lab=RemAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o \rangle \xrightarrow{\mathsf{\#}(t)} \langle i, k,  \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=RemAtom2]{\langle i_{1}, k_{1}, o_{1}\rangle \xrightarrow{c} \langle i_{2}, k_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, o_{1}\rangle \xrightarrow{\mathsf{\#}(t)} \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
+\end{mathpar}
 
