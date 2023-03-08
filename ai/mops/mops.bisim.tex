@@ -1,0 +1,4 @@
+\section{Bisimulation}
+Since the operational semantics is expressed as a transition system we recover a notion of bisimulation. There are two possible ways to generate the notion of bisimulation in this context. One uses the Leifer-Milner-Sewell approach of deriving a bisimulation from the rewrite rules. However, the technical apparatus is very heavy to work with. The other is to adapt barbed bisimulation developed for the asynchronous $\pi$-calculus to this setting.
+
+The reason we need to use some care in developing the notion of bisimulation is that there are substitutions being generated and applied in many of the rules. So, a single label will not suffice. However, taking a query in the input space as a barb will. This notion of barbed bisimulation will provide a means of evaluating the correctness of compilation schemes to other languages. We illustrate this idea in the section on compiling MeTTa to the rho-calculus.

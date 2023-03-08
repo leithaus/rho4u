@@ -37,8 +37,8 @@ The rewrite rule is the well know $\beta$-reduction.
   & \;\bm\; & \mathsf{for}\mathsf{(}N \leftarrow N\mathsf{)}Term[N] \\
   & \;\bm\; & N\mathsf{!}\mathsf{(}N\mathsf{)} \\
   & \;\bm\; & \mathsf{(}\mathsf{new}\; N\mathsf{)}Term[N] \\
-  & \;\bm\; & Term[V] \; \mathsf{|}\; Term[V] \\
-  & \;\bm\; & \mathsf{!}Term[V]
+  & \;\bm\; & Term[N] \; \mathsf{|}\; Term[N] \\
+  & \;\bm\; & \mathsf{!}Term[N]
 \end{eqnarray*}
 
 The structural congruence is the smallest equivalence relation including $\alpha$-equivalence making $(Term[N],\;\mathsf{|}\;,\mathsf{0})$ a commutative monoid, and respecting
@@ -65,7 +65,7 @@ context.
 \subsubsection{rho-calculus}
 
 \paragraph{Algebra of States}
-Note that the rho-calculus is different from the $\lambda$-calculus and the $\pi$-calculus because it is \emph{not} dependent on a type of variables or names. However, it does give us the opportunity to expose how ground types, such as Booleans, numeric and string operations are imported into the calculus. The calculus does depend on the notion of a $0$ process. In fact, this could be any builtin functionality. The language rholang, derived from the rho-calculus, imports all literals as \emph{processes}. Note that this is in the spirit of the $lambda$-calculus and languages derived from it: Booleans, numbers, and strings are terms, on the level with $\lambda$ terms.
+Note that the rho-calculus is different from the $\lambda$-calculus and the $\pi$-calculus because it is \emph{not} dependent on a type of variables or names. However, it does give us the opportunity to expose how ground types, such as Booleans, numeric and string operations are imported into the calculus. The calculus does depend on the notion of a $0$ process. In fact, this could be any builtin functionality. The language rholang, derived from the rho-calculus, imports all literals as \emph{processes}. Note that this is in the spirit of the $\lambda$-calculus and languages derived from it: Booleans, numbers, and strings are terms, on the level with $\lambda$ terms.
 
 So, the parameter to the monad for the rho-calculus takes the collection of builtin processes. Naturally, for all builtin processes other than $0$ there have to be reduction rules. For brevity, we take $Z = \{0\}$.
 \begin{mathpar}
@@ -95,7 +95,7 @@ context.
 \pagebreak
 \subsubsection{The JVM}
 
-While its complexity far exceeds the presentations above, the JVM specification respects this same shape. Here is an example from one of the specification of what the operation aaload does.
+While its complexity far exceeds the presentations above, the JVM specification respects this same shape. Here is an example from the specification of what the operation aaload does.
 
 \begin{figure}[h!]
   \scalebox{0.75}{\includegraphics[width=\linewidth]{JVMSpecAALOAD.jpg}}

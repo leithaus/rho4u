@@ -1,5 +1,6 @@
 \documentclass[12pt]{llncs}
 
+\usepackage[hidelinks]{hyperref}
 \usepackage {mathpartir}
 \usepackage {graphicx}
 \usepackage{bigpage}
@@ -16,7 +17,8 @@
 %% \usepackage[normalem]{ulem}
 \usepackage[svgnames]{xcolor}
 %\usepackage[paperheight=27.94cm,paperwidth=21.59cm,left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm]{geometry}
-\usepackage[hidelinks]{hyperref}
+\usepackage {graphicx}
+\usepackage{color}
 
 
 %\setlength\parindent{0pt}
@@ -32,7 +34,13 @@
 
 \input{mops.mettaopsem}
 
+\input{mops.builtins}
+
+\input{mops.bisim}
+
 \input{mops.cost}
+
+\input{mops.rho.comp}
 
 \input{mops.conclusion}
 

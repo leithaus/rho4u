@@ -1,0 +1,41 @@
+\section{Compiling MeTTa to rho}
+
+In this section we illustrate the value of having an operational semantics by developing a compiler from MeTTa to the rho-calculus, and resource-bounded MeTTa to rholang.
+
+\subsection{MeTTa to the rho-calculus}
+
+\begin{eqnarray*}
+  \meaningof{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, k, o \rangle} & = & ??? \\
+  \meaningof{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus o \rangle} & = & ??? \\
+  \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, k, o \rangle} & = & ??? \\
+  \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle} & = & ??? \\
+  \meaningof{\langle i_{1}, k_{3}, o_{1}\rangle} & = & ??? \\
+  \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o \rangle} & = & ??? \\
+  \meaningof{\langle i_{1}, k_{3}, o_{1}\rangle} & = & ??? \\
+\end{eqnarray*}
+
+\subsection{Correctness of the translation}
+\begin{theorem}[MeTTa2rho correctness]
+  \begin{mathpar}
+    S_{1} \wbbisim S_{2} \iff \meaningof{S_{1}} \wbbisim \meaningof{S_{2}}
+  \end{mathpar}
+\end{theorem}
+
+\subsection{Resource-bounded MeTTa to rholang}
+
+\begin{eqnarray*}
+  \meaningof{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, k, o \rangle} & = & ??? \\
+  \meaningof{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus o \rangle} & = & ??? \\
+  \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, k, o \rangle} & = & ??? \\
+  \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle} & = & ??? \\
+  \meaningof{\langle i_{1}, k_{3}, o_{1}\rangle} & = & ??? \\
+  \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o \rangle} & = & ??? \\
+  \meaningof{\langle i_{1}, k_{3}, o_{1}\rangle} & = & ??? \\
+\end{eqnarray*}
+
+\subsection{Correctness of the translation}
+\begin{theorem}[MeTTa2rho correctness]
+  \begin{mathpar}
+    S_{1} \wbbisim S_{2} \iff \meaningof{S_{1}} \wbbisim \meaningof{S_{2}}
+  \end{mathpar}
+\end{theorem}
