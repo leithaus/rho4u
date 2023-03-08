@@ -8,7 +8,7 @@ Computer science represents laws of motion, aka state transitions, as rewrite ru
 But all three agree to a high degree of specificity on what ingredients go into a formal presentation adequate for effecting computation.
 
 \subsection{Examples from computer science}
-Since Milner's seminal Functions as processes paper, the gold standard for a presentation of an operational semantics is to present the algebra of states via a grammar and a structural congruence, and the rewrite rules in Plotkin-style SOS format.
+Since Milner's seminal Functions as processes paper, the gold standard for a presentation of an operational semantics is to present the algebra of states via a grammar (a monad) and a structural congruence (an algebra of the monad), and the rewrite rules in Plotkin-style SOS format.
 
 \subsubsection{$\lambda$-calculus}
 
@@ -20,6 +20,8 @@ Since Milner's seminal Functions as processes paper, the gold standard for a pre
 \end{eqnarray*}
 
 The structural congruence is the usual $\alpha$-equivalence, namely that $\lambda x.M \scong \lambda y.(M\{y / x\})$ when $y$ not free in $M$.
+
+It is evident that $Term[V]$ is a monad and imposing $\alpha$-equivalence gives an algebra of the monad.
 
 \paragraph{Transitions}
 The rewrite rule is the well know $\beta$-reduction.
@@ -45,7 +47,9 @@ The structural congruence is the smallest equivalence relation including $\alpha
   \mathsf{(}\mathsf{new}\; x\mathsf{)}\mathsf{(}\mathsf{new}\; x\mathsf{)}P & \scong & \mathsf{(}\mathsf{new}\; x\mathsf{)}P \\
   \mathsf{(}\mathsf{new}\; x\mathsf{)}\mathsf{(}\mathsf{new}\; y\mathsf{)}P & \scong & \mathsf{(}\mathsf{new}\; y\mathsf{)}\mathsf{(}\mathsf{new}\; x\mathsf{)}P \\
   (\mathsf{(}\mathsf{new}\; x\mathsf{)}P)\mathsf{|}Q & \scong & \mathsf{(}\mathsf{new}\; x\mathsf{)}(P\mathsf{|}Q), x \notin \freenames{Q}
-\end{eqnarray*}  
+\end{eqnarray*}
+
+Again, it is evident that $Term[N]$ is a monad and imposing the structural congruence gives an algebra of the monad.
 
 \paragraph{Transitions}
 The rewrite rules divide into a core rule, and when rewrites apply in
@@ -61,15 +65,20 @@ context.
 \subsubsection{rho-calculus}
 
 \paragraph{Algebra of States}
-Note that the rho-calculus is different from the $\lambda$-calculus and the $\pi$-calculus because it is \emph{not} dependent on a type of variables or names.
+Note that the rho-calculus is different from the $\lambda$-calculus and the $\pi$-calculus because it is \emph{not} dependent on a type of variables or names. However, it does give us the opportunity to expose how ground types, such as Booleans, numeric and string operations are imported into the calculus. The calculus does depend on the notion of a $0$ process. In fact, this could be any builtin functionality. The language rholang, derived from the rho-calculus, imports all literals as \emph{processes}. Note that this is in the spirit of the $lambda$-calculus and languages derived from it: Booleans, numbers, and strings are terms, on the level with $\lambda$ terms.
+
+So, the parameter to the monad for the rho-calculus takes the collection of builtin processes. Naturally, for all builtin processes other than $0$ there have to be reduction rules. For brevity, we take $Z = \{0\}$.
 \begin{mathpar}
-\inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
-  y \leftarrow x )P \;\bm\; x\mathsf{!}(Q) \;\bm\;
-  \mathsf{*}x \;\bm\; P\mathsf{|}Q } \and \inferrule* [lab=name] {}
-            {x, y \bc \mathsf{@}P }
+\inferrule* [lab=process] {} {Term[Z] \bc Z \;\bm\; \mathsf{for}(
+  Name[Z] \leftarrow Name[Z] )Term[Z] \;\bm\; Name[Z]\mathsf{!}(Term[Z]) 
+  \\ \and \;\bm\; \mathsf{*}Name[Z] \;\bm\; Term[Z]\mathsf{|}Term[Z] } \\
+\and \inferrule* [lab=name] {}
+     {Name[Z] \bc \mathsf{@}Term[Z] }
 \end{mathpar}
 
 The structural congruence is the smallest equivalence relation including $\alpha$-equivalence making $(P,\;\mathsf{|}\;,\mathsf{0})$ a commutative monoid.
+
+Again, it is evident that $Term[Z]$ is a monad and imposing the structural congruence gives an algebra of the monad.
 
 \paragraph{Transitions}
 The rewrite rules divide into a core rule, and when rewrites apply in
