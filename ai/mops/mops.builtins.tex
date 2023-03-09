@@ -20,7 +20,7 @@ Every compliant implementation of the MeTTa client must provide the following po
 
 \subsection{Transition rules}
 \begin{mathpar}
-  \inferrule* [lab=BoolAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \to \langle i, k, \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=BoolAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \to \langle i, k, \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle} \\
   \and
   \inferrule* [lab=BoolAdd2]{k = \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}} \pplus k'}{\langle i, k, o \rangle \to \langle i, k, \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle}
 \end{mathpar}
