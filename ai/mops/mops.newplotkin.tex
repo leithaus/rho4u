@@ -57,7 +57,9 @@ context.
 \begin{mathpar}
   \inferrule* [lab=COMM]{}{\mathsf{for}\mathsf{(}y \leftarrow x\mathsf{)}P \mathsf{|} x\mathsf{!}\mathsf{(}z\mathsf{)} \to P\{ z / y \}} \\
   \and  
-  \inferrule* [lab=PAR]{P \to P'}{P\mathsf{|}Q \to P'\mathsf{|}Q}
+  \inferrule* [lab=PAR]{P \to P'}{(\mathsf{new}\; x)P \to (\mathsf{new}\; x)P'}
+  \and  
+  \inferrule* [lab=PAR]{P \to P'}{P\mathsf{|}Q \to P'\mathsf{|}Q} \\
   \and
   \inferrule* [lab=STRUCT]{P \scong P' \to Q' \scong Q}{P \to Q}
 \end{mathpar}

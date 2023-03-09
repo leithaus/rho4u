@@ -9,9 +9,9 @@ In this section we illustrate the value of having an operational semantics by de
   \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k, \mathsf{\{} u \mathsf{\}} \pplus o \rangle} & = & ??? \\
   \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{k} \mathsf{\}} \pplus k, o \rangle} & = & ??? \\
   \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle} & = & ??? \\
-  \meaningof{\langle i_{1}, k_{3}, o_{1}\rangle} & = & ??? \\
+  \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k, o\rangle} & = & ??? \\
   \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o \rangle} & = & ??? \\
-  \meaningof{\langle i_{1}, k_{3}, o_{1}\rangle} & = & ??? \\
+  \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k, o\rangle} & = & ??? \\
 \end{eqnarray*}
 
 \subsection{Correctness of the translation}
@@ -28,9 +28,9 @@ In this section we illustrate the value of having an operational semantics by de
   \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k, \mathsf{\{} u \mathsf{\}} \pplus o; eos \rangle} & = & ??? \\
   \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{k} \mathsf{\}} \pplus k, o ; eos \rangle} & = & ??? \\
   \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o; eos \rangle} & = & ??? \\
-  \meaningof{\langle i_{1}, k_{3}, o_{1}; eos\rangle} & = & ??? \\
+  \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k, o; eos\rangle} & = & ??? \\
   \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o; eos \rangle} & = & ??? \\
-  \meaningof{\langle i_{1}, k_{3}, o_{1}; eos\rangle} & = & ??? \\
+  \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k, o; eos\rangle} & = & ??? \\
 \end{eqnarray*}
 
 \subsection{Correctness of the translation}
