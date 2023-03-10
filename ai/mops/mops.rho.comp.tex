@@ -1,18 +1,34 @@
 \section{Compiling MeTTa to rho}
 
-In this section we illustrate the value of having an operational semantics by developing a compiler from MeTTa to the rho-calculus, and resource-bounded MeTTa to rholang.
+In this section we illustrate the value of having an operational semantics by developing a compiler from MeTTa to the rho-calculus, and resource-bounded MeTTa to rholang. The essence of the translation is to use a channels for each of the registers. 
 
 \subsection{MeTTa to the rho-calculus}
 
-\begin{eqnarray*}
-  \meaningof{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k, o \rangle} & = & ??? \\
-  \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k, \mathsf{\{} u \mathsf{\}} \pplus o \rangle} & = & ??? \\
-  \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{k} \mathsf{\}} \pplus k, o \rangle} & = & ??? \\
-  \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle} & = & ??? \\
-  \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k, o\rangle} & = & ??? \\
-  \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o \rangle} & = & ??? \\
-  \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k, o\rangle} & = & ??? \\
-\end{eqnarray*}
+\begin{mathpar}
+  \begin{array}{lll}
+    \meaningof{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, o \rangle}(i,k,o) & & \\
+    = & & \\
+    \mathsf{for}( \meaningof{t'} \leftarrow i )\{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{t'} \; w \mathsf{)} \leftarrow k \mathsf{)}\{ o\mathsf{!}(\meaningof{u_{j}}) \mathsf{|} s\mathsf{!}\mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{t'} \; w \mathsf{)} \mathsf{)} \} \mathsf{|} \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\} \} & & \\
+    \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, \mathsf{\{} u \mathsf{\}} \pplus o \rangle} & & \\
+    = & & \\
+    \mathsf{for}( \meaningof{u} \leftarrow o )\{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{u}\; w \mathsf{)} \leftarrow k \mathsf{)}\{ o\mathsf{!}(\meaningof{u_{j}}) \mathsf{|} s\mathsf{!}\mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{u} \; w \mathsf{)} \mathsf{)} \} \mathsf{|} \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\} \} & & \\
+    \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k, o \rangle} & & \\
+    = & & \\
+    \mathsf{for}( \mathsf{(}\mathsf{transform}\; \meaningof{t}\; \meaningof{u}\mathsf{)} \leftarrow i )\{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \meaningof{t} \leftarrow k \mathsf{)}\{ o\mathsf{!}\mathsf{(}\meaningof{u}\mathsf{)} \mathsf{|} s \mathsf{!}\mathsf{(} \meaningof{t} \mathsf{)} \} \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\} \} & & \\
+    \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle} & & \\
+    = & & \\
+    \mathsf{for}( \mathsf{(}\mathsf{addAtom}\; \meaningof{t} \mathsf{)} \leftarrow i )\{ k\mathsf{!}(\meaningof{t}) \} & & \\
+    \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k, o\rangle} & & \\
+    = & & \\
+    \mathsf{for}( \mathsf{(}\mathsf{addAtom}\; \meaningof{t} \mathsf{)} \leftarrow k )\{ k\mathsf{!}(\mathsf{(}\mathsf{addAtom}\; \meaningof{t} \mathsf{)}) \mathsf{|} k\mathsf{!}(\meaningof{t}) \} & & \\
+    \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o \rangle} & & \\
+    = & & \\
+    \mathsf{for}( \mathsf{(}\mathsf{remAtom}\; \meaningof{t} \mathsf{)} \leftarrow i )\{ \mathsf{for}\mathsf{(} \meaningof{t} \leftarrow k \mathsf{)}\{ o\mathsf{!}(\meaningof{()}) \} \} & & \\
+    \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k, o\rangle} & & \\
+    = & & \\
+    \mathsf{for}( \mathsf{(}\mathsf{remAtom}\; \meaningof{t} \mathsf{)} \leftarrow k )\{ \mathsf{for}\mathsf{(} \meaningof{t} \leftarrow k \mathsf{)}\{ k\mathsf{!}(\mathsf{(}\mathsf{remAtom}\; \meaningof{t} \mathsf{)}) \mathsf{|} o\mathsf{!}(\meaningof{()}) \} \} & & \\
+  \end{array}
+\end{mathpar}
 
 \subsection{Correctness of the translation}
 \begin{theorem}[MeTTa2rho correctness]
@@ -24,9 +40,9 @@ In this section we illustrate the value of having an operational semantics by de
 \subsection{Resource-bounded MeTTa to rholang}
 
 \begin{eqnarray*}
-  \meaningof{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k, o; eos \rangle} & = & ??? \\
-  \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{k} \; u_{k}) \mathsf{\}} \pplus k, \mathsf{\{} u \mathsf{\}} \pplus o; eos \rangle} & = & ??? \\
-  \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{k} \mathsf{\}} \pplus k, o ; eos \rangle} & = & ??? \\
+  \meaningof{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, o; eos \rangle} & = & ??? \\
+  \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, \mathsf{\{} u \mathsf{\}} \pplus o; eos \rangle} & = & ??? \\
+  \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k, o ; eos \rangle} & = & ??? \\
   \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o; eos \rangle} & = & ??? \\
   \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k, o; eos\rangle} & = & ??? \\
   \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o; eos \rangle} & = & ??? \\
