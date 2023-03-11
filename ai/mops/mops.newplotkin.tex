@@ -105,7 +105,7 @@ While its complexity far exceeds the presentations above, the JVM specification 
   \label{fig:AALOADSpec}
 \end{figure}
 
-\paragraph{WYSIWYG semantics}One important point about the JVM versus the previous three
+\paragraph{Register machines and WYSIWYG semantics}One important point about the JVM versus the previous three
 examples. The first three examples are examples of WYSIWYG operational
 semantics in the sense that the states \emph{are} the terms of the
 calculi. In the case of the JVM the terms in the language are only
@@ -113,3 +113,5 @@ part of the state, which includes the stack, the heap, and several
 registers. WYSIWYG models make static analysis dramatically
 simpler. Specifically, an analyzer only has to look at terms in the
 language.
+
+This phenomenon is not restricted to the JVM. Even the famous SECD machine is not strictly WYSIWYG. In fact, the register based states are not strictly a monad, but contain a monad.

@@ -58,6 +58,27 @@ We impose the equation $\mathsf{\{} \ldots, t, u, \ldots \mathsf{\}} = \mathsf{\
 
 We assume a number of polymorphic operators, such as $\pplus$ which acts as union on multisets and append on lists and concatenation on strings, and $::$ which acts as cons on lists and the appropriate generalization for the other data types.
 
+\subsubsection{Extensional vs intensionally defined spaces}
+We make a distinction between extensionally defined spaces and terms, where each element of the space or term has been explicitly constructed, versus intensionally defined spaces and terms where elements are defined by a rule. The latter we call comprehensions.
+
+We adopt this design for numerous reasons:
+\begin{itemize}
+  \item it provides an explicit representation for bindings;
+  \item it provides an explicit representation for infinite terms and spaces;
+  \item it provides an explicit scope for access to remotely accessed data.
+\end{itemize}
+
+\paragraph{Explicit bindings} Comprehensions provide a superior framework for the explicit representation of bindings. For example, they significantly generalize $\mathsf{let}$ and $\mathsf{letrec}$ constructs. In particular, the generally accepted semantics for these constructs do not extend smoothly to streams.
+
+\paragraph{Infinite terms and spaces}
+In fact, since the advent of set comprehensions and continuing through SQL's $\mathsf{SELECT-FROM-WHERE}$ to Haskell's do-nation and Scala's for-comprehensions the general mechanism for describing intensionally specified collections has been shown to be a powerful abstraction mechanism. Specifically, we now know that comprehensions are really syntactic sugar for the monadic operations, which makes these an exceptionally flexible framework for representing a notion of binding across a wide range of computational phenomena.
+
+\paragraph{Remotely accessed data} Whether access data from a distributed atom space, or a resource on the Internet, or calling a foreign function across a memory boundary, remotely accessed data comes with different failure modes. Data providers can be offline or otherwise inaccessible. Data can be ill-formatted or peppered with an array of challenges, from buffer or register overflows to triggering divergent computation.
+
+Providing a scope for these failure modes has a distinct advantage for defensive computation. Beyond that, however, are issues related with fair merge of divergent behavior. The famous example from PCF was logical disjunction. An evaluation strategy for disjunction that evaluates both arguments will diverge if one of the arguments diverges. An evaluation that returns true immediately if the first argument it evaluates is true will potentially diverge less often. This generalizes to a wide range of situations involving the integration of multiple foreign sources of data. 
+
+While there is not a one-size-fits all solution, Oleg Kiselyov has provided a natural mechanism in the monad transformer, LogicT. This provides a policy language for describing merge policies. It is an elegant solution that fits perfectly with comprehensions.
+
 \paragraph{Term sequences}
 \begin{eqnarray*}
   [Term] & \bc & \epsilon \\
