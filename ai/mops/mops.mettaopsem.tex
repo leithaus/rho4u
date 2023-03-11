@@ -135,26 +135,38 @@ We assume a number of polymorphic operators, such as $\pplus$ which acts as unio
 
 \paragraph{States}
 \begin{eqnarray*}
-  State & \bc & \langle \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \rangle
+  State & \bc & \langle \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \rangle
 \end{eqnarray*}
 
-We will use $S, T, U$ to range over states and $\mathsf{i} := \pi_{1}$, $\mathsf{k} := \pi_{2}$, and $\mathsf{o} := \pi_{3}$ for the first, second, and third projections as accessors for the components of states. Substitutions are ranged over by $\sigma$, and as is standard, substitution application will be written postfix, e.g. $t\sigma$.
+We will use $S, T, U$ to range over states and $\mathsf{i} := \pi_{1}$, $\mathsf{k} := \pi_{2}$, $\mathsf{w} := \pi_{3}$and $\mathsf{o} := \pi_{4}$ for the first, second, third, and fourth projections as accessors for the components of states. Substitutions are ranged over by $\sigma$, and as is standard, substitution application will be written postfix, e.g. $t\sigma$.
+
+A state should be thought of as consisting of $4$ \emph{registers}:
+\begin{itemize}
+  \item $\mathsf{i}$ is the input register where queries are issued;
+  \item $\mathsf{k}$ is the knowledge base;
+  \item $\mathsf{w}$ is a workspace;
+  \item $\mathsf{o}$ is the output register.
+\end{itemize}
+
+We separate the input, workspace, and output registers to allow for
+coarse-graining of bisimulation. An external agent cannot necessarily observe the transitions related to the workspace.
 
 \subsubsection{Rewrite Rules}
 
 \begin{mathpar}
-  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t',t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k', \mathsf{insensitive}(t',k')}{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, k, o \rangle \to \langle i, k, \mathsf{\{} u_{1}\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u_{n}\sigma_{n} \mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t',t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k', \mathsf{insensitive}(t',k')}{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, k, w, o \rangle \to \langle i, k, \mathsf{\{} u_{1}\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u_{n}\sigma_{n} \mathsf{\}} \pplus w, o \rangle} \\
   \and
-  \inferrule* [lab=Chain]{\sigma_{i} = \mathsf{unify}(u,t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k', \mathsf{insensitive}(u,k')}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus o \rangle \to \langle i, k, \mathsf{\{} u_{1}\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u_{n}\sigma_{n} \mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=Chain]{\sigma_{i} = \mathsf{unify}(u,t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k', \mathsf{insensitive}(u,k')}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle \to \langle i, k, \mathsf{\{} u_{1}\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u_{n}\sigma_{n} \mathsf{\}} \pplus w, o \rangle} \\
   \and
-  \inferrule* [lab=Transform]{\sigma_{i} = \mathsf{unify}(t,t_{i}), k = \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k',\mathsf{insensitive}(t,k')}{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, k, o \rangle \to \langle i, k, \mathsf{\{} u\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u\sigma_{n} \mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=Transform]{\sigma_{i} = \mathsf{unify}(t,t_{i}), k = \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k',\mathsf{insensitive}(t,k')}{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, k, w, o \rangle \to \langle i, k, \mathsf{\{} u\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u\sigma_{n} \mathsf{\}} \pplus w, o \rangle} \\
   \and
-  \inferrule* [lab=AddAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \to \langle i, k \pplus \mathsf{\{} t\mathsf{\}},  \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=AddAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k \pplus \mathsf{\{} t\mathsf{\}}, w, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
   \and
-  \inferrule* [lab=AddAtom2]{\langle i_{1}, k_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}, t\mathsf{\}} \pplus k_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
-  \inferrule* [lab=RemAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, o \rangle \to \langle i, k,  \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=AddAtom2]{\langle i_{1}, k_{1}, w_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, w_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, w_{1}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}, t\mathsf{\}} \pplus k_{2}, w_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
+  \inferrule* [lab=RemAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o \rangle \to \langle i, k, w, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
   \and
-  \inferrule* [lab=RemAtom2]{\langle i_{1}, k_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
+  \inferrule* [lab=RemAtom2]{\langle i_{1}, k_{1}, w_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, w_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, w_{1}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{2}, w_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
+  \inferrule* [lab=Output]{\mathsf{insensitive}(u,k)}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle \to \langle i, k, w, \mathsf{\{} u \mathsf{\}} \pplus o \rangle}
 \end{mathpar}
 
 Where $\mathsf{insensitive}(t,k)$ means that $\mathsf{(} \mathsf{=}\; t'\; u \mathsf{)} \in k \Rightarrow \neg \mathsf{unify}(t,t')$.
