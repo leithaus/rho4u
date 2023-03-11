@@ -3,45 +3,52 @@
 In this section we illustrate the value of having an operational semantics by developing a compiler from MeTTa to the rho-calculus, and resource-bounded MeTTa to rholang. The essence of the translation is to use a channels for each of the registers. 
 
 \subsection{MeTTa to the rho-calculus}
-
+In the translation given below we employ two semantic functions. One, written $\meaningof{-}_{C}$, turns a state into a collection of data deployed at four channels, $i,k,w,o$, and another, written $\meaningof{-}_{E}$, that processes that data.
 \subsubsection{Space configuration}
 
 \begin{mathpar}
   \begin{array}{lll}
-    \meaningof{\langle \mathsf{\{} t \mathsf{\}} \pplus i, k, w, o \rangle}(i,k,w,o) & = & i\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}(i,k,w,o) \\
-    \meaningof{\langle i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o \rangle}(i,k,w,o) & = & k\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}(i,k,w,o) \\
-    \meaningof{\langle i, k, \mathsf{\{} t \mathsf{\}} \pplus w, o \rangle}(i,k,w,o) & = & w\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}(i,k,w,o) \\
-    \meaningof{\langle i, k, w, \mathsf{\{} t \mathsf{\}} \pplus o \rangle}(i,k,w,o) & = & o\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}(i,k,w,o) \\
+    \meaningof{\langle \mathsf{\{} t \mathsf{\}} \pplus i, k, w, o \rangle}_{C}(i,k,w,o) & = & i\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}_{C}(i,k,w,o) \\
+    \meaningof{\langle i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o \rangle}_{C}(i,k,w,o) & = & k\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}_{C}(i,k,w,o) \\
+    \meaningof{\langle i, k, \mathsf{\{} t \mathsf{\}} \pplus w, o \rangle}_{C}(i,k,w,o) & = & w\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}_{C}(i,k,w,o) \\
+    \meaningof{\langle i, k, w, \mathsf{\{} t \mathsf{\}} \pplus o \rangle}_{C}(i,k,w,o) & = & o\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}_{C}(i,k,w,o) \\
   \end{array}
 \end{mathpar}
 
 \subsubsection{Space evaluation}
 \begin{mathpar}
   \begin{array}{lll}
-    \meaningof{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, w, o \rangle}(i,k,w,o) & & \\
+    \meaningof{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, w, o \rangle}_{E}(i,k,w,o) & & \\
     = & & \\
     \mathsf{for}( \meaningof{t'} \leftarrow i )\{ \mathsf{(} \mathsf{new}\; s\mathsf{)} \{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{t'} \; v \mathsf{)} \leftarrow k \mathsf{)}\{ w\mathsf{!}(\meaningof{u_{j}}) \mathsf{|} s\mathsf{!}\mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{t'} \; v \mathsf{)} \mathsf{)} \} & & \\
     \quad \quad \quad \quad \quad \quad \mathsf{|}\; \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\} \} \} & & \\
-    \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle}(i,k,w,o) & & \\
+    \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, w, o \rangle}_{E}(i,k,w,o) & &\\
+    \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle}_{E}(i,k,w,o) & & \\
     = & & \\
     \mathsf{for}( \meaningof{u} \leftarrow o )\{ \mathsf{(} \mathsf{new}\; s\mathsf{)}\{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{u}\; v \mathsf{)} \leftarrow k \mathsf{)}\{ w\mathsf{!}(\meaningof{u_{j}}) \mathsf{|} s\mathsf{!}\mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{u} \; v \mathsf{)} \mathsf{)} \} & & \\
     \quad \quad \quad \quad \quad \quad \mathsf{|}\; \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\} \} \} & & \\
-    \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k, w, o \rangle}(i,k,w,o) & & \\
+    \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, w, o \rangle}_{E}(i,k,w,o) & &\\
+    \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k, w, o \rangle}_{E}(i,k,w,o) & & \\
     = & & \\
     \mathsf{for}( \mathsf{(}\mathsf{transform}\; \meaningof{t}\; \meaningof{u}\mathsf{)} \leftarrow i )\{ \mathsf{(} \mathsf{new}\; s\mathsf{)} \{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \meaningof{t} \leftarrow k \mathsf{)}\{ w\mathsf{!}\mathsf{(}\meaningof{u}\mathsf{)} \mathsf{|} s \mathsf{!}\mathsf{(} \meaningof{t} \mathsf{)} \} & & \\
     \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \mathsf{|}\; \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\} \} \} & & \\
-    \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle}(i,k,w,o) & & \\
+    \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k, w, o \rangle}_{E}(i,k,w,o) & &\\
+    \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle}_{E}(i,k,w,o) & & \\
     = & & \\
     \mathsf{for}( \mathsf{(}\mathsf{addAtom}\; \meaningof{t} \mathsf{)} \leftarrow i )\{ k\mathsf{!}(\meaningof{t}) \} & & \\
-    \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k, w, o\rangle}(i,k,w,o) & & \\
+    \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}_{E}(i,k,w,o) & &\\
+    \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k, w, o\rangle}_{E}(i,k,w,o) & & \\
     = & & \\
     \mathsf{for}( \mathsf{(}\mathsf{addAtom}\; \meaningof{t} \mathsf{)} \leftarrow k )\{ k\mathsf{!}(\mathsf{(}\mathsf{addAtom}\; \meaningof{t} \mathsf{)}) \mathsf{|} k\mathsf{!}(\meaningof{t}) \} & & \\
-    \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o \rangle}(i,k,w,o) & & \\
+    \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k, w, o \rangle}_{E}(i,k,w,o) & &\\
+    \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o \rangle}_{E}(i,k,w,o) & & \\
     = & & \\
     \mathsf{for}( \mathsf{(}\mathsf{remAtom}\; \meaningof{t} \mathsf{)} \leftarrow i )\{ \mathsf{for}\mathsf{(} \meaningof{t} \leftarrow k \mathsf{)}\{ o\mathsf{!}(\meaningof{()}) \} \} & & \\
-    \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k, w, o\rangle}(i,k,w,o) & & \\
+    \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}_{E}(i,k,w,o) & &\\
+    \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k, w, o\rangle}_{E}(i,k,w,o) & & \\
     = & & \\
     \mathsf{for}( \mathsf{(}\mathsf{remAtom}\; \meaningof{t} \mathsf{)} \leftarrow k )\{ \mathsf{for}\mathsf{(} \meaningof{t} \leftarrow k \mathsf{)}\{ k\mathsf{!}(\mathsf{(}\mathsf{remAtom}\; \meaningof{t} \mathsf{)}) \mathsf{|} o\mathsf{!}(\meaningof{()}) \} \} & & \\
+    \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus k, w, o \rangle}_{E}(i,k,w,o) & &\\
   \end{array}
 \end{mathpar}
 
