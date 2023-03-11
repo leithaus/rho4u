@@ -3,7 +3,7 @@
 In this section we illustrate the value of having an operational semantics by developing a compiler from MeTTa to the rho-calculus, and resource-bounded MeTTa to rholang. The essence of the translation is to use a channels for each of the registers. 
 
 \subsection{MeTTa to the rho-calculus}
-In the translation given below we employ two semantic functions. One, written $\meaningof{-}_{C}$, turns a state into a collection of data deployed at four channels, $i,k,w,o$, and another, written $\meaningof{-}_{E}$, that processes that data.
+In the translation given below we employ two semantic functions. One, written $\meaningof{-}_{C}$, turns a state into a collection of data deployed at four channels, $i,k,w,o$, and another, written $\meaningof{-}_{E}$, that processes that data. We also employ a semantic function, written $\meaningof{-}$,that transliterates MeTTa term syntax into rho term syntax for use in pattern matching, etc.
 \subsubsection{Space configuration}
 
 \begin{mathpar}
@@ -66,10 +66,10 @@ In the translation given below we employ two semantic functions. One, written $\
 \subsubsection{Space configuration}
 \begin{mathpar}
   \begin{array}{lll}
-    \meaningof{\langle \mathsf{\{} t \mathsf{\}} \pplus i, k, w, o \rangle}(i,k,w,o) & = & i\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}(i,k,w,o) \\
-    \meaningof{\langle i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o \rangle}(i,k,w,o) & = & k\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}(i,k,w,o) \\
-    \meaningof{\langle i, k, \mathsf{\{} t \mathsf{\}} \pplus w, o \rangle}(i,k,w,o) & = & w\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}(i,k,w,o) \\
-    \meaningof{\langle i, k, w, \mathsf{\{} t \mathsf{\}} \pplus o \rangle}(i,k,w,o) & = & o\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o \rangle}(i,k,w,o) \\
+    \meaningof{\langle \mathsf{\{} t \mathsf{\}} \pplus i, k, w, o; eos \rangle}(i,k,w,o) & = & i\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o; eos \rangle}(i,k,w,o) \\
+    \meaningof{\langle i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o; eos \rangle}(i,k,w,o) & = & k\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o; eos \rangle}(i,k,w,o) \\
+    \meaningof{\langle i, k, \mathsf{\{} t \mathsf{\}} \pplus w, o; eos \rangle}(i,k,w,o) & = & w\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o; eos \rangle}(i,k,w,o) \\
+    \meaningof{\langle i, k, w, \mathsf{\{} t \mathsf{\}} \pplus o; eos \rangle}(i,k,w,o) & = & o\mathsf{!}\mathsf{(}\meaningof{t}\mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, k, w, o; eos \rangle}(i,k,w,o) \\
   \end{array}
 \end{mathpar}
 

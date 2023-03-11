@@ -40,3 +40,25 @@ We assume a polymorphic cost function $\mathsf{\#}$ taking values in the domain 
   \inferrule* [lab=Output]{\mathsf{insensitive}(u,k)}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle \xrightarrow{\mathsf{\#}(u)} \langle i, k, w, \mathsf{\{} u \mathsf{\}} \pplus o \rangle}
 \end{mathpar}
 
+Likewise, the builtin operations must come with a cost.
+
+\begin{mathpar}
+  \inferrule* [lab=BoolAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \xrightarrow{{\#}(b_{1}) + \mathsf{\#}(b_{2})} \langle i, k, \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=BoolAdd2]{k = \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}} \pplus k'}{\langle i, k, o \rangle \xrightarrow{{\#}(b_{1}) + \mathsf{\#}(b_{2})} \langle i, k, \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=BoolMult1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{*}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \xrightarrow{{\#}(b_{1}) + \mathsf{\#}(b_{2})} \langle i, k, \mathsf{\{} b_{1}\mathsf{\&} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=BoolMult2]{k = \mathsf{\{} \mathsf{(} \mathsf{*}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}} \pplus k'}{\langle i, k, o \rangle \xrightarrow{{\#}(b_{1}) + \mathsf{\#}(b_{2})} \langle i, k, \mathsf{\{} b_{1}\mathsf{\&} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=NumAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \xrightarrow{{\#}(n_{1}) + \mathsf{\#}(n_{2})} \langle i, k, \mathsf{\{} n_{1}\mathsf{+} n_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=NumAdd2]{k = \mathsf{\{} \mathsf{(} \mathsf{+}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}} \pplus k'}{\langle i, k, o \rangle \xrightarrow{{\#}(n_{1}) + \mathsf{\#}(n_{2})} \langle i, k, \mathsf{\{} n_{1}\mathsf{+} n_{2} \mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=NumMult1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{*}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \xrightarrow{{\#}(n_{1}) + \mathsf{\#}(n_{2})} \langle i, k, \mathsf{\{} n_{1}\mathsf{*} n_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=NumMult2]{k = \mathsf{\{} \mathsf{(} \mathsf{*}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}} \pplus k'}{\langle i, k, o \rangle \xrightarrow{{\#}(n_{1}) + \mathsf{\#}(n_{2})} \langle i, k, \mathsf{\{} n_{1}\mathsf{*} n_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=StrAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; s_{1} \; s_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, o \rangle \xrightarrow{{\#}(s_{1}) + \mathsf{\#}(s_{2})} \langle i, k, \mathsf{\{} s_{1}\mathsf{+} s_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=StrAdd2]{k = \mathsf{\{} \mathsf{(} \mathsf{+}\; s_{1} \; s_{2} \mathsf{)}\mathsf{\}} \pplus k'}{\langle i, k, o \rangle \xrightarrow{{\#}(s_{1}) + \mathsf{\#}(s_{2})} \langle i, k, \mathsf{\{} s_{1}\mathsf{+} s_{2} \mathsf{\}} \pplus o \rangle}
+\end{mathpar}

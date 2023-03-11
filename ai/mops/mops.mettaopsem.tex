@@ -68,12 +68,12 @@ We adopt this design for numerous reasons:
   \item it provides an explicit scope for access to remotely accessed data.
 \end{itemize}
 
-\paragraph{Explicit bindings} Comprehensions provide a superior framework for the explicit representation of bindings. For example, they significantly generalize $\mathsf{let}$ and $\mathsf{letrec}$ constructs. In particular, the generally accepted semantics for these constructs do not extend smoothly to streams.
+\paragraph{Explicit bindings} Comprehensions provide a superior framework for the explicit representation of bindings. For example, they significantly generalize $\mathsf{let}$ and $\mathsf{letrec}$ constructs. In particular, the generally accepted semantics for $\mathsf{let}$ and $\mathsf{letrec}$ do not extend smoothly to streams, while comprehensions were effectively made for infinitary structures, including streams.
 
 \paragraph{Infinite terms and spaces}
 In fact, since the advent of set comprehensions and continuing through SQL's $\mathsf{SELECT-FROM-WHERE}$ to Haskell's do-nation and Scala's for-comprehensions the general mechanism for describing intensionally specified collections has been shown to be a powerful abstraction mechanism. Specifically, we now know that comprehensions are really syntactic sugar for the monadic operations, which makes these an exceptionally flexible framework for representing a notion of binding across a wide range of computational phenomena.
 
-\paragraph{Remotely accessed data} Whether access data from a distributed atom space, or a resource on the Internet, or calling a foreign function across a memory boundary, remotely accessed data comes with different failure modes. Data providers can be offline or otherwise inaccessible. Data can be ill-formatted or peppered with an array of challenges, from buffer or register overflows to triggering divergent computation.
+\paragraph{Remotely accessed data} Whether accessing data from a distributed atom space, or a resource on the Internet, or calling a foreign function across a memory boundary, remotely accessed data comes with different failure modes. Data providers can be offline or otherwise inaccessible. Data can be ill-formatted or peppered with an array of challenges, from buffer or register overflows to triggering divergent computation.
 
 Providing a scope for these failure modes has a distinct advantage for defensive computation. Beyond that, however, are issues related with fair merge of divergent behavior. The famous example from PCF was logical disjunction. An evaluation strategy for disjunction that evaluates both arguments will diverge if one of the arguments diverges. An evaluation that returns true immediately if the first argument it evaluates is true will potentially diverge less often. This generalizes to a wide range of situations involving the integration of multiple foreign sources of data. 
 
