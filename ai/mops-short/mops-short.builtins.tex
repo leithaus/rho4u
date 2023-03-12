@@ -1,0 +1,42 @@
+\section{Ground literals and builtins}
+As with all practical programming languages, MeTTa hosts a number of computational entities and operations that are already defined on the vast majority of platforms on which an implementation of the language may be written and/or run. Here we describe the ground literals and builtin operations that every compliant MeTTa operation must provide.
+\subsection{Ground literals}
+As the grammar spells out every compliant implementation of MeTTa must provide:
+
+\begin{itemize}
+  \item Booleans;
+  \item signed and unsigned 64bit integers;
+  \item 64bit floating point;
+  \item strings
+\end{itemize}
+
+\subsection{Polymorphic operations}
+Every compliant implementation of the MeTTa client must provide the following polymorphic operations:
+
+\begin{itemize}
+  \item $* : A \times A \rightarrow A$ for A ranging over Booleans, integers, floating point;
+  \item $+ : A \times A \rightarrow A$ for A ranging over Booleans, integers, floating point, and strings;
+\end{itemize}
+
+\subsection{Transition rules}
+\begin{mathpar}
+  \inferrule* [lab=BoolAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=BoolAdd2]{w = \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=BoolMult1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{*}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} b_{1}\mathsf{\&} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=BoolMult2]{w = \mathsf{\{} \mathsf{(} \mathsf{*}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} b_{1}\mathsf{\&} b_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=NumAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} n_{1}\mathsf{+} n_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=NumAdd2]{w = \mathsf{\{} \mathsf{(} \mathsf{+}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} n_{1}\mathsf{+} n_{2} \mathsf{\}} \pplus o \rangle} \\
+  \inferrule* [lab=NumMult1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{*}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} n_{1}\mathsf{*} n_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=NumMult2]{w = \mathsf{\{} \mathsf{(} \mathsf{*}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} n_{1}\mathsf{*} n_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=StrAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; s_{1} \; s_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} s_{1}\mathsf{+} s_{2} \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=StrAdd2]{w = \mathsf{\{} \mathsf{(} \mathsf{+}\; s_{1} \; s_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} s_{1}\mathsf{+} s_{2} \mathsf{\}} \pplus o \rangle}
+\end{mathpar}
+

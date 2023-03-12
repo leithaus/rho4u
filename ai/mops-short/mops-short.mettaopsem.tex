@@ -1,0 +1,197 @@
+\section{A presentation of the semantics of MeTTa}
+
+A presentation of the semantics of MeTTa must therefore provide a monad describing the algebra of states, a structural equivalence quotienting the algebra of states, and some rewrite rules describing state transitions. Such a description is the minimal description that meets the standard for describing models of computation. 
+
+
+Note that to present such a description requires at least that much expressive power in the system used to formalize the presentation. That is, the system used to present a model of computation is itself a model of computation admitting a presentation in terms of an algebra of states and some rewrites. This is why a meta-circular evaluator is a perfectly legitimate presentation. That is, a presentation of MeTTa’s semantics in MeTTa is perfectly legitimate. Meta-circular presentations are more difficult to unpack, which is why such presentations are typically eschewed, but they are admissible. In fact, a meta-circular evaluator may be the most pure form of presentation.
+
+
+But, this fact has an important consequence. No model that is at least Turing complete can be “lower level” than any other.
+
+\subsection{Rationale for such a presentation}
+
+The rationale for such a presentation is not simply that this is the way it’s done. Instead, the benefits include
+
+\begin{itemize}
+  \item an effective (if undecidable) notion of program equality;
+  \item an independent specification allowing independent implementations;
+  \item meta-level computation, including type checking, model checking, macros, computational reflection, etc.
+\end{itemize}
+
+\subsubsection{Effective program equality}
+Of course, the notion we are calling program equality is called bisimulation in the literature. One of the key benefits of having a notion of bisimulation explicitly spelled out is that it makes possible both by-hand and automated proofs of correctness of implementations of MeTTa. We illustrate this in a later section of the paper where we specify a compilation from MeTTa to the rho-calculus and rholang and provide both a clear statement of what it means for the compiler to be correct and a proof that it is so.
+
+One of the motivations for providing the example to is foster within the MeTTa developer community a development methodology known as correct-by-construction. Some of the benefits of correct-by-construction include avoiding bytecode injection attacks, avoiding concurrency issues, and in general avoiding technical debt.
+
+With a clearly spelled out operational semantics the correct-by-construction software development methodology becomes a real practice and not just an ideal to be striven for -- except when we're under deadling, and we're always under deadline!
+
+\subsubsection{Independent implementations}
+Hand in hand with being able to prove an implementation correct is the ability to support multiple independent implementations, each of which is provably in compliance with the specification. Pioneered by efforts like the JVM, this approach has been remarkably effective in modern projects, like Ethereum, where the Yellow Paper made it possible for many independent teams to implement compilant Ethereum clients. This network of clients is regularly responsible for the deployment and correct execution of millions of \$ of transactions each month.
+
+Perhaps more salient to the MeTTa developer community, it means that no one project needs to do all the development of MeTTa clients. This spreads not only the cost of development around, but the risk. In a word, it makes MeTTa more robust against the failure of any one project or team. Correct-by-construction methodology and the tools of operational semantics dramatically enhance the already proven power of open source development to decentralize cost and risk.
+
+In short, scaling is not just about performance and throughput; it's also about adoption. Adoption at scale is a very error prone process, as anyone familiar with the histories of a wide range of computer-based technologies will attest. Linux users, for example, will bear witness to the historical lag between device drivers for Windows and Mac versus the drivers compliant to the same specs that ran on Linux. Correct-by-construction dramatically reduces the number of errors in multiple independent implementations, and thus makes scaling through adoption a much more tractable proposition.
+
+\subsection{Meta-level computation}
+Presumably efforts by human developers to develop provably correct compilation schemes from MeTTa to other computational models are just the first generation of intelligences that will seek to do so. Over time the hope is that many different kinds of intelligences will model, and hence make amenable to adaptation, MeTTa's model of computation. In particular, AGI's will seek to do the same and at dramatically different scales and timeframes. 
+
+\subsection{MeTTa Operational Semantics}
+The complexity of MeTTa's operational semantics is somewhere between the simplicity of the $\lambda$-calculus and the enormity of the JVM. Note that MeTTa is not WYSIWYG, however, it is not such a stretch to make a version of MeTTa that is.
+
+\subsubsection{Algebra of States}
+
+%% Non-terminals are enclosed between $<$ and $>$. 
+%% The symbols -$>$ (production),  \textbf{$|$}  (union) 
+%% and \textbf{eps} (empty rule) belong to the BNF notation. 
+%% All other symbols are terminals.
+
+\paragraph{Terms}
+\begin{eqnarray*}
+  Term & \bc & \mathsf{(} Term \; [Term] \mathsf{)} \\
+  & \;\bm\; & \mathsf{\{} Term \; [Term] \mathsf{\}} \\
+  & \;\bm\; & \mathsf{(} Term{} \;\mathsf{|}\; [Receipt] \; \mathsf{.} \; [Term] \mathsf{)} \\
+  & \;\bm\; & \mathsf{\{} Term \;\mathsf{|}\; [Receipt] \; \mathsf{.} \; [Term] \mathsf{\}} \\
+& \;\bm\; & Atom
+\end{eqnarray*}
+
+We impose the equation $\mathsf{\{} \ldots, t, u, \ldots \mathsf{\}} = \mathsf{\{} \ldots, u, t, \ldots \mathsf{\}}$, making terms of this form multisets. Note that for multiset comprehensions this amounts to non-determinism in the order of the terms delivered, but they are still streams. We use $\mathsf{\{}Term\mathsf{\}}$ to denote the set of terms that are (extensionally or intensionally) defined multisets, and $\mathsf{(}Term\mathsf{)}$ to denote the set of terms that are (extensionally or intensionally) defined lists.
+
+We assume a number of polymorphic operators, such as $\pplus$ which acts as union on multisets and append on lists and concatenation on strings, and $::$ which acts as cons on lists and the appropriate generalization for the other data types.
+
+\subsubsection{Extensionally vs intensionally defined spaces}
+We make a distinction between extensionally defined spaces and terms, where each element of the space or term has been explicitly constructed, versus intensionally defined spaces and terms where elements are defined by a rule. The latter we call comprehensions.
+
+We adopt this design for numerous reasons:
+\begin{itemize}
+  \item it provides an explicit representation for bindings;
+  \item it provides an explicit representation for infinite terms and spaces;
+  \item it provides an explicit scope for access to remotely accessed data.
+\end{itemize}
+
+\paragraph{Explicit bindings} Comprehensions provide a superior framework for the explicit representation of bindings. For example, they significantly generalize $\mathsf{let}$ and $\mathsf{letrec}$ constructs. In particular, the generally accepted semantics for $\mathsf{let}$ and $\mathsf{letrec}$ do not extend smoothly to streams, while comprehensions were effectively made for infinitary structures, including streams.
+
+\paragraph{Infinite terms and spaces}
+In fact, since the advent of set comprehensions and continuing through SQL's $\mathsf{SELECT-FROM-WHERE}$ to Haskell's do-nation and Scala's for-comprehensions the general mechanism for describing intensionally specified collections has been shown to be a powerful abstraction mechanism. Specifically, we now know that comprehensions are really syntactic sugar for the monadic operations, which makes these an exceptionally flexible framework for representing a notion of binding across a wide range of computational phenomena.
+
+\paragraph{Remotely accessed data} Whether accessing data from a distributed atom space, or a resource on the Internet, or calling a foreign function across a memory boundary, remotely accessed data comes with different failure modes. Data providers can be offline or otherwise inaccessible. Data can be ill-formatted or peppered with an array of challenges, from buffer or register overflows to triggering divergent computation.
+
+Providing a scope for these failure modes has a distinct advantage for defensive computation. Beyond that, however, are issues related with fair merge of divergent behavior. The famous example from PCF was logical disjunction. An evaluation strategy for disjunction that evaluates both arguments will diverge if one of the arguments diverges. An evaluation that returns true immediately if the first argument it evaluates is true will potentially diverge less often. This generalizes to a wide range of situations involving the integration of multiple foreign sources of data. 
+
+While there is not a one-size-fits all solution, Oleg Kiselyov has provided a natural mechanism in the monad transformer, LogicT. This provides a policy language for describing merge policies. It is an elegant solution that fits perfectly with comprehensions.
+
+\paragraph{Term sequences}
+\begin{eqnarray*}
+  [Term] & \bc & \epsilon \\
+  & \;\bm \; & Term \\
+  & \;\bm \; & Term \; [Term]
+\end{eqnarray*}
+
+\paragraph{Bindings}
+\begin{eqnarray*}
+  Receipt & \bc & ReceiptLinearImpl \\
+  & \;\bm \; & ReceiptRepeatedImpl \\
+  & \;\bm \; & ReceiptPeekImpl
+\end{eqnarray*}
+\begin{eqnarray*}
+  [Receipt] & \bc & Receipt \\
+  & \;\bm \; & Receipt \mathsf{;}\; [Receipt]
+\end{eqnarray*}
+\begin{eqnarray*}
+  ReceiptLinearImpl & \bc & [LinearBind] \\
+  LinearBind & \bc & [Name] \; NameRemainder \; \mathsf{\leftarrow} \; AtomSource
+\end{eqnarray*}
+\begin{eqnarray*}
+  [LinearBind] & \bc & LinearBind \\
+  & \;\bm \; & LinearBind \;\mathsf{\&}\; [LinearBind]
+\end{eqnarray*}
+\begin{eqnarray*}
+  AtomSource & \bc & Name \\
+  & \;\bm \; & Name \mathsf{?!} \\
+  & \;\bm \; & Name \mathsf{!?} \mathsf{(} [Term] \mathsf{)} \\
+  ReceiptRepeatedImpl & \bc & [RepeatedBind] \\
+  RepeatedBind & \bc & [Name] \; NameRemainder \; \mathsf{\Leftarrow} \; Atom
+\end{eqnarray*}
+\begin{eqnarray*}
+  [RepeatedBind] & \bc & RepeatedBind \\
+  & \;\bm \; & RepeatedBind \; \mathsf{\&}\; [RepeatedBind] \\
+  ReceiptPeekImpl & \bc & [PeekBind] \\
+  PeekBind & \bc & [Name] \; NameRemainder \; \mathsf{\leftharpoonup}\; Atom
+\end{eqnarray*}
+\begin{eqnarray*}
+  [PeekBind] & \bc & PeekBind \\
+  & \;\bm \; & PeekBind \; \mathsf{\&}\; [PeekBind]
+\end{eqnarray*}
+\begin{eqnarray*}
+  TermRemainder & \bc & \mathsf{...} \; TermVar \\
+ & \;\bm \; & \epsilon \\
+  NameRemainder & \bc & \mathsf{...} \; \mathsf{@} TermVar \\
+& \;\bm \; & \epsilon
+\end{eqnarray*}
+
+\paragraph{Literals and builtins}
+\begin{eqnarray*}
+  Atom & \bc & Ground \\
+  & \;\bm \; & Builtin \\
+  & \;\bm \; & Var \\
+  Name & \bc & \mathsf{\_} \\
+  & \;\bm \; & Var \\
+  & \;\bm \; & \mathsf{@} Term
+\end{eqnarray*}
+\begin{eqnarray*}  
+  [Name] & \bc & \epsilon \\
+  & \;\bm \; & Name \\
+  & \;\bm \; & Name \mathsf{,} [Name] \\
+  BoolLiteral & \bc & \mathsf{true} \\
+ & \;\bm \; & \mathsf{false} \\
+  Ground & \bc & BoolLiteral \\
+  & \;\bm \; & LongLiteral \\
+  & \;\bm \; & StringLiteral \\
+  & \;\bm \; & UriLiteral \\
+  Builtin & \bc & \mathsf{\bc} \\
+  & \;\bm \; & \mathsf{=} \\
+  & \;\bm \; & \mathsf{addAtom} \\
+  & \;\bm \; & \mathsf{remAtom} \\
+%  & \;\bm \; & \mathsf{:} \\
+  TermVar & \bc & \mathsf{\_} \\
+  & \;\bm \; & Var \\
+\end{eqnarray*}
+
+\paragraph{States}
+\begin{eqnarray*}
+  State & \bc & \langle \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \rangle
+\end{eqnarray*}
+
+We will use $S, T, U$ to range over states and $\mathsf{i} := \pi_{1}$, $\mathsf{k} := \pi_{2}$, $\mathsf{w} := \pi_{3}$and $\mathsf{o} := \pi_{4}$ for the first, second, third, and fourth projections as accessors for the components of states. Substitutions are ranged over by $\sigma$, and as is standard, substitution application will be written postfix, e.g. $t\sigma$.
+
+A state should be thought of as consisting of $4$ \emph{registers}:
+\begin{itemize}
+  \item $\mathsf{i}$ is the input register where queries are issued;
+  \item $\mathsf{k}$ is the knowledge base;
+  \item $\mathsf{w}$ is a workspace;
+  \item $\mathsf{o}$ is the output register.
+\end{itemize}
+
+We separate the input, workspace, and output registers to allow for
+coarse-graining of bisimulation. An external agent cannot necessarily observe the transitions related to the workspace.
+
+\subsubsection{Rewrite Rules}
+
+\begin{mathpar}
+  \inferrule* [lab=Query]{\sigma_{i} = \mathsf{unify}(t',t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k', \mathsf{insensitive}(t',k')}{\langle \mathsf{\{} t' \mathsf{\}} \pplus i, k, w, o \rangle \to \langle i, k, \mathsf{\{} u_{1}\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u_{n}\sigma_{n} \mathsf{\}} \pplus w, o \rangle} \\
+  \and
+  \inferrule* [lab=Chain]{\sigma_{i} = \mathsf{unify}(u,t_{i}), k = \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k', \mathsf{insensitive}(u,k')}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle \to \langle i, k, \mathsf{\{} u_{1}\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u_{n}\sigma_{n} \mathsf{\}} \pplus w, o \rangle} \\
+  \and
+  \inferrule* [lab=Transform]{\sigma_{i} = \mathsf{unify}(t,t_{i}), k = \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k',\mathsf{insensitive}(t,k')}{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)} \mathsf{\}} \pplus i, k, w, o \rangle \to \langle i, k, \mathsf{\{} u\sigma_{1} \mathsf{\}} \pplus\; \ldots\; \pplus \mathsf{\{} u\sigma_{n} \mathsf{\}} \pplus w, o \rangle} \\
+  \and
+  \inferrule* [lab=AddAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k \pplus \mathsf{\{} t\mathsf{\}}, w, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=AddAtom2]{\langle i_{1}, k_{1}, w_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, w_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, w_{1}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}, t\mathsf{\}} \pplus k_{2}, w_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
+  \inferrule* [lab=RemAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o \rangle \to \langle i, k, w, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=RemAtom2]{\langle i_{1}, k_{1}, w_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, w_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, w_{1}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{2}, w_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
+  \inferrule* [lab=Output]{\mathsf{insensitive}(u,k)}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle \to \langle i, k, w, \mathsf{\{} u \mathsf{\}} \pplus o \rangle}
+\end{mathpar}
+
+Where $\mathsf{insensitive}(t,k)$ means that $\mathsf{(} \mathsf{=}\; t'\; u \mathsf{)} \in k \Rightarrow \neg \mathsf{unify}(t,t')$.
+
+
