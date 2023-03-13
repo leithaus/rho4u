@@ -11,7 +11,7 @@ As the grammar spells out every compliant implementation of MeTTa must provide:
 \end{itemize}
 
 \subsection{Polymorphic operations}
-Every compliant implementation of the MeTTa client must provide the following polymorphic operations:
+Every compliant implementation of the MeTTa client must provide a number of polymorphic operations including:
 
 \begin{itemize}
   \item $* : A \times A \rightarrow A$ for A ranging over Booleans, integers, floating point;
@@ -19,24 +19,26 @@ Every compliant implementation of the MeTTa client must provide the following po
 \end{itemize}
 
 \subsection{Transition rules}
+As these rules are more or less standard and do not illustrate what is unique about MeTTa we give only a single example of how they are expressed. The interested reader is referred to the full semantics.
 \begin{mathpar}
   \inferrule* [lab=BoolAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle} \\
   \and
   \inferrule* [lab=BoolAdd2]{w = \mathsf{\{} \mathsf{(} \mathsf{+}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} b_{1}\mathsf{||} b_{2} \mathsf{\}} \pplus o \rangle} \\
-  \and
-  \inferrule* [lab=BoolMult1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{*}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} b_{1}\mathsf{\&} b_{2} \mathsf{\}} \pplus o \rangle} \\
-  \and
-  \inferrule* [lab=BoolMult2]{w = \mathsf{\{} \mathsf{(} \mathsf{*}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} b_{1}\mathsf{\&} b_{2} \mathsf{\}} \pplus o \rangle} \\
-  \and
-  \inferrule* [lab=NumAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} n_{1}\mathsf{+} n_{2} \mathsf{\}} \pplus o \rangle} \\
-  \and
-  \inferrule* [lab=NumAdd2]{w = \mathsf{\{} \mathsf{(} \mathsf{+}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} n_{1}\mathsf{+} n_{2} \mathsf{\}} \pplus o \rangle} \\
-  \inferrule* [lab=NumMult1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{*}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} n_{1}\mathsf{*} n_{2} \mathsf{\}} \pplus o \rangle} \\
-  \and
-  \inferrule* [lab=NumMult2]{w = \mathsf{\{} \mathsf{(} \mathsf{*}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} n_{1}\mathsf{*} n_{2} \mathsf{\}} \pplus o \rangle} \\
-  \and
-  \inferrule* [lab=StrAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; s_{1} \; s_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} s_{1}\mathsf{+} s_{2} \mathsf{\}} \pplus o \rangle} \\
-  \and
-  \inferrule* [lab=StrAdd2]{w = \mathsf{\{} \mathsf{(} \mathsf{+}\; s_{1} \; s_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} s_{1}\mathsf{+} s_{2} \mathsf{\}} \pplus o \rangle}
 \end{mathpar}
+%%  \and
+%%   \inferrule* [lab=BoolMult1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{*}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} b_{1}\mathsf{\&} b_{2} \mathsf{\}} \pplus o \rangle} \\
+%%   \and
+%%   \inferrule* [lab=BoolMult2]{w = \mathsf{\{} \mathsf{(} \mathsf{*}\; b_{1} \; b_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} b_{1}\mathsf{\&} b_{2} \mathsf{\}} \pplus o \rangle} \\
+%%   \and
+%%   \inferrule* [lab=NumAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} n_{1}\mathsf{+} n_{2} \mathsf{\}} \pplus o \rangle} \\
+%%   \and
+%%   \inferrule* [lab=NumAdd2]{w = \mathsf{\{} \mathsf{(} \mathsf{+}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} n_{1}\mathsf{+} n_{2} \mathsf{\}} \pplus o \rangle} \\
+%%   \inferrule* [lab=NumMult1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{*}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} n_{1}\mathsf{*} n_{2} \mathsf{\}} \pplus o \rangle} \\
+%%   \and
+%%   \inferrule* [lab=NumMult2]{w = \mathsf{\{} \mathsf{(} \mathsf{*}\; n_{1} \; n_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} n_{1}\mathsf{*} n_{2} \mathsf{\}} \pplus o \rangle} \\
+%%   \and
+%%   \inferrule* [lab=StrAdd1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{+}\; s_{1} \; s_{2} \mathsf{)}\mathsf{\}}  \pplus i, k, w, o \rangle \to \langle i, k, w, \mathsf{\{} s_{1}\mathsf{+} s_{2} \mathsf{\}} \pplus o \rangle} \\
+%%   \and
+%%   \inferrule* [lab=StrAdd2]{w = \mathsf{\{} \mathsf{(} \mathsf{+}\; s_{1} \; s_{2} \mathsf{)}\mathsf{\}} \pplus w'}{\langle i, k, w, o \rangle \to \langle i, k, w', \mathsf{\{} s_{1}\mathsf{+} s_{2} \mathsf{\}} \pplus o \rangle}
+%% \end{mathpar}
 
