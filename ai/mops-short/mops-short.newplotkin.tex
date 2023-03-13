@@ -4,11 +4,9 @@ Since Milner's seminal Functions as processes paper, the gold standard for a pre
 \subsubsection{$\lambda$-calculus}
 
 \paragraph{Algebra of States}
-\begin{eqnarray*}
-  Term[V] & \bc & V \\
-  & \;\bm\; & \lambda V.Term[V] \\
-  & \;\bm\; & \mathsf{(} Term[V] \; Term[V] \mathsf{)}
-\end{eqnarray*}
+\begin{mathpar}
+  \inferrule*[lab=Program]{}{ Term[V] \bc V \;\bm\; \lambda V.Term[V]  \;\bm\; \mathsf{(} Term[V] \; Term[V] \mathsf{)} }
+\end{mathpar}
 
 The structural congruence is the usual $\alpha$-equivalence, namely that $\lambda x.M \scong \lambda y.(M\{y / x\})$ when $y$ not free in $M$.
 
@@ -23,14 +21,9 @@ The rewrite rule is the well know $\beta$-reduction.
 \subsubsection{$\pi$-calculus}
 
 \paragraph{Algebra of States}
-\begin{eqnarray*}
-  Term[N] & \bc & \mathsf{0} \\
-  & \;\bm\; & \mathsf{for}\mathsf{(}N \leftarrow N\mathsf{)}Term[N] \\
-  & \;\bm\; & N\mathsf{!}\mathsf{(}N\mathsf{)} \\
-  & \;\bm\; & \mathsf{(}\mathsf{new}\; N\mathsf{)}Term[N] \\
-  & \;\bm\; & Term[N] \; \mathsf{|}\; Term[N] \\
-  & \;\bm\; & \mathsf{!}Term[N]
-\end{eqnarray*}
+\begin{mathpar}
+  \inferrule*[lab=Process]{}{Term[N] \bc \mathsf{0} \;\bm\; \mathsf{for}\mathsf{(}N \leftarrow N\mathsf{)}Term[N] \;\bm\; N\mathsf{!}\mathsf{(}N\mathsf{)} \;\bm\; \mathsf{(}\mathsf{new}\; N\mathsf{)}Term[N] \\ \;\bm\; Term[N] \mathsf{|} Term[N] \;\bm\; \mathsf{!}Term[N]}
+\end{mathpar}
 
 The structural congruence is the smallest equivalence relation including $\alpha$-equivalence making $(Term[N],\;\mathsf{|}\;,\mathsf{0})$ a commutative monoid, and respecting
 
