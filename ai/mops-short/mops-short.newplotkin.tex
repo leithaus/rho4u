@@ -48,7 +48,7 @@ context.
   \inferrule* [lab=STRUCT]{P \scong P' \to Q' \scong Q}{P \to Q}
 \end{mathpar}
 
-\cite{DBLP:journals/mscs/Milner92}
+For details see \cite{DBLP:journals/mscs/Milner92}
 
 \subsubsection{rho-calculus}
 
@@ -80,12 +80,12 @@ context.
   \inferrule* [lab=STRUCT]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
 \end{mathpar}
 
-\cite{DBLP:journals/entcs/MeredithR05}
+For details see \cite{DBLP:journals/entcs/MeredithR05}.
 
 \subsubsection{Register machines and WYSIWYG semantics}One important point about the previous three
 examples is that they are all examples of WYSIWYG operational
 semantics in the sense that the states \emph{are} the terms of the
-calculi. Register machines, such as the famous SECD machine, or more industrially robust machines, like the JVM, are not strictly WYSIWYG.In fact, the register based states are not strictly a monad, but contain a monad. In particular, the terms in the language are only
+calculi. Register machines, such as the famous SECD machine, or more industrially robust machines, like the JVM, are not strictly WYSIWYG. \cite{DBLP:conf/sac/Buday15} \cite{JVM7Spec} In fact, the register based states are not strictly a monad, but contain a monad. In particular, the terms in the language are only
 part of the state, which includes elements such as a stack, a heap, or other registers.
 
 WYSIWYG models make static analysis dramatically
