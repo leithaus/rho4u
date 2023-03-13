@@ -1,5 +1,5 @@
 \section{Examples from computer science}
-Since Milner's seminal Functions as processes paper, the gold standard for a presentation of an operational semantics is to present the algebra of states via a grammar (a monad) and a structural congruence (an algebra of the monad), and the rewrite rules in Plotkin-style SOS format.
+Since Milner's seminal Functions as processes paper, the gold standard for a presentation of an operational semantics is to present the algebra of states via a grammar (a monad) and a structural congruence (an algebra of the monad), and the rewrite rules in Plotkin-style SOS format \cite{DBLP:journals/mscs/Milner92} \cite{Plotkin04theorigins}.
 
 \subsubsection{$\lambda$-calculus}
 
@@ -48,6 +48,8 @@ context.
   \inferrule* [lab=STRUCT]{P \scong P' \to Q' \scong Q}{P \to Q}
 \end{mathpar}
 
+\cite{DBLP:journals/mscs/Milner92}
+
 \subsubsection{rho-calculus}
 
 \paragraph{Algebra of States}
@@ -77,6 +79,8 @@ context.
   \and
   \inferrule* [lab=STRUCT]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
 \end{mathpar}
+
+\cite{DBLP:journals/entcs/MeredithR05}
 
 \subsubsection{Register machines and WYSIWYG semantics}One important point about the previous three
 examples is that they are all examples of WYSIWYG operational
