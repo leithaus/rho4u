@@ -1,10 +1,6 @@
 \section{A presentation of the semantics of MeTTa}
 
-A modern presentation of the semantics of MeTTa must therefore provide a monad describing the algebra of states, a structural equivalence quotienting the algebra of states, and some rewrite rules describing state transitions. Such a description is the minimal description that meets the standard for describing models of computation. 
-
-
-Note that to present such a description requires at least that much expressive power in the system used to formalize the presentation. That is, the system used to present a model of computation is itself a model of computation admitting a presentation in terms of an algebra of states and some rewrites. This is why a meta-circular evaluator is a perfectly legitimate presentation. That is, a presentation of MeTTa’s semantics in MeTTa is perfectly legitimate. Meta-circular presentations are more difficult to unpack, which is why such presentations are typically eschewed, but they are admissible. In fact, a meta-circular evaluator may be the most pure form of presentation.
-
+Accordingly, we present the semantics of MeTTa in terms of a monad describing the algebra of states, a structural equivalence quotienting the algebra of states, and some rewrite rules describing state transitions. 
 
 \subsection{Rationale for such a presentation}
 
@@ -27,8 +23,6 @@ Of course, the notion we are calling program equality is called bisimulation in 
 Hand in hand with being able to prove an implementation correct is the ability to support multiple independent implementations, each of which is provably in compliance with the specification. Pioneered by efforts like the JVM, this approach has been remarkably effective in modern projects, like Ethereum, where the Yellow Paper made it possible for many independent teams to implement compilant Ethereum clients. This network of clients is regularly responsible for the deployment and correct execution of millions of \$ of transactions each month.
 
 Perhaps more salient to the MeTTa developer community, it means that no one project needs to do all the development of MeTTa clients. This spreads not only the cost of development around, but the risk. In a word, it makes MeTTa more robust against the failure of any one project or team. Correct-by-construction methodology and the tools of operational semantics dramatically enhance the already proven power of open source development to decentralize cost and risk.
-
-In short, scaling is not just about performance and throughput; it's also about adoption. Adoption at scale is a very error prone process, as anyone familiar with the histories of a wide range of computer-based technologies will attest. Linux users, for example, will bear witness to the historical lag between device drivers for Windows and Mac versus the drivers compliant to the same specs that ran on Linux. Correct-by-construction dramatically reduces the number of errors in multiple independent implementations, and thus makes scaling through adoption a much more tractable proposition.
 
 \subsection{Meta-level computation}
 Presumably efforts by human developers to develop provably correct compilation schemes from MeTTa to other computational models are just the first generation of intelligences that will seek to do so. Over time the hope is that many different kinds of intelligences will model, and hence make amenable to adaptation, MeTTa's model of computation. In particular, AGI's will seek to do the same and at dramatically different scales and timeframes. 
@@ -87,18 +81,15 @@ The reader is encouraged to read the full semantics for more details. In this su
   State & \bc & \langle \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \mathsf{,} \mathsf{\{}Term\mathsf{\}} \rangle
 \end{eqnarray*}
 
-We will use $S, T, U$ to range over states and $\mathsf{i} := \pi_{1}$, $\mathsf{k} := \pi_{2}$, $\mathsf{w} := \pi_{3}$and $\mathsf{o} := \pi_{4}$ for the first, second, third, and fourth projections as accessors for the components of states. Substitutions are ranged over by $\sigma$, and as is standard, substitution application will be written postfix, e.g. $t\sigma$.
+We will use $S, T, U$ to range over states and $\mathsf{i} := \pi_{1}$, $\mathsf{k} := \pi_{2}$, $\mathsf{w} := \pi_{3}$, and $\mathsf{o} := \pi_{4}$ for the first, second, third, and fourth projections as accessors for the components of states. Substitutions are ranged over by $\sigma$, and as is standard, substitution application will be written postfix, e.g. $t\sigma$.
 
 A state should be thought of as consisting of $4$ \emph{registers}:
-\begin{itemize}
-  \item $\mathsf{i}$ is the input register where queries are issued;
-  \item $\mathsf{k}$ is the knowledge base;
-  \item $\mathsf{w}$ is a workspace;
-  \item $\mathsf{o}$ is the output register.
-\end{itemize}
-
-We separate the input, workspace, and output registers to allow for
-coarse-graining of bisimulation. An external agent cannot necessarily observe the transitions related to the workspace.
+$\mathsf{i}$ is the input register where queries are issued;
+$\mathsf{k}$ is the knowledge base; $\mathsf{w}$ is a workspace;
+$\mathsf{o}$ is the output register. We separate the input, workspace,
+and output registers to allow for coarse-graining of bisimulation. An
+external agent cannot necessarily observe the transitions related to
+the workspace.
 
 \subsubsection{Rewrite Rules}
 
