@@ -44,11 +44,9 @@ The complexity of MeTTa's operational semantics is somewhere between the simplic
 %% All other symbols are terminals.
 
 \paragraph{Terms}
-\begin{eqnarray*}
-  Term & \bc & \mathsf{(} Term \; [Term] \mathsf{)} \\
-  & \;\bm\; & \mathsf{\{} Term \; [Term] \mathsf{\}} \\
-& \;\bm\; & Atom
-\end{eqnarray*}
+\begin{mathpar}
+  \inferrule*[lab=AtomSpace]{}{Term \bc \mathsf{(} Term \; [Term] \mathsf{)} \;\bm\; \mathsf{\{} Term \; [Term] \mathsf{\}} \;\bm\; Atom}
+\end{mathpar}
 
 We impose the equation $\mathsf{\{} \ldots, t, u, \ldots \mathsf{\}} = \mathsf{\{} \ldots, u, t, \ldots \mathsf{\}}$, making terms of this form multisets. Note that for multiset comprehensions this amounts to non-determinism in the order of the terms delivered, but they are still streams. We use $\mathsf{\{}Term\mathsf{\}}$ to denote the set of terms that are (extensionally or intensionally) defined multisets, and $\mathsf{(}Term\mathsf{)}$ to denote the set of terms that are (extensionally or intensionally) defined lists.
 
@@ -67,36 +65,22 @@ This design is adopted for numerous reasons:
 The reader is encouraged to read the full semantics for more details. In this summary we elide the presentation of intensionally defined spaces and terms.
 
 \paragraph{Term sequences}
-\begin{eqnarray*}
-  [Term] & \bc & \epsilon \\
-  & \;\bm \; & Term \\
-  & \;\bm \; & Term \; [Term]
-\end{eqnarray*}
+\begin{mathpar}
+  \inferrule*[lab=Sequence]{}{ [Term] \bc \epsilon \;\bm \; Term \;\bm \; Term \; [Term] }
+\end{mathpar}
 
 \paragraph{Literals and builtins}
-\begin{eqnarray*}
-  Atom & \bc & Ground \\
-  & \;\bm \; & Builtin \\
-  & \;\bm \; & Var \\
-  Name & \bc & \mathsf{\_} \\
-  & \;\bm \; & Var \\
-  & \;\bm \; & \mathsf{@} Term
-\end{eqnarray*}
-\begin{eqnarray*}  
-  BoolLiteral & \bc & \mathsf{true} \\
- & \;\bm \; & \mathsf{false} \\
-  Ground & \bc & BoolLiteral \\
-  & \;\bm \; & LongLiteral \\
-  & \;\bm \; & StringLiteral \\
-  & \;\bm \; & UriLiteral \\
-  Builtin & \bc & \mathsf{\bc} \\
-  & \;\bm \; & \mathsf{=} \\
-  & \;\bm \; & \mathsf{addAtom} \\
-  & \;\bm \; & \mathsf{remAtom} \\
-%  & \;\bm \; & \mathsf{:} \\
-  TermVar & \bc & \mathsf{\_} \\
-  & \;\bm \; & Var \\
-\end{eqnarray*}
+\begin{mathpar}
+  \inferrule*[lab=Atom]{}{ Atom \bc Ground \;\bm \; Builtin \;\bm \; Var }
+  \and
+  \inferrule*[lab=Boolean]{}{ BoolLiteral \bc \mathsf{true} \;\bm \; \mathsf{false}}
+  \and
+  \inferrule*[lab=Ground]{}{ Ground \bc BoolLiteral \;\bm \; LongLiteral \;\bm \; StringLiteral \;\bm \; UriLiteral} \\
+  \and
+  \inferrule*[lab=Builtin]{}{ Builtin \bc \mathsf{\bc} \;\bm \; \mathsf{=} \;\bm \; \mathsf{addAtom} \;\bm \; \mathsf{remAtom}}
+  \and
+  \inferrule*[lab=Var]{}{TermVar \bc \mathsf{\_} \;\bm \; Var}
+\end{mathpar}
 
 \paragraph{States}
 \begin{eqnarray*}
