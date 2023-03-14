@@ -77,7 +77,7 @@ In fact, since the advent of set comprehensions and continuing through SQL's $\m
 
 Providing a scope for these failure modes has a distinct advantage for defensive computation. Beyond that, however, are issues related with fair merge of divergent behavior. The famous example from PCF was logical disjunction. An evaluation strategy for disjunction that evaluates both arguments will diverge if one of the arguments diverges. An evaluation that returns true immediately if the first argument it evaluates is true will potentially diverge less often. This generalizes to a wide range of situations involving the integration of multiple foreign sources of data. 
 
-While there is not a one-size-fits all solution, Oleg Kiselyov has provided a natural mechanism in the monad transformer, LogicT. This provides a policy language for describing merge policies. It is an elegant solution that fits perfectly with comprehensions.
+While there is not a one-size-fits all solution, Oleg Kiselyov has provided a natural mechanism in the monad transformer, LogicT \cite{DBLP:conf/icfp/KiselyovSFS05}. This provides a policy language for describing merge policies. It is an elegant solution that fits perfectly with comprehensions.
 
 \paragraph{Term sequences}
 \begin{eqnarray*}

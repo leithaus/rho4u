@@ -8,7 +8,7 @@ Computer science represents laws of motion, aka state transitions, as rewrite ru
 But all three agree to a high degree of specificity on what ingredients go into a formal presentation adequate for effecting computation.
 
 \subsection{Examples from computer science}
-Since Milner's seminal Functions as processes paper, the gold standard for a presentation of an operational semantics is to present the algebra of states via a grammar (a monad) and a structural congruence (an algebra of the monad), and the rewrite rules in Plotkin-style SOS format.
+Since Milner's seminal Functions as processes paper, the gold standard for a presentation of an operational semantics is to present the algebra of states via a grammar (a monad) and a structural congruence (an algebra of the monad), and the rewrite rules in Plotkin-style SOS format \cite{DBLP:journals/mscs/Milner92} \cite{Plotkin04theorigins}.
 
 \subsubsection{$\lambda$-calculus}
 
@@ -64,6 +64,8 @@ context.
   \inferrule* [lab=STRUCT]{P \scong P' \to Q' \scong Q}{P \to Q}
 \end{mathpar}
 
+For details see \cite{DBLP:journals/mscs/Milner92}.
+
 \subsubsection{rho-calculus}
 
 \paragraph{Algebra of States}
@@ -94,10 +96,12 @@ context.
   \inferrule* [lab=STRUCT]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
 \end{mathpar}
 
+For details see \cite{DBLP:journals/entcs/MeredithR05}.
+
 \pagebreak
 \subsubsection{The JVM}
 
-While its complexity far exceeds the presentations above, the JVM specification respects this same shape. Here is an example from the specification of what the operation aaload does.
+While its complexity far exceeds the presentations above, the JVM specification respects this same shape. Here is an example from the specification of what the operation aaload does \cite{JVM7Spec}.
 
 \begin{figure}[h!]
   \scalebox{0.75}{\includegraphics[width=\linewidth]{JVMSpecAALOAD.jpg}}
@@ -114,4 +118,4 @@ registers. WYSIWYG models make static analysis dramatically
 simpler. Specifically, an analyzer only has to look at terms in the
 language.
 
-This phenomenon is not restricted to the JVM. Even the famous SECD machine is not strictly WYSIWYG. In fact, the register based states are not strictly a monad, but contain a monad.
+This phenomenon is not restricted to the JVM. Even the famous SECD machine is not strictly WYSIWYG  \cite{DBLP:conf/sac/Buday15}. In fact, the register based states are not strictly a monad, but contain a monad.
