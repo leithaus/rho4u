@@ -39,7 +39,7 @@ The complexity of MeTTa's operational semantics is somewhere between the simplic
 
 \paragraph{Terms}
 \begin{mathpar}
-  \inferrule*[lab=AtomSpace]{}{Term \bc \mathsf{(} Term \; [Term] \mathsf{)} \;\bm\; \mathsf{\{} Term \; [Term] \mathsf{\}} \;\bm\; Atom}
+  \inferrule*[lab=AtomSpace]{}{Term \bc \mathsf{(} Term \; [Term] \mathsf{)} \;\bm\; \mathsf{\{} Term \; [Term] \mathsf{\}} \;\bm\; Atom \;\bm\; () \;\bm\; \{\}}
 \end{mathpar}
 
 We impose the equation $\mathsf{\{} \ldots, t, u, \ldots \mathsf{\}} = \mathsf{\{} \ldots, u, t, \ldots \mathsf{\}}$, making terms of this form multisets. Note that for multiset comprehensions this amounts to non-determinism in the order of the terms delivered, but they are still streams. We use $\mathsf{\{}Term\mathsf{\}}$ to denote the set of terms that are (extensionally or intensionally) defined multisets, and $\mathsf{(}Term\mathsf{)}$ to denote the set of terms that are (extensionally or intensionally) defined lists. Informally, we will refer to elements in $\mathsf{\{}Term\mathsf{\}}$ as spaces.
