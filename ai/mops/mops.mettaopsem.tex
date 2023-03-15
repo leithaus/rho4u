@@ -79,6 +79,9 @@ Providing a scope for these failure modes has a distinct advantage for defensive
 
 While there is not a one-size-fits all solution, Oleg Kiselyov has provided a natural mechanism in the monad transformer, LogicT \cite{DBLP:conf/icfp/KiselyovSFS05}. This provides a policy language for describing merge policies. It is an elegant solution that fits perfectly with comprehensions.
 
+\paragraph{Contexts}
+We use McBride's notion of the derivative of a polynomial functor to calculate $1$-holed contexts for extensionally defined terms. We use $K$ to range over $\partial Term$.
+
 \paragraph{Term sequences}
 \begin{eqnarray*}
   [Term] & \bc & \epsilon \\
@@ -174,6 +177,9 @@ A state should be thought of as consisting of $4$ \emph{registers}:
 We separate the input, workspace, and output registers to allow for
 coarse-graining of bisimulation. An external agent cannot necessarily observe the transitions related to the workspace.
 
+\paragraph{State contexts}
+We lift term contexts to states. Thus, if $t = K[u]$ and $u \in S_{r}$ for $r \in \{ \mathsf{i}, \mathsf{k}, \mathsf{w}, \mathsf{o}\}$, then we write $K[S]$ for the state in which $t$ replaces $u$ in $S_{r}$.
+
 \subsubsection{Rewrite Rules}
 
 \begin{mathpar}
@@ -189,7 +195,10 @@ coarse-graining of bisimulation. An external agent cannot necessarily observe th
   \inferrule* [lab=RemAtom1]{}{\langle \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}}  \pplus i, \mathsf{\{} t \mathsf{\}} \pplus k, w, o \rangle \to \langle i, k, w, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o \rangle} \\
   \and
   \inferrule* [lab=RemAtom2]{\langle i_{1}, k_{1}, w_{1}, o_{1}\rangle \to \langle i_{2}, k_{2}, w_{2}, o_{2} \rangle, k_{3} = \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)} \mathsf{\}} \pplus \mathsf{\{} t \mathsf{\}} \pplus k_{1}}{\langle i_{1}, k_{3}, w_{1}, o_{1}\rangle \to \langle i_{2}, \mathsf{\{} \mathsf{(} \mathsf{remAtom}\; t\mathsf{)}\mathsf{\}} \pplus k_{2}, w_{2}, \mathsf{\{} \mathsf{()}\mathsf{\}} \pplus o_{2} \rangle} \\
-  \inferrule* [lab=Output]{\mathsf{insensitive}(u,k)}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle \to \langle i, k, w, \mathsf{\{} u \mathsf{\}} \pplus o \rangle}
+  \and
+  \inferrule* [lab=Output]{\mathsf{insensitive}(u,k)}{\langle i, k, \mathsf{\{} u \mathsf{\}} \pplus w, o \rangle \to \langle i, k, w, \mathsf{\{} u \mathsf{\}} \pplus o \rangle} \\
+  \and
+  \inferrule* [lab=Context]{S \to S'}{K[S] \to K[S']} \\
 \end{mathpar}
 
 Where $\mathsf{insensitive}(t,k)$ means that $\mathsf{(} \mathsf{=}\; t'\; u \mathsf{)} \in k \Rightarrow \neg \mathsf{unify}(t,t')$.
