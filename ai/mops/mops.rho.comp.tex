@@ -111,16 +111,28 @@ The reason for this factorization of the semantics is to facilitate the proof of
     \} & &\\
     \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, \mathsf{\{} u_{\chi(p,\bot)} \mathsf{\}} \pplus w, o; eos \rangle}_{Chain}(i,k,w,o,c) & & \\
     = & & \\
-    \mathsf{for}( \meaningof{u} \leftarrow o )\{ \mathsf{(} \mathsf{new}\; s\mathsf{)}\{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{u}\; v \mathsf{)} \leftarrow k \mathsf{)}\{ w\mathsf{!}(\meaningof{u_{j}}) \mathsf{|} s\mathsf{!}\mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{u} \; v \mathsf{)} \mathsf{)} \} & & \\
-    \quad \quad \quad \quad \quad \quad \mathsf{|}\; \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ & & \\
-    \quad \quad \quad \quad \quad \quad \quad \quad \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, w, o; eos \rangle}_{E}(i,k,w,o,c) & & \\
-    \quad \quad \quad \quad \quad \quad \quad \} \} \} & &\\
+    \mathsf{for}( \meaningof{u}_{\chi(p,\bot)} \leftarrow o \;\mathsf{\&}\; \mathsf{(} \meaningof{h(p)}\;e\mathsf{)} \leftarrow c)\{ & & \\
+    \quad \mathsf{if} \mathsf{(} \mathsf{(} \meaningof{e} \mathsf{-} \mathsf{(} \Sigma_{i} \meaningof{\mathsf{\#}(\sigma_{i})} + \Sigma_{i} \meaningof{\mathsf{\#}(u_{i}\sigma_{i})} \mathsf{)} \mathsf{)} \mathsf{>} \mathsf{0}\mathsf{)} \{ & & \\
+    \quad \quad \quad \mathsf{(} \mathsf{new}\; s\mathsf{)}\{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{u}\; v \mathsf{)} \leftarrow k \mathsf{)}\{ w\mathsf{!}(\meaningof{u_{j}}) \mathsf{|} s\mathsf{!}\mathsf{(} \mathsf{(} \mathsf{=} \; \meaningof{u} \; v \mathsf{)} \mathsf{)} \} & & \\
+    \quad \quad \quad \quad \quad \quad \quad \mathsf{|}\; \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ & & \\
+    \quad \quad \quad \quad \quad \quad \quad \quad \quad \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} (\mathsf{=}\; t_{1} \; u_{1}), \ldots, (\mathsf{=}\; t_{n} \; u_{n}) \mathsf{\}} \pplus k, w, o; eos \rangle}_{E}(i,k,w,o,c) & & \\
+    \quad \quad \quad \quad \quad \quad \quad \quad \} \} \} & & \\
+    \quad \mathsf{else} \{ i!\mathsf{(} \meaningof{u}_{\chi(p,\bot)} \mathsf{)}\; \mathsf{|}\; c\mathsf{!}\mathsf{(} \mathsf{(} \meaningof{h(p)}\;e\mathsf{)} \mathsf{)} \}
+    \} & &\\
     \meaningof{\langle \mathsf{\{} \mathsf{(}\mathsf{transform}\; t \; u\mathsf{)}_{\chi(p,e)} \mathsf{\}} \pplus i, \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k, w, o; eos \rangle}_{transform}(i,k,w,o,c) & & \\
     = & & \\
-    \mathsf{for}( \mathsf{(}\mathsf{transform}\; \meaningof{t}\; \meaningof{u}\mathsf{)} \leftarrow i )\{ \mathsf{(} \mathsf{new}\; s\mathsf{)} \{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \meaningof{t} \leftarrow k \mathsf{)}\{ w\mathsf{!}\mathsf{(}\meaningof{u}\mathsf{)} \mathsf{|} s \mathsf{!}\mathsf{(} \meaningof{t} \mathsf{)} \} & & \\
-    \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \mathsf{|}\; \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ & & \\
-    \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k, w, o; eos \rangle}_{E}(i,k,w,o,c) & & \\
-    \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \quad \} \} \} & &\\
+    \mathsf{for}( \mathsf{(}\mathsf{transform}\; \meaningof{t}\; \meaningof{u}\mathsf{)}_{\chi(p,e)} \leftarrow i \;\mathsf{\&}\; \mathsf{(} \meaningof{h(p)}\;e'\mathsf{)} \leftarrow c)\{ & & \\
+    \quad \mathsf{if} \mathsf{(} \mathsf{(} \mathsf{(} \meaningof{e} \mathsf{+} \meaningof{e'}\mathsf{)} \mathsf{-} \mathsf{(} \Sigma_{i} \meaningof{\mathsf{\#}(\sigma_{i})} + \Sigma_{i} \meaningof{\mathsf{\#}(u_{i}\sigma_{i})} \mathsf{)} \mathsf{)} \mathsf{>} \mathsf{0}\mathsf{)} \{ & & \\
+    \quad \quad \quad \mathsf{(} \mathsf{new}\; s\mathsf{)} \{ \Pi_{j=1}^{n} \mathsf{for}\mathsf{(} \meaningof{t} \leftarrow k \mathsf{)}\{ w\mathsf{!}\mathsf{(}\meaningof{u}\mathsf{)} \mathsf{|} s \mathsf{!}\mathsf{(} \meaningof{t} \mathsf{)} \} & & \\
+    \quad \quad \quad \quad \quad \quad \quad \mathsf{|}\; \mathsf{for}\mathsf{(} r_{1} \leftarrow s \; \mathsf{\&}\; \ldots \; \mathsf{\&}\; r_{n} \leftarrow s \mathsf{)}\{ & & \\
+    \quad \quad \quad \quad \quad \quad \quad \quad \Pi_{j=1}^{n} k\mathsf{!}\mathsf{(} r_{j} \mathsf{)}\; \mathsf{|}\; \meaningof{\langle i, \mathsf{\{} t_{1}, \ldots, t_{n} \mathsf{\}} \pplus k, w, o; eos \rangle}_{E}(i,k,w,o,c) & & \\
+    \quad \quad \quad \quad \quad \quad \quad \} \} \} & &\\
+    \quad \mathsf{else} \{ i!\mathsf{(}\mathsf{(}\mathsf{transform}\; \meaningof{t}\; \meaningof{u}\mathsf{)}_{\chi(p,e)}\mathsf{)}\; \mathsf{|}\; c\mathsf{!}\mathsf{(} \mathsf{(} \meaningof{h(p)}\;e'\mathsf{)} \mathsf{)} \}
+    \} & &
+  \end{array}
+\end{mathpar}
+\begin{mathpar}
+  \begin{array}{lll}
     \meaningof{\langle \mathsf{\{} \mathsf{(} \mathsf{addAtom}\; t\mathsf{)}_{\chi(p,e)}\mathsf{\}}  \pplus i, k, w, o; eos \rangle}_{E}(i,k,w,o,c) & & \\
     = & & \\
     \mathsf{for}( \mathsf{(}\mathsf{addAtom}\; \meaningof{t} \mathsf{)} \leftarrow i )\{ k\mathsf{!}(\meaningof{t}) \;
