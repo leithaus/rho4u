@@ -157,7 +157,7 @@ from $\mathsf{Th}(-, M)$ into $\Omega(-)$, we take the character of the presheav
   \mapsto \phi'(X) \mathsf{*} \psi'(X) \subseteq \mathsf{Th}(X,M) \in \mathsf{Set} \;\text{via mapping}\; \mathsf{*} \circ - \circ \Delta \;\text{over the set of pairs}\; \\
 
   \phi'(X) \times \psi'(X) \subseteq \mathsf{Th}(X,M)^{2} \to \phi'(X) \mathsf{*} \psi'(X) \subseteq \mathsf{Th}(X,M) \\
-  (f, g) \mapsto \lambda x.f(x) \mathsf{*} g(x)  =  \mathsf{*} \circ - \circ \Delta
+  \text{where}\; \mathsf{*} \circ - \circ \Delta = (f, g) \mapsto \lambda x.f(x) \mathsf{*} g(x) 
 \end{mathpar}
 
 \begin{mathpar}
@@ -168,16 +168,11 @@ Here are two presheaves, one for $\mathsf{*}$, the other for $\cap$.  Both are
 subobjects of the representable on M.  To get natural transformations
 from $\mathsf{Th}( -, M )$ into $\Omega(-)$, we take the character of the presheaves.
 
-\begin{mathpar}
-  X \in \mathsf{Th}^{op} \\
-  \mapsto (X, X) \in (\mathsf{Th}^{op})^{2} \;\text{via}\; \Delta:\mathsf{Th}^{op} \to (\mathsf{Th}^{op})^{2} \;\text{in}\; \mathsf{Cat} \\
-  \mapsto (\phi'(X), \psi'(X)) \in \mathcal{P}(\mathsf{Th}(X,M))^{2} \subseteq \mathsf{Set}^{2} \;\text{via}\; \phi' \;\text{and}\; \psi' \;\text{and the product in}\; \mathsf{Cat} \\
-  \mapsto \phi'(X) \times \psi'(X) \subseteq \mathsf{Th}(X,M)^{2} \in \mathsf{Set} \;\text{via the product in}\; \mathsf{Set} \\
-  \mapsto \phi'(X) \mathsf{*} \psi'(X) \subseteq \mathsf{Th}(X,M) \in \mathsf{Set} \;\text{via mapping}\; \mathsf{*} \circ - \circ \Delta \;\text{over the set of pairs}\; \\
+%% ↦ X^2 via Δ in Cat
+%% ↦ (φ'(X), ψ'(X)) ∈ P(Th(X, M))² ⊆ Set² via φ' and ψ' and the product in Cat
+%% ↦ φ'(X) ∩ ψ'(X) ∈ P(Th(X, M)) ⊆ Set via intersection of subsets
 
-  \phi'(X) \times \psi'(X) \subseteq \mathsf{Th}(X,M)^{2} \to \phi'(X) \mathsf{*} \psi'(X) \subseteq \mathsf{Th}(X,M) \\
-  (f, g) \mapsto \lambda x.f(x) \mathsf{*} g(x)  =  \mathsf{*} \circ - \circ \Delta \\
-
-  X \in \mathsf{Th}^{op} \\
+ \begin{mathpar}
+   X \in \mathsf{Th}^{op} \\
   \mapsto (X, X) \in (\mathsf{Th}^{op})^{2} \;\text{via}\; \Delta:\mathsf{Th}^{op} \to (\mathsf{Th}^{op})^{2} \;\text{in}\; \mathsf{Cat}
 \end{mathpar}
