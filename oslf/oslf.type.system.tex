@@ -36,7 +36,7 @@ for that binary term.
 
 \subsubsection{Boundaries}
 \begin{mathpar}
-  \inferrule* [lab=Axiom] {}{\Vdash p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} \\
+  \inferrule* [lab=Axiom] { }{p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} \\
   \and
   \inferrule* [lab=Character] {} {\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{\{ Q \}} : \mathbf {X}}
   \and
@@ -44,6 +44,15 @@ for that binary term.
   \and
   \inferrule* [lab=Composition] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf {X}, \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash Q \substn{P}{p} : \mathbf{V} : \mathbf {Y}} \\
 \end{mathpar}
+
+\paragraph{Denotation}
+In general, the denotation of inference rules will be a natural or dinatural transformation from functors whose source and target are products of copies of the Grothedieck category $\mathsf{NT}$.
+%% 
+\begin{mathpar}
+  \meaningof{\Vdash p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} = \mathsf{id} : \mathbf{C_{1}} \to \mathsf{NT}(-,=) 
+\end{mathpar}
+
+Let $\mathsf{\meaningof{Id}} = p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}$. From no assumptions we seek to provide the identity morphism on each object, i.e. the components of the dinatural transformation. \mathbf{C_{1}} is the functor that represents no assumptions; it maps each pair of objects to the one element set. 
 
 \subsubsection{Disjunctions}
 \begin{mathpar}
