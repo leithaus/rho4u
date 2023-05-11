@@ -52,7 +52,7 @@ $$\begin{array}{l}
 Note that $P_{i}$ and likewise $\mathbf{U_{i}}$, $\mathbf{X_{i}}$, and
 even $\Gamma_{i}$ are effectively meta-variables, rendering the
 meaning of any judgment in the hypothesis of an inference rule as the
-hom-functor of $\mathsf{NT}$. That is, $\meaningof{P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}} = \mathsf{NT}(-_{1},-_{2})$. Thus, the meaning of an inference rule is a (di-)natural transformation from $\mathsf{NT}(-_{1}, -_{2}) \times \cdots \times \mathsf{NT}(-_{1}, -_{2}) \Rightarrow k \circ \mathsf{NT}(-_{1}, -_{2}) \times \cdots \times \mathsf{NT}(-_{1}, -_{2})$ where $k$ is the constructor of the consequent of the rule.
+hom-functor of $\mathsf{NT}$. That is, ${P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}} = \mathsf{NT}(-_{1},-_{2})$ because barring any further information regarding the value of these meta-variables $\meaningof{P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}}$ could be any morphism in $\mathsf{NT}(\meaningof{\Gamma_{1}},\meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}})$; and since neither $\Gamma_{1}$ nor $\mathbf{U}_{1} : \mathbf{X}_{1}$ are specified it could be any morphism in $\mathsf{NT}(-_{1},-_{2})$. Thus, if we let $\mathsf{NT}(-_{1}, -_{2})^n = \mathsf{NT}(-_{1}, -_{2}) \times \cdots \times \mathsf{NT}(-_{1}, -_{2})$ the meaning of an inference rule is a (di-)natural transformation from $\mathsf{NT}(-_{1}, -_{2})^{n} \Rightarrow k \circ \mathsf{NT}(-_{1}, -_{2})^{n}$ where $k$ is the constructor of the consequent of the rule.
 
 \subsubsection{Boundaries}
 \begin{mathpar}
