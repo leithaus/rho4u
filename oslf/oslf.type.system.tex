@@ -34,6 +34,26 @@ for that binary term.
 
 \subsection{Generic types}
 
+We have a bit of a chicken and egg situation in that to understand the typing rules we need to have their intended denotations in mind.
+
+\paragraph{Denotation}
+In general, the denotation of inference rules will be a natural or dinatural transformation from functors whose source and target are products of copies of the Grothedieck category $\mathsf{NT}$. More specifically, since rules are of the form
+
+\begin{mathpar}
+  \inferrule* [lab=Rule]{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf{X}_{1} \;\ldots\; \Gamma_{n} \vdash P_{n} : \mathbf{U}_{n} : \mathbf{X}_{n}}{\Gamma(\Gamma_{1},\ldots,\Gamma_{n}) \vdash P(P_{1},\ldots,P_{n}) : \mathbf{U}(\mathbf{U}_{1},\ldots,\mathbf{U}_{n}) : \mathbf{X}(\mathbf{X}_{1},\ldots,\mathbf{X}_{n})}
+\end{mathpar}
+
+then the denotation of such a rule is
+
+$$\begin{array}{l}
+  \meaningof{\mathsf{Rule}} : \meaningof{P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}} \times \cdots \times \meaningof{P_{n}} : \meaningof{\Gamma_{n}} \to \meaningof{\mathbf{U}_{n} : \mathbf{X}_{n}} \\\Rightarrow\\ \meaningof{P(P_{1},\ldots,P_{n})} : \meaningof{\Gamma(\Gamma_{1},\ldots,\Gamma_{n})} \to \meaningof{\mathbf{U}(\mathbf{U}_{1},\ldots,\mathbf{U}_{n}) : \mathbf{X}(\mathbf{X}_{1},\ldots,\mathbf{X}_{n})}
+\end{array}$$
+
+Note that $P_{i}$ and likewise $\mathbf{U_{i}}$, $\mathbf{X_{i}}$, and
+even $\Gamma_{i}$ are effectively meta-variables, rendering the
+meaning of any judgment in the hypothesis of an inference rule as the
+hom-functor of $\mathsf{NT}$. That is, $\meaningof{P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}} = \mathsf{NT}(-_{1},-_{2})$. Thus, the meaning of an inference rule is a (di-)natural transformation from $\mathsf{NT}(-_{1}, -_{2}) \times \cdots \times \mathsf{NT}(-_{1}, -_{2}) \Rightarrow k \circ \mathsf{NT}(-_{1}, -_{2}) \times \cdots \times \mathsf{NT}(-_{1}, -_{2})$ where $k$ is the constructor of the consequent of the rule.
+
 \subsubsection{Boundaries}
 \begin{mathpar}
   \inferrule* [lab=Axiom] { }{p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} \\
@@ -45,14 +65,26 @@ for that binary term.
   \inferrule* [lab=Composition] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf {X}, \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash Q \substn{P}{p} : \mathbf{V} : \mathbf {Y}} \\
 \end{mathpar}
 
-\paragraph{Denotation}
-In general, the denotation of inference rules will be a natural or dinatural transformation from functors whose source and target are products of copies of the Grothedieck category $\mathsf{NT}$.
-%% 
+%%
+
+Thus, the meaning of the ground of the system will be
+
+$$\begin{array}{l}
+  \meaningof{\mathsf{Axiom}} : \meaningof{-} \Rightarrow \meaningof{p} : \meaningof{p : \mathbf{U : X}} \to \meaningof{\mathbf{U : X}}
+\end{array}$$
+
+We interpret $\meaningof{\mathsf{Id}}$ as $\mathsf{NT}(-_{1},-_{2})$, the hom-functor. We interpret \meaningof{-} as $\mathbf{C_{1}}$, the functor that maps each pair of objects to the one element set. Thus, our transformation looks like:
+
 \begin{mathpar}
-  \meaningof{\Vdash p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} = \mathsf{id} : \mathbf{C_{1}} \to \mathsf{NT}(-,=) 
+  \meaningof{\Vdash p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} = \mathsf{id} : \mathbf{C_{1}}(-_{1},-_{2}) \to \mathsf{NT}(-_{1},-_{2}) 
 \end{mathpar}
 
-Let $\mathsf{\meaningof{Id}} = p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}$. From no assumptions we seek to provide the identity morphism on each object, i.e. the components of the dinatural transformation. \mathbf{C_{1}} is the functor that represents no assumptions; it maps each pair of objects to the one element set. 
+$$\begin{array}{l}
+  \meaningof{\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{\{ Q \}} : \mathbf {X}} \\
+  = \\
+  \meaningof{\mathsf{Character}} : \meaningof{Q} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}} \Rightarrow \meaningof{Q} : \meaningof{\Gamma} \to \meaningof{\mathbf{\{ Q \}} : \mathbf {X}}
+\end{array}$$
+%% left off here in discussion of is it the same Q.
 
 \subsubsection{Disjunctions}
 \begin{mathpar}
@@ -69,7 +101,7 @@ Let $\mathsf{\meaningof{Id}} = p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U
 \begin{mathpar}
   \inferrule* [lab=Intersection] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Gamma \vdash P : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U \wedge V} : \mathbf {X}} \\
   \and
-  \inferrule* [lab=Product] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash P \times Q : \mathbf{U \times V} : \mathbf{X \times Y}} \\
+  \inferrule* [lab=Product] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash \langle P, Q \rangle : \mathbf{U \times V} : \mathbf{X \times Y}} \\
   \and
   \inferrule* [lab=Proj1] {} {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \Vdash r : \mathbf{U} \times \mathbf{V} : \mathbf{X} \times \mathbf{Y}, \Gamma \vdash \mathsf{let} \; \langle p, \_ \rangle \; = \; r \; \mathsf{in}\; P : \mathbf{W} : \mathbf {Z}} \\
   \and
@@ -91,7 +123,7 @@ Let $\mathsf{\meaningof{Id}} = p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U
 
 \subsubsection{Internalized operations}
 \begin{mathpar}
-  \inferrule* [lab=Pair] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash \langle P,Q \rangle : \langle \mathbf{U}, \mathbf{V} \rangle : \mathbf {P}} \\
+  \inferrule* [lab=Pair] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash \mathsf{pair}( P,Q ) : \mathbf{U} \otimes \mathbf{V} : \mathbf {P}} \\
   \and
   \inferrule* [lab=Fst] {}{\Vdash \; \vdash \pi_{1} : \{ \mathbf{\pi}_{1} \} : \mathbf {P}}
   \and
@@ -125,9 +157,9 @@ Let $\mathsf{\meaningof{Id}} = p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U
   \and
   \inferrule* [lab=MatchR-Eqn] {\Gamma \vdash R : \mathbf{V} : \mathbf {Y} \;\;\; p : \mathbf{U} : \mathbf{X}, \Delta_{1} \vdash P : \mathbf{W} : \mathbf{Z} \;\;\; q : \mathbf{V} : \mathbf{Y}, \Delta_{2} \vdash Q : \mathbf{W} : \mathbf{Z}}{\Gamma,\Delta_{1}, \Delta_{2} \vdash (\mathsf{match} \; \mathsf{in}_{R}\; R \; \mathsf{case} \; \mathsf{in}_{L} \; p \Rightarrow P \mathsf{;} \; \mathsf{case} \; \mathsf{in}_{R} \; q \Rightarrow Q) = Q\substn{R}{q} : \mathbf{W} : \mathbf {Z}} \\
   \and
-  \inferrule* [lab=Proj1-Eqn] {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta_{1} \vdash Q_{1} : \mathbf{U} : \mathbf{X} \;\;\; \Delta_{2} \vdash Q_{2} : \mathbf{V} : \mathbf{Y}}{ \Gamma, \Delta_{1},\Delta_{2} \vdash (\mathsf{let} \; \langle p, \_ \rangle \; = \; Q_{1} \times Q_{2} \; \mathsf{in}\; P) = P\substn{Q_{1}}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=Proj1-Eqn] {p : \mathbf{U} : \mathbf{X}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta_{1} \vdash Q_{1} : \mathbf{U} : \mathbf{X} \;\;\; \Delta_{2} \vdash Q_{2} : \mathbf{V} : \mathbf{Y}}{ \Gamma, \Delta_{1},\Delta_{2} \vdash (\mathsf{let} \; \langle p, \_ \rangle \; = \; \langle Q_{1}, Q_{2} \rangle \; \mathsf{in}\; P) = P\substn{Q_{1}}{p} : \mathbf{W} : \mathbf {Z}} \\
   \and
-  \inferrule* [lab=Proj2-Eqn] {p : \mathbf{V} : \mathbf{Y}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta_{1} \vdash Q_{1} : \mathbf{U} : \mathbf{X} \;\; \Delta_{2} \vdash Q_{2} : \mathbf{V} : \mathbf{Y}}{ \Gamma, \Delta_{1},\Delta_{2} \vdash (\mathsf{let} \; \langle \_, p \rangle \; = \; Q_{1} \times Q_{2} \; \mathsf{in}\; P) = P\substn{Q_{2}}{p} : \mathbf{W} : \mathbf {Z}} \\
+  \inferrule* [lab=Proj2-Eqn] {p : \mathbf{V} : \mathbf{Y}, \Gamma \vdash P : \mathbf{W} : \mathbf {Z} \;\;\; \Delta_{1} \vdash Q_{1} : \mathbf{U} : \mathbf{X} \;\; \Delta_{2} \vdash Q_{2} : \mathbf{V} : \mathbf{Y}}{ \Gamma, \Delta_{1},\Delta_{2} \vdash (\mathsf{let} \; \langle \_, p \rangle \; = \; \langle Q_{1}, Q_{2} \rangle \; \mathsf{in}\; P) = P\substn{Q_{2}}{p} : \mathbf{W} : \mathbf {Z}} \\
 \end{mathpar}
 
 \subsubsection{Liftings from the $\lambda$-theory}
@@ -149,11 +181,11 @@ Let $\mathsf{\meaningof{Id}} = p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U
   \and
   \inferrule* [lab=MatchR-Trgt] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = P_{3} \; \odot \; P_{1} : \mathbf{U}_{3} \; \odot \; \mathbf{U}_{1} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Proj1-Src] {\Gamma \vdash \mathsf{Proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{1}(P_{1},P_{2})) = \pi_{1} \;  \; \odot \; \langle P_{1}, P_{2} \rangle : \{ \pi_{1} \} \; \odot \; \langle \mathbf{U}_{1},\mathbf{U}_{2} \rangle : \mathbf {P}} \\
+  \inferrule* [lab=Proj1-Src] {\Gamma \vdash \mathsf{Proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{1}(P_{1},P_{2})) = \pi_{1} \;  \; \odot \; \mathsf{pair}( P_{1}, P_{2} ) : \{ \pi_{1} \} \; \odot \; \mathbf{U}_{1} \otimes \mathbf{U}_{2} : \mathbf {P}} \\
   \and
   \inferrule* [lab=Proj1-Trgt] {\Gamma \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{1}(P_{1},P_{2})) = P_{1} : \mathbf{U}_{1} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Proj2-Src] {\Gamma \vdash \mathsf{Proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{2}(P_{1},P_{2})) = \pi_{2} \;  \; \odot \; \langle P_{1}, P_{2} \rangle : \{ \pi_{2} \} \; \odot \; \langle \mathbf{U}_{1},\mathbf{U}_{2} \rangle : \mathbf {P}} \\
+  \inferrule* [lab=Proj2-Src] {\Gamma \vdash \mathsf{Proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{2}(P_{1},P_{2})) = \pi_{2} \;  \; \odot \; \mathsf{pair}( P_{1}, P_{2} ) : \{ \pi_{2} \} \; \odot \; \mathbf{U}_{1} \otimes \mathbf{U}_{2} : \mathbf {P}} \\
   \and
   \inferrule* [lab=Proj1-Trgt] {\Gamma \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{2}(P_{1},P_{2})) = P_{2} : \mathbf{U}_{2} : \mathbf {P}}
 \end{mathpar}
