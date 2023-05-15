@@ -52,11 +52,11 @@ $$\begin{array}{l}
 Note that $P_{i}$ and likewise $\mathbf{U_{i}}$, $\mathbf{X_{i}}$, and
 even $\Gamma_{i}$ are effectively meta-variables, rendering the
 meaning of any judgment in the hypothesis of an inference rule as the
-hom-functor of $\mathsf{NT}$. That is, ${P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}} = \mathsf{NT}(-_{1},-_{2})$ because barring any further information regarding the value of these meta-variables $\meaningof{P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}}$ could be any morphism in $\mathsf{NT}(\meaningof{\Gamma_{1}},\meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}})$; and since neither $\Gamma_{1}$ nor $\mathbf{U}_{1} : \mathbf{X}_{1}$ are specified it could be any morphism in $\mathsf{NT}(-_{1},-_{2})$. Thus, if we let $\mathsf{NT}(-_{1}, -_{2})^n = \mathsf{NT}(-_{1}, -_{2}) \times \cdots \times \mathsf{NT}(-_{1}, -_{2})$ the meaning of an inference rule is a (di-)natural transformation from $\mathsf{NT}(-_{1}, -_{2})^{n} \Rightarrow \mathsf{NT}(-_{1}, -_{2}) \circ k_{1} \times k_{2}$, constructing the consequent of the rule.
+hom-functor of $\mathsf{NT}$. That is, $\meaningof{P_{i}} : \meaningof{\Gamma_{i}} \to \meaningof{\mathbf{U}_{i} : \mathbf{X}_{i}} = \mathsf{NT}(-_{1},-_{2})$ because barring any further information regarding the value of these meta-variables $\meaningof{P_{i}} : \meaningof{\Gamma_{i}} \to \meaningof{\mathbf{U}_{i} : \mathbf{X}_{i}}$ could be any morphism in $\mathsf{NT}(\meaningof{\Gamma_{i}},\meaningof{\mathbf{U}_{i} : \mathbf{X}_{i}})$; and since neither $\Gamma_{i}$ nor $\mathbf{U}_{i} : \mathbf{X}_{i}$ are specified it could be any morphism in $\mathsf{NT}(-_{1},-_{2})$. Thus, if we let $\mathsf{NT}(-_{1}, -_{2})^n = \Pi_{i}^{n}\mathsf{NT}(-_{1}, -_{2})$ the meaning of an inference rule is a (di-)natural transformation from $\mathsf{NT}(-_{1}, -_{2})^{n} \Rightarrow \mathsf{NT}(-_{1}, -_{2}) \circ k_{1} \times k_{2}$, constructing the consequent of the rule.
 
 \subsubsection{Boundaries}
 \begin{mathpar}
-  \inferrule* [lab=Axiom] { }{p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} \\
+  \inferrule* [lab=Axiom] {}{\epsilon \Vdash p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} \\
   \and
   \inferrule* [lab=Character] {} {\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{\{ Q \}} : \mathbf {X}}
   \and
@@ -74,9 +74,10 @@ $$\begin{array}{rcl}
   & = & \\
   \meaningof{\mathsf{Axiom}} : \meaningof{\epsilon} & \Rightarrow & \meaningof{p} : \meaningof{p : \mathbf{U : X}} \to \meaningof{\mathbf{U : X}} \\
  & = & \\
-  \meaningof{\mathsf{Axiom}} : \mathsf{NT}( -_{1}, -_{2} )^{0} & \Rightarrow & \mathsf{NT}^{1} \circ \mathsf{1}_{\mathsf{NT}} \times \mathsf{1}_{\mathsf{NT}} \\
-  \meaningof{\mathsf{Axiom}}_{\mathbf{U} : \mathbf{X}} : \mathsf{NT}( -_{1}, -_{2} )^{0} & \Rightarrow & \mathsf{NT}^{1} \circ \mathsf{1}_{\mathsf{NT}} \times \mathsf{1}_{\mathsf{NT}} \\
+  \meaningof{\mathsf{Axiom}} : \mathsf{!} \circ \mathsf{1}_{\mathsf{NT}} \times \mathsf{1}_{\mathsf{NT}} & \Rightarrow & \mathsf{NT}^{1} \circ \mathsf{1}_{\mathsf{NT}} \times \mathsf{1}_{\mathsf{NT}} \\
 \end{array}$$
+
+Likewise, we calculate
 
 $$\begin{array}{l}
   \meaningof{\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{\{ Q \}} : \mathbf {X}} \\
