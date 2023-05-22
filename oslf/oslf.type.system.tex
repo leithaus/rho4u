@@ -86,6 +86,18 @@ $$\begin{array}{l}
 \end{array}$$
 %% left off here in discussion of is it the same Q.
 
+$$\begin{array}{l}
+  \meaningof{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf {X}, \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash Q \substn{P}{p} : \mathbf{V} : \mathbf {Y}} \\
+  = \\
+  \meaningof{\mathsf{Composition}} : \langle \meaningof{P}, \meaningof{Q} \rangle \Rightarrow \meaningof{Q\substn{P}{p}} : \meaningof{\Gamma} \times \meaningof{\Delta} \to \meaningof{\mathbf{V} : \mathbf{Y}} \\
+  = \\
+  \quad \mathsf{NT}(\Gamma,\mathbf{U} : \mathbf {X}) \times \mathsf{NT}(\mathbf{U} : \mathbf {X} \times \Delta, \mathbf{V} : \mathbf {Y}) \Rightarrow \mathsf{NT}(\Gamma \times \Delta, \mathbf{V} : \mathbf {Y})
+\end{array}$$
+
+where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}}$ and $ \meaningof{Q} : \meaningof{\mathbf{U} : \mathbf{X}} \times \meaningof{\Delta} \to \meaningof{\mathbf{V} : \mathbf{Y}}$; and the source and target of the denotation are $\mathsf{NT}^{\mathsf{op}} \times \mathsf{NT} \times \mathsf{NT}^{\mathsf{op}} \times \mathsf{NT}^{\mathsf{op}} \times \mathsf{NT} \to \mathsf{Set}$.
+
+
+
 \subsubsection{Disjunctions}
 \begin{mathpar}
   \inferrule* [lab=Union] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U \vee V} : \mathbf {X}} \\
