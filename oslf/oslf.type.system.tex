@@ -58,7 +58,7 @@ hom-functor of $\mathsf{NT}$. That is, $\meaningof{P_{i}} : \meaningof{\Gamma_{i
 \begin{mathpar}
   \inferrule* [lab=Axiom] {}{\epsilon \Vdash p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X}} \\
   \and
-  \inferrule* [lab=Character] {} {\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \chi_Q : \mathbf{\{ Q \}} : \mathbf {X}}
+  \inferrule* [lab=Character] {} {\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{Ch}(Q) : \mathbf{\{ Q \}} : \mathbf {X}}
   \and
   \inferrule* [lab=Top] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{\top} : \mathbf {X}} \\
   \and
@@ -74,17 +74,19 @@ $$\begin{array}{rcl}
   & = & \\
   \meaningof{\mathsf{Axiom}} : \meaningof{\epsilon} & \Rightarrow & \meaningof{p} : \meaningof{p : \mathbf{U : X}} \to \meaningof{\mathbf{U : X}} \\
  & = & \\
-  \meaningof{\mathsf{Axiom}} : \mathsf{!} \circ \mathsf{1}_{\mathsf{NT}} \times \mathsf{1}_{\mathsf{NT}} & \Rightarrow & \mathsf{NT}^{1} \circ \mathsf{1}_{\mathsf{NT}} \times \mathsf{1}_{\mathsf{NT}} \\
+  \meaningof{\mathsf{Axiom}} : \mathsf{!} \circ \mathsf{1}_{\mathsf{NT^{op}}} \times \mathsf{1}_{\mathsf{NT}} & \Rightarrow & \mathsf{NT}^{1} \circ \mathsf{1}_{\mathsf{NT^{op}}} \times \mathsf{1}_{\mathsf{NT}} \\
+	\bullet \in \, !(\meaningof{\mathbf{U} : \mathbf{X}}, \meaningof{\mathbf{U} : \mathbf{X}}) = \{\bullet \}& \mapsto & 1_{\meaningof{\mathbf{U} : \mathbf{X}}} \in \mathsf{NT}(\meaningof{\mathbf{U} : \mathbf{X}}, \meaningof{\mathbf{U} : \mathbf{X}})
 \end{array}$$
 
 Likewise, we calculate
 
 $$\begin{array}{l}
-  \meaningof{\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \chi_Q : \mathbf{\{ Q \}} : \mathbf {X}} \\
+  \meaningof{\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{Ch}(Q) : \mathbf{\{ Q \}} : \mathbf {X}} \\
   = \\
-  \meaningof{\mathsf{Character}} : \meaningof{Q} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}} \Rightarrow \meaningof{\chi_Q} : \meaningof{\Gamma} \to \meaningof{\mathbf{\{ Q \}} : \mathbf {X}} \\
-	\meaningof{Q}(S):\mathsf{NT}(\meaningof{\Gamma}(S), \meaningof{\mathbf{U} : \mathbf{X}}(S)) \mapsto \meaningof{\chi_Q}(S): \mathsf{NT}(\meaningof{\Gamma}(S), {\rm Im}(\meaningof{Q}(S))) = \meaningof{Q}(S)|_{{\rm Im}(Q)(S)}
+  \meaningof{\mathsf{Character}} : \meaningof{Q} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}} \Rightarrow \meaningof{\mathsf{Ch}(Q)} : \meaningof{\Gamma} \to \meaningof{\mathbf{\{ Q \}} : \mathbf {X}} \\
+	\meaningof{Q}\in \mathsf{NT}(\meaningof{\Gamma}, \meaningof{\mathbf{U} : \mathbf{X}}) \mapsto \meaningof{\mathsf{Ch}(Q)} \in \mathsf{NT}(\meaningof{\Gamma}, {\rm Im}(\meaningof{Q}))
 \end{array}$$
+where ${\rm Im}(\meaningof{Q})$ denotes the subobject of the representable on $\mathbf{X}$ that assigns to each sort $S$ the set ${\rm Im}(\meaningof{Q}(S)).$  Because each set ${\rm Im}(\meaningof{Q}(S))$ is a subset of $\meaningof{U}(S)$, ${\rm Im}(\meaningof{Q})$ is a subobject of $\meaningof{\mathbf{U} : \mathbf{X}}$, which is in turn a subobject of the representable on $\mathbf{X}$.
 %% left off here in discussion of is it the same Q.
 
 $$\begin{array}{l}
