@@ -148,6 +148,7 @@ where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}
   \and
   \inferrule* [lab=TagR,Right=(U:P)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma \vdash \mathsf{tag}_{R} \; Q : \mathbf{U} \oplus \mathbf{V} : \mathbf {P}} \\
   \inferrule* [lab=Sum] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash [ P,Q] : [ \mathbf{U}, \mathbf{V} ] : \mathbf {P}}\\
+  \inferrule* [lab=Abstraction] {}{p : \mathbf{U} : \mathbf {P}, \Gamma \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma \vdash p \Rightarrow Q : \mathbf{U}\twoheadrightarrow \mathbf{V} : \mathbf{P}} \\
   \and
   \mathsf{int}^{+} : P + P \to P \and \mathsf{int}^{-} : ((P + P) \to P) \to P \\
   \and
@@ -156,6 +157,14 @@ where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}
   [P,Q] := \mathsf{int}^{-}(\lambda r.\mathsf{match}\; r \;\mathsf{case}\; \mathsf{in}_{L}\; p \Rightarrow P \odot p\mathsf{;}\; \mathsf{case}\; \mathsf{in}_{R}\; q \Rightarrow Q \odot q)
 \end{mathpar}
 
+$$\begin{array}{l}
+  \meaningof{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash \mathsf{pair}( P,Q ) : \mathbf{U} \otimes \mathbf{V} : \mathbf {P}} \\
+  = \\
+  \meaningof{\mathsf{Pair}} : \mathsf{NT}(\meaningof{\Gamma},\meaningof{\mathbf{U}:\mathbf{P}}) \times \mathsf{NT}(\meaningof{\Delta},\meaningof{\mathbf{V}:\mathbf{P}}) \Rightarrow \mathsf{NT}(\meaningof{\Gamma} \times \meaningof{\Delta},\mathsf{pair} \circ \meaningof{\mathbf{U}:\mathbf{P}} \times \meaningof{\mathbf{V}:\mathbf{P}}) \\
+  = \\
+  ??? \\
+\end{array}$$
+
 \subsubsection{Internalized redex constuctors}
 \begin{mathpar}
   \inferrule* [lab=MatchL-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf {R}} \\
@@ -163,7 +172,10 @@ where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}
   \inferrule* [lab=MatchR-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf {R}} \\
   \inferrule* [lab=Proj1-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(P_{1},P_{2}) : \mathbf {R}} \\
   \and
-  \inferrule* [lab=Proj2-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(P_{1},P_{2}) : \mathbf {R}}
+  \inferrule* [lab=Proj2-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(P_{1},P_{2}) : \mathbf {R}} \\
+  \inferrule* [lab=ApplyL-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{apply}_{l}(P_{1},P_{2}) : \mathbf{apply}_{l}(P_{1},P_{2}) : \mathbf {R}} \\
+  \and
+  \inferrule* [lab=ApplyR-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{apply}_{r}(P_{1},P_{2}) : \mathbf{apply}_{r}(P_{1},P_{2}) : \mathbf {R}}
 \end{mathpar}
 
 \subsubsection{Equations from $\mathsf{NT(CCC)}$}
@@ -202,7 +214,15 @@ where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}
   \and
   \inferrule* [lab=Proj2-Src] {\Gamma \vdash \mathsf{Proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{2}(P_{1},P_{2})) = \pi_{2} \;  \; \odot \; \mathsf{pair}( P_{1}, P_{2} ) : \{ \pi_{2} \} \; \odot \; \mathbf{U}_{1} \otimes \mathbf{U}_{2} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Proj1-Trgt] {\Gamma \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{2}(P_{1},P_{2})) = P_{2} : \mathbf{U}_{2} : \mathbf {P}}
+  \inferrule* [lab=Proj2-Trgt] {\Gamma \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{2}(P_{1},P_{2})) = P_{2} : \mathbf{U}_{2} : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=ApplyL-Src] {\Gamma \vdash \mathsf{apply}_{L}(p \Rightarrow P_{1},P_{2}) : \mathbf{apply}_{L}(\mathbf{U} \twoheadrightarrow \mathbf{V},\mathbf{U}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{apply}_{L}(P_{1},P_{2})) = p \Rightarrow P_{1} \; \odot \; P_{2} : \mathbf{U} \twoheadrightarrow \mathbf{V} \; \odot \; \mathbf{U} : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=ApplyL-Trgt] {\Gamma \vdash \mathsf{apply}_{L}(p \Rightarrow P_{1},P_{2}) : \mathbf{apply}_{L}(\mathbf{U} \twoheadrightarrow \mathbf{V},\mathbf{U}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{apply}_{L}(P_{1},P_{2})) = P_{1}\{P_{2} / p\} : \mathbf{V} : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=ApplyR-Src] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{match}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{1} \; \odot \; p \Rightarrow P_{2} : \mathbf{U} \; \odot \; \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P}} \\
+  \and
+  \inferrule* [lab=ApplyR-Trgt] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{apply}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{2}\{P_{1} / p\} : \mathbf{V} : \mathbf {P}} \\
 \end{mathpar}
 
 \subsubsection{Modal operators}
