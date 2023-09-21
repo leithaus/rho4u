@@ -103,7 +103,7 @@ where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}
 
 \subsubsection{Disjunctions}
 \begin{mathpar}
-  \inferrule* [lab=Union] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U \vee V} : \mathbf {X}} \\
+  \inferrule* [lab=Union] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{join}_{U,V}P : \mathbf{U \vee V} : \mathbf {X}} \\
   \and
   \inferrule* [lab=InL,Right=(V:Y)] {} {\Gamma \vdash P : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{in}_{L} P : \mathbf{U+V} : \mathbf {X + Y}}
   \and
@@ -114,7 +114,7 @@ where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}
 
 \subsubsection{Conjunctions}
 \begin{mathpar}
-  \inferrule* [lab=Intersection] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Gamma \vdash P : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U \wedge V} : \mathbf {X}} \\
+  \inferrule* [lab=Intersection] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Gamma \vdash P : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{meet}_{U,V}P : \mathbf{U \wedge V} : \mathbf {X}} \\
   \and
   \inferrule* [lab=Product] {}{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash \langle P, Q \rangle : \mathbf{U \times V} : \mathbf{X \times Y}} \\
   \and
@@ -125,11 +125,11 @@ where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}
 
 \subsubsection{Implications}
 \begin{mathpar}
-  \inferrule* [lab=Implication1,Right=(U:X)] {}{\Gamma \vdash Q : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash Q : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
+  \inferrule* [lab=Implication1,Right=(U:X)] {}{\Gamma \vdash P : \mathbf{V} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{weak}_{1}\; P : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
   \and
-  \inferrule* [lab=Implication2,Right=(U:X)] {}{\Gamma \vdash P : \mathbf{V} \Rightarrow \bot : \mathbf {X} \Vdash \Gamma \vdash P : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
+  \inferrule* [lab=Implication2,Right=(U:X)] {}{\Gamma \vdash P : \mathbf{U} \Rightarrow \bot : \mathbf {X} \Vdash \Gamma \vdash \mathsf{weak}_{2}\; P : \mathbf{U} \Rightarrow \mathbf{V} : \mathbf {X}} \\
   \and
-  \inferrule* [lab=Separation] {}{\Gamma \vdash P_{1} : \mathbf{U}_{1} : \mathbf {X} \;\;\; \Gamma \vdash P_{2} : \mathbf{U}_{2} : \mathbf {X} \Vdash \Gamma \vdash P_{2} : \mathbf{U}_{1} \Rightarrow \bot_{\mathbf{X}} : \mathbf {X}} \; \mbox{\small \((\mathbf{U}_{1} \wedge \mathbf{U}_{2} = \bot_{\mathbf{X}})\)}\\
+  \inferrule* [lab=Separation] {}{\Gamma \vdash P_{1} : \mathbf{U}_{1} : \mathbf {X} \;\;\; \Gamma \vdash P_{2} : \mathbf{U}_{2} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{sep}\; P_{2} : \mathbf{U}_{1} \Rightarrow \bot_{\mathbf{X}} : \mathbf {X}} \; \mbox{\small \((\mathbf{U}_{1} \wedge \mathbf{U}_{2} = \bot_{\mathbf{X}})\)}\\
   \and
   \inferrule* [lab=Abstraction] {}{p : \mathbf{U} : \mathbf {X}, \Gamma \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma \vdash \lambda p . Q : \mathbf{U}\to \mathbf{V} : \mathbf{X} \to \mathbf{Y}} \\
   \and
