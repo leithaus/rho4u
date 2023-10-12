@@ -229,5 +229,13 @@ $$\begin{array}{l}
 \begin{mathpar}
   \inferrule* [lab=Step-Future] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{src}(R) : \lozenge \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
   \and
-  \inferrule* [lab=Step-History] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{trgt}(R) : \blacklozenge \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+  \inferrule* [lab=Labelled-Step-Future] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{src}(R) : \langle \mathbf{V} \rangle_{\mathsf{r}} \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
+  \and
+  \inferrule* [lab=Labelled-Step-Future] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{src}(R) : \langle \mathbf{U} \rangle_{\mathsf{l}} \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
+  \and
+  \inferrule* [lab=Step-Past] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{trgt}(R) : \blacklozenge \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+  \and
+  \inferrule* [lab=Labelled-Step-Past] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{trgt}(R) : \llangle \mathbf{U} \rrangle_{\mathsf{r}} \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+  \and
+  \inferrule* [lab=Labelled-Step-Past] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{trgt}(R) : \llangle \mathbf{V} \rrangle_{\mathsf{l}} \mathsf{src}(\mathbf{E}) : \mathbf {P}}
 \end{mathpar}
