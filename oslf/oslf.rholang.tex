@@ -478,9 +478,13 @@ give a typing for the $\pzero$ term.
   \inferrule* [lab=Eval-Src] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{src}(\mathsf{eval}(P)) = \dropn{\quotep{P}} : \dropt{\quotet{U}} : \mathbf{P}} \\
   \and
   \inferrule* [lab=Eval-Trgt] {}{\Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R} \Vdash \Gamma \vdash \mathsf{trgt}(\mathsf{eval}(P)) = P : \mathbf{U} : \mathbf{P}} \\
-  \inferrule* [lab=Par-Src] {\Gamma \vdash \binparx{R}{P} : \binpart{E}{U} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\binparx{R}{P}) = \mathsf{src}(R) : \binpart{src(E)}{U} : \mathbf{R}} \\
   \and
-  \inferrule* [lab=Par-Trgt] {\Gamma \vdash \binparx{R}{P} : \binpart{E}{U} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\binparx{R}{P}) = \binparx{\mathsf{trgt}(R)}{P} : \binpart{trgt(E)}{U} : \mathbf{R}} \\
+  \inferrule* [lab=Par-Src] {\Gamma \vdash \binparx{R}{P} : \binpart{E}{U} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\binparx{R}{P}) = \binpar{\mathsf{src}(R)}{P}  : \binparpt{src(E)}{U} : \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Par-Trgt] {\Gamma \vdash \binparx{R}{P} : \binpart{E}{U} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\binparx{R}{P}) = \binpar{\mathsf{trgt}(R)}{P} : \binparpt{trgt(E)}{U} : \mathbf{P}} \\
 \end{mathpar}
+
+\section
+  The semantics implied by these rules in strictly interleaving. Effectively, it assumes there is only one thread executing in a non-deterministic fashion over the syntax. Below we present model which scales from single threaded to multi threaded using an attention resource.
 
 % section rholang (end)

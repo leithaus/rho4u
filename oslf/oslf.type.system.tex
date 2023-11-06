@@ -167,15 +167,15 @@ $$\begin{array}{l}
 
 \subsubsection{Internalized redex constuctors}
 \begin{mathpar}
-  \inferrule* [lab=MatchL-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf {R}} \\
+  \inferrule* [lab=MatchL-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf {S}} \\
   \and
-  \inferrule* [lab=MatchR-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf {R}} \\
-  \inferrule* [lab=Proj1-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(P_{1},P_{2}) : \mathbf {R}} \\
+  \inferrule* [lab=MatchR-Redex] {\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \;\;\; \Gamma_{1} \vdash P_{3} : \mathbf{U}_{3} : \mathbf {P}}{\Gamma_{1} ,\Gamma_{2}, \Gamma_{3} \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf {S}} \\
+  \inferrule* [lab=Proj1-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(P_{1},P_{2}) : \mathbf {S}} \\
   \and
-  \inferrule* [lab=Proj2-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(P_{1},P_{2}) : \mathbf {R}} \\
-  \inferrule* [lab=ApplyL-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{apply}_{l}(P_{1},P_{2}) : \mathbf{apply}_{l}(P_{1},P_{2}) : \mathbf {R}} \\
+  \inferrule* [lab=Proj2-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U}_{2} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(P_{1},P_{2}) : \mathbf {S}} \\
+  \inferrule* [lab=ApplyL-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{apply}_{l}(P_{1},P_{2}) : \mathbf{apply}_{l}(P_{1},P_{2}) : \mathbf {S}} \\
   \and
-  \inferrule* [lab=ApplyR-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{apply}_{r}(P_{1},P_{2}) : \mathbf{apply}_{r}(P_{1},P_{2}) : \mathbf {R}}
+  \inferrule* [lab=ApplyR-Redex] {}{\Gamma_{1} \vdash P_{1} : \mathbf{U} : \mathbf {P} \;\;\; \Gamma_{2} \vdash P_{2} : \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P} \Vdash \Gamma_{1} ,\Gamma_{2} \vdash \mathsf{apply}_{r}(P_{1},P_{2}) : \mathbf{apply}_{r}(P_{1},P_{2}) : \mathbf {S}}
 \end{mathpar}
 
 \subsubsection{Equations from $\mathsf{NT(CCC)}$}
@@ -200,42 +200,48 @@ $$\begin{array}{l}
 
 \subsubsection{Reductions from $\mathsf{NT(CCC)}$}
 \begin{mathpar}
-  \inferrule* [lab=MatchL-Src,Right=(V:P)] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = [P_{2},P_{3}] \;  \; \odot \; \mathsf{tag}_{L} \; P_{1} : [\mathbf{U}_{2},\mathbf{U}_{3}] \; \odot \; \mathbf{U}_{1} \oplus \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=MatchL-Src,Right=(V:P)] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {S}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = [P_{2},P_{3}] \;  \; \odot \; \mathsf{tag}_{L} \; P_{1} : [\mathbf{U}_{2},\mathbf{U}_{3}] \; \odot \; \mathbf{U}_{1} \oplus \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchL-Trgt] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = P_{2} \; \odot \; P_{1} : \mathbf{U}_{2} \; \odot \; \mathbf{U}_{1} : \mathbf {P}} \\
+  \inferrule* [lab=MatchL-Trgt] {\Gamma \vdash \mathsf{match}_{L}(P_{1},P_{2},P_{3}) : \mathbf{match}_{L}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {S}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{L}(P_{1},P_{2},P_{3})) = P_{2} \; \odot \; P_{1} : \mathbf{U}_{2} \; \odot \; \mathbf{U}_{1} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchR-Src,Right=(V:P)] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = [P_{2},P_{3}]  \; \odot \; \mathsf{tag}_{R}\; P_{1} : [\mathbf{U}_{2},\mathbf{U}_{3}] \; \odot \; \mathbf{U}_{1} \oplus \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=MatchR-Src,Right=(V:P)] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {S}}{\Gamma \vdash \mathsf{src}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = [P_{2},P_{3}]  \; \odot \; \mathsf{tag}_{R}\; P_{1} : [\mathbf{U}_{2},\mathbf{U}_{3}] \; \odot \; \mathbf{U}_{1} \oplus \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=MatchR-Trgt] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = P_{3} \; \odot \; P_{1} : \mathbf{U}_{3} \; \odot \; \mathbf{U}_{1} : \mathbf {P}} \\
+  \inferrule* [lab=MatchR-Trgt] {\Gamma \vdash \mathsf{match}_{R}(P_{1},P_{2},P_{3}) : \mathbf{match}_{R}(\mathbf{U}_{1},\mathbf{U}_{2},\mathbf{U}_{3}) : \mathbf {S}}{\Gamma \vdash \mathsf{trgt}(\mathsf{match}_{R}(P_{1},P_{2},P_{3})) = P_{3} \; \odot \; P_{1} : \mathbf{U}_{3} \; \odot \; \mathbf{U}_{1} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Proj1-Src] {\Gamma \vdash \mathsf{Proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{1}(P_{1},P_{2})) = \pi_{1} \;  \; \odot \; \mathsf{pair}( P_{1}, P_{2} ) : \{ \pi_{1} \} \; \odot \; \mathbf{U}_{1} \otimes \mathbf{U}_{2} : \mathbf {P}} \\
+  \inferrule* [lab=Proj1-Src] {\Gamma \vdash \mathsf{Proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {S}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{1}(P_{1},P_{2})) = \pi_{1} \;  \; \odot \; \mathsf{pair}( P_{1}, P_{2} ) : \{ \pi_{1} \} \; \odot \; \mathbf{U}_{1} \otimes \mathbf{U}_{2} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Proj1-Trgt] {\Gamma \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{1}(P_{1},P_{2})) = P_{1} : \mathbf{U}_{1} : \mathbf {P}} \\
+  \inferrule* [lab=Proj1-Trgt] {\Gamma \vdash \mathsf{proj}_{1}(P_{1},P_{2}) : \mathbf{proj}_{1}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {S}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{1}(P_{1},P_{2})) = P_{1} : \mathbf{U}_{1} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Proj2-Src] {\Gamma \vdash \mathsf{Proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{2}(P_{1},P_{2})) = \pi_{2} \;  \; \odot \; \mathsf{pair}( P_{1}, P_{2} ) : \{ \pi_{2} \} \; \odot \; \mathbf{U}_{1} \otimes \mathbf{U}_{2} : \mathbf {P}} \\
+  \inferrule* [lab=Proj2-Src] {\Gamma \vdash \mathsf{Proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {S}}{\Gamma \vdash \mathsf{src}(\mathsf{proj}_{2}(P_{1},P_{2})) = \pi_{2} \;  \; \odot \; \mathsf{pair}( P_{1}, P_{2} ) : \{ \pi_{2} \} \; \odot \; \mathbf{U}_{1} \otimes \mathbf{U}_{2} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Proj2-Trgt] {\Gamma \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{2}(P_{1},P_{2})) = P_{2} : \mathbf{U}_{2} : \mathbf {P}} \\
+  \inferrule* [lab=Proj2-Trgt] {\Gamma \vdash \mathsf{proj}_{2}(P_{1},P_{2}) : \mathbf{proj}_{2}(\mathbf{U}_{1},\mathbf{U}_{2}) : \mathbf {S}}{\Gamma \vdash \mathsf{trgt}(\mathsf{proj}_{2}(P_{1},P_{2})) = P_{2} : \mathbf{U}_{2} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=ApplyL-Src] {\Gamma \vdash \mathsf{apply}_{L}(p \Rightarrow P_{1},P_{2}) : \mathbf{apply}_{L}(\mathbf{U} \twoheadrightarrow \mathbf{V},\mathbf{U}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{apply}_{L}(P_{1},P_{2})) = p \Rightarrow P_{1} \; \odot \; P_{2} : \mathbf{U} \twoheadrightarrow \mathbf{V} \; \odot \; \mathbf{U} : \mathbf {P}} \\
+  \inferrule* [lab=ApplyL-Src] {\Gamma \vdash \mathsf{apply}_{L}(p \Rightarrow P_{1},P_{2}) : \mathbf{apply}_{L}(\mathbf{U} \twoheadrightarrow \mathbf{V},\mathbf{U}) : \mathbf {S}}{\Gamma \vdash \mathsf{src}(\mathsf{apply}_{L}(P_{1},P_{2})) = p \Rightarrow P_{1} \; \odot \; P_{2} : \mathbf{U} \twoheadrightarrow \mathbf{V} \; \odot \; \mathbf{U} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=ApplyL-Trgt] {\Gamma \vdash \mathsf{apply}_{L}(p \Rightarrow P_{1},P_{2}) : \mathbf{apply}_{L}(\mathbf{U} \twoheadrightarrow \mathbf{V},\mathbf{U}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{apply}_{L}(P_{1},P_{2})) = P_{1}\{P_{2} / p\} : \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=ApplyL-Trgt] {\Gamma \vdash \mathsf{apply}_{L}(p \Rightarrow P_{1},P_{2}) : \mathbf{apply}_{L}(\mathbf{U} \twoheadrightarrow \mathbf{V},\mathbf{U}) : \mathbf {S}}{\Gamma \vdash \mathsf{trgt}(\mathsf{apply}_{L}(P_{1},P_{2})) = P_{1}\{P_{2} / p\} : \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=ApplyR-Src] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{match}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {R}}{\Gamma \vdash \mathsf{src}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{1} \; \odot \; p \Rightarrow P_{2} : \mathbf{U} \; \odot \; \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=ApplyR-Src] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{match}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {S}}{\Gamma \vdash \mathsf{src}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{1} \; \odot \; p \Rightarrow P_{2} : \mathbf{U} \; \odot \; \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=ApplyR-Trgt] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{apply}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {R}}{\Gamma \vdash \mathsf{trgt}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{2}\{P_{1} / p\} : \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=ApplyR-Trgt] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{apply}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {S}}{\Gamma \vdash \mathsf{trgt}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{2}\{P_{1} / p\} : \mathbf{V} : \mathbf {P}} \\
 \end{mathpar}
 
 \subsubsection{Modal operators}
 \begin{mathpar}
-  \inferrule* [lab=Step-Future] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{src}(R) : \lozenge \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
+  \inferrule* [lab=Step-Future] {}{\Gamma \vdash S : \mathbf{E} : \mathbf {S} \Vdash \Gamma \vdash \mathsf{inc_{R}}(S) : \mathbf{\mathsf{inc_{R}}}\mathbf{(E)} : \mathbf{R}} \\
   \and
-  \inferrule* [lab=Labelled-Step-Future] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{src}(R) : \langle \mathbf{V} \rangle_{\mathsf{r}} \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
+  \inferrule* [lab=Step-Future] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{src}(R) : \lozenge \mathsf{trgt}(\mathbf{E}) : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Labelled-Step-Future] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{src}(R) : \langle \mathbf{U} \rangle_{\mathsf{l}} \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
+  %% \inferrule* [lab=Labelled-Step-Future-L] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash \mathsf{src}(R) \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash P : \langle \mathbf{V} \rangle_{\mathsf{r}} \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
+    \and
+  \inferrule* [lab=Labelled-Step-Future-Indexed-j] {\Gamma \vdash R : \mathbf{E} : \mathbf {S} \and \Gamma \vdash \mathsf{src}(R) \equiv \mathop{\huge\odot}\limits_{i=1}^{n} P_{i} \and \Gamma \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \; \ldots \; \Gamma \vdash P_{n} : \mathbf{U}_{n} : \mathbf {P}}{\Gamma \vdash P_{j} : \langle \mathop{\huge\odot}\limits_{i \neq j} \mathbf{U}_{i}\rangle \mathsf{trgt}(\mathbf{E}) : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Step-Past] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{trgt}(R) : \blacklozenge \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+  %\inferrule* [lab=Labelled-Step-Future-R] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash \mathsf{src}(R) \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash Q : \langle \mathbf{U} \rangle_{\mathsf{l}} \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
   \and
-  \inferrule* [lab=Labelled-Step-Past] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{trgt}(R) : \llangle \mathbf{U} \rrangle_{\mathsf{r}} \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+  \inferrule* [lab=Step-Past] {}{\Gamma \vdash R : \mathbf{E} : \mathbf {R} \Vdash \Gamma \vdash \mathsf{trgt}(R) : \blacklozenge \mathsf{src}(\mathbf{E}) : \mathbf {P}} \\
   \and
-  \inferrule* [lab=Labelled-Step-Past] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{trgt}(R) : \llangle \mathbf{V} \rrangle_{\mathsf{l}} \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+  %\inferrule* [lab=Labelled-Step-Past-L] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{trgt}(R) : \llangle \mathbf{U} \rrangle_{\mathsf{r}} \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+  %\and
+  %\inferrule* [lab=Labelled-Step-Past-R] {\Gamma \vdash R : \mathbf{E} : \mathbf {R} \and \Gamma \vdash R \equiv P \odot Q \and \Gamma \vdash P : \mathbf{U} : \mathbf {P} \and \Gamma \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma \vdash \mathsf{trgt}(R) : \llangle \mathbf{V} \rrangle_{\mathsf{l}} \mathsf{src}(\mathbf{E}) : \mathbf {P}}
+  \inferrule* [lab=Labelled-Step-Future-Indexed-j] {\Gamma \vdash R : \mathbf{E} : \mathbf {S} \and \Gamma \vdash \mathsf{src}(R) \equiv \mathop{\huge\odot}\limits_{i=1}^{n} P_{i} \and \Gamma \vdash P_{1} : \mathbf{U}_{1} : \mathbf {P} \; \ldots \; \Gamma \vdash P_{n} : \mathbf{U}_{n} : \mathbf {P}}{\Gamma \vdash \mathsf{trgt}(R) : \langle \mathop{\huge\odot}\limits_{i \neq j} \mathbf{U}_{i}\rangle \mathbf{U}_{j} : \mathbf {P}}
+  %\inferrule* [lab=Labelled-Step-Future-Indexed-L] {\Gamma \vdash R : \mathbf{E} : \mathbf {S} \and \Gamma \vdash \mathsf{src}(R) \equiv \mathop{\huge\odot}\limits_{i=1}^{n} P_{i} \and \Gamma \vdash P_{i} : \mathbf{U}_{i} : \mathbf {P}}{\Gamma \vdash P_{j} : \langle \mathop{\huge\odot}\limits_{i=1}^{n} \mathbf{U}_{i}\rangle_{\mathsf{r}} \mathsf{trgt}(\mathbf{E}) : \mathbf {P}}
 \end{mathpar}
