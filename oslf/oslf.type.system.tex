@@ -220,7 +220,7 @@ $$\begin{array}{l}
   \and
   \inferrule* [lab=ApplyL-Trgt] {\Gamma \vdash \mathsf{apply}_{L}(p \Rightarrow P_{1},P_{2}) : \mathbf{apply}_{L}(\mathbf{U} \twoheadrightarrow \mathbf{V},\mathbf{U}) : \mathbf {S}}{\Gamma \vdash \mathsf{trgt}(\mathsf{apply}_{L}(P_{1},P_{2})) = P_{1}\{P_{2} / p\} : \mathbf{V} : \mathbf {P}} \\
   \and
-  \inferrule* [lab=ApplyR-Src] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{match}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {S}}{\Gamma \vdash \mathsf{src}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{1} \; \odot \; p \Rightarrow P_{2} : \mathbf{U} \; \odot \; \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P}} \\
+  \inferrule* [lab=ApplyR-Src] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{apply}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {S}}{\Gamma \vdash \mathsf{src}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{1} \; \odot \; p \Rightarrow P_{2} : \mathbf{U} \; \odot \; \mathbf{U} \twoheadrightarrow \mathbf{V} : \mathbf {P}} \\
   \and
   \inferrule* [lab=ApplyR-Trgt] {\Gamma \vdash \mathsf{apply}_{R}(P_{1}, p \Rightarrow P_{2}) : \mathbf{apply}_{R}(\mathbf{U},\mathbf{U} \twoheadrightarrow \mathbf{V}) : \mathbf {S}}{\Gamma \vdash \mathsf{trgt}(\mathsf{apply}_{R}(P_{1},P_{2})) = P_{2}\{P_{1} / p\} : \mathbf{V} : \mathbf {P}} \\
 \end{mathpar}

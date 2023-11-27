@@ -460,7 +460,7 @@ give a typing for the $\pzero$ term.
 
 \subsubsection{Lifted redex constuctors}
 \begin{mathpar}
-  \inferrule* [lab=Comm] {\Gamma_{1} \vdash x : \mathbf{U} : \mathbf{N} \;\;\; y : \mathbf{\quotep{V}} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W}{V} : \mathbf{R}} \\
+  \inferrule* [lab=Comm] {\Gamma_{1} \vdash x : \mathbf{U} : \mathbf{N} \;\;\; y : \mathbf{\quotep{V}} : \mathbf{N}, \Gamma_{2} \vdash P : \mathbf{W} : \mathbf{P} \;\;\; \Gamma_{3} \vdash Q : \mathbf{V} : \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} : \commt{U}{\quotep{V}}{W}{V} : \mathbf{R}} \\
   \and  
   \inferrule* [lab=Eval] {}{\Gamma \vdash P : \mathbf{U} : \mathbf{P} \Vdash \Gamma \vdash \mathsf{eval}(P) : \mathbf{eval}(\mathbf{U}) : \mathbf{R}} \\
   \and
@@ -471,7 +471,7 @@ give a typing for the $\pzero$ term.
 
 \subsubsection{Reductions from the $\lambda$-theory}
 \begin{mathpar}
-  \inferrule* [lab=Comm-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W}{V} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\commr{x}{y}{P}{Q}) = \prefix{x}{y}{P} \mathsf{|} \outputp{x}{Q} : \prefixt{U}{\quotep{V}}{W} \mathbf{|} \outputt{U}{V} : \mathbf{P}} \\
+  \inferrule* [lab=Comm-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{\quotep{V}}{W}{V} : \mathbf{R}}{\Gamma \vdash \mathsf{src}(\commr{x}{y}{P}{Q}) = \prefix{x}{y}{P} \mathsf{|} \outputp{x}{Q} : \prefixt{U}{\quotep{V}}{W} \mathbf{|} \outputt{U}{V} : \mathbf{P}} \\
   \and
   \inferrule* [lab=Comm-Trgt] {\Gamma \vdash \commr{x}{y}{P}{Q} : \commt{U}{V}{W}{V} : \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\commr{x}{y}{P}{Q}) = P\substn{\quotep{Q}}{y} : \mathbf{W} : \mathbf{P}} \\
   \and
