@@ -34,25 +34,11 @@ for that binary term.
 
 \subsection{Generic types}
 
-We have a bit of a chicken and egg situation in that to understand the typing rules we need to have their intended denotations in mind.
-
-\paragraph{Denotation}
-In general, the denotation of inference rules will be a natural or dinatural transformation from functors whose source and target are products of copies of the Grothedieck category $\mathsf{NT}$. More specifically, since rules are of the form
-
-\begin{mathpar}
-  \inferrule* [lab=Rule]{\Gamma_{1} \vdash P_{1} : \mathbf{U}_{1} : \mathbf{X}_{1} \;\ldots\; \Gamma_{n} \vdash P_{n} : \mathbf{U}_{n} : \mathbf{X}_{n}}{K_{\Gamma}(\Gamma_{1},\ldots,\Gamma_{n}) \vdash K_{P}(P_{1},\ldots,P_{n}) : K_{\mathbf{U}}(\mathbf{U}_{1},\ldots,\mathbf{U}_{n}) : K_{\mathbf{X}}(\mathbf{X}_{1},\ldots,\mathbf{X}_{n})}
-\end{mathpar}
-
-then the denotation of such a rule is
-
-$$\begin{array}{l}
-  \meaningof{\mathsf{Rule}} : \meaningof{P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}} \times \cdots \times \meaningof{P_{n}} : \meaningof{\Gamma_{n}} \to \meaningof{\mathbf{U}_{n} : \mathbf{X}_{n}} \\\Rightarrow\\ \meaningof{K_{P}(P_{1},\ldots,P_{n})} : \meaningof{K_{\Gamma}(\Gamma_{1},\ldots,\Gamma_{n})} \to \meaningof{K_{\mathbf{U}}(\mathbf{U}_{1},\ldots,\mathbf{U}_{n}) : K_{\mathbf{X}}(\mathbf{X}_{1},\ldots,\mathbf{X}_{n})}
-\end{array}$$
-
-Note that $P_{i}$ and likewise $\mathbf{U_{i}}$, $\mathbf{X_{i}}$, and
-even $\Gamma_{i}$ are effectively meta-variables, rendering the
-meaning of any judgment in the hypothesis of an inference rule as the
-hom-functor of $\mathsf{NT}$. That is, $\meaningof{P_{i}} : \meaningof{\Gamma_{i}} \to \meaningof{\mathbf{U}_{i} : \mathbf{X}_{i}} = \mathsf{NT}(-_{1},-_{2})$ because barring any further information regarding the value of these meta-variables $\meaningof{P_{i}} : \meaningof{\Gamma_{i}} \to \meaningof{\mathbf{U}_{i} : \mathbf{X}_{i}}$ could be any morphism in $\mathsf{NT}(\meaningof{\Gamma_{i}},\meaningof{\mathbf{U}_{i} : \mathbf{X}_{i}})$; and since neither $\Gamma_{i}$ nor $\mathbf{U}_{i} : \mathbf{X}_{i}$ are specified it could be any morphism in $\mathsf{NT}(-_{1},-_{2})$. Thus, if we let $\mathsf{NT}(-_{1}, -_{2})^n = \Pi_{i}^{n}\mathsf{NT}(-_{1}, -_{2})$ the meaning of an inference rule is a (di-)natural transformation from $\mathsf{NT}(-_{1}, -_{2})^{n} \Rightarrow \mathsf{NT}(-_{1}, -_{2}) \circ k_{1} \times k_{2}$, constructing the consequent of the rule.
+We have a bit of a chicken and egg situation in that to understand the
+typing rules we need to have their intended denotations in
+mind. However, it is somewhat jarring to go back and forth between the
+type language and their denotations repeatedly. Therefore, we present
+the typing rules first, and then analyze their denotations.
 
 \subsubsection{Boundaries}
 \begin{mathpar}
@@ -66,40 +52,6 @@ hom-functor of $\mathsf{NT}$. That is, $\meaningof{P_{i}} : \meaningof{\Gamma_{i
 \end{mathpar}
 
 %%
-
-Thus, the meaning of the ground of the system will be
-
-$$\begin{array}{rcl}
-  \ldb \mathsf{Axiom}\; \epsilon & \Vdash & p : \mathbf{U} : \mathbf {X} \vdash p : \mathbf{U} : \mathbf {X} \rdb \\
-  & = & \\
-  \meaningof{\mathsf{Axiom}} : \meaningof{\epsilon} & \Rightarrow & \meaningof{p} : \meaningof{p : \mathbf{U : X}} \to \meaningof{\mathbf{U : X}} \\
- & = & \\
-  \meaningof{\mathsf{Axiom}} : \mathsf{!} \circ \mathsf{1}_{\mathsf{NT^{op}}} \times \mathsf{1}_{\mathsf{NT}} & \Rightarrow & \mathsf{NT}^{1} \circ \mathsf{1}_{\mathsf{NT^{op}}} \times \mathsf{1}_{\mathsf{NT}} \\
-	\bullet \in \, !(\meaningof{\mathbf{U} : \mathbf{X}}, \meaningof{\mathbf{U} : \mathbf{X}}) = \{\bullet \}& \mapsto & 1_{\meaningof{\mathbf{U} : \mathbf{X}}} \in \mathsf{NT}(\meaningof{\mathbf{U} : \mathbf{X}}, \meaningof{\mathbf{U} : \mathbf{X}})
-\end{array}$$
-
-Likewise, we calculate
-
-$$\begin{array}{l}
-  \meaningof{\Gamma \vdash Q : \mathbf{U} : \mathbf {X} \Vdash \Gamma \vdash \mathsf{Ch}(Q) : \mathbf{\{ Q \}} : \mathbf {X}} \\
-  = \\
-  \meaningof{\mathsf{Character}} : \meaningof{Q} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}} \Rightarrow \meaningof{\mathsf{Ch}(Q)} : \meaningof{\Gamma} \to \meaningof{\mathbf{\{ Q \}} : \mathbf {X}} \\
-	\meaningof{Q}\in \mathsf{NT}(\meaningof{\Gamma}, \meaningof{\mathbf{U} : \mathbf{X}}) \mapsto \meaningof{\mathsf{Ch}(Q)} \in \mathsf{NT}(\meaningof{\Gamma}, {\rm Im}(\meaningof{Q}))
-\end{array}$$
-where ${\rm Im}(\meaningof{Q})$ denotes the subobject of the representable on $\mathbf{X}$ that assigns to each sort $S$ the set ${\rm Im}(\meaningof{Q}(S)).$  Because each set ${\rm Im}(\meaningof{Q}(S))$ is a subset of $\meaningof{U}(S)$, ${\rm Im}(\meaningof{Q})$ is a subobject of $\meaningof{\mathbf{U} : \mathbf{X}}$, which is in turn a subobject of the representable on $\mathbf{X}$.
-%% left off here in discussion of is it the same Q.
-
-$$\begin{array}{l}
-  \meaningof{\Gamma \vdash P : \mathbf{U} : \mathbf {X} \;\;\; p : \mathbf{U} : \mathbf {X}, \Delta \vdash Q : \mathbf{V} : \mathbf {Y} \Vdash \Gamma, \Delta \vdash Q \substn{P}{p} : \mathbf{V} : \mathbf {Y}} \\
-  = \\
-  \meaningof{\mathsf{Composition}} : \langle \meaningof{P}, \meaningof{Q} \rangle \Rightarrow \meaningof{Q\substn{P}{p}} : \meaningof{\Gamma} \times \meaningof{\Delta} \to \meaningof{\mathbf{V} : \mathbf{Y}} \\
-  = \\
-  \quad \mathsf{NT}(\Gamma,\mathbf{U} : \mathbf {X}) \times \mathsf{NT}(\mathbf{U} : \mathbf {X} \times \Delta, \mathbf{V} : \mathbf {Y}) \Rightarrow \mathsf{NT}(\Gamma \times \Delta, \mathbf{V} : \mathbf {Y})
-\end{array}$$
-
-where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}}$ and $ \meaningof{Q} : \meaningof{\mathbf{U} : \mathbf{X}} \times \meaningof{\Delta} \to \meaningof{\mathbf{V} : \mathbf{Y}}$; and the source and target of the denotation are $\mathsf{NT}^{\mathsf{op}} \times \mathsf{NT} \times \mathsf{NT}^{\mathsf{op}} \times \mathsf{NT}^{\mathsf{op}} \times \mathsf{NT} \to \mathsf{Set}$.
-
-
 
 \subsubsection{Disjunctions}
 \begin{mathpar}
@@ -156,14 +108,6 @@ where $\meaningof{P} : \meaningof{\Gamma} \to \meaningof{\mathbf{U} : \mathbf{X}
   \and
   [P,Q] := \mathsf{int}^{-}(\lambda r.\mathsf{match}\; r \;\mathsf{case}\; \mathsf{in}_{L}\; p \Rightarrow P \odot p\mathsf{;}\; \mathsf{case}\; \mathsf{in}_{R}\; q \Rightarrow Q \odot q)
 \end{mathpar}
-
-$$\begin{array}{l}
-  \meaningof{\Gamma \vdash P : \mathbf{U} : \mathbf {P} \;\;\; \Delta \vdash Q : \mathbf{V} : \mathbf {P} \Vdash \Gamma,\Delta \vdash \mathsf{pair}( P,Q ) : \mathbf{U} \otimes \mathbf{V} : \mathbf {P}} \\
-  = \\
-  \meaningof{\mathsf{Pair}} : \mathsf{NT}(\meaningof{\Gamma},\meaningof{\mathbf{U}:\mathbf{P}}) \times \mathsf{NT}(\meaningof{\Delta},\meaningof{\mathbf{V}:\mathbf{P}}) \Rightarrow \mathsf{NT}(\meaningof{\Gamma} \times \meaningof{\Delta},\mathsf{pair} \circ \meaningof{\mathbf{U}:\mathbf{P}} \times \meaningof{\mathbf{V}:\mathbf{P}}) \\
-  = \\
-  ??? \\
-\end{array}$$
 
 \subsubsection{Internalized redex constuctors}
 \begin{mathpar}
