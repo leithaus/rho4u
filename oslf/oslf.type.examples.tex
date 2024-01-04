@@ -9,4 +9,22 @@ TBD
 TBD
 
 \subsection{Function types}
-TBD
+
+Recall the types of the simply typed $\lambda$-calculus.
+
+\begin{mathpar}
+  \inferrule* {} {T[G] ::= G \; |\; T[G] \Rightarrow T[G]}
+\end{mathpar}
+
+How would these be interpreted in our system, which does not presume
+functions as part of the input model of computation?
+
+There are, in fact, two semantics available. One, of course, it what
+is provided by the topos. Another, less immediately obvious, is what
+is provided by the modal operators.
+
+In light of the work to internalize the type constructors, it is worth
+asking about the relationship between the witnesses of the
+internalized function types and the modal types that interpret
+function types. We argue that for coherence witnesses must be weakly
+bisimilar.

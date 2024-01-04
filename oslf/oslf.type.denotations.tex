@@ -167,7 +167,7 @@ In general, the denotation of inference rules will be a natural or dinatural tra
 then the denotation of such a rule is
 
 $$\begin{array}{l}
-  \meaningof{\mathsf{Rule}} : \meaningof{P_{1}} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}} \times \cdots \times \meaningof{P_{n}} : \meaningof{\Gamma_{n}} \to \meaningof{\mathbf{U}_{n} : \mathbf{X}_{n}} \\\Rightarrow\\ \meaningof{K_{P}(P_{1},\ldots,P_{n})} : \meaningof{K_{\Gamma}(\Gamma_{1},\ldots,\Gamma_{n})} \to \meaningof{K_{\mathbf{U}}(\mathbf{U}_{1},\ldots,\mathbf{U}_{n}) : K_{\mathbf{X}}(\mathbf{X}_{1},\ldots,\mathbf{X}_{n})}
+  \meaningof{\mathsf{Rule}} : \meaningof{P_{1}}_{\langle \mathcal{U}(\Gamma_{1}),\mathbf{U_{1}}\rangle} : \meaningof{\Gamma_{1}} \to \meaningof{\mathbf{U}_{1} : \mathbf{X}_{1}} \times \cdots \times \meaningof{P_{n}}_{\langle \mathcal{U}(\Gamma_{n}),\mathbf{U_{n}}\rangle} : \meaningof{\Gamma_{n}} \to \meaningof{\mathbf{U}_{n} : \mathbf{X}_{n}} \\\Rightarrow\\ \meaningof{K_{P}(P_{1},\ldots,P_{n})}_{\langle \mathcal{U}(K_{\Gamma}(\Gamma_{1},\ldots,\Gamma_{n})),K_{\mathbf{U}}(\mathbf{U}_{1},\ldots,\mathbf{U}_{n})\rangle} : \meaningof{K_{\Gamma}(\Gamma_{1},\ldots,\Gamma_{n})} \to \meaningof{K_{\mathbf{U}}(\mathbf{U}_{1},\ldots,\mathbf{U}_{n}) : K_{\mathbf{X}}(\mathbf{X}_{1},\ldots,\mathbf{X}_{n})}
 \end{array}$$
 
 Note that $P_{i}$ and likewise $\mathbf{U_{i}}$, $\mathbf{X_{i}}$, and
