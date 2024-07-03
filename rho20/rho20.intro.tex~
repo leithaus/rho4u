@@ -1,0 +1,237 @@
+\section{Introduction}\label{sec:introduction} % (fold)
+For the past several centuries there has been no serious competitor to
+the ``Newtonian'' account of dynamics in the physical sciences. By the
+Newtonian account of dynamics we means formulations guided by two principles:
+\begin{itemize}
+  \item the form of physical laws are given as laws of motion plus initial state;
+  \item the laws of motion are stated in terms of the mathematical
+    apparati of the integral and derivative and the principles of
+    applications of those apparati to modeling dynamical systems, such
+    as the Lagrangian and Hamiltonian \cite{DBLP:books/daglib/0015653}.
+\end{itemize}
+In recent years several distinguished physicists have begun to
+question the scope and applicability of the first principle. Notably
+David Deutsch \cite{DBLP:journals/synthese/Deutsch13} and his collaborator Chiara Marletto \cite{RS:journals//Marletto2015} have begun to ask
+whether laws of physics might be better formulated as
+counterfactuals. Their motivations are informed by considerations
+going as far back as John Wheeler's suggestions that physics might
+derive from information processing, it arising from bit, as it
+were. As Deutsch and Marletto point out, the challenge in attempting
+to carry out such a program is that in modern physics information is
+\emph{emergent}, and not a quantity on par with properties like
+position or momentum.
+
+A similar, but perhaps more pointed critique can levied against the
+second principle. It is common place to render versions of the laws of
+physics in a programming language. From predictive models for particle
+colliders to physics engines for games this activity has been standard
+practice for decades. Yet, no one has rendered even the most basic of
+programming models in the laws of physics \emph{considered as an
+  abstract language}. Even quantum computation introduces abstractions
+like quantum gates or the ZX-calculus \cite{https://doi.org/10.48550/arxiv.2012.13966}. The standard model is not seen
+as a programming paradigm. Programming paradigms, on the other hand,
+are seen as just the right tool for rendering the full range of
+dynamical abstractions from the Lagrangian and Hamiltonian to
+perturbative techniques into a form where we can gain concrete
+computational insights. Could it be that computation is better suited
+as the language of dynamics, including physical dynamics, and not just
+the dynamics of information?
+
+We might even go so far as to speculate whether it might be
+intellectually dangerous to limit our view of dynamics to one
+abstraction. Several examples in the history of physics suggest it is
+appropriate to worry about this. Feynman diagrams introduced a new
+abstraction that dramatically expanded the scope of what could be
+calculated and hence grasped. At their inception, and for years after,
+well known physicists dismissed them as mere syntax, not
+physics. Likewise, as Coecke and Kissinger point out \cite{DBLP:books/cu/CK2017}, it took \emph{60
+  years} from the discovery of quantum mechanics to the formulation of
+quantum teleportation. Yet, when rendered in string diagrams, the
+phenomenon is dead obvious and would have been spotted by a high
+school student performing routine calculations. Both developments
+share the same underlying drive: to formulate a clear computational
+framework that expands what is concretely amenable to
+calculation. They suggest an intriguing idea: what if syntax is an
+integral part of physics? Indeed of all science.
+
+It is from this perspective that we seek to explore new developments
+in computing as a potential syntax for physical dynamics. In
+particular, these new theories of computing offer new ways of thinking
+about how computation, and by extension the physical world, is
+organized. They re-imagine computation as interaction. Instead of
+(active) functions acting on (passive) data, resulting in new,
+(transformed) data -- or (active) forces acting on (passive) particles
+-- these models view computation as the \emph{patterns of interaction}
+amongst \emph{autonomous} agents. The view distributes agency
+throughout the elements comprising a computation. Further, these
+interactive models embody principles not found in traditional accounts
+of physical dynamics. Among these, perhaps the most important, is
+\emph{compositionality}.
+
+This principle is innocent enough. It asks that our models of system
+dynamics be built of the models of the dynamics of their
+subsystems. This requirement has two important aspects: one, that we
+can compose models to get new models of increasing complexity; and,
+two, that we can decompose more complex models into models of reduced
+complexity. But, it is not just about composing models. It must be the
+case that the composition of models faithfully represents the
+composition of the systems they represent. Likewise, if a model does
+decompose, it must correspond to a natural decomposition of the system
+it represents. This is not a property enjoyed, for example, by
+differential equation models of stoichiometry. If we have a model of
+the reactions in beaker A, and a model of the reactions in beaker B,
+we cannot simply combine the equations of the model of A with the
+equations of beaker B to get a model of the system obtained by pouring
+the contents of A and B into a third beaker. In fact, differential
+models often fail this particular test.
+
+Challenges to classical accounts of physics as deep as General
+Relativity \cite{Misner1973} and Quantum mechanics \cite{dirac1981principles}
+are still \emph{essentially} couched in the methods and procedures
+derived from the Newtonian integral and derivative \footnote{The
+  covariant derivative still bears the imprimature of the original
+  notion. Inner product in the wave-function formulation is still an
+  integral}. Meanwhile, the very successful program of the ZX-calculus
+emphasizes compositionality to great benefit. The current work is an
+attempt to push that particular envelope by encoding the conceptual
+core of quantum mechanics into a calculus for concurrent computing
+called the rho-calculus.
+
+%% Recently, however, the theory of computation has matured
+%% to the point where we have candidates for theories of dynamics that
+%% offer very different perspectives on reasoning about dynamical systems
+%% and situations. It is time to see just how good they are by addressing
+%% the dynamics of interest in the physical sciences. Testing these
+%% candidates against very successful accounts of dynamical situations,
+%% like quantum mechanics, is going to give us some sense of maturity,
+%% quality and range of applicability of computational notions of
+%% dynamics.
+
+%% To address this program we realize and carry out the calculations of
+%% quantum mechanics over a novel formal theory of dynamics, a formal
+%% theory of dynamics that corresponds to a theory of concurrent
+%% computation with \emph{reflection}
+%% \cite{bcsmith:phdthesis},\cite{319871}. It has the advantage that the
+%% underlying theory is already `quantized', but supports analogues all
+%% of the continuuous operations. Strikingly, this underlying theory has
+%% recently been connected with a notion of metric
+%% \cite{DBLP:conf/fossacs/BreugelMOW03} that coincides with the metric
+%% induced by the inner product.
+
+\subsection{Summary of contributions and outline of paper}
+
+%% Rather,
+%% we are developing a story that aligns with Wheeler's slogan: It from
+%% Bit \cite{HowComeTime}. To do this we will first provide an account of
+%% the theory of computation at play here. Then we will dive into a
+%% calculation-driven interpretation of the operations of quantum
+%% mechanics.
+
+%% The reason we take this approach is that -- until very recently
+%% (\cite{DBLP:conf/lics/Abramsky04},
+%% \cite{DBLP:conf/calco/Abramsky05})-- there hasn't been an axiomatic
+%% account of quantum mechanics. As a result there has been no sharp
+%% delineation of the mathematical theory supporting interpretation of
+%% the physical theory and the physical theory, itself. So, ambient
+%% features of the maths are free to be exploited (or suppressed) without
+%% a real accounting of their physical relevance. There is no sharp
+%% statement ``here's the physical theory'' qua \emph{theory} and
+%% ``here's the mathematical interpretation'' enabling a judgment of how
+%% faithful the interpretation is -- apart from experimental
+%% observation. When there is an axiomatic account we can judge how well
+%% a given mathematical formalism supports an interpretation of the
+%% axioms, independent of experimentation. Likewise, we can judge how
+%% well we have captured our physical evidence and experience with our
+%% axiomatics, independent of any specific mathematical implementation,
+%% with accidental detail that may or may not have physical significance.
+
+%% In lieu of a fully fleshed out and vetted axiomatic account of quantum
+%% mechanics, interpreting the operational notions in service of modeling
+%% physical systems will have to suffice. In other words, we are not in
+%% the business of providing a model of Hilbert spaces and operators. We
+%% are in the business of providing a model of quantum mechanics because
+%% we are motivated by testing our notions of dynamics against physical
+%% theory; and, the predictive calculations of the physical theory must
+%% serve as the best formulation -- shy of a fully fleshed out axiomatic
+%% account -- of the physical theory itself (as they have for scientific
+%% theories since time immemorial). Put another way, despite a
+%% whole-hearted commitment to an It-from-Bit ontology, we are firmly
+%% aligned with the shut-up-and-calculate camp as the best way to obtain
+%% results either from the physical perspective or as a quality assurance
+%% measure of our fledgling theory of dynamics.
+
+The plan is to develop an interpretation of the operations of quantum
+mechanics normally interpreted by Hilbert spaces and operators
+\cite{von1955mathematical}. The primary novelty of the approach
+is to do this over a theory of computation. Note that this is very
+different than the usual quantum computation program which develops
+notions of computation over quantum mechanics \cite{9781107002173}. In
+detail, we present a reflective process calculus. Then we develop
+intuitive correspondences between the notions available in this
+calculus and the usual physical notions supporting quantum mechanical
+calculations.
+
+Then we tighten up these intuitions to operational definitions. We
+employ the Dirac notation as the best proxy we can find for an
+abstract syntax of the quantum mechanical notions that also makes
+contact with notations that working physicists understand. The
+definitions we develop put us in contact with equational constraints
+coming from the theory, and we demonstrate the definitions and
+calculations satisfy.
+
+This puts us in a position to shut up and calculate for the
+Stern-Gerlach experimental set up, showing how these predictive
+calculations become calculations on processes in our theory of a
+reflective process calculus. The particular example is of interest
+because it is a composite experiment, consisting of iterated
+measurements. The framework developed here is particularly suited to
+reasoning about composite physical systems and situations.
+
+\begin{table}[htp]
+  \center{
+    \fbox{
+      \begin{tabular}{c|c}
+        quantum mechanics & process calculus \\
+        \hline
+        scalar & name \\
+        state vector & process \\
+        dual & contextual duals \\
+        matrix & formal sums of process-context-dual pairs \\
+        orthogonality & process annihilation \\
+        inner product & parallel composition + quoting \\
+        evolution of states & COMM rule \\
+        Born rule & 2-norm probability distribution on COMM events
+      \end{tabular}
+    }
+  }
+  \caption{QM - process calculi correspondences}
+\end{table}
+
+Apart from the novelty of reflective apparatus of the rho-calculus,
+one must ask how it can span the gap between classical computation and
+quantum computation. The key idea is the abstraction of
+non-determinism. The calculus leaves to various models to supply a
+notion of non-determinism. Thus, the same framework maps to classical
+computing when non-determinism is mapped to a race-condition. It maps
+to stochastic models when non-determinism is governed by a 1-norm
+probability distribution. It maps to quantum computation with
+non-determinism is governed by a 2-norm probability distribution, thus
+allowing for negative probabilities which then set up interference in
+the causal evolution of a computation.
+
+Another way to understand the approach is that rho-calculus terms plus
+structural equivalence give an algebra on states, much like Hilbert
+spaces gives an algebra on states. The rho-calculus terms only form a
+rig, however. The comm rule of the rho-calculus gives a way to
+calculate the evolution of states much like the Schroedinger equation
+allows on to calculate an evolution of states. The mapping of
+non-determinism in terms of a 2-norm probability distribution plays in
+the same role as the Born rule.
+
+%% Penultimately, we demonstrate that the notion of metric coming from
+%% the inner product coincides with the notion of metric available from
+%% the theory of bisimulation. This demonstration gives us the right to
+%% think of space as arising from behavior. Finally, we consider where we
+%% might go from the new vantage point we have obtained.
+
+% section introduction (end)

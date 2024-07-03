@@ -1,0 +1,25 @@
+\section{From formalism to physical intuition and back}
+The guiding intuition is that information about a physical entity must
+be present at a name. To model the non-deterministic character of
+quantum mechanics the information and its variants are spread out over
+a collection of names, i.e. a namespace, $\quotep{\phi}$. In symbols,
+we represent the possible states of a physical entity, like the spin
+of a particle, as expressions of the form
+
+\begin{mathpar}
+  S = \Sigma_{u \in \quotep{\phi}, {s \in S}}\outputp{u}{Q_{s}}
+\end{mathpar}
+
+We represent a test for a property as input at a name.
+
+\begin{mathpar}
+  T = \Sigma_{u \in \quotep{\phi}, {c \in C}}\prefix{u}{v}{P_{c}}
+\end{mathpar}
+
+Then a measurement at a specific name, $x$, is given by
+
+\begin{mathpar}
+  \testnp{T}{x}{S} = x \cdot (T^{\bot}[S]) = x \cdot (T|S)
+\end{mathpar}
+
+

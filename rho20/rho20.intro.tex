@@ -1,0 +1,67 @@
+\section{Introduction}\label{sec:introduction} % (fold)
+This December will find my submission of the first paper about the rho
+calculus to be 20 years in the rear view mirror. A lot has happened
+since then. Apart from production implementations of scalable
+decentralized asset management systems based on the calculus, a lot of
+work has been done on the rho calculus. Indeed, just this May (2024) i
+discovered a conservative extension of the calculus that fills a hole
+in the account of reflection that has long bothered me. And, last
+April (2023) i found a fuzzy version of the rho calculus that is just
+waiting for someone to take further. In 2018 i discovered a variant of
+the calculus (which i dubbed the \emph{space calculus}) that makes it
+a computational analog (in a certain precise sense) of solutions of
+the Einstein field equations.
+
+Thankfully, i am not the only one who has found the rho calculus
+interesting enough to think about. Stay and Williams studied a variant
+they called the $\pi$-rho calculus as an example of a system that could
+be typed in their native types construction. And ??? showed that rho
+calculus is more expressive than the the $\pi$-calculus. The list goes on.
+
+The aim of this note is to collect and summarize in one place
+developments over the last 20 in the study of the rho calculus. i
+suspect that there are more researchers than i know about who are
+interested in the questions raised by the calculus. Hopefully, this
+note can serve that community, and possibly spark wider interest due to
+the discoveries to date.
+
+\subsection{Summary of contributions and outline of paper}
+More specifically, this note will develop the following.
+\begin{itemize}
+  \item the modern, programming-language-friendly syntax for the calculus;
+  \item a handful of useful syntactic sugar coatings that make the
+    calculus a suitable semantic framework for a realistic
+    protocol-oriented programming language, including, but not limited
+    to:
+    \begin{itemize}
+      \item adding first class values;
+      \item adding unforgeable names (the $\pi$-rho calculus);
+      \item adding syntax for joins and sequences and choice;
+    \end{itemize}
+  \item the fuzzy variant of rho;
+  \item the space calculus;
+  \item probabilistic and quantum variations of rho;
+  \item revisiting the encodings of $\pi$ into rho and vice versa.
+\end{itemize}
+
+But, we will also touch briefly on the techniques used to represent
+reflective computation in the rho calculus and demonstrate that they
+are not bound to this specific setting. In particular, they can be
+applied the the $\lambda$-calculus and to set theory, yielding
+variations of these theories that have very useful features.
+
+Finally, we will conclude with some thoughts about the foundations of
+mathematics and its relationship to agency. As a preview, we believe
+that set theory (and even to some extent category theory) are theories
+of \emph{data structures}. Implicitly the community has believed that
+mathematicians have agency and their formalisms need only carry
+information content between these agents. But the advances in
+artificial intelligence ($\mathsf{AI}$) tell a different story. To
+some extent $\mathsf{AI}$ has brought their formalisms to life and is
+on the verge of giving them agency. As a result, i want to argue that
+a proper foundation of mathematics needs to include a notion of agency
+and that the ingredients of a foundational account of agency is
+present in the mobile process calculi, generally, and a pragmatic
+account is present in the rho calculus, specifically.
+
+% section introduction (end)

@@ -1,0 +1,74 @@
+\documentclass[12pt]{llncs}
+%\documentclass{jktr}
+
+\usepackage[pdftex]{hyperref}                   
+\usepackage {mathpartir}
+\usepackage{bigpage}
+\usepackage{bcprules}
+\usepackage {listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{latexsym}
+\usepackage{longtable}
+\usepackage{stmaryrd}
+\usepackage{graphicx} 
+%\usepackage[margins=2.5cm,nohead,nofoot]{geometry}
+%\usepackage{geometry}
+\usepackage{color}
+
+
+%\include{myPreamble}
+\include{qm2pi.local} 
+
+%\ifpdf
+%\usepackage[pdftex]{graphicx}
+%\else
+%\usepackage{graphicx}
+%\fi
+
+ % \ifpdf
+%  \usepackage{pdfsync}
+%  \if
+
+
+%\title{Brief Article}
+%\author{David F. Snyder}
+%\author{L.G. Meredith}
+
+%\address{Dept. of Math., Texas State University--San Marcos, San Marcos, TX 78666}
+       
+\pagestyle{empty}
+
+
+\begin{document}
+
+\lstset{language=[Objective]Caml,frame=shadowbox}
+
+\input{rho20.front}
+
+\input{rho20.intro} 
+ 
+\input{rho20.process.calculi} 
+
+\input{rho20.rho.presentation} 
+
+\input{rho20.qmops}
+
+\input{rho20.physicalintuition} 
+
+\input{rho20.conc}
+
+\input{rho20.ack} 
+
+% section acknowledgments (end)
+
+\newpage
+
+
+\bibliographystyle{plain}   
+\bibliography{rho20.bib}
+
+\end{document}
+
