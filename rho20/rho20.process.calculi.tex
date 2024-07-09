@@ -1,17 +1,168 @@
 \section{Concurrent process calculi and spatial logics }\label{sec:concurrent_process_calculi_and_spatial_logics_} % (fold) 
-In the last thirty years the process calculi have matured into a
-remarkably powerful analytic tool for reasoning about concurrent and
-distributed systems. Process-calculus-based algebraical specification of
-processes began with Milner's Calculus for Communicating Systems (CCS)
-\cite{DBLP:books/sp/Milner80} and Hoare's Communicating Sequential Processes
-(CSP) \cite{DBLP:books/ph/Hoare85}, and continue
-through the development of the so-called mobile process calculi,
-e.g. Milner, Parrow and Walker's $\pi$-calculus \cite{DBLP:journals/iandc/MilnerPW92a}, \cite{DBLP:journals/iandc/MilnerPW92b},
-Cardelli and Caires's spatial logic \cite{DBLP:conf/fossacs/Caires04} \cite{DBLP:journals/iandc/CairesC03} \cite{DBLP:journals/tcs/CairesC04}, or Meredith and Radestock's reflective calculi
-\cite{DBLP:journals/entcs/MeredithR05} \cite{DBLP:conf/tgc/MeredithR05}. The process-calculus-based
-algebraical specification of processes has expanded its scope of
-applicability to include the specification, analysis, simulation and
-execution of processes in domains such as:
+In the last thirty years the \emph{process calculi} have matured into
+a remarkably powerful analytic tool for reasoning about concurrent and
+distributed systems, such as Internet communication, security, or
+application protocols (\cite{DBLP:conf/popl/AbadiB02},
+\cite{DBLP:conf/epew/BrownLM05}, \cite{DBLP:conf/fossacs/LaneveZ05}),
+but also chemical reactions, and biological protocols such as cell
+signaling regimes (\cite{DBLP:conf/psb/RegevSS01},
+\cite{DBLP:journals/ipl/PriamiRSS01}.). Process-calculus-based
+algebraic specification of computational processes began with Milner's
+Calculus for Communicating Systems (CCS) \cite{DBLP:books/sp/Milner80}
+and Hoare's Communicating Sequential Processes (CSP)
+\cite{DBLP:books/ph/Hoare85}. Being largely influenced by the hardware
+models of the time, these formalisms were based on a fixed
+communication topology, where computational processes are considered
+to be something like components soldered to a motherboard.
+
+But as radio and cellular technologies, and protocols like
+$\mathsf{TCP/IP}$ became popularized, this influenced the evolution of
+these formalisms. In particular, the trend toward physical mobility of
+computational devices gave rise to the mobile process calculi, called
+so because they envisioned a network of computational processes
+connected by a dynamic communication topology that evolves as the
+processes compute. In a sense the computational processes contemplated
+by these formalisms are mobile in much the same way as participants at
+a conference who randomly bump into one another and trade mobile
+numbers and email addresses, or molecules that randomly bump into one
+another and exchange electrons. It was this innovation of mobility
+that greatly expanded the scope of applicability of these formalisms.
+
+Perhaps the most paradigmatic version of these calculi is Milner,
+Parrow, and Walker's $\pi$-calculus
+\cite{DBLP:journals/iandc/MilnerPW92a},
+\cite{DBLP:journals/iandc/MilnerPW92b}, which Milner refined with
+\cite{DBLP:journals/mscs/Milner92} and \cite{milner91polyadicpi}. In
+the $\pi$-calculus the dominant metaphor is very much processes as
+mobile agents (e.g., conference participants, or molecules) bumping
+into one another exchanging channels over which they can
+communicate. Yet, another equally compelling metaphor is that
+processes are mobile agents swimming in various nested compartments or
+membranes. These membranes are called \emph{ambients} because they
+both surround and are surrounded by other ambients, but also because
+they \emph{move}. That is, they can enter or exit one another are. In
+this sense the membranes themselves are the computational
+agents. These intuitions are formalized in Cardelli and Gordon's
+ambient calculus \cite{DBLP:journals/tcs/CardelliG00}, and
+considerably refined by Cardelli's brane calculi
+\cite{DBLP:conf/cmsb/Cardelli04}.
+
+It is notable that to this day there is no fully abstract encoding of
+the ambient calculus into the $\pi$-calculus, suggesting that the
+ambient calculus is somehow more expressive than the
+$\pi$-calculus. That said, expressivity is not always a benefit. It is
+quite difficult to map the ambient style of computation to trustless
+distributed Internet-based protocols. The expressivity requires a
+great deal more coordination which, in turn, requires a great deal
+more trust.
+
+\subsection{Hennessy-Milner and spatial logics, and session types}
+
+Companion to these calculi are logics and type systems which enable
+practitioners not only to reason about the correctness of individual
+agents, or specific ensembles of agents, but also about entire classes
+of agents, identified as the witnesses of logical formulae. These
+began with the Hennessy-Milner logics which build on Kripke's
+interpretation of modal logic \cite{milner91polyadicpi}. More
+recently, these logics have been given new superpowers in the form of
+being able to detect structural properties. Notably, we find Cardelli
+and Caires's groundbreaking spatial logic
+\cite{DBLP:conf/fossacs/Caires04} \cite{DBLP:journals/iandc/CairesC03}
+\cite{DBLP:journals/tcs/CairesC04}. The interested reader might also
+look at \emph{session types}
+\cite{DBLP:conf/wsfm/Dezani-Ciancaglinid09}.
+
+This topic is worthy of a much richer and deeper discussion. However,
+we relegate that to a separate paper in which we unify them all with a
+single algorithm, the $\mathsf{OSLF} algorithm$. This takes as input a
+model of computation formatted as a graph structured lambda theory and
+outputs a spatial-behavioral type system for that model of
+computation. The type system enjoys the Hennessy-Milner property,
+namely that two computations inhabit the same bisimulation equivalence
+class iff they satisfy exactly the same set of types. We leave the
+details to the paper describing this algorithm.
+
+\section{The reflective higher order calculus}
+
+It is in the context of the evolution of the mobile process calculi
+that Meredith and Radestock's \emph{r}eflective
+\emph{h}igher-\emph{o}rder, or rho calculus arises \footnote{The
+$\pi$-calculus gets its name because it was the first Greek letter
+available after the $\lambda$ in Church's calculus by that name, and
+just happens to be the Greek letter corresponding to the English 'p'
+for process. Likewise, the rho calculus gets its name from its
+delivery of higher-order features through the use of reflection, and
+it just happens that the acronym spells out \emph{rho}, the English
+spelling of the Greek letter that comes after $\pi$.}
+\cite{DBLP:journals/entcs/MeredithR05}. While it is possible to give a
+faithful encoding of the ambient calculus into the rho calculus, the
+rho calculus can be viewed as the natural successor to the
+$\pi$-calculus. One way to look at the relationship between the two is
+that the $\pi$-calculus is not actually a single calculus. Instead, it
+is a recipe or \emph{function} for constructing a calculus of agents
+that communicate over \emph{some} collection of channels. That is, it
+is parametric in a \emph{theory} of channels. This intuition can be
+made very precise and corresponds to a particular strategy of
+implementation called two-level type decomposition. But, if the
+$\pi$-calculus is a function taking a theory of channels to a theory
+of agents communicating over those channels, then the rho calculus is
+the \emph{least fixed point} of that function. The rho calculus says
+we need look no farther than the \emph{communicating agent themselves}
+for our theory of channels.
+
+More specifically, the calculus envisions a new kind of distinction,
+one between the \emph{code} of a process, and a \emph{running
+instance} of a process. It must not escape the reader's attention that
+this is a commonplace notion in the practice of building concurrent
+and distributed systems. Indeed, the development of the rho calculus
+stole a page from the previous evolution of process algebras. The step
+introducing mobility was the theory coming into better alignment with
+practice. Computing devices became mobile, to keep up the formalisms
+had to follow suit and devise a notion of mobile processes. Likewise,
+the practice of building the software that comprises concurrent and
+distributed systems makes a distinction between code and running
+instances of the code. We argue, however, that providing an account of
+this distinction in our formalism is much more fundamental than just
+keeping up with practice. We argue that this reason this is such a
+ubiquitous practice is because it is a fundamental aspect of the
+underlying order and organization of computation.
+
+Indeed, G\"odel's incompleteness results fundamentally depend on
+coding. To achieve the self-reference needed to construct a logical
+statement of the form ``This sentence is not provable.'' G\"odel
+encoded logical formulae into the natural numbers and then used
+logical statements about the natural numbers to construct
+self-referential statements like that. In his construction, the coding
+trick appears to be exogenous to logic and arithmetic, indeed a
+careful study of these formalisms shows that it is, in fact,
+\emph{intrinsic}. Moreover, this intrinsic, loopy self-reference that
+arises from the notion of code is also at the heart of Turing's
+solution to the Entscheidungsproblem and Cantor's separation of the
+countably infinite from the uncountably infinite.
+
+Moreover, the scope of this phenomenon is not restricted to some of
+the most profound results in mathematics and logic over the last
+couple of centuries. It's also at the heart of the origin of
+life. Some four billion years ago chemistry stumbled on a way to code
+for the production of proteins involved in certain self-replicating
+chemical reactions. Arguments about the validity of the Weissman
+barrier to one side \cite{William2018TheGA}, it is a matter of
+experimentally established fact that the codons at the heart of the
+genetic apparatus provide the mechanism for both the self-replication
+of the chemical processes underlying life, but also the transmission
+of inherited information about fitness to environment. As such, we
+believe that coding is a much more profound phenomenon than has been
+appreciated and deserves to be given a first-class representation in
+our computational formalisms.
+
+Intriguingly, not only does introducing coding explicitly into the
+formalism solve a number of practical problems associated with the
+$\pi$-calculus, it simultaneously solves a number of problems
+associated with correspinding logics and type systems, as well. The
+interested reader should see namespace logic
+\cite{DBLP:conf/tgc/MeredithR05}.
+
+\section{An idiosyncratic view of related work}
 
 \begin{itemize}
 \item telecommunications, networking, security and application level protocols
@@ -41,28 +192,33 @@ Among the many reasons for the continued success of this approach are
 two central points. First, the process algebras provide a
 compositional approach to the specification, analysis and execution of
 concurrent and distributed systems. Owing to Milner's original
-insights into computation as interaction \cite{DBLP:journals/cacm/Milner93}, the process
-calculi are so organized that the behavior ---the semantics--- of a
-system may be composed from the behavior of its components. This means that specifications can be constructed in
-terms of components ---without a global view of the system--- and
-assembled into increasingly complete descriptions.
+insights into computation as interaction
+\cite{DBLP:journals/cacm/Milner93}, the process calculi are so
+organized that the behavior ---the semantics--- of a system may be
+composed from the behavior of its components. This means that
+specifications can be constructed in terms of components ---without a
+global view of the system--- and assembled into increasingly complete
+descriptions.
 
 The second central point is that process algebras have a potent proof
 principle, yielding a wide range of effective and novel proof
-techniques \cite{DBLP:conf/concur/SangiorgiM92} \cite{DBLP:conf/fmco/Sangiorgi05} \cite{DBLP:journals/toplas/Sangiorgi09}. In particular, \emph{bisimulation} encapsulates an effective
-notion of process equivalence that has been used in applications as
-far-ranging as algorithmic games semantics
-\cite{DBLP:conf/sas/Abramsky05} and the construction of
-model-checkers \cite{caires_2004}. The essential notion can be stated in
-an intuitively recursive formulation: a \emph{bisimulation} between two
-processes $P$ and $Q$ is an equivalence relation $E$ relating $P$
-and $Q$ such that: whatever action of $P$ can be observed, taking it
-to a new state $P'$, can be observed of $Q$, taking it to a new state
-$Q'$, such that $P'$ is related to $Q'$ by $E$ and vice versa. $P$ and
-$Q$ are \emph{bisimilar} if there is some bisimulation relating
-them. Part of what makes this notion so robust and widely applicable
-is that it is parameterized in the actions observable of processes
-$P$ and $Q$, thus providing a framework for a broad range of
-equivalences and up-to techniques \cite{DBLP:conf/concur/SangiorgiM92} all governed by the same core
-principle \cite{DBLP:journals/toplas/Sangiorgi09}.
+techniques \cite{DBLP:conf/concur/SangiorgiM92}
+\cite{DBLP:conf/fmco/Sangiorgi05}
+\cite{DBLP:journals/toplas/Sangiorgi09}. In particular,
+\emph{bisimulation} encapsulates an effective notion of process
+equivalence that has been used in applications as far-ranging as
+algorithmic games semantics \cite{DBLP:conf/sas/Abramsky05} and the
+construction of model-checkers \cite{caires_2004}. The essential
+notion can be stated in an intuitively recursive formulation: a
+\emph{bisimulation} between two processes $P$ and $Q$ is an
+equivalence relation $E$ relating $P$ and $Q$ such that: whatever
+action of $P$ can be observed, taking it to a new state $P'$, can be
+observed of $Q$, taking it to a new state $Q'$, such that $P'$ is
+related to $Q'$ by $E$ and vice versa. $P$ and $Q$ are
+\emph{bisimilar} if there is some bisimulation relating them. Part of
+what makes this notion so robust and widely applicable is that it is
+parameterized in the actions observable of processes $P$ and $Q$, thus
+providing a framework for a broad range of equivalences and up-to
+techniques \cite{DBLP:conf/concur/SangiorgiM92} all governed by the
+same core principle \cite{DBLP:journals/toplas/Sangiorgi09}.
 % section concurrent_process_calculi_and_spatial_logics_ (end)
