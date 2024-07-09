@@ -74,13 +74,48 @@ look at \emph{session types}
 
 This topic is worthy of a much richer and deeper discussion. However,
 we relegate that to a separate paper in which we unify them all with a
-single algorithm, the $\mathsf{OSLF} algorithm$. This takes as input a
+single algorithm, the $\mathsf{OSLF}$ algorithm. This takes as input a
 model of computation formatted as a graph structured lambda theory and
 outputs a spatial-behavioral type system for that model of
 computation. The type system enjoys the Hennessy-Milner property,
 namely that two computations inhabit the same bisimulation equivalence
 class iff they satisfy exactly the same set of types. We leave the
 details to the paper describing this algorithm.
+
+\subsection{Compositionality and bisimulation}
+Among the many reasons for the continued success of the mobile process
+calculi's approach to organizing and analyzing computation are two
+central points. First, the process algebras provide a compositional
+approach to the specification, analysis and execution of concurrent
+and distributed systems. Owing to Milner's original insights into
+computation as interaction \cite{DBLP:journals/cacm/Milner93}, the
+process calculi are so organized that the behavior ---the semantics---
+of a system may be composed from the behavior of its components. This
+means that specifications can be constructed in terms of components
+---without a global view of the system--- and assembled into
+increasingly complete descriptions.
+
+The second central point is that process algebras have a potent proof
+principle, yielding a wide range of effective and novel proof
+techniques \cite{DBLP:conf/concur/SangiorgiM92}
+\cite{DBLP:conf/fmco/Sangiorgi05}
+\cite{DBLP:journals/toplas/Sangiorgi09}. In particular,
+\emph{bisimulation} encapsulates an effective notion of process
+equivalence that has been used in applications as far-ranging as
+algorithmic games semantics \cite{DBLP:conf/sas/Abramsky05} and the
+construction of model-checkers \cite{caires_2004}. The essential
+notion can be stated in an intuitively recursive formulation: a
+\emph{bisimulation} between two processes $P$ and $Q$ is an
+equivalence relation $E$ relating $P$ and $Q$ such that: whatever
+action of $P$ can be observed, taking it to a new state $P'$, can be
+observed of $Q$, taking it to a new state $Q'$, such that $P'$ is
+related to $Q'$ by $E$ and vice versa. $P$ and $Q$ are
+\emph{bisimilar} if there is some bisimulation relating them. Part of
+what makes this notion so robust and widely applicable is that it is
+parameterized in the actions observable of processes $P$ and $Q$, thus
+providing a framework for a broad range of equivalences and up-to
+techniques \cite{DBLP:conf/concur/SangiorgiM92} all governed by the
+same core principle \cite{DBLP:journals/toplas/Sangiorgi09}.
 
 \section{The reflective higher order calculus}
 
@@ -155,6 +190,15 @@ believe that coding is a much more profound phenomenon than has been
 appreciated and deserves to be given a first-class representation in
 our computational formalisms.
 
+Once reflection is introduced into the mobile process calculus
+setting, higher-order capabilities and recursion are child's
+play. More surprisingly, so is the mysterious $\mathsf{new}$ operator
+for generating fresh channels. But, we are getting ahead of
+ourselves. Suffice it to say that using reflection as a first-class
+representation of the trick of coding -- a trick originally discovered
+by life and then independently rediscovered by Cantor, G\"odel, and
+Turing -- is a real banger.
+
 Intriguingly, not only does introducing coding explicitly into the
 formalism solve a number of practical problems associated with the
 $\pi$-calculus, it simultaneously solves a number of problems
@@ -188,37 +232,5 @@ interested reader should see namespace logic
 \cite{DBLP:journals/ipl/PriamiRSS01}.
 \end{itemize}
 
-Among the many reasons for the continued success of this approach are
-two central points. First, the process algebras provide a
-compositional approach to the specification, analysis and execution of
-concurrent and distributed systems. Owing to Milner's original
-insights into computation as interaction
-\cite{DBLP:journals/cacm/Milner93}, the process calculi are so
-organized that the behavior ---the semantics--- of a system may be
-composed from the behavior of its components. This means that
-specifications can be constructed in terms of components ---without a
-global view of the system--- and assembled into increasingly complete
-descriptions.
 
-The second central point is that process algebras have a potent proof
-principle, yielding a wide range of effective and novel proof
-techniques \cite{DBLP:conf/concur/SangiorgiM92}
-\cite{DBLP:conf/fmco/Sangiorgi05}
-\cite{DBLP:journals/toplas/Sangiorgi09}. In particular,
-\emph{bisimulation} encapsulates an effective notion of process
-equivalence that has been used in applications as far-ranging as
-algorithmic games semantics \cite{DBLP:conf/sas/Abramsky05} and the
-construction of model-checkers \cite{caires_2004}. The essential
-notion can be stated in an intuitively recursive formulation: a
-\emph{bisimulation} between two processes $P$ and $Q$ is an
-equivalence relation $E$ relating $P$ and $Q$ such that: whatever
-action of $P$ can be observed, taking it to a new state $P'$, can be
-observed of $Q$, taking it to a new state $Q'$, such that $P'$ is
-related to $Q'$ by $E$ and vice versa. $P$ and $Q$ are
-\emph{bisimilar} if there is some bisimulation relating them. Part of
-what makes this notion so robust and widely applicable is that it is
-parameterized in the actions observable of processes $P$ and $Q$, thus
-providing a framework for a broad range of equivalences and up-to
-techniques \cite{DBLP:conf/concur/SangiorgiM92} all governed by the
-same core principle \cite{DBLP:journals/toplas/Sangiorgi09}.
 % section concurrent_process_calculi_and_spatial_logics_ (end)
