@@ -1,0 +1,47 @@
+\section{Useful syntactic sugar}
+\subsection{Pattern matching}
+TBD
+\subsection{Summation}
+TBD
+\subsection{Joins}
+TBD
+\subsection{Unguessable versus unforgeable names}
+TBD
+\subsection{First class values}
+While it is standard in calculi such as the $\lambda$-calculus to
+define a variety of common values such as the natural numbers and
+booleans in terms of Church-numeral style encodings, it is equally
+common to simply embed values directly into the calculus. Not being
+higher-order, this presents some challenges for the $\pi$-calculus,
+but for the rho-calculus, everything works out very nicely if we treat
+values, e.g. the naturals, the booleans, the reals, etc as processes. This
+choice means we can meaninfully write expressions like
+$x!(\mathsf{5})$ or $u!(\mathsf{true})$, and in the context
+$\prefix{x}{y}P[*y] \mathsf{|} x!(\mathsf{5})$ the value $\mathsf{5}$
+will be substituted into $P$. Indeed, since operations like addition,
+multiplication, etc.  can also be defined in terms of processes, it is
+meaningful to write expressions like
+$\mathsf{5}\mathsf{|}\mathsf{+}\mathsf{|}\mathsf{1}$, and be confident
+that this expression will reduce to a process representing
+$\mathsf{6}$. Thus, we can also use standard mathematical expressions,
+such as $\mathsf{5+1}$, as processes, and know that these will
+evaluate to their expected values. Further, when combined with
+$\mathsf{for}$-comprehensions, we can write algebraic expressions,
+such as $\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y$, and in
+contexts like
+$(\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y)\mathsf{|}\outputp{x}{\mathsf{1}}$
+this will evaluate as expected, producing the process (aka value)
+$\mathsf{6}$.
+
+With these conventions in place it is useful to reduce the
+proliferation of $\mathsf{*}$'s, by adopting a pattern-matching
+convention. Thus, we write $\prefix{x}{@v}{P}$ to denote binding $v$
+to the value passed and not the \emph{name} of the value. Hence, we
+may write $\prefix{x}{@v}{\mathsf{5+v}}$ without any loss of clarity,
+confident that this translates unambiguously into the formal calculus
+presented above. We achieve even greater compression and a more
+familiar notation if we also adopt the notation
+
+\begin{mathpar}
+  \mathsf{let}\; x \;\mathsf{=}\; v \;\mathsf{in}\; P := (\mathsf{new} \; u)(\prefix{u}{@x}P)\mathsf{|}\outputp{u}{v}
+\end{mathpar}

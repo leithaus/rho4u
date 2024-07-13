@@ -47,6 +47,14 @@ ambient calculus \cite{DBLP:journals/tcs/CardelliG00}, and
 considerably refined by Cardelli's brane calculi
 \cite{DBLP:conf/cmsb/Cardelli04}.
 
+Note that it is common practice in the mobile process calculi
+literature to refer to channels as \emph{names} and in this note we
+will use these terms interchangeably. In the more abstract setting of
+that includes calculi like the ambient calculus where names are really
+tags associated with mobile membranes this more generic moniker makes
+sense. In both the $\pi$ and ambient calculi names are the means of
+synchronization and rendezvous for mobile processes.
+
 It is notable that to this day there is no fully abstract encoding of
 the ambient calculus into the $\pi$-calculus, suggesting that the
 ambient calculus is somehow more expressive than the
@@ -54,7 +62,11 @@ $\pi$-calculus. That said, expressivity is not always a benefit. It is
 quite difficult to map the ambient style of computation to trustless
 distributed Internet-based protocols. The expressivity requires a
 great deal more coordination which, in turn, requires a great deal
-more trust.
+more trust. Meanwhile, the $\pi$-calculus has a ready mapping onto a
+wide range of Internet protocols, which i exploited vigorously in
+building Microsoft's BizTalk Process Orchestration. And the rho
+calculus has an even better mapping to Internet protocols, which i
+exploited even more vigorously in building RChain and F1R3FLY.io.
 
 \subsection{Hennessy-Milner and spatial logics, and session types}
 

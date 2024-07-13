@@ -20,7 +20,7 @@
 
 
 %\include{myPreamble}
-\include{qm2pi.local} 
+\include{rho20.local} 
 
 %\ifpdf
 %\usepackage[pdftex]{graphicx}
@@ -50,13 +50,19 @@
 
 \input{rho20.intro} 
  
-\input{rho20.process.calculi} 
+\input{rho20.process.calculi}
 
-\input{rho20.rho.presentation} 
+\input{rho20.rho.core}
 
-\input{rho20.qmops}
+\input{rho20.rho.sugar}
 
-\input{rho20.physicalintuition} 
+\input{rho20.procedural.reflection} 
+
+%\input{rho20.rho.presentation} 
+
+%\input{rho20.qmops}
+
+\input{rho20.physical.intuition} 
 
 \input{rho20.conc}
 
