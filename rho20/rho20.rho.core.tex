@@ -170,8 +170,8 @@ give a recursive presentation of this relation for the calculus used
 in the encoding.
 
 \begin{mathpar}
-  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {\mathsf{for}( \arrvec{y} \leftarrow x_{t} )P \;\mathsf{|}\; x_{s}!(\arrvec{Q})
-  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}}
+  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}} {\mathsf{for}( y \leftarrow x_{t} )P \;\mathsf{|}\; x_{s}!(\arrvec{Q})
+  \red P\substn{\quotep{Q}}{y}}
   \and
   \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
   \and
@@ -210,7 +210,7 @@ As mentioned before, it is known that replication (and hence
 recursion) can be implemented in a higher-order process algebra
 \cite{DBLP:books/daglib/0004377}. As our first example of calculation with the
 machinery thus far presented we give the construction explicitly in
-the {\rhoc}.
+the rho calculus.
 
 \begin{eqnarray}
 	D_{x} & := & \prefix{x}{y}{(\binpar{\outputp{x}{y}}{\dropn{y}})} \nonumber\\
