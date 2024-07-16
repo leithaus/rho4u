@@ -15,55 +15,57 @@
  \;\bm\; \mathsf{Bundle}\; \texttt{\{} \;\mathsf{Proc}\; \texttt{\}} \\
  \;\bm\; \texttt{let}\; \mathsf{Decl}\; \mathsf{Decls}\; \texttt{in}\; \texttt{\{} \;\mathsf{Proc}\; \texttt{\}} }\\
 \inferrule* [lab=output] {} {\mathsf{Proc3} \bc \mathsf{Proc4} \\
- \;\bm\; \mathsf{Name} \mathsf{Send} \texttt{(} \mathsf{[Proc]} \texttt{)}} \\
-\inferrule* [lab=] {} {\mathsf{Proc4} \bc \mathsf{Proc5} \\
+ \;\bm\; \mathsf{Name} \;\mathsf{Send}\; \texttt{(} \mathsf{[Proc]} \texttt{)}} \\
+\inferrule* [lab=disjunction] {} {\mathsf{Proc4} \bc \mathsf{Proc5} \\
  \;\bm\; \mathsf{Proc4} \;\texttt{or}\; \mathsf{Proc5}} \\
+\inferrule* [lab=conjunction] {} {\mathsf{Proc5} \bc \mathsf{Proc6} \\
+ \;\bm\; \mathsf{Proc5} \;\texttt{and}\; \mathsf{Proc6}} \\
+\inferrule* [lab=matching] {} {\mathsf{Proc6} \bc \mathsf{Proc7} \\
+\;\bm\; \mathsf{Proc7} \;\texttt{matches}\; \mathsf{Proc7} \\
+ \;\bm\; \mathsf{Proc6} \;\texttt{==}\; \mathsf{Proc7} \\
+ \;\bm\; \mathsf{Proc6} \;\texttt{!=}\; \mathsf{Proc7}} \\
+\inferrule* [lab=comparison] {} {\mathsf{Proc7} \bc \mathsf{Proc8} \\
+ \;\bm\; \mathsf{Proc7} \;\texttt{$<$}\; \mathsf{Proc8} \\
+ \;\bm\; \mathsf{Proc7} \;\texttt{$<$=}\; \mathsf{Proc8} \\
+ \;\bm\; \mathsf{Proc7} \;\texttt{$>$}\; \mathsf{Proc8} \\
+ \;\bm\; \mathsf{Proc7} \;\texttt{$>$=}\; \mathsf{Proc8}} \\
+\inferrule* [lab=addition] {} {\mathsf{Proc8} \bc \mathsf{Proc9} \\
+ \;\bm\; \mathsf{Proc8} \;\texttt{+}\; \mathsf{Proc9} \\
+ \;\bm\; \mathsf{Proc8} \;\texttt{-}\; \mathsf{Proc9} \\
+ \;\bm\; \mathsf{Proc8} \;\texttt{++}\; \mathsf{Proc9} \\
+ \;\bm\; \mathsf{Proc8} \;\texttt{--}\; \mathsf{Proc9}} \\
+\inferrule* [lab=multiplication] {} {\mathsf{Proc9} \bc \mathsf{Proc10} \\
+ \;\bm\; \mathsf{Proc9} \;\texttt{*}\; \mathsf{Proc10} \\
+ \;\bm\; \mathsf{Proc9} \;\texttt{/}\; \mathsf{Proc10} \\
+ \;\bm\; \mathsf{Proc9} \;\texttt{\%}\; \mathsf{Proc10} \\
+ \;\bm\; \mathsf{Proc9} \;\texttt{\%\%}\; \mathsf{Proc10}} \\
+\inferrule* [lab=negation] {} {\mathsf{Proc10} \bc \mathsf{Proc11} \\
+ \;\bm\; \texttt{not}\; \mathsf{Proc10} \\
+ \;\bm\; \texttt{-} \mathsf{Proc10}} \\
+\inferrule* [lab=nesting] {} {\mathsf{Proc11} \bc \mathsf{Proc12} \\
+ \;\bm\; \mathsf{Proc11} \texttt{.} \mathsf{Var} \texttt{(} \mathsf{[Proc]} \texttt{)} \\
+ \;\bm\; \texttt{(} \mathsf{Proc4} \texttt{)}} \\
+\inferrule* [lab=dereference] {} {\mathsf{Proc12} \bc \mathsf{Proc13} \\
+ \;\bm\; \texttt{*} \mathsf{Name}} \\
+\inferrule* [lab=match-disjuction] {} {\mathsf{Proc13} \bc \mathsf{Proc14} \\
+ \;\bm\; \mathsf{VarRefKind} \mathsf{Var} \\
+ \;\bm\; \mathsf{Proc13} \;\texttt{$\backslash$/}\; \mathsf{Proc14}} \\
+\inferrule* [lab=match-conjunction] {} {\mathsf{Proc14} \bc \mathsf{Proc15} \\
+ \;\bm\; \mathsf{Proc14} \;\texttt{/$\backslash$}\; \mathsf{Proc15}} \\
+\inferrule* [lab=match-negation] {} {\mathsf{Proc15} \bc \mathsf{Proc16} \\
+  \;\bm\; \texttt{\~{}} \mathsf{Proc15}} \\
 \end{mathpar}
-%% \mathsf{Proc5} \bc \mathsf{Proc6} \\
-%%  \;\bm\; \mathsf{Proc5} \texttt{and} \mathsf{Proc6} \\
-%% \mathsf{Proc6} \bc \mathsf{Proc7} \\
-%% \;\bm\; \mathsf{Proc7} \texttt{matches} \mathsf{Proc7} \\
-%%  \;\bm\; \mathsf{Proc6} \texttt{==} \mathsf{Proc7} \\
-%%  \;\bm\; \mathsf{Proc6} \texttt{!=} \mathsf{Proc7} \\
-%% \mathsf{Proc7} \bc \mathsf{Proc8} \\
-%%  \;\bm\; \mathsf{Proc7} \texttt{$<$} \mathsf{Proc8} \\
-%%  \;\bm\; \mathsf{Proc7} \texttt{$<$=} \mathsf{Proc8} \\
-%%  \;\bm\; \mathsf{Proc7} \texttt{$>$} \mathsf{Proc8} \\
-%%  \;\bm\; \mathsf{Proc7} \texttt{$>$=} \mathsf{Proc8} \\
-%% \mathsf{Proc8} \bc \mathsf{Proc9} \\
-%%  \;\bm\; \mathsf{Proc8} \texttt{+} \mathsf{Proc9} \\
-%%  \;\bm\; \mathsf{Proc8} \texttt{-} \mathsf{Proc9} \\
-%%  \;\bm\; \mathsf{Proc8} \texttt{++} \mathsf{Proc9} \\
-%%  \;\bm\; \mathsf{Proc8} \texttt{--} \mathsf{Proc9} \\
-%% \mathsf{Proc9} \bc \mathsf{Proc10} \\
-%%  \;\bm\; \mathsf{Proc9} \texttt{*} \mathsf{Proc10} \\
-%%  \;\bm\; \mathsf{Proc9} \texttt{/} \mathsf{Proc10} \\
-%%  \;\bm\; \mathsf{Proc9} \texttt{\%} \mathsf{Proc10} \\
-%%  \;\bm\; \mathsf{Proc9} \texttt{\%\%} \mathsf{Proc10} \\
-%% \mathsf{Proc10} \bc \mathsf{Proc11} \\
-%%  \;\bm\; \texttt{not} \mathsf{Proc10} \\
-%%  \;\bm\; \texttt{-} \mathsf{Proc10} \\
-%% \mathsf{Proc11} \bc \mathsf{Proc12} \\
-%%  \;\bm\; \mathsf{Proc11} \texttt{.} \mathsf{Var} \texttt{(} \mathsf{[Proc]} \texttt{)} \\
-%%  \;\bm\; \texttt{(} \mathsf{Proc4} \texttt{)} \\
-%% \mathsf{Proc12} \bc \mathsf{Proc13} \\
-%%  \;\bm\; \texttt{*} \mathsf{Name} \\
-%% \mathsf{Proc13} \bc \mathsf{Proc14} \\
-%%  \;\bm\; \mathsf{VarRefKind} \mathsf{Var} \\
-%%  \;\bm\; \mathsf{Proc13} \texttt{$\backslash$/} \mathsf{Proc14} \\
-%% \mathsf{Proc14} \bc \mathsf{Proc15} \\
-%%  \;\bm\; \mathsf{Proc14} \texttt{/$\backslash$} \mathsf{Proc15} \\
-%% \mathsf{Proc15} \bc \mathsf{Proc16} \\
-%%  \;\bm\; \texttt{\~{}} \mathsf{Proc15} \\
-%% \mathsf{Proc16} \bc \texttt{\{} \mathsf{Proc} \texttt{\}} \\
-%%  \;\bm\; \mathsf{Ground} \\
-%%  \;\bm\; \mathsf{Collection} \\
-%%  \;\bm\; \mathsf{ProcVar} \\
-%%  \;\bm\; \texttt{Nil} \\
-%%  \;\bm\; \mathsf{SimpleType} \\
-%% \mathsf{[Proc]} \bc \textbf{eps} \\
-%%  \;\bm\; \mathsf{Proc} \\
-%%  \;\bm\; \mathsf{Proc} \texttt{,} \mathsf{[Proc]} \\
+\begin{mathpar}
+\inferrule* [lab=???] {} {\mathsf{Proc16} \bc \texttt{\{} \mathsf{Proc} \texttt{\}} \\
+ \;\bm\; \mathsf{Ground} \\
+ \;\bm\; \mathsf{Collection} \\
+ \;\bm\; \mathsf{ProcVar} \\
+ \;\bm\; \texttt{Nil} \\
+ \;\bm\; \mathsf{SimpleType}} \\
+\inferrule* [lab=???] {} {\mathsf{[Proc]} \bc \textbf{eps} \\
+ \;\bm\; \mathsf{Proc} \\
+ \;\bm\; \mathsf{Proc} \texttt{,} \mathsf{[Proc]}} \\
+\end{mathpar}
 %% \mathsf{Decl} \bc \mathsf{[Name]} \mathsf{NameRemainder} \texttt{$<$-} \mathsf{[Proc]} \\
 %% \mathsf{LinearDecl} \bc \mathsf{Decl} \\
 %% \mathsf{[LinearDecl]} \bc \mathsf{LinearDecl} \\
