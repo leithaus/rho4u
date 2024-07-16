@@ -1,0 +1,151 @@
+\section{Multilevel Agency}
+\subsection{Annihilation}
+Another important variation has to do with the rewrite rules. There is
+a recursive version of the $\mathsf{COMM}$-rule that aligns with
+intuitions about the recursive nature of behavior in compositionally
+defined agents. The maths make it clearer than the English. First, we
+define what it means for two processes to annihilate each other.
+
+\begin{definition}
+  Annihilation: Processes $P$ and $Q$ are said to annihilate one another, written $P \bot Q$, just when $\forall R. P \mathsf{|} Q \rightarrow^{*} R \Rightarrow R \rightarrow^{*} \pzero$.
+\end{definition}
+
+Thus, when $P \bot Q$, all rewrites out of $P \mathsf{|} Q$ eventually
+lead to $\pzero$. Evidently, $P \bot Q \iff Q \bot P$, and $\pzero
+\bot \pzero$. Naturally, we can extend annihilation to names: $x \bot
+y \iff \procn{x} \bot \procn{y}$.
+
+Annihilation affords a new version of the $\mathsf{COMM}$-rule:
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{t} \;\bot x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {(R_1 + \mathsf{for}( \arrvec{y} \leftarrow x_{t} )P) \;\mathsf{|}\; (x_{s}!(\arrvec{Q}).P' + R_2)
+  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}\mathsf{|}P'}
+\end{mathpar}
+
+All annihilation-based reduction happens in terms of reductions that
+happen at a lower degree of quotation, and grounds out in the fact
+that $\pzero \bot \pzero$ and thus $\quotep{\pzero} \bot \quotep{\pzero}$.
+
+\begin{example}
+  For example, let $P_{1} := \prefix{\quotep{\pzero}}{\quotep{\pzero}}{\pzero} \mathsf{|} \outputp{\quotep{\pzero}}{\pzero}$. Then $P_{1} \red \pzero$ because $\pzero \bot
+\pzero$. Suppose now that we set $x_{0}^{-}, x_{0}^{+} := \quotep{\pzero}$. Then, we can write $P_{1}$ as
+$\prefix{x_{0}^{-}}{x_{0}^{-}}{\pzero} \mathsf{|} \outputp{x_{0}^{+}}{\pzero}$. Now, set
+
+\begin{mathpar}
+  x_{1}^{-}:= \quotep{(\prefix{x_{0}^{-}}{x_{0}^{-}}{\pzero})}
+  \and
+  x_{1}^{+} := \quotep{(\outputp{x_{0}^{+}}{\pzero})}
+\end{mathpar}
+
+Then define 
+$P_{2} := \prefix{x_{1}^{-}}{x_{1}^{-}}{\pzero} \mathsf{|} \outputp{x_{1}^{+}}{\pzero}$. Then $P_{2} \red \pzero$ because $x_{1}^{-} \bot x_{1}^{+}$,
+and hence $\prefix{x_{1}^{-}}{x_{1}^{-}}{\pzero} \bot \outputp{x_{1}^{+}}{\pzero}$.
+
+More generally, set
+
+\begin{mathpar}
+  x_{i}^{-} := \quotep{(\prefix{x_{i-1}^{-}}{x_{i-1}^{-}}{\pzero})}
+  \and
+  x_{i}^{+} := \quotep{\outputp{x_{i-1}^{+}}{\pzero}} \\
+  \and P_{i} := \prefix{\quotep{x_{i-1}^{-}}}{x_{i-1}^{-}}{\pzero} \mathsf{|} \outputp{\quotep{x_{i-1}^{+}}}{\pzero}
+\end{mathpar}
+
+Then $P_{i} \red \pzero$ and hence $x_{i}^{-} \bot x_{i}^{+}$.
+\end{example}
+This allows
+for a measure of reduction complexity.
+
+\subsection{Procedural reflection}
+
+\begin{mathpar}
+\inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
+  y \leftarrow x )P \;\bm\; x\mathsf{!}(Q) \;\bm\;
+  \mathsf{*}x \;\bm\; \mathsf{?}P \;\bm\; P\mathsf{|}Q } \and \inferrule* [lab=name] {}
+            {x, y \bc \mathsf{@}P }
+\end{mathpar}
+
+\subsection{Programmable contexts}
+\subsubsection{Process grammar}\label{subsub:process_grammar}
+
+\begin{mathpar}
+  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{U}(x) \;\bm\; \mathsf{for}(y \leftarrow x )P \;\bm\; x\mathsf{!}(Q) \;\bm\;
+  P\mathsf{|}Q \;\bm\; \mathsf{*}x \;\bm\; \mathsf{COMM}(K) }
+  \and
+  \inferrule* [lab=name] {} {x, y \bc \mathsf{@}\langle K, P\rangle }
+  \and
+  \inferrule* [lab=context] {} {K \bc \bigbox \;\bm\;  \mathsf{for}(y \leftarrow x )K \;\bm\; x\mathsf{!}(K) \;\bm\; P\mathsf{|}K}
+\end{mathpar}
+
+\begin{definition}
+  \emph{Free and bound names} The calculation of the free names of a
+  process, $P$, denoted $\freenames{P}$ is given recursively by
+  
+  \begin{mathpar}
+    \freenames{\pzero} = \emptyset
+    \and
+    \freenames{\mathsf{U}(x)} = \{ x \}
+    \and
+    \freenames{\mathsf{for}(y \leftarrow x)P} = \{ x \} \cup \freenames{P}\setminus\{y\}
+    \and
+    \freenames{x!(P)} = \{ x \} \cup \freenames{P}
+    \and
+    \freenames{P|Q} = \freenames{P} \cup \freenames{Q}
+    \and
+    \freenames{\mathsf{*}{x}} = \{ x \}
+    \and
+    \freenames{\mathsf{COMM}(K)} = \freenames{K}
+    \and 
+    \freenames{\bigbox} = \emptyset
+    \and
+    \freenames{\mathsf{for}(y \leftarrow x)K} = \{ x \} \cup \freenames{K}\setminus\{y\}
+    \and
+    \freenames{x!(K)} = \{ x \} \cup \freenames{K}
+    \and
+    \freenames{P|K} = \freenames{P} \cup \freenames{K}
+  \end{mathpar}
+  
+  An occurrence of $x$ in a process $P$ is \textit{bound} if it is not
+  free. The set of names occurring in a process (bound or free) is
+  denoted by $\names{P}$.
+\end{definition}
+
+\subsection{Operational semantics}
+
+Finally, we introduce the computational dynamics. What marks these
+algebras as distinct from other more traditionally studied algebraic
+structures, e.g. vector spaces or polynomial rings, is the manner in
+which dynamics is captured. In traditional structures, dynamics is typically
+expressed through morphisms between such structures, as in linear maps
+between vector spaces or morphisms between rings. In algebras
+associated with the semantics of computation, the dynamics is
+expressed as part of the algebraic structure itself, through a
+reduction reduction relation typically denoted by $\red$. Below, we
+give a recursive presentation of this relation for the calculus used
+in the encoding.
+
+\begin{mathpar}
+  \inferrule* [lab=Catalyze] {} {\mathsf{U}(x) \;\mathsf{|}\; \dropn{\quotep{\langle K,Q \rangle}} \red \mathsf{COMM}(K) \;\mathsf{|}\; x\mathsf{!}(Q)} \\
+  \and
+  \inferrule* [lab=Comm] {x_{t} \;\nameeq\; x_{s}} {\mathsf{COMM}(K) \;\mathsf{|}\; \mathsf{for}( y \leftarrow x_{t} )P \;\mathsf{|}\; x_{s}!(Q)
+    \red P\substn{\quotep{\langle K,Q \rangle}}{y}} \\
+  \and
+  \inferrule* [lab=Par]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q} \\
+  \and
+  \inferrule* [lab=Equiv]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
+\end{mathpar}
+
+We write $P\red$ if $\exists Q $ such that $ P \red Q$ and $P\not\red$, otherwise.
+
+\subsection{ Movement in space: an example }
+In the following example let $x = \spacen{\bigbox}{\pzero}$ and $y = \spacen{K}{Q}$ for some $K$ and $Q$.
+\begin{eqnarray*}
+  & \binpar{\binpar{\prefix{x}{y}{\dropn{y}}}{\outputp{x}{P}}}{\mathsf{COMM}(K_{1})} & \\
+  \red & & \\
+  & \dropn{y}\substn{\spacen{K_{1}}{P}}{y} & \\
+  = & & \\
+  & K_{1}[P] &
+\end{eqnarray*}
+
+Now, if $K_{1}$ is also of the form $\binpar{\binpar{\binpar{\prefix{x'}{y'}{\dropn{y'}}}{\outputp{x'}{\bigbox}}}{\mathsf{COMM}(K_{2})}}{R}$, then $P$ will move to the location $\binpar{K_{2}[P]}{R}$. That is, $K_{1}[P] \red \binpar{K_{2}[P]}{R}$. And if $K_{2}$ is likewise of the form $\binpar{\binpar{\binpar{\prefix{x''}{y''}{\dropn{y''}}}{\outputp{x''}{\bigbox}}}{\mathsf{COMM}(K_{3})}}{R'}$, then $P$ will move to the location $\binpar{K_{3}[P]}{\binpar{R}{R'}}$.
+
+Thus, we have a means to describe movement of a process from location to location.
