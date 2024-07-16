@@ -1,10 +1,52 @@
 \section{Multilevel Agency}
+The rho calculus provides a number of important perspectives on
+multilevel agency. In this section we focus on three of them that can
+be reduced to calculi that can be coded up and executed on modern
+computer hardware.
+
 \subsection{Annihilation}
 Another important variation has to do with the rewrite rules. There is
-a recursive version of the $\mathsf{COMM}$-rule that aligns with
-intuitions about the recursive nature of behavior in compositionally
-defined agents. The maths make it clearer than the English. First, we
-define what it means for two processes to annihilate each other.
+a nested recursion version of the $\mathsf{COMM}$-rule that aligns
+with intuitions about the recursive nature of behavior in
+compositionally defined agents. While for your author the maths make
+it clearer than the English it is worth setting out some of the
+motivations for this variation of the dynamics of the rho
+calculus.
+
+The reductionist view of science is that phenomena like medicinal
+cures rest on the phenomena of biology. That is, we find explanation
+of the mechanism underlying the medical procedure in the biological
+phenomena the procedure interacts with in some fashion. Meanwhile, the
+phenomena of biology rests, in turn, on the phenomena of chemistry;
+and chemistry rests on (nuclear) physics. By way of an example, in the
+reductionist narrative the interaction of two blood cells in the veins
+of the body of a person is ultimately explained in terms of the
+interactions of various chemical compounds, which are in turn
+explained in terms of the interaction of various atoms and their
+subatomic components, such as electrons, etc.
+
+While this is accepted philosophy and pedagogy, it is quite difficult
+to reduce this account to actual computations, except in very limited
+or schematic and abstract fashion. For example, getting differential
+equations to work effectively across such scales (from cells to
+quarks) is simply not practical. The reductionist picture is
+comforting and to some extent supported by evidence, but not reducible
+to practice except in extremely limited cases.
+
+The variation of the rho calculus dynamics explored here was developed
+to explore the power of compositionality to capture this kind of tower
+of reduction. Essentially, we develop of notion of process interaction
+that in turn relies on the interaction of ``lower level'' processes,
+and so on all the way down to a real bottom. The notion gives a
+precise definition of what it means to be ``lower level'' and how that
+relates to computational dynamics. In some sense, this is the crudest
+of pictures of multilevel agency, and yet given the efficacy of the
+process calculi to faithfully represent chemical, biochemical, and
+biological phenomena, there is some hope that it might not just be a
+pleasant abstraction.
+
+First, we define what it means for two processes to
+annihilate each other.
 
 \begin{definition}
   Annihilation: Processes $P$ and $Q$ are said to annihilate one another, written $P \bot Q$, just when $\forall R. P \mathsf{|} Q \rightarrow^{*} R \Rightarrow R \rightarrow^{*} \pzero$.

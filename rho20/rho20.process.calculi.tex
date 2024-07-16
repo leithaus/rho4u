@@ -181,47 +181,50 @@ computation.
 
 \subsection{Coding as a fundamental aspect of computation}
 
-Indeed, G\"odel's incompleteness results fundamentally depend on
-coding. To achieve the self-reference needed to construct a logical
-statement of the form ``This sentence is not provable.'' G\"odel
-encoded logical formulae into the natural numbers and then used
-logical statements about the natural numbers to construct
-self-referential statements like that one. In his construction, the
-coding trick appears to be exogenous to logic and arithmetic, indeed a
-careful study of these formalisms shows that it is, in fact,
-\emph{intrinsic}. Moreover, this intrinsic, loopy self-reference that
-arises from the notion of code is also at the heart of Turing's
-solution to the Entscheidungsproblem and Cantor's separation of the
-countably infinite from the uncountably infinite.
+Indeed, G\"odel's incompleteness results fundamentally depend on a
+notion of \emph{coding}. To achieve the self-reference needed to
+construct a logical statement of the form ``This sentence is not
+provable.'' G\"odel encoded logical formulae into the natural numbers
+and then used logical statements about the natural numbers to
+construct self-referential statements like that one. In his
+construction, the coding trick appears to be exogenous to logic and
+arithmetic. Indeed a careful study of these formalisms shows that it
+is, in fact, \emph{intrinsic}. That is, both the natural numbers, and
+logic naturally reflect on themselves, if you look more carefully at
+those mathematical objects. More to the point, however, this
+intrinsic, loopy self-reference that arises from the notion of code is
+also at the heart of Turing's solution to the Entscheidungsproblem and
+Cantor's separation of the countably infinite from the uncountably
+infinite.
 
 Moreover, the scope of this phenomenon is not restricted to some of
 the most profound results in mathematics and logic over the last
 couple of centuries. It's also at the heart of the origin of
-life. Some four billion years ago chemistry stumbled on a way to code
-for the production of proteins involved in certain self-replicating
-chemical reactions. Arguments about the validity of the Weissman
-barrier to one side \cite{William2018TheGA}, it is a matter of
-experimentally established fact that the codons at the heart of the
-genetic apparatus provide the mechanism for both the self-replication
-of the chemical processes underlying life, but also the transmission
-of inherited information about fitness to environment. As such, we
-believe that coding is a much more profound phenomenon than has been
-appreciated and deserves to be given a first-class representation in
-our computational formalisms.
+life. Some four billion years ago the Earth's chemistry stumbled on a
+way to code for the production of proteins involved in certain
+self-replicating chemical reactions. Arguments about the validity of
+the Weissman barrier to one side \cite{William2018TheGA}, it is a
+matter of experimentally established fact that the codons at the heart
+of the genetic apparatus provide the mechanism for both the
+self-replication of the chemical processes underlying life, but also
+the transmission of inherited information about fitness to
+environment. As such, we believe that phenomenon of coding is a much
+more profound phenomenon than has been appreciated and deserves to be
+given a first-class representation in our computational formalisms.
 
 Once reflection is introduced into the mobile process calculus
 setting, higher-order capabilities and recursion are child's
-play. More surprisingly, so is the mysterious $\mathsf{new}$ operator
-for generating fresh channels. But, we are getting ahead of
-ourselves. Suffice it to say that using reflection as a first-class
-representation of the trick of coding -- a trick originally discovered
-by life and then independently rediscovered by Cantor, G\"odel, and
-Turing -- is a real banger.
+play. Perhaps more surprisingly, so is the mysterious $\mathsf{new}$
+operator of the $\pi$-calculus tasked with generating fresh
+channels. But, we are getting ahead of ourselves. Suffice it to say
+that using reflection as a first-class representation of the trick of
+coding -- a trick originally discovered by life and then independently
+rediscovered by Cantor, G\"odel, and Turing -- is a real banger.
 
 Intriguingly, not only does introducing coding explicitly into the
 formalism solve a number of practical problems associated with the
 $\pi$-calculus, it simultaneously solves a number of problems
-associated with correspinding logics and type systems, as well. The
+associated with corresponding logics and type systems, as well. The
 interested reader should see namespace logic
 \cite{DBLP:conf/tgc/MeredithR05}.
 
