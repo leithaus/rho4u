@@ -148,39 +148,46 @@ $\pi$-calculus. One way to look at the relationship between the two is
 that the $\pi$-calculus is not actually a single calculus. Instead, it
 is a recipe or \emph{function} for constructing a calculus of agents
 that communicate over \emph{some} collection of channels. That is, it
-is parametric in a \emph{theory} of channels. This intuition can be
-made very precise and corresponds to a particular strategy of
-implementation called two-level type decomposition. But, if the
-$\pi$-calculus is a function taking a theory of channels to a theory
-of agents communicating over those channels, then the rho calculus is
-the \emph{least fixed point} of that function. The rho calculus says
-we need look no farther than the \emph{communicating agent themselves}
-for our theory of channels.
+is parametric in a \emph{theory} of channels\footnote{Note that here
+we are using the term 'theory' in a technical sense, such as Peano
+arithmetic, or a Lawvere theory. We don't mean theoretical in the
+usual sense of that word, but rather a collection of entities (such as
+the Natural Numbers) that can be generated from a small set of
+rules.}. This intuition can be made very precise and corresponds to a
+particular strategy of implementation called two-level type
+decomposition. But, if the $\pi$-calculus is a function taking a
+theory of channels to a theory of agents communicating over those
+channels, then the rho calculus is the \emph{least fixed point} of
+that function. The rho calculus says we need look no farther than the
+\emph{communicating agent themselves} for our theory of channels.
 
 More specifically, the calculus envisions a new kind of distinction,
 one between the \emph{code} of a process, and a \emph{running
-instance} of a process. It must not escape the reader's attention that
-this is a commonplace notion in the practice of building concurrent
-and distributed systems. Indeed, the development of the rho calculus
-stole a page from the previous evolution of process algebras. The step
-introducing mobility was the theory coming into better alignment with
-practice. Computing devices became mobile, to keep up the formalisms
-had to follow suit and devise a notion of mobile processes. Likewise,
-the practice of building the software that comprises concurrent and
-distributed systems makes a distinction between code and running
-instances of the code. We argue, however, that providing an account of
-this distinction in our formalism is much more fundamental than just
-keeping up with practice. We argue that this reason this is such a
-ubiquitous practice is because it is a fundamental aspect of the
-underlying order and organization of computation.
+instance} of a process. It will not have escaped the reader's
+attention that this is a commonplace notion in the practice of
+building concurrent and distributed systems. Indeed, the development
+of the rho calculus stole a page from the previous evolution of
+process algebras. The step introducing mobility was the theory coming
+into better alignment with practice. Computing devices became mobile,
+to keep up the formalisms had to follow suit and devise a notion of
+mobile processes. Likewise, the practice of building the software that
+comprises concurrent and distributed systems makes a distinction
+between code and running instances of the code. We argue, however,
+that providing an account of this distinction in our formalism is much
+more fundamental than just keeping up with practice. We argue that
+this reason this is such a ubiquitous practice is because it is a
+fundamental aspect of the underlying order and organization of
+computation.
+
+\subsection{Coding as a fundamental aspect of computation}
 
 Indeed, G\"odel's incompleteness results fundamentally depend on
 coding. To achieve the self-reference needed to construct a logical
 statement of the form ``This sentence is not provable.'' G\"odel
 encoded logical formulae into the natural numbers and then used
 logical statements about the natural numbers to construct
-self-referential statements like that. In his construction, the coding
-trick appears to be exogenous to logic and arithmetic, indeed a
+self-referential statements like that one. In his construction, the
+coding trick appears to be exogenous to logic and arithmetic, indeed a
 careful study of these formalisms shows that it is, in fact,
 \emph{intrinsic}. Moreover, this intrinsic, loopy self-reference that
 arises from the notion of code is also at the heart of Turing's
@@ -219,6 +226,14 @@ interested reader should see namespace logic
 \cite{DBLP:conf/tgc/MeredithR05}.
 
 \section{An idiosyncratic view of related work}
+
+Here we direct the reader to a small sample of the considerable work
+on the mobile process calculi. This sample is far from representative
+of the overall body of work, but instead constitutes a snapshot of
+what your author felt was salient at some point during the last twenty
+years. Indeed, the reader is encouraged to investigate the literature
+on her own to get an independent perspective on this rich field of
+research.
 
 \begin{itemize}
 \item telecommunications, networking, security and application level protocols

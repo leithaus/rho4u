@@ -1,18 +1,73 @@
-\subsection{The syntax and semantics of the core rho calculus}\label{sub:the_syntax_and_semantics_of_the_notation_system} % (fold)
+\section{The syntax and semantics of the core rho calculus}\label{sub:the_syntax_and_semantics_of_the_notation_system} % (fold)
 
 We now summarize a technical presentation of the core calculus. The
 typical presentation of such a calculus generalizes a generators and
 relations presentation of an algebra
-\cite{nlab:generators_and_relations}. The grammar, below, describing
-term constructors, freely generates the set of processes, which we
-denote $\Proc$, and the set of names $\QProc$. The set $\Proc$ (and by
-extension $\QProc$) is then quotiented by a relation known as
-structural congruence, denoted $\equiv$, and it is over this set that
-the notion of computation is expressed. This presentation is
-essentially that of \cite{DBLP:journals/entcs/MeredithR05} with the a
-programmer-friendly syntax that extends smoothly to joins. For
-readability we have relegated some of the technical subtleties to an
-appendix.
+\cite{nlab:generators_and_relations}. The grammar below, describing
+term constructors in the language of process expressions (which we
+abbreviate to processes in the sequel), freely generates the set of
+processes. We denote this set $\Proc$, and the set of channels (aka
+names) over which these processes communicate by $\QProc$. The set
+$\Proc$ (and by extension $\QProc$) is then quotiented by a relation
+known as structural congruence, denoted $\equiv$, and it is over this
+set that the notion of computation is expressed.
+
+In particular, computation is expressed as a small handful of rewrite
+rules which should be viewed as defining a state transition
+relation. Thus, process expressions capture \emph{states} and the form
+of the expression determines how one process (state) \emph{might}
+evolve to another (state). The word 'might' is doing some heavy
+lifting in that previous sentence, as the calculus is \emph{not}
+deterministic, in fact it is not even confluent. As such, the calculus
+can be used to represent all manner of common human (and natural)
+resource distribution protocols, such as first come first served,
+which sits at the heart of everything from airline reservation systems
+to concert ticket sales. By comparison, Church's $\lambda$-calulus
+(the core of programming languages such as $\mathsf{Haskell}$ or
+$\mathsf{Scala}$) does not -- without considerable modification --
+natively support the expression of such protocols.
+
+\subsection{The rho calculus in less than a page}
+
+\begin{mathpar}
+\inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
+  y \leftarrow x )P \;\bm\; x\mathsf{!}(Q) \;\bm\;
+  \mathsf{*}x \;\bm\; P\mathsf{|}Q } \and \inferrule* [lab=name] {}
+            {x, y \bc \mathsf{@}P }
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=equiv] {} {P\mathsf{|}\pzero \equiv P \;\; P\mathsf{|}Q \equiv Q\mathsf{|}P \;\; P\mathsf{|}(Q\mathsf{|}R) \equiv (P\mathsf{|}Q)\mathsf{R}} \\
+  \and
+  \inferrule* [lab=alpha] {} {\mathsf{for}(y \leftarrow x )P \equiv \mathsf{for}(z \leftarrow x )(P\{z/y\} \; \mathsf{if} z \notin \mathsf{FN}(P)}
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; x!(\arrvec{Q})
+    \red P\substn{\quotep{Q}}{y}} \\
+  %% \and
+  %% \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  %% \and
+  %% \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
+\end{mathpar}
+
+This presentation is essentially that of
+\cite{DBLP:journals/entcs/MeredithR05} recast with a
+programmer-friendly syntax that extends smoothly to joins. The reader
+should note that, even with a programmer-friendly syntax, this
+calculus is considerably smaller than a corresponding presentation of
+the $\pi$-calculus. Indeed is as concise and compact as the
+$\lambda$-calculus, yet considerably more expressive. What follows
+below is an exegesis of the technical details hidden in this more
+compact presentation. Notably, we provide definitions of free and
+bound names, we add two more rewrite rules that prescribe how rewrites
+may occur in context (necessary, since the calculus is not
+deterministic) and other housekeeping matters such as name
+equality. The reader more familiar with these notions should feel free
+to skim this section, however the section on bisimulation is of some
+importance and worthy of more focused attention.
+
+\subsection{The fine print}
 
 \paragraph{Notational interlude} when it is clear that some expression $t$ is a sequence (such as a list or a vector), and $a$ is an object that might be meaningfully and safely prefixed to that sequence then we write $a:t$ for the sequence with $a$ prefixed (aka ``consed'') to $t$. We write $t(i)$ for the $i$th element of $t$. In the sequel we use $\arrvec{x}$ (resp. $\arrvec{P}$) denotes a vector of \emph{names}
 (resp. \emph{processes}) of length $|\arrvec{x}|$
