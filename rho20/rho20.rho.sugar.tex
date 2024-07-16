@@ -1,4 +1,153 @@
 \section{Useful syntactic sugar}
+\begin{mathpar}
+\inferrule* [lab=process] {} {\mathsf{Proc} \bc \mathsf{Proc1} \\
+ \;\bm\; \mathsf{Proc} \mathsf{|} \mathsf{Proc1} } \\
+\inferrule* [lab=conditional] {} {\mathsf{Proc1} \bc \mathsf{Proc2} \\
+ \;\bm\; \texttt{if}\; \texttt{(} \mathsf{Proc} \texttt{)}\; \mathsf{Proc2} \\
+ \;\bm\; \texttt{if}\; \texttt{(} \mathsf{Proc} \texttt{)}\; \mathsf{Proc2}\; \texttt{else}\; \mathsf{Proc1} \\
+ \;\bm\; \texttt{new}\; \mathsf{[NameDecl]}\; \texttt{in}\; \mathsf{Proc1} \\
+ \;\bm\; \mathsf{Name}\; \texttt{!?} \texttt{(} \mathsf{[Proc]} \texttt{)}\; \mathsf{SynchSendCont} }\\
+\inferrule* [lab=io] {} {\mathsf{Proc2} \bc \mathsf{Proc3} \\
+ \;\bm\; \texttt{contract}\; \mathsf{Name}\; \texttt{(} \mathsf{[Name]}\; \mathsf{NameRemainder} \texttt{)}\; \texttt{=}\; \texttt{\{}\; \mathsf{Proc}\; \texttt{\}} \\
+ \;\bm\; \texttt{for}\; \texttt{(} \mathsf{[Receipt]} \texttt{)} \texttt{\{} \;\mathsf{Proc}\; \texttt{\}} \\
+ \;\bm\; \texttt{select}\; \texttt{\{} \;\mathsf{[Branch]}\; \texttt{\}} \\
+ \;\bm\; \texttt{match}\; \mathsf{Proc4}\; \texttt{\{} \;\mathsf{[Case]}\; \texttt{\}} \\
+ \;\bm\; \mathsf{Bundle}\; \texttt{\{} \;\mathsf{Proc}\; \texttt{\}} \\
+ \;\bm\; \texttt{let}\; \mathsf{Decl}\; \mathsf{Decls}\; \texttt{in}\; \texttt{\{} \;\mathsf{Proc}\; \texttt{\}} }\\
+\inferrule* [lab=output] {} {\mathsf{Proc3} \bc \mathsf{Proc4} \\
+ \;\bm\; \mathsf{Name} \mathsf{Send} \texttt{(} \mathsf{[Proc]} \texttt{)}} \\
+\inferrule* [lab=] {} {\mathsf{Proc4} \bc \mathsf{Proc5} \\
+ \;\bm\; \mathsf{Proc4} \;\texttt{or}\; \mathsf{Proc5}} \\
+\end{mathpar}
+%% \mathsf{Proc5} \bc \mathsf{Proc6} \\
+%%  \;\bm\; \mathsf{Proc5} \texttt{and} \mathsf{Proc6} \\
+%% \mathsf{Proc6} \bc \mathsf{Proc7} \\
+%% \;\bm\; \mathsf{Proc7} \texttt{matches} \mathsf{Proc7} \\
+%%  \;\bm\; \mathsf{Proc6} \texttt{==} \mathsf{Proc7} \\
+%%  \;\bm\; \mathsf{Proc6} \texttt{!=} \mathsf{Proc7} \\
+%% \mathsf{Proc7} \bc \mathsf{Proc8} \\
+%%  \;\bm\; \mathsf{Proc7} \texttt{$<$} \mathsf{Proc8} \\
+%%  \;\bm\; \mathsf{Proc7} \texttt{$<$=} \mathsf{Proc8} \\
+%%  \;\bm\; \mathsf{Proc7} \texttt{$>$} \mathsf{Proc8} \\
+%%  \;\bm\; \mathsf{Proc7} \texttt{$>$=} \mathsf{Proc8} \\
+%% \mathsf{Proc8} \bc \mathsf{Proc9} \\
+%%  \;\bm\; \mathsf{Proc8} \texttt{+} \mathsf{Proc9} \\
+%%  \;\bm\; \mathsf{Proc8} \texttt{-} \mathsf{Proc9} \\
+%%  \;\bm\; \mathsf{Proc8} \texttt{++} \mathsf{Proc9} \\
+%%  \;\bm\; \mathsf{Proc8} \texttt{--} \mathsf{Proc9} \\
+%% \mathsf{Proc9} \bc \mathsf{Proc10} \\
+%%  \;\bm\; \mathsf{Proc9} \texttt{*} \mathsf{Proc10} \\
+%%  \;\bm\; \mathsf{Proc9} \texttt{/} \mathsf{Proc10} \\
+%%  \;\bm\; \mathsf{Proc9} \texttt{\%} \mathsf{Proc10} \\
+%%  \;\bm\; \mathsf{Proc9} \texttt{\%\%} \mathsf{Proc10} \\
+%% \mathsf{Proc10} \bc \mathsf{Proc11} \\
+%%  \;\bm\; \texttt{not} \mathsf{Proc10} \\
+%%  \;\bm\; \texttt{-} \mathsf{Proc10} \\
+%% \mathsf{Proc11} \bc \mathsf{Proc12} \\
+%%  \;\bm\; \mathsf{Proc11} \texttt{.} \mathsf{Var} \texttt{(} \mathsf{[Proc]} \texttt{)} \\
+%%  \;\bm\; \texttt{(} \mathsf{Proc4} \texttt{)} \\
+%% \mathsf{Proc12} \bc \mathsf{Proc13} \\
+%%  \;\bm\; \texttt{*} \mathsf{Name} \\
+%% \mathsf{Proc13} \bc \mathsf{Proc14} \\
+%%  \;\bm\; \mathsf{VarRefKind} \mathsf{Var} \\
+%%  \;\bm\; \mathsf{Proc13} \texttt{$\backslash$/} \mathsf{Proc14} \\
+%% \mathsf{Proc14} \bc \mathsf{Proc15} \\
+%%  \;\bm\; \mathsf{Proc14} \texttt{/$\backslash$} \mathsf{Proc15} \\
+%% \mathsf{Proc15} \bc \mathsf{Proc16} \\
+%%  \;\bm\; \texttt{\~{}} \mathsf{Proc15} \\
+%% \mathsf{Proc16} \bc \texttt{\{} \mathsf{Proc} \texttt{\}} \\
+%%  \;\bm\; \mathsf{Ground} \\
+%%  \;\bm\; \mathsf{Collection} \\
+%%  \;\bm\; \mathsf{ProcVar} \\
+%%  \;\bm\; \texttt{Nil} \\
+%%  \;\bm\; \mathsf{SimpleType} \\
+%% \mathsf{[Proc]} \bc \textbf{eps} \\
+%%  \;\bm\; \mathsf{Proc} \\
+%%  \;\bm\; \mathsf{Proc} \texttt{,} \mathsf{[Proc]} \\
+%% \mathsf{Decl} \bc \mathsf{[Name]} \mathsf{NameRemainder} \texttt{$<$-} \mathsf{[Proc]} \\
+%% \mathsf{LinearDecl} \bc \mathsf{Decl} \\
+%% \mathsf{[LinearDecl]} \bc \mathsf{LinearDecl} \\
+%%  \;\bm\; \mathsf{LinearDecl} \texttt{;} \mathsf{[LinearDecl]} \\
+%% \mathsf{ConcDecl} \bc \mathsf{Decl} \\
+%% \mathsf{[ConcDecl]} \bc \mathsf{ConcDecl} \\
+%%  \;\bm\; \mathsf{ConcDecl} \texttt{\&} \mathsf{[ConcDecl]} \\
+%% \mathsf{Decls} \bc \textbf{eps} \\
+%%  \;\bm\; \texttt{;} \mathsf{[LinearDecl]} \\
+%%  \;\bm\; \texttt{\&} \mathsf{[ConcDecl]} \\
+%% \mathsf{SynchSendCont} \bc \texttt{.} \\
+%%  \;\bm\; \texttt{;} \mathsf{Proc1} \\
+%% \mathsf{ProcVar} \bc \texttt{\_} \\
+%%  \;\bm\; \mathsf{Var} \\
+%% \mathsf{Name} \bc \texttt{\_} \\
+%%  \;\bm\; \mathsf{Var} \\
+%%  \;\bm\; \texttt{@} \mathsf{Proc12} \\
+%% \mathsf{[Name]} \bc \textbf{eps} \\
+%%  \;\bm\; \mathsf{Name} \\
+%%  \;\bm\; \mathsf{Name} \texttt{,} \mathsf{[Name]} \\
+%% \mathsf{Bundle} \bc \texttt{bundle+} \\
+%%  \;\bm\; \texttt{bundle-} \\
+%%  \;\bm\; \texttt{bundle0} \\
+%%  \;\bm\; \texttt{bundle} \\
+%% \mathsf{Receipt} \bc \mathsf{ReceiptLinearImpl} \\
+%%  \;\bm\; \mathsf{ReceiptRepeatedImpl} \\
+%%  \;\bm\; \mathsf{ReceiptPeekImpl} \\
+%% \mathsf{[Receipt]} \bc \mathsf{Receipt} \\
+%%  \;\bm\; \mathsf{Receipt} \texttt{;} \mathsf{[Receipt]} \\
+%% \mathsf{ReceiptLinearImpl} \bc \mathsf{[LinearBind]} \\
+%% \mathsf{LinearBind} \bc \mathsf{[Name]} \mathsf{NameRemainder} \texttt{$<$-} \mathsf{NameSource} \\
+%% \mathsf{[LinearBind]} \bc \mathsf{LinearBind} \\
+%%  \;\bm\; \mathsf{LinearBind} \texttt{\&} \mathsf{[LinearBind]} \\
+%% \mathsf{NameSource} \bc \mathsf{Name} \\
+%%  \;\bm\; \mathsf{Name} \texttt{?!} \\
+%%  \;\bm\; \mathsf{Name} \texttt{!?} \texttt{(} \mathsf{[Proc]} \texttt{)} \\
+%% \mathsf{ReceiptRepeatedImpl} \bc \mathsf{[RepeatedBind]} \\
+%% \mathsf{RepeatedBind} \bc \mathsf{[Name]} \mathsf{NameRemainder} \texttt{$<$=} \mathsf{Name} \\
+%% \mathsf{[RepeatedBind]} \bc \mathsf{RepeatedBind} \\
+%%  \;\bm\; \mathsf{RepeatedBind} \texttt{\&} \mathsf{[RepeatedBind]} \\
+%% \mathsf{ReceiptPeekImpl} \bc \mathsf{[PeekBind]} \\
+%% \mathsf{PeekBind} \bc \mathsf{[Name]} \mathsf{NameRemainder} \texttt{$<$$<$-} \mathsf{Name} \\
+%% \mathsf{[PeekBind]} \bc \mathsf{PeekBind} \\
+%%  \;\bm\; \mathsf{PeekBind} \texttt{\&} \mathsf{[PeekBind]} \\
+%% \mathsf{Send} \bc \texttt{!} \\
+%%  \;\bm\; \texttt{!!} \\
+%% \mathsf{Branch} \bc \mathsf{ReceiptLinearImpl} \texttt{=$>$} \mathsf{Proc3} \\
+%% \mathsf{[Branch]} \bc \mathsf{Branch} \\
+%%  \;\bm\; \mathsf{Branch} \mathsf{[Branch]} \\
+%% \mathsf{Case} \bc \mathsf{Proc13} \texttt{=$>$} \mathsf{Proc3} \\
+%% \mathsf{[Case]} \bc \mathsf{Case} \\
+%%  \;\bm\; \mathsf{Case} \mathsf{[Case]} \\
+%% \mathsf{NameDecl} \bc \mathsf{Var} \\
+%%  \;\bm\; \mathsf{Var} \texttt{(} \mathsf{UriLiteral} \texttt{)} \\
+%% \mathsf{[NameDecl]} \bc \mathsf{NameDecl} \\
+%%  \;\bm\; \mathsf{NameDecl} \texttt{,} \mathsf{[NameDecl]} \\
+%% \mathsf{BoolLiteral} \bc \texttt{true} \\
+%%  \;\bm\; \texttt{false} \\
+%% \mathsf{Ground} \bc \mathsf{BoolLiteral} \\
+%%  \;\bm\; \mathsf{LongLiteral} \\
+%%  \;\bm\; \mathsf{StringLiteral} \\
+%%  \;\bm\; \mathsf{UriLiteral} \\
+%% \mathsf{Collection} \bc \texttt{[} \mathsf{[Proc]} \mathsf{ProcRemainder} \texttt{]} \\
+%%  \;\bm\; \mathsf{Tuple} \\
+%%  \;\bm\; \texttt{Set} \texttt{(} \mathsf{[Proc]} \mathsf{ProcRemainder} \texttt{)} \\
+%%  \;\bm\; \texttt{\{} \mathsf{[KeyValuePair]} \mathsf{ProcRemainder} \texttt{\}} \\
+%% \mathsf{KeyValuePair} \bc \mathsf{Proc} \texttt{:} \mathsf{Proc} \\
+%% \mathsf{[KeyValuePair]} \bc \textbf{eps} \\
+%%  \;\bm\; \mathsf{KeyValuePair} \\
+%%  \;\bm\; \mathsf{KeyValuePair} \texttt{,} \mathsf{[KeyValuePair]} \\
+%% \mathsf{Tuple} \bc \texttt{(} \mathsf{Proc} \texttt{,)} \\
+%%  \;\bm\; \texttt{(} \mathsf{Proc} \texttt{,} \mathsf{[Proc]} \texttt{)} \\
+%% \mathsf{ProcRemainder} \bc \texttt{...} \mathsf{ProcVar} \\
+%%  \;\bm\; \textbf{eps} \\
+%% \mathsf{NameRemainder} \bc \texttt{...} \texttt{@} \mathsf{ProcVar} \\
+%%  \;\bm\; \textbf{eps} \\
+%% \mathsf{VarRefKind} \bc \texttt{=} \\
+%%  \;\bm\; \texttt{=} \texttt{*} \\
+%% \mathsf{SimpleType} \bc \texttt{Bool} \\
+%%  \;\bm\; \texttt{Int} \\
+%%  \;\bm\; \texttt{String} \\
+%%  \;\bm\; \texttt{Uri} \\
+%%  \;\bm\; \texttt{ByteArray} \\
+%% \end{mathpar}
 \subsection{Pattern matching}
 TBD
 \subsection{Summation}
