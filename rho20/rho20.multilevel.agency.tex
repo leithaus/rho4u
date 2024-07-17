@@ -33,17 +33,17 @@ quarks) is simply not practical. The reductionist picture is
 comforting and to some extent supported by evidence, but not reducible
 to practice except in extremely limited cases.
 
-The variation of the rho calculus dynamics explored here was developed
-to explore the power of compositionality to capture this kind of tower
-of reduction. Essentially, we develop of notion of process interaction
-that in turn relies on the interaction of ``lower level'' processes,
-and so on all the way down to a real bottom. The notion gives a
-precise definition of what it means to be ``lower level'' and how that
-relates to computational dynamics. In some sense, this is the crudest
-of pictures of multilevel agency, and yet given the efficacy of the
-process calculi to faithfully represent chemical, biochemical, and
-biological phenomena, there is some hope that it might not just be a
-pleasant abstraction.
+The variation of the rho calculus dynamics presented here was
+developed to explore the power of compositionality to capture this
+kind of tower of reduction. Essentially, we develop of notion of
+process interaction that in turn relies on the interaction of ``lower
+level'' processes, and so on all the way down to a real bottom. The
+notion gives a precise definition of what it means to be ``lower
+level'' and how that relates to computational dynamics. In some sense,
+this is the crudest of pictures of multilevel agency, and yet given
+the efficacy of the process calculi to faithfully represent chemical,
+biochemical, and biological phenomena, there is some hope that it
+might not just be a pleasant abstraction.
 
 First, we define what it means for two processes to
 annihilate each other.
@@ -99,12 +99,48 @@ for a measure of reduction complexity.
 
 \subsection{Procedural reflection}
 
+The perspective on multilevel agency embodied in this conservative
+extension to the calculus is focused on a process being able to ``see
+into its future''. That is, for a given process $P$ to probe how it
+might evolve. The reason we say this is a conservative extension is
+because the fact that the $\pi$-calculus can be encoded into the rho
+calculus means that rho is Turing complete, or a model of universal
+computation. As such, we can write a meta-circular interpreter for the
+rho calculus in the rho calculus. Having done so, we could make
+reflection on the evolution of a process available to the process
+undergoing evolution. In some sense, this is the rho calculus
+equivalent of functional programming phenomena like
+$\mathsf{call/cc}$, or more generally, delimited continuations.
+
+To achieve this ability for a process, say $P$ to look into its future
+we introduce an additional syntactic category, $\mathsf{?}P$. Then, if
+$P$ evolves in a single step to $P'$, then $x\mathsf{?}P$ evolves to
+$x\mathsf{!}\mathsf{(}P'\mathsf{)}$. That is, a next step in P's
+evolution is made available at $x$. Rendering this idea in symbols, is
+simply adding the new syntactic category, extending the definition of
+free names in the obvious way, and one additional rewrite rule.
+
 \begin{mathpar}
 \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
   y \leftarrow x )P \;\bm\; x\mathsf{!}(Q) \;\bm\;
-  \mathsf{*}x \;\bm\; \mathsf{?}P \;\bm\; P\mathsf{|}Q } \and \inferrule* [lab=name] {}
+  \mathsf{*}x \;\bm\; x\mathsf{?}P \;\bm\; P\mathsf{|}Q } \and \inferrule* [lab=name] {}
             {x, y \bc \mathsf{@}P }
 \end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=REFL] {P \red P'} {x\mathsf{?}P \red x\mathsf{!}\mathsf{(}P'\mathsf{)}} \\
+  %% \and
+  %% \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  %% \and
+  %% \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
+\end{mathpar}
+
+This variation allows a process to ``imagine'' how it might evolve and
+effect changes in its evolution on the basis of this forward
+reasoning. This capability corresponds precisely to the sort of
+capability one finds in delimited continuations and provides a limited
+form of backtracking that is compatible with concurrent and
+distributed execution.
 
 \subsection{Programmable contexts}
 \subsubsection{Process grammar}\label{subsub:process_grammar}

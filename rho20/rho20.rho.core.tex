@@ -213,7 +213,8 @@ and processes imposes a mutual recursion on alpha-equivalence and
 structural equivalence via name-equivalence. Fortunately, all of this
 works out pleasantly and we may calculate in the natural way, free of
 concern. The reader interested in the details is referred to the
-appendix \ref{appendix:rho_details}.
+original paper on the rho calculus
+\cite{DBLP:journals/entcs/MeredithR05}.
 
 \begin{remark}\label{rem:no_self_referential_names}
   One particularly useful consequence of these definitions is that
@@ -388,20 +389,20 @@ contextual-equivalence and a correlation between
 contextual-equivalence and notions of bisimulation. The notion of
 context allows the decomposition of a process into (sub-)process and
 its syntactic environment, its context. Thus, a context may be
-thought of as a process with a ``hole'' (written $\Box$) in it. The
+thought of as a process with a ``hole'' (written $\bigbox$) in it. The
 application of a context $K$ to a process $P$, written $K[P]$, is
 tantamount to filling the hole in $K$ with $P$. In this paper we do
 not need the full weight of this theory, but do make use of the notion
 of context in the proof the main theorem. 
 
 \begin{mathpar}
-\inferrule* [lab=context] {} {K \bc \Box \;\bm\; \mathsf{for}( \arrvec{y} \leftarrow x )K \;\bm\; x\mathsf{!}(\arrvec{P},K,\arrvec{Q}) \;\bm\; K\mathsf{|}P }
+\inferrule* [lab=context] {} {K \bc \bigbox \;\bm\; \mathsf{for}( \arrvec{y} \leftarrow x )K \;\bm\; x\mathsf{!}(\arrvec{P},K,\arrvec{Q}) \;\bm\; K\mathsf{|}P }
 \end{mathpar}
 
 \begin{definition}[contextual application] Given a context $K$, and
   process $P$, we define the \emph{contextual application}, $K[P] :=
-  K\{P/\Box\}$. That is, the contextual application of K to P is the
-  substitution of $P$ for $\Box$ in $K$.
+  K\{P/\bigbox\}$. That is, the contextual application of K to P is the
+  substitution of $P$ for $\bigbox$ in $K$.
 \end{definition}
 
 \begin{remark}
