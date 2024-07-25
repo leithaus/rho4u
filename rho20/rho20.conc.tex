@@ -1,15 +1,63 @@
 \section{Conclusions and future work}
 
-One way to understand the rho-calculus is a study in the seams of the $\pi$-calculus. There are several holes in Milner's calculus:
+One way to understand the rho-calculus is a study in the \emph{seams}
+of the $\pi$-calculus. There are several holes in Milner's calculus:
 
 \begin{itemize}
-  \item \emph{the zero process}, $\pzero$, is an input to the theory; adding other elements here corresponds to supplying ``builtin'' processes;
+  \item \emph{the zero process}, $\pzero$, is an input to the theory;
+    adding other elements here corresponds to supplying ``builtin''
+    processes, and as such constitutes a way to add seamlessly add
+    values to the language;
   \item \emph{names} are an input to the theory, which we discussed at length;
   \item \emph{the source of non-determinism} is an input to the theory.
 \end{itemize}
 
-The results here can really be seen as an initial exploration of the a
-general theory of this third dependency.
+The results in the stochastic and quantum regimes can really be seen
+as an initial exploration of the a general theory of this third
+dependency.
+
+Stepping back to an even wider perspective we need to understand the
+rho calculus not as a single model of computation. Instead, it is a
+way of thinking about computation. It says that \emph{computation
+  arises from interaction}. This is a remarkable shift from the point
+of view normally espoused in theoretical computer science. Both Turing
+and Church's models saw computation as \emph{functions acting on
+  data}.
+
+Indeed, there is a similar kind of divergence of viewpoints in the
+physical sciences. Chemistry arises from interactions of
+molecules. With the exception of gravitation, standard model physics
+arises from interaction of particles. Yet, all these disciplines are
+using the computational toolkit initially developed by Newton, which
+again envisages computation as functions acting on data.
+
+Even more modern views of computation, such as are embodied in
+category theory, are still strongly oriented towards this functional
+view. A topos, for example, is really just a Cartesian closed category
+($\mathsf{CCC}$) with a subobject classifer; but as a $\mathsf{CCC}$
+it is a model of the $\lambda$-calculus, which is decidedly functional
+in its perspective.
+
+We hope that this review of the vast range of computational phenomenon
+successfully, indeed elegantly, accounted for by the interactive
+paradigm will inspire the reader who has made it this far to launch
+her own investigation into the matter. The rho calculus provides not a
+single model of computation, but a conceptual, and mathematically
+precise toolkit for explore the interactive paradigm.
+
+But the development doesn't stop here. In much the same way that the
+rho calculus and its variants provide a framework for the
+investigation of individual protocols, algorithms, and processes seen
+as patterns of interaction, the $\mathsf{OSLF}$ algorithm provides a
+framework for the investigation of populations of protocols,
+algorithms, and processes seen as patterns of interactions. Rather
+than having to craft -- by hand -- a new type system for each variant
+of the rho calculus (or indeed each variant model of computation) that
+is discovered, $\mathsf{OSLF}$ allows one to \emph{generate} a type
+system automatically. The formulae or types of these generated type
+systems correspond to populations of processes that are bisimilar to
+each other. This gives an entirely different vantage point on the
+relationships of computation, logic, and interaction.
 
 % subsection other_calculi_other_bisimulations_and_geometry_as_behavior (end)
 
