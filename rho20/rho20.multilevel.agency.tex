@@ -101,19 +101,33 @@ for a measure of reduction complexity.
 
 The perspective on multilevel agency embodied in this conservative
 extension to the calculus is focused on a process being able to ``see
-into its future''. That is, for a given process $P$ to probe how it
-might evolve. The reason we say this is a conservative extension is
-because the fact that the $\pi$-calculus can be encoded into the rho
+into the future of another process''. That is, for a given process $P$
+to probe how another process, say $Q$, might evolve. This ability to
+``imagine'' the behavior of another becomes introspection when a
+process turns this imaginative capacity onto itself. This
+introspection creates a kind of reflective tower, ala
+$\mathsf{3-Lisp}$ \cite{DBLP:conf/popl/Smith84} or $\mathsf{Brown}$
+\cite{DBLP:journals/lisp/WandF88}. Different floors or levels in this
+tower correspond to different levels of introspection. That is, level
+$n$ is one level of introspection deeper than level $n-1$. It is in
+this sense that we view procedural reflection as providing a kind of
+multilevel agency.
+
+Note that the fact that the $\pi$-calculus can be encoded into the rho
 calculus means that rho is Turing complete, or a model of universal
-computation. As such, we can write a meta-circular interpreter for the
-rho calculus in the rho calculus. Having done so, we could make
-reflection on the evolution of a process available to the process
-undergoing evolution. In some sense, this is the rho calculus
-equivalent of functional programming phenomena like
-$\mathsf{call/cc}$, or more generally, delimited continuations.
+computation. The reason we say that the procedurally reflective rho
+calculus is a conservative extension is because it doesn't add any
+fundamentally new expressive power in the way that adding an oracle
+that answers certain halting questions would. As such, we can write a
+meta-circular interpreter for the rho calculus in the rho
+calculus. Having done so, we could make reflection on the evolution of
+a process available to the process undergoing evolution. In some
+sense, this is the rho calculus equivalent of functional programming
+phenomena like $\mathsf{call/cc}$, or more generally, delimited
+continuations \cite{DBLP:journals/jfp/DybvigJS07}.
 
 To achieve this ability for a process, say $P$ to look into its future
-we introduce an additional syntactic category, $\mathsf{?}P$. Then, if
+we introduce an additional syntactic category, $x\mathsf{?}P$. Then, if
 $P$ evolves in a single step to $P'$, then $x\mathsf{?}P$ evolves to
 $x\mathsf{!}\mathsf{(}P'\mathsf{)}$. That is, a next step in P's
 evolution is made available at $x$. Rendering this idea in symbols, is
@@ -128,19 +142,38 @@ free names in the obvious way, and one additional rewrite rule.
 \end{mathpar}
 
 \begin{mathpar}
-  \inferrule* [lab=REFL] {P \red P'} {x\mathsf{?}P \red x\mathsf{!}\mathsf{(}P'\mathsf{)}} \\
-  %% \and
-  %% \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
-  %% \and
-  %% \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
+  \inferrule* [lab=equiv] {} {P\mathsf{|}\pzero \equiv P \;\; P\mathsf{|}Q \equiv Q\mathsf{|}P \;\; P\mathsf{|}(Q\mathsf{|}R) \equiv (P\mathsf{|}Q)\mathsf{R}} \\
+  \and
+  \inferrule* [lab=alpha] {} {\mathsf{for}(y \leftarrow x )P \equiv \mathsf{for}(z \leftarrow x )(P\{z/y\} \; \mathsf{if} z \notin \mathsf{FN}(P)}
 \end{mathpar}
 
-This variation allows a process to ``imagine'' how it might evolve and
-effect changes in its evolution on the basis of this forward
-reasoning. This capability corresponds precisely to the sort of
-capability one finds in delimited continuations and provides a limited
-form of backtracking that is compatible with concurrent and
-distributed execution.
+\begin{mathpar}
+  \inferrule* [lab=COMM] {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; x!(\arrvec{Q})
+    \red P\substn{\quotep{Q}}{y}} \\
+  \and
+  \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  \and
+  \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q} \\
+  \and
+  \inferrule* [lab=REFL] {P \red P'} {x\mathsf{?}P \red x\mathsf{!}\mathsf{(}P'\mathsf{)}} \\
+\end{mathpar}
+
+What makes this version of procedural reflection distinct and
+interesting is that it fits well within a concurrency setting. It is
+common folklore that $\mathsf{call/cc}$-like continutations and
+concurrency are not the best bedfellows. Essentially,
+$\mathsf{call/cc}$ provides the ability to revert \emph{global}
+state. But, in some very real sense there is no global state, or the
+state shared amongst a collection of agents is partitioned in such a
+way that not every agent has access and there is no shared way to roll
+back the clock for all agents. Once one agent has fired a missile,
+there is no time machine that rolls everyone's state back and puts the
+missile back in the silo. This fact about the partitioning of state is
+closely related to the famous arrow of time problem in physics, but we
+won't delve into it here \cite{enwiki:1234510214}. Instead, we note
+that the form procedural reflection takes in the rho calculus is
+perfectly amenable to multi-agent settings in which state is
+partitioned and time cannot be globally rolled back.
 
 \subsection{Programmable contexts}
 \subsubsection{Process grammar}\label{subsub:process_grammar}

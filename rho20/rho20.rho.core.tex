@@ -39,16 +39,16 @@ natively support the expression of such protocols.
 \begin{mathpar}
   \inferrule* [lab=equiv] {} {P\mathsf{|}\pzero \equiv P \;\; P\mathsf{|}Q \equiv Q\mathsf{|}P \;\; P\mathsf{|}(Q\mathsf{|}R) \equiv (P\mathsf{|}Q)\mathsf{R}} \\
   \and
-  \inferrule* [lab=alpha] {} {\mathsf{for}(y \leftarrow x )P \equiv \mathsf{for}(z \leftarrow x )(P\{z/y\} \; \mathsf{if} z \notin \mathsf{FN}(P)}
+  \inferrule* [lab=alpha] {} {\mathsf{for}(y \leftarrow x )P \equiv \mathsf{for}(z \leftarrow x )(P\{z/y\}) \; \mathsf{if} z \notin \mathsf{FN}(P)}
 \end{mathpar}
 
 \begin{mathpar}
   \inferrule* [lab=COMM] {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; x!(\arrvec{Q})
     \red P\substn{\quotep{Q}}{y}} \\
-  %% \and
-  %% \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
-  %% \and
-  %% \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
+  \and
+  \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  \and
+  \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
 \end{mathpar}
 
 This presentation is essentially that of
@@ -61,9 +61,7 @@ $\pi$-calculus. Indeed is as concise and compact as the
 $\lambda$-calculus, yet considerably more expressive. What follows
 below is an exegesis of the technical details hidden in this more
 compact presentation. Notably, we provide definitions of free and
-bound names, we add two more rewrite rules that prescribe how rewrites
-may occur in context (necessary, since the calculus is not
-deterministic) and other housekeeping matters such as name
+bound names, and other housekeeping matters such as name
 equality. The reader more familiar with these notions should feel free
 to skim this section, however the section on bisimulation is of some
 importance and worthy of more focused attention.

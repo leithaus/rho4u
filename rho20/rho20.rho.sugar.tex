@@ -1,13 +1,5 @@
 \section{Useful syntactic sugar}
 
-\subsection{Pattern matching}
-TBD
-\subsection{Summation}
-TBD
-\subsection{Joins}
-TBD
-\subsection{Unguessable versus unforgeable names}
-TBD
 \subsection{First class values}
 While it is standard in calculi such as the $\lambda$-calculus to
 define a variety of common values such as the natural numbers and
@@ -34,15 +26,60 @@ $(\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y)\mathsf{|}\outputp{x}{\mathsf{1}}
 this will evaluate as expected, producing the process (aka value)
 $\mathsf{6}$.
 
-With these conventions in place it is useful to reduce the
-proliferation of $\mathsf{*}$'s, by adopting a pattern-matching
-convention. Thus, we write $\prefix{x}{@v}{P}$ to denote binding $v$
-to the value passed and not the \emph{name} of the value. Hence, we
-may write $\prefix{x}{@v}{\mathsf{5+v}}$ without any loss of clarity,
-confident that this translates unambiguously into the formal calculus
-presented above. We achieve even greater compression and a more
+\begin{mathpar}
+  \inferrule* [lab=values] {} {P \bc \dots \bm \mathsf{Bool}
+    \bm \mathsf{Long}
+    \bm \mathsf{String}
+    \bm \mathsf{Uri} \bm \mathsf{Collection} \bm \ldots}
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=collection] {} {\mathsf{Collection} \bc \texttt{[} \mathsf{[}P\mathsf{]} \texttt{]}
+    \bm \texttt{(} P \texttt{,}\; \mathsf{[}P\mathsf{]} \texttt{)}
+    \bm \texttt{Set} \texttt{(} \mathsf{[}P\mathsf{]} \texttt{)}
+    \bm \texttt{\{} \mathsf{[}P \texttt{:} P \mathsf{]} \texttt{\}}} \\
+\end{mathpar}
+
+\subsection{Pattern matching}
+Remember that rho allows processes to be sent: $x\mathsf{!}(Q)$. Since
+we can send values, it will be useful to be able to pattern match on
+values. The following pattern-matching syntax captures very commonly
+used idioms.
+
+\begin{mathpar}
+  \inferrule* [lab=pattern] {} {\mathsf{ProcPattern} \bc \texttt{\_}
+    \bm \mathsf{Var}
+    \bm \texttt{@} \mathsf{ProcPattern}
+    \bm\; \mathsf{VarRefKind}\; \mathsf{Var} \bm \mathsf{LogicalPattern} \bm \mathsf{ValuePattern}} \\
+  \and
+  \inferrule* [lab=logical-pattern] {} {\mathsf{LogicalPattern} \bc \mathsf{ProcPattern} \;\vee\; \mathsf{ProcPattern}
+    \bm \mathsf{ProcPattern} \;\wedge\; \mathsf{ProcPattern}
+    \bm \texttt{\~{}} \mathsf{ProcPattern}} \\
+  \and
+  \inferrule* [lab=value-pattern] {} {\mathsf{ValuePattern} \bc \mathsf{Ground}
+    \bm \mathsf{Collection}
+    \bm \texttt{Nil}
+    \bm \mathsf{SimpleType}} \\
+  \and
+  \inferrule* [lab=var-ref-kind] {} {\mathsf{VarRefKind} \bc \texttt{=} \bm \texttt{=} \texttt{*}} \\
+\end{mathpar}
+\subsection{Summation}
+\begin{mathpar}
+  \inferrule*[lab=summation]{}{\mathsf{P} \bc \ldots \texttt{select}\; \texttt{\{} \;\mathsf{[Branch]}\; \texttt{\}}} \\
+  \and
+  \inferrule* [lab=] {} {\mathsf{Branch} \bc \mathsf{ReceiptLinearImpl} \texttt{=$>$} \mathsf{Proc3}} \\
+\inferrule* [lab=] {} {\mathsf{[Branch]} \bc \mathsf{Branch} \\
+ \;\bm\; \mathsf{Branch} \mathsf{[Branch]}} \\
+\end{mathpar}
+\subsection{Joins}
+TBD
+\subsection{Unguessable versus unforgeable names}
+We achieve even greater compression and a more
 familiar notation if we also adopt the notation
 
 \begin{mathpar}
   \mathsf{let}\; x \;\mathsf{=}\; v \;\mathsf{in}\; P := (\mathsf{new} \; u)(\prefix{u}{@x}P)\mathsf{|}\outputp{u}{v}
 \end{mathpar}
+
+
+
