@@ -71,15 +71,46 @@ used idioms.
 \inferrule* [lab=] {} {\mathsf{[Branch]} \bc \mathsf{Branch} \\
  \;\bm\; \mathsf{Branch} \mathsf{[Branch]}} \\
 \end{mathpar}
-\subsection{Joins}
-TBD
-\subsection{Unguessable versus unforgeable names}
+\subsection{Let syntax}
 We achieve even greater compression and a more
 familiar notation if we also adopt the notation
 
 \begin{mathpar}
   \mathsf{let}\; x \;\mathsf{=}\; v \;\mathsf{in}\; P := (\mathsf{new} \; u)(\prefix{u}{@x}P)\mathsf{|}\outputp{u}{v}
 \end{mathpar}
+\subsection{Joins}
+TBD
+\subsection{Unguessable versus unforgeable names}
+Since all the names of the rho calculus are generated from the codes
+of processes we know all of them up front. Security on channels,
+therefore, amounts to unguessability. There are an infinite number of
+names and we have to arrange our protocols to make it very, very hard
+to guess which channels are in use at any given time. On the one hand,
+we could delegate that to some black box which delivers us the next
+unguessable name when we ask for it. In this sense, it is therefore
+useful to reintroduce the $\pi$-calculus' $\mathsf{new}$ operator as a
+standin for that black box.
 
+However, in many settings, such as in the $\mathsf{RChain}$ and
+$\mathsf{F1R3FLY.io}$ implementations execution is arranged so that
+names are not merely unguessable, but \emph{unforgeable}, meaning that
+the execution environment guarantees not to allow outside agents to
+generate certain names. Thus, even if some malefactor guesses a
+particular name, it cannot eavesdrop on the channel associated with it
+because it can't execute code that uses that name because it didn't
+have the right to generate it. It could only do so had its code been
+in a scope where the generated name was sent to it by a (presumably)
+willing party.
 
+Thus, the $\mathsf{new}$ operator not only provides useful abstraction
+over a black boxed unguessability algorithm, but can also be used to
+support unforgeability. Hence, we reintroduce to rho as a conservative
+extension.
 
+\begin{mathpar}
+  \inferrule* [lab=unforgeable] {} {P \bc \ldots \bm \texttt{new}\; \mathsf{[NameDecl]}\; \texttt{in}\; P} \\
+  \and
+  \inferrule* [lab=] {} {\mathsf{NameDecl} \bc \mathsf{Var} \bm \mathsf{Var} \texttt{(} \mathsf{Uri} \texttt{)}} \\
+  \and
+  \inferrule* [lab=] {} {\mathsf{[NameDecl]} \bc \mathsf{NameDecl} \bm \mathsf{NameDecl} \texttt{,} \mathsf{[NameDecl]}} \\
+\end{mathpar}
