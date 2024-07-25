@@ -1,3 +1,107 @@
+\subsection{Summation}
+
+\subsubsection{Mixed summation}
+The presentation given so far is often referred to as the monadic,
+asynchronous version of the rho-calculus. There is a natural polyadic
+version, in which send and receive result in an exchange of a tuple of
+processes. Further there is a natural extension in which we recognize
+that certain processes can be made to behave like values and can
+therefore be replaced by more familiar representations of those
+values, and on top of this extension it becomes natural and compelling
+to add pattern-matching to send and receive.
+
+All of these extensions, which we will explore in some detail in the
+subsequent sections, really only constitute syntactic sugar. Values,
+pattern-matching, let expressions, and more can be desugared back down
+to the original calculus. However, summation, aka non-deterministic
+choice, where a process is in a superposition of states that get
+``collapsed'' through interaction with and environment, affords
+versions of the calculus that significantly extend the expressive
+power of the calculus.
+
+Specifically, mixed summation, or non-deterministic choice over both
+guarded input ($\mathsf{for}$-comprehension) and output is not merely
+a conservative extension of the calculus. Although there is an
+encoding of the calculus with mixed summation to the asynchronous
+calculus, it is not par-preserving. That is, if $\meaningof{-}_{async}
+: \MixSumProc \to \Proc$ is a mapping from the rho-calculus with mixed
+summation to the asynchronous polyadic rho-calulus, then it cannot be
+the case that
+
+\begin{mathpar}
+  \meaningof{P\mathsf{|}Q}_{async} = \meaningof{P}_{async}\mathsf{|}\meaningof{Q}_{async}
+\end{mathpar}
+
+for any such encoding. For good measure we throw in synchronous
+communication, but it is the mixed summation that constitutes the real
+jump in expressive power. These features are useful when dealing with
+probabilistic exection for both stochastic and quantum regimes. When
+relating our model of concurrent computation to these other notions it
+is important to track the points where there are significant increases
+in expressive power of our target language.
+
+Because Milner's presentation of the polyadic $\pi$-calculus
+with mixed summation is so parsimonious we use it as a template for a
+similar version of the rho-calculus.
+
+\begin{mathpar}
+  \inferrule* [lab=summation] {} {{M,N} \bc \pzero \;|\; x.A \;|\; M+N}
+  \and
+  \inferrule* [lab=agent] {} {A \bc (\arrvec{x})P \;| \; [\arrvec{P}]Q}
+  \and \\
+  \inferrule* [lab=process] {} {P,Q \bc M \;|\; P|Q \;|\; \mathsf{*}x}
+  \and
+  \inferrule* [lab=name] {} {x \bc \mathsf{@}P}
+\end{mathpar}
+
+In this presentation we adopt the syntactic conventions
+
+\begin{mathpar}
+  \mathsf{for(}\arrvec{y} \leftarrow x\mathsf{)}P := x.(\arrvec{y})P
+  \and
+  x\mathsf{!}(\arrvec{Q})\mathsf{;}P := x.[\arrvec{Q}]P
+\end{mathpar}
+
+The structural equivalence is modified thusly.
+
+\begin{definition}
+  The {\em structural congruence} $\equiv$ between processes is the
+  least congruence containing alpha-equivalence and satisfying the
+  commutative monoid laws (associativity, commutativity and $\pzero$
+  as identity) for parallel composition $|$ and summation $+$.
+\end{definition}
+
+The $\mathsf{COMM}$ rule is modified to incorporate non-deterministic choice.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {x_{t} \;\nameeq\; x_{s}, \;\;\; |\arrvec{y}| = |\arrvec{Q}|} {(R_1 + \mathsf{for}( \arrvec{y} \leftarrow x_{t} )P) \;\mathsf{|}\; (x_{s}!(\arrvec{Q}).P' + R_2)
+  \red P\substn{\arrvec{\quotep{Q}}}{\arrvec{y}}\mathsf{|}P'}
+\end{mathpar}
+
+And contexts are likewise extended in the obvious manner.
+
+\begin{mathpar}
+  \inferrule* [lab=summation-context] {} {{K_{M}} \bc \Box \;|\; x.K_{A} \;|\; K_{M}+M}
+  \and
+  \inferrule* [lab=agent-context] {} {K_{A} \bc (\arrvec{x})K_{P} \;|\; [\arrvec{P},K_{P},\arrvec{P'}]Q \;|\; [\arrvec{P}]K_{P}}
+  \and \\
+  \inferrule* [lab=process-context] {} {K_{P} \bc K_{M} \;|\; P\mathsf{|}K_{P}}
+\end{mathpar}
+
+\begin{remark}
+  Below we detail some of the useful syntactic sugar that makes
+  reasoning and programming with the rho calculus considerably more
+  convenient. The reader will be able to verify that that all the
+  notational conventions developed below still make sense for the
+  calculus extended with mixed summation.
+\end{remark}
+
+%% \begin{mathpar}
+%%   \mathsf{for(}{y_{1}}\leftarrow{x_{1}}\mathsf{;}\;\ldots\mathsf{;}\;{y_{n}}\leftarrow{x_{n}}\mathsf{)}P
+%%   \and \\
+%%   \mathsf{let}\; x_{1} \;\mathsf{=}\; v_{1} \mathsf{;}\; \ldots \mathsf{;}\; x_{n} \;\mathsf{=} \; v_{n}  \;\mathsf{in}\; P
+%% \end{mathpar}
+
 \section{Useful syntactic sugar}
 
 \subsection{First class values}
@@ -63,14 +167,6 @@ used idioms.
   \and
   \inferrule* [lab=var-ref-kind] {} {\mathsf{VarRefKind} \bc \texttt{=} \bm \texttt{=} \texttt{*}} \\
 \end{mathpar}
-\subsection{Summation}
-\begin{mathpar}
-  \inferrule*[lab=summation]{}{\mathsf{P} \bc \ldots \texttt{select}\; \texttt{\{} \;\mathsf{[Branch]}\; \texttt{\}}} \\
-  \and
-  \inferrule* [lab=] {} {\mathsf{Branch} \bc \mathsf{ReceiptLinearImpl} \texttt{=$>$} \mathsf{Proc3}} \\
-\inferrule* [lab=] {} {\mathsf{[Branch]} \bc \mathsf{Branch} \\
- \;\bm\; \mathsf{Branch} \mathsf{[Branch]}} \\
-\end{mathpar}
 \subsection{Let syntax}
 We achieve even greater compression and a more
 familiar notation if we also adopt the notation
@@ -113,4 +209,18 @@ extension.
   \inferrule* [lab=] {} {\mathsf{NameDecl} \bc \mathsf{Var} \bm \mathsf{Var} \texttt{(} \mathsf{Uri} \texttt{)}} \\
   \and
   \inferrule* [lab=] {} {\mathsf{[NameDecl]} \bc \mathsf{NameDecl} \bm \mathsf{NameDecl} \texttt{,} \mathsf{[NameDecl]}} \\
+\end{mathpar}
+
+\subsection{Guarded summation}
+
+One form of summation that \emph{is} a conservative extension of the
+core rho calculus is guarded summation. This is so useful that it
+deserves its own sugar.
+
+\begin{mathpar}
+  \inferrule*[lab=summation]{}{\mathsf{P} \bc \ldots \texttt{select}\; \texttt{\{} \;\mathsf{[Branch]}\; \texttt{\}}} \\
+  \and
+  \inferrule* [lab=] {} {\mathsf{Branch} \bc \mathsf{ReceiptLinearImpl} \texttt{=$>$} \mathsf{Proc3}} \\
+\inferrule* [lab=] {} {\mathsf{[Branch]} \bc \mathsf{Branch} \\
+ \;\bm\; \mathsf{Branch} \mathsf{[Branch]}} \\
 \end{mathpar}

@@ -176,6 +176,30 @@ perfectly amenable to multi-agent settings in which state is
 partitioned and time cannot be globally rolled back.
 
 \subsection{Programmable contexts}
+\subsubsection{Context-parameterised $\mathsf{COMM}$ rules}
+By way of introduction we first note a natural variation of the $\mathsf{COMM}$ rule.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM-K] {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; x!(\arrvec{Q})
+    \red P\substn{\quotep{K[Q]}}{y}} \\
+\end{mathpar}
+
+The intuition behind this variation is that often $P$ and $Q$ are at
+different levels of some protocol stack. For example, $P$ may be an
+application written to use $\mathsf{TCP}$ as a communication
+protocol. Meanwhile, $Q$ may be an application write to use
+$\mathsf{HTTP}$ as a communication protocl. This is still a common
+occurrence in building systems out of 3rd party Internet
+applications. It is possible to write adapters that enable $P$ to
+communicate with $Q$. We can encapsulate this adapter in the context
+$K$.
+
+Likewise, we can abstract error correction protocols into a context
+$K$ by having $K$ be comprised of the encoder and decoder
+processes. More generally, $K$ represents a form of pipe-fitting or
+impedance matching between processes that would otherwise not be able
+to effectively communicate.
+
 \subsubsection{Process grammar}\label{subsub:process_grammar}
 
 \begin{mathpar}
