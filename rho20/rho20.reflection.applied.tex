@@ -49,4 +49,95 @@ $\mathsf{FM}$ set theory with $\mathsf{ZF}$ set theory.
 
 \subsection{Reflective graphs}
 
-TBD
+\subsection{Well-formedness}
+
+This is an algebraic theory, and thus it is syntactic in nature. It
+provides a language of graphs that are built out of logical sentences.
+In more detail, the theory admits three kinds of sentences:
+
+\begin{itemize}
+\item
+  recognizing an admissible vertex:
+  \(\mathsf{G}[X,V]; \Gamma \vdash v\);
+\item
+  recognizing an admissible variable:
+  \(\mathsf{G}[X,V]; \Gamma \vdash x\);
+\item
+  and, recognizing a well formed graph:
+  \(\mathsf{G}[X,V]; \Gamma \vdash g\)
+\end{itemize}
+
+Variables are used to capture references to vertices which are in turn
+used to form edges between vertices. As such, judging the wellformedness
+of a graph depends on the use of references. Hence, a judgement makes
+use of a dependency list, \(\Gamma\) which is just a sequence of
+variables. That is,
+
+\[\Gamma ::= () \;|\; x, \Gamma\]
+
+Notationally, we overload the comma to indicate concatenation of
+sequences. Thus, given \(\Gamma_1 = x_{11},\ldots,x_{1m}\) and
+\(\Gamma_2 = x_{21},\ldots,x_{2n}\), then
+\(\Gamma_1,\Gamma_2 = x_{11},\ldots,x_{1m},x_{21},\ldots,x_{2n}\)
+
+A graph expression is given by the grammar
+
+\[g,h ::= 0 \;|\; v|g \;|\; x|g \;|\; g \otimes h \; |\;\mathsf{let}\; x = v \; \mathsf{in}\; g \;|\; \langle \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g, \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; h\rangle\]
+
+\hypertarget{pronunciation}{%
+\subsubsection{Pronunciation}\label{pronunciation}}
+
+The graph constructors are pronounced as follows.
+
+\begin{itemize}
+\item
+  \(0\) -- ``the empty graph'', or just ``empty'';
+\item
+  \(v | g\) -- ``\(g\) with the vertex \(v\) adjoined'', or ``adjoin
+  \(v\) to \(g\)'';
+\item
+  \(g_1 \otimes g_2\) -- ``the graph formed by juxtaposing \(g_1\) and
+  \(g_2\)'', or ``juxtapose \(g_1\) and \(g_2\)'', or just ``\(g_1\) and
+  \(g_2\)'';
+\item
+  \(\mathsf{let}\; x = v \; \mathsf{in}\; g\) -- ``let \(x\) stand for
+  \(v\) in \(g\)''; or ``let \(x\) be \(v\) in \(g\)'';
+\item
+  \(\langle \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g_1,\mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; g_2\rangle\)
+  -- ``the graph formed by connecting \(g_1\) to \(g_2\) with and edge
+  from \(x_1\) to \(x_2\)''; or, ``connect \(g_1\) to \(g_2\) with and
+  edge from \(x_1\) to \(x_2\)''.
+\end{itemize}
+
+We say $x$ is fresh in $g$ if $x$ does not occur in $g$.
+
+The judgment \(\mathsf{G}[X,V]; \Gamma \vdash g\) is pronounced
+``\(\mathsf{G}[X,V]\) thinks that \(g\) is well-formed, given
+dependencies, \(\Gamma\) .'' Similarly,
+\(\mathsf{G}[X,V]; \Gamma \vdash v\) is pronounced ``\(\mathsf{G}[X,V]\)
+thinks that \(v\) is an admissible vertex, given dependencies,
+\(\Gamma\);'' and \(\mathsf{G}[X,V]; \Gamma \vdash x\) is pronounced
+``\(\mathsf{G}[X,V]\) thinks that \(x\) is an admissible variable, given
+dependencies, \(\Gamma\).''
+
+A rule of the form
+
+\[\frac{ H_1, \ldots , H_n }{ C }R\]
+
+is pronounced ``\(R\) concludes that \(C\) given \(H_1\), \(\ldots\),
+\(H_n\)''.
+
+The rules for judging when a vertex or a variable are admissible or
+graph is well formed are as follows
+
+\[\frac{ }{ \mathsf{G}[X,V]; () \vdash 0}Foundation\]
+
+\[\frac{ v \in V }{ \mathsf{G}[X,V]; () \vdash v}Verticity \;\;\frac{ x \in X }{ \mathsf{G}[X,V]; \emptyset \vdash x}Variation\]
+
+\[\frac{ \mathsf{G}[X,V]; \Gamma \vdash g \;\; \mathsf{G}[X,V]; () \vdash v }{ \mathsf{G}[X,V]; \Gamma \vdash v | g}Participation \; \; \frac{ \mathsf{G}[X,V]; \Gamma \vdash g \;\; \mathsf{G}[X,V]; () \vdash x }{ \mathsf{G}[X,V]; \Gamma, x \vdash x | g}Dependence\]
+
+\[\frac{ \mathsf{G}[X,V]; \Gamma_1 \vdash g_1 \; \mathsf{G}[X,V]; \Gamma_2 \vdash g_2}{ \mathsf{G}[X,V]; \Gamma_1, \Gamma_2 \vdash g_1 \otimes g_2}Juxtaposition[\Gamma_1 \cap \Gamma_2 = \emptyset]\]
+
+\[\frac{ \mathsf{G}[X,V]; \Gamma,x \vdash v|g}{ \mathsf{G}[X,V]; \Gamma \vdash \mathsf{let}\; x = v \; \mathsf{in}\; g}Nomination[x \;fresh\; in\; g]\]
+
+\[\frac{ \mathsf{G}[X,V]; \Gamma_1 \vdash \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g_1 \; \;\mathsf{G}[X,V]; \Gamma_2 \vdash \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; g_2}{ \mathsf{G}[X,V]; \Gamma_1,\Gamma_2 \vdash \langle \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g_1, \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; g_2 \rangle}Connection[\Gamma_1 \cap \Gamma_2 = \emptyset]\]
