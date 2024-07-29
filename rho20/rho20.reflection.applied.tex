@@ -1,0 +1,52 @@
+\section{Applied reflection: Reflective set theory and reflective graphs}
+In this section we illustrate, albeit briefly, that reflection has a
+much wider utility than just computation. We describe reflective
+versions of set theory and graph theory and illustrate via some core
+examples how reflection accounts for an interesting range of phenomena.
+
+\subsection{Reflective set theory}
+
+This presentation will be just a sketch. A more rigorous formal
+account is most likely built using Awodey's algebraic set theory.
+
+\begin{mathpar}
+  \inferrule* [lab=red-set] {} {\textcolor{red}{\mathsf{S}}[A] \bc \textcolor{red}{\bold{\mathsf{\{}}} (A \bm \textcolor{red}{\mathsf{S}}[A])^{*} \textcolor{red}{\bold{\mathsf{\}}}}}
+  \and
+  \inferrule* [lab=black-set] {} {\mathsf{S}[A] \bc \bold{\mathsf{\{}} (A \bm \mathsf{S}[A])^{*} \bold{\mathsf{\}}}} \\
+  \and
+  \inferrule* [lab=rset-player] {} {\mathsf{RSet}_{player} = \textcolor{red}{\mathsf{S}}[\mathsf{S}[\mathsf{RSet}_{player}]]}
+  \and
+  \inferrule* [lab=rset-opponent] {} {\mathsf{RSet}_{opponent} = \mathsf{S}[\textcolor{red}{\mathsf{S}}[\mathsf{RSet}_{opponent}]]}
+  \and
+  \inferrule* [lab=rset] {} {\mathsf{RSet} = \mathsf{RSet}_{player} \oplus \mathsf{RSet}_{opponent}}
+\end{mathpar}
+
+The intuition is that we have two distinct \emph{copies} of set
+theory, which we will denote for purposes of discussion, red set
+theory and black set theory. Both of these theories are considered
+parametric in a theory of atoms. Thus, these theories are instances of
+a Fraenkl-Mostowski set theory ($\mathsf{FM}$ set theory). But, now we
+make the atoms of the red set theory be black sets, and the atoms of
+the black set theory be red sets.
+
+Again, computer science provides a unique perspective on these age old
+notions. The idea of copies of a theory comes about when we reify meta
+theory as theory, something implicit in Awodey's work. Computer
+science also provides a very practical means for realizing it: we have
+different constructors (red braces versus black braces); and different
+accessor (a red element-of operation versus a black element of
+operation). Further, computer science is quite comfortable with these
+kinds of mutually recursive structures. The mutual recursion bottoms
+out in the red empty set and the black empty set.
+
+What motivates such a strange construction? It turns out that
+$\mathsf{FM}$ set theory has been successfully applied to reasoning
+about nominal phenomena, such as binders in the $\pi$-calculus. But,
+once again, one is left with a dissatisfying theory of atoms without
+structure. This theory explains where atoms come from and how they can
+have exactly the same structure as sets. In other words, it reconciles
+$\mathsf{FM}$ set theory with $\mathsf{ZF}$ set theory.
+
+\subsection{Reflective graphs}
+
+TBD
