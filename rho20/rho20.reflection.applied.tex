@@ -39,6 +39,12 @@ operation). Further, computer science is quite comfortable with these
 kinds of mutually recursive structures. The mutual recursion bottoms
 out in the red empty set and the black empty set.
 
+Now, the presentation above is only suggestive because Kleene star
+would only generate sets with finite cardinality. This is why Awodey's
+algebraic set theory is the better formalism to adapt to formalize
+these intuitions. But, from the perspective of computer science this
+presentation very much matches how it might be coded up.
+
 What motivates such a strange construction? It turns out that
 $\mathsf{FM}$ set theory has been successfully applied to reasoning
 about nominal phenomena, such as binders in the $\pi$-calculus. But,
@@ -141,3 +147,30 @@ graph is well formed are as follows
 \[\frac{ \mathsf{G}[X,V]; \Gamma,x \vdash v|g}{ \mathsf{G}[X,V]; \Gamma \vdash \mathsf{let}\; x = v \; \mathsf{in}\; g}Nomination[x \;fresh\; in\; g]\]
 
 \[\frac{ \mathsf{G}[X,V]; \Gamma_1 \vdash \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g_1 \; \;\mathsf{G}[X,V]; \Gamma_2 \vdash \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; g_2}{ \mathsf{G}[X,V]; \Gamma_1,\Gamma_2 \vdash \langle \mathsf{let}\; x_1 = v_1 \; \mathsf{in}\; g_1, \mathsf{let}\; x_2 = v_2 \; \mathsf{in}\; g_2 \rangle}Connection[\Gamma_1 \cap \Gamma_2 = \emptyset]\]
+
+\subsubsection{Where's the reflection?}
+
+As with all the other formalism put forward in this paper, this
+account of graphs begins with a two-level type
+decomposition. Specifically, it acknowledges that as a type, the type
+of graphs is dependent on the type of vertices and edges. But, once
+this dependency is acknowledged, we can readily form and solve fixed
+point equations. Such as
+
+\begin{mathpar}
+  \mathsf{R}_{V} = \mathsf{G}[X,1 + \mathsf{R}_{V}] \\
+\end{mathpar}
+
+In fact, it is also possible to do something similar for vertices.
+
+
+\subsection{Reflection as integration}
+
+It is common to think of the derivative of a polynomial functor as
+punching a hole in the data type, that is, for a given functor,
+$\mathsf{T}$, the functor $\partial\mathsf{T}$ is the type of 1-holed
+contexts of $\mathsf{T}$. By the same token, we can think of
+reflection as a kind of reflection in the sense that it is plugging
+holes in a functor. Specifically, if $\mathsf{T}[X]$ is parametric in
+$X$, then $\mathsf{R}(\mathsf{T}) =
+\mathsf{T}(\mathsf{R}(\mathsf{T}))$
