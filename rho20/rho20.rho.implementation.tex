@@ -14,7 +14,8 @@ the listing below.
 
 The fact that this compiles and the types are inhabited can be seen as
 a mechanical proof that -- despite the strange mutual recursion
-between names and processes -- the algebra is not ill-founded.
+between names and processes -- the algebra is not ill-founded. \\
+\\
 
 \begin{lstlisting}
 trait ProcessStates {
@@ -55,28 +56,82 @@ a modern computer.
 It turns out that a variant of the $\mathsf{Linda}$ tuple space where
 input is not blocking is the critical innovation to an efficient
 implementation. Instead of blocking we turn input from a key into the
-storage of a continuation at the key.
+storage of a continuation at the key. As the astute reader has already
+guessed, (the hashes of) channels become keys.
 
-\includegraphics[scale=0.25]{RHO20RSpaceSlide1.pdf}
+\includegraphics[scale=0.25]{RHO20RSpaceSlide1.pdf} \\
 
-The diagram above indicates how to turn a given process state into an
-$\mathsf{RSpace}$ instance. The 4th equation depends on an operation
-on $\mathsf{RSpace}$ instances corresponding to parallel composition
-of process states.
+Thus, the diagram above indicates how to turn a given process state
+into an $\mathsf{RSpace}$ instance. The 4th equation depends on an
+operation on $\mathsf{RSpace}$ instances corresponding to parallel
+composition of process states. 
+
+\subsubsection{Parallel composition of $\mathsf{RSpace}s$}
+If we are combining two $\mathsf{RSpaces}$ that only have a single
+key-value pair, each; and the value is data and not continuation; and
+the keys are not equal, then we simply combing them into a single
+$\mathsf{RSpace}$ containing both key-value pairs. \\
 
 \includegraphics[scale=0.25]{RHO20RSpaceSlide2.pdf}
 
+More generally, if none of the keys of the respective spaces overlaps,
+then we simply combine them into a single map. \\
+
 \includegraphics[scale=0.25]{RHO20RSpaceSlide3.pdf}
+
+Similarly, if we are combining two $\mathsf{RSpaces}$ that only have a
+single key-value pair, each; and the keys map to continuations; and
+the keys are not equal, then we simply combing them into a single
+$\mathsf{RSpace}$ containing both key-value pairs. Again, this
+generalizes to the case when the the key sets are disjoint.
 
 \includegraphics[scale=0.25]{RHO20RSpaceSlide4.pdf}
 
+If we are combining two $\mathsf{RSpaces}$ that only have a single
+key-value pair, each; and the keys point to values; and the
+keys are equal, then we convert that into a single $\mathsf{RSpace}$
+containing where the key maps to a multiset of the values. 
+
 \includegraphics[scale=0.25]{RHO20RSpaceSlide5.pdf}
 
-\includegraphics[scale=0.25]{RHO20RSpaceSlide6.pdf}
+Dually, for continuations, when we are combining two
+$\mathsf{RSpaces}$ that only have a single key-value pair, each; and
+the keys point to continuations; and the keys are equal, then we
+convert that into a single $\mathsf{RSpace}$ containing where the key
+maps to a multiset of the continuations.
+
+These two cases obviously generalize to key sets that are not disjoint
+-- but overlapping keys have the same polarity (data versus
+continuation) in each space.
+
+What remains is when we have opposite polarity at the same key.
+
+%\includegraphics[scale=0.25]{RHO20RSpaceSlide6.pdf}
 
 \includegraphics[scale=0.25]{RHO20RSpaceSlide7.pdf}
 
-\subsection{Compiling rho to RSpace}
+In this case, one simply zips over the overlapping keys applying the
+continuations to the data. \footnote{We leave it to the reader to work
+  out the details regarding what happens when the two sets are not the
+  same size.}
+
+Note that this is completely sequential execution. The only
+non-determinism is the fact that the sets are unordered. Can we do
+better? Can we utilize additional physical threads available on modern
+hardware to scale execution?
+
+\subsection{Compiling rho to $\mathsf{RSpace}$}
+
+The following code relies on an implementation of $\mathsf{RSpace}$
+that supports a polymorphic method $\texttt{p}$ that takes a channel
+as its first argument and either a value or a continuation as its
+second argument. When it puts a value at a key that maps to a
+continuation, it removes the continuation and then applies the
+continuation to the value. Dually, when it puts a continuation at a
+key that maps to a value it removes the value and applies the
+continuation to it. Otherwise, it accumulates values or continuations
+in multisets mapped to by keys. Readers interested in more detail can
+consult \cite{f1r3fly-io:githubrepo}. \\
 
 \begin{lstlisting}
   trait RhoRuntime {
