@@ -1,7 +1,8 @@
 \section{Implementing rho calculus on modern computers}
 
 \subsection{Processes and names}
-The algebra of process states (recapitulated below for convenience) is 
+The algebra of process states (recapitulated below for convenience) is
+directly and succinctly represented by the $\mathsf{Scala}$ code. 
 
 \begin{mathpar}
 \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
@@ -10,10 +11,9 @@ The algebra of process states (recapitulated below for convenience) is
             {x, y \bc \mathsf{@}P }
 \end{mathpar}
 
-directly and succinctly represented by the $\mathsf{Scala}$ code. The
-fact that this compiles and the types are inhabited can be seen as a
-mechanical proof that -- despite the strange mutual recursion between
-names and processes -- the algebra is not ill-founded. 
+The fact that this compiles and the types are inhabited can be seen as
+a mechanical proof that -- despite the strange mutual recursion
+between names and processes -- the algebra is not ill-founded.
 
 \begin{lstlisting}
 trait ProcessStates {
