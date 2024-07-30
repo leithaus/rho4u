@@ -153,4 +153,12 @@ consult \cite{f1r3fly-io:githubrepo}. \\
 
 \subsubsection{Ordering rho terms}
 
-TBD
+Another aspect of efficient execution of rho involves ordering
+terms. It turns out it is possible to give a total order to rho terms
+such that there is a unique representative for each of the equivalence
+classes of $\equiv$. Thus, if $\mathsf{N}(P)$ denotes the unique
+representative of $[P]_{\equiv}$, then when hashing a channel, say
+$\mathsf{@}P$, we calculate actually hash
+$\mathsf{@}\mathsf{N}(P)$. Again, for readers interested in more
+detail, please see \cite{f1r3fly-io:githubrepo}.
+
