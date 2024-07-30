@@ -10,7 +10,10 @@ The algebra of process states (recapitulated below for convenience) is
             {x, y \bc \mathsf{@}P }
 \end{mathpar}
 
-directly and succinctly represented by the $\mathsf{Scala}$ code.
+directly and succinctly represented by the $\mathsf{Scala}$ code. The
+fact that this compiles and the types are inhabited can be seen as a
+mechanical proof that -- despite the strange mutual recursion between
+names and processes -- the algebra is not ill-founded. 
 
 \begin{lstlisting}
 trait ProcessStates {
@@ -43,19 +46,22 @@ object RhoStates extends ProcessStates with Nominals {
 }
 \end{lstlisting}
 
-The fact that this compiles and the types are inhabited can be seen as
-a mechanical proof that -- despite the strange mutual recursion
-between names and processes -- the algebra is not ill-founded. Next,
-we illustrate how to turn these process states into execution on a
-modern computer.
+Next, we illustrate how to turn these process states into execution on
+a modern computer.
 
-\subsection{RSpace: a new kind of key-value store}
+\subsection{$\mathsf{RSpace}$: a new kind of key-value store}
 
-Here we describe a variant of the $\mathsf{Linda}$ tuple space where
-input is not blocking. Instead, we turn input from a key into the
-storage of a continuation at the key. 
+It turns out that a variant of the $\mathsf{Linda}$ tuple space where
+input is not blocking is the critical innovation to an efficient
+implementation. Instead of blocking we turn input from a key into the
+storage of a continuation at the key.
 
-\includegraphics[scale=0.5]{RHO20RSpaceSlide1.pdf}
+\includegraphics[scale=0.4]{RHO20RSpaceSlide1.pdf}
+
+The diagram above indicates how to turn a given process state into an
+$\mathsf{RSpace}$ instance. The 4th equation depends on an operation
+on $\mathsf{RSpace}$ instances corresponding to parallel composition
+of process states.
 
 \subsection{Compiling rho to RSpace}
 

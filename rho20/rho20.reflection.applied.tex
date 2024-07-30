@@ -34,7 +34,7 @@ notions. The idea of copies of a theory comes about when we reify meta
 theory as theory, something implicit in Awodey's work. Computer
 science also provides a very practical means for realizing it: we have
 different constructors (red braces versus black braces); and different
-accessor (a red element-of operation versus a black element of
+accessors (a red element-of operation versus a black element of
 operation). Further, computer science is quite comfortable with these
 kinds of mutually recursive structures. The mutual recursion bottoms
 out in the red empty set and the black empty set.
@@ -161,7 +161,7 @@ point equations. Such as
   \mathsf{R}_{V} = \mathsf{G}[X,1 + \mathsf{R}_{V}] \\
 \end{mathpar}
 
-In fact, it is also possible to do something similar for vertices.
+In fact, it is also possible to do something similar for edges.
 
 
 \subsection{Reflection as integration}
@@ -173,4 +173,11 @@ contexts of $\mathsf{T}$. By the same token, we can think of
 reflection as a kind of reflection in the sense that it is plugging
 holes in a functor. Specifically, if $\mathsf{T}[X]$ is parametric in
 $X$, then $\mathsf{R}(\mathsf{T}) =
-\mathsf{T}(\mathsf{R}(\mathsf{T}))$
+\mathsf{T}[\mathsf{R}(\mathsf{T})]$ represents the elimination of that
+dependency.
+
+Unfortunately, a duality between derivation and reflection supporting
+an analog of the fundamental theorem of calculus is not so easily
+obtained. In particular, it is not generally the case that we have
+$\mathsf{R}(\partial \mathsf{T}) = \mathsf{T}$. It would be of
+interest to find conditions under which this does hold.
