@@ -1,4 +1,44 @@
 \section{From formalism to physical intuition and back}
-TBD
+
+\subsection{Indexed namespaces}
+Let's begin the discussion by identifying an indexed set of names.
+
+\begin{mathpar}
+  \mathsf{Z}(0) = \mathsf{@}0 \\
+  \mathsf{Z}(n) = \mathsf{@}(\mathsf{for}( y \leftarrow \mathsf{Z}(n-1) )0) \\
+  \mathsf{Z} = \{ \mathsf{Z}(n) \;|\; n \in \mathbb{N} \}
+\end{mathpar}
+
+While process states are perfectly suited for using channels as
+locations at which to rendezvous for data exchange, correlating that
+to more common notions of locations, such as points in a metric space,
+is not immediately obvious. The namespace $mathsf{Z}$, because of its
+natural indexed structure, provides an intuitive bridge between the
+two ways of thinking about locations. Indeed, given a map like this
+from the naturals to names, it should be relatively straightforward
+for the reader to extend this idea to the rationals, and indeed to the
+computable reals.
+
+\subsection{Processes as physical forces}
+Next, we consider a collection of processes that we will think of as
+components in a ``force'', where by force we mean something like a
+physical force, such as the electromagnetic force or the strong or
+weak forces.
+
+\begin{mathpar}
+  \mathbb{F}(n) = \mathsf{for}( y \leftarrow \mathsf{Z}(n) )\{\mathsf{Z}(n)\mathsf{!}(\mathsf{*}y) \;\mathsf{|}\;\mathbb{F}(n)\}) \\
+  \mathbb{F} = \Pi_{n \in \mathbb{N}} \mathbb{F}
+\end{mathpar}
+
+Now, model the action of this force on an object, we represent the
+object as a process as well, say $Q$, and locate it somewhere in
+$\mathsf{Z}$, i.e. $\mathsf{Z}(i)\mathsf{!}(Q)$. Then the action of
+$\mathbb{F}$ on $Q$, is just the parallel composition,
+$\mathbb{F}\;\mathsf{|}\;\mathsf{Z}(i)\mathsf{!}(Q)$. Note that
+because $\mathsf{Z}(i)\mathsf{!}(Q)$ cannot reduce, it tends to stay
+at rest. However, when acted on by an outside force, namely
+$\mathbb{F}$, we notice that $Q$ is relocated first to
+$\mathsf{Z}(i+1)$ and then $\mathsf{Z}(i+2)$ and tends to stay on this
+linear trajectory unless there are other forces at play.
 
 
