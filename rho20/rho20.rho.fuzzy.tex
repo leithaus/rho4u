@@ -1,2 +1,60 @@
 \section{Fuzzy rho}
-TBD
+
+\subsection{Manifest of goods}
+
+We need an action on process states, together with a binary operation
+taking a pair of names to an element of that action.
+
+\begin{mathpar}
+  ( - * - ) : A \times \mathsf{Proc} \rightarrow \mathsf{Proc} \\
+  ( - \circ - ) : \mathsf{@Proc} \times \mathsf{@Proc} \rightarrow A
+\end{mathpar}
+
+Equipped with these we can define a new $\mathsf{COMM}$ rule
+
+\begin{mathpar}
+  %for( y <- x )P | u!( Q ) -> P{ @(( u o x )*Q)/y }
+  \inferrule* [lab=COMM] {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; u!(\arrvec{Q})
+    \red P\substn{\quotep{(u \circ x)*Q}}{y}} \\
+\end{mathpar}
+
+The intuition is that communication isn't based on exact
+match. Instead, the strength of the match, as measured by $u \circ x$,
+determines how much of the data is transmitted, which is calculated by
+$(u \circ x)*Q$.
+
+To tighten these intuitions we ask for a ``measure'' on
+$\mathsf{Proc}$. We use an order-theoretic gadget, namely a quantale,
+to compare process states. That is, we ask for $\mu : \mathsf{Proc} ->
+\mathsf{K}$ where $\mathsf{K}$ is a quantale. Finally, we require the
+action to carry the order information. That is $A = \mathsf{K}.$ Then
+we need that
+
+\begin{mathpar}
+  a1 \leq a2 \Rightarrow \mu( a1*P ) \leq \mu( a2*P )
+\end{mathpar}
+
+Under these conditions we can calculate
+
+\begin{mathpar}
+  %for( y <- u1 )P | x1!( Q ) -> P{ @(( u1 o x1 )*Q)/y }
+  \inferrule* {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; u_{1}!(\arrvec{Q})
+    \red P\substn{\quotep{(u_{1} \circ x)*Q}}{y}} \\
+  %for( y <- u2 )P | x2!( Q ) -> P{ @(( u2 o x2 )*Q)/y }
+  \inferrule* {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; u_{2}!(\arrvec{Q})
+    \red P\substn{\quotep{(u_{2} \circ x)*Q}}{y}} \\
+\end{mathpar}
+
+Which ensures that if the match is worse, less data is transmitted.
+
+\subsection{A model}
+
+First, let's adopt a notation that when $x = \mathsf{@}P$, then $\mathsf{\#}x = P$. Now, we set $A = \mathsf{@Proc}$. This choice affords the following definitions.
+
+\begin{mathpar}
+  x_{1} \circ x_{2} = @( \mathsf{\#}x_{1} | \mathsf{\#}x_{2} ) \\
+  u * P = P\{ (u \circ x)/x | x \in \mathsf{FN}( P ) \} \\
+  \mu( P ) = \mathsf{@}P
+\end{mathpar}
+
+which the reader can check satisfies the conditions.
