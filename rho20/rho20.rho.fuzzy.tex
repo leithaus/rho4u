@@ -14,8 +14,8 @@ Equipped with these we can define a new $\mathsf{COMM}$ rule
 
 \begin{mathpar}
   %for( y <- x )P | u!( Q ) -> P{ @(( u o x )*Q)/y }
-  \inferrule* [lab=COMM] {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; u!(\arrvec{Q})
-    \red P\substn{\quotep{(u \circ x)*Q}}{y}} \\
+  \inferrule* [lab=COMM] {} {\mathsf{for}( y \leftarrow x )P \;\mathsf{|}\; u!(Q)
+    \red P\substn{\quotep{((u \circ x)*Q)}}{y}} \\
 \end{mathpar}
 
 The intuition is that communication isn't based on exact
