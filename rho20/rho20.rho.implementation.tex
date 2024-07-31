@@ -48,6 +48,27 @@ object RhoStates extends ProcessStates with Nominals {
 }
 \end{lstlisting}
 
+\begin{remark}
+  Note that this implementation makes it possible to easily
+  incorporate other kinds of nominals, such as strings, or deBruijn
+  indices, or $\mathsf{URI}$s. The code simply makes a wrapper case
+  class that extends the Nominal trait. This correspond to the fact
+  that because rho is Turing complete we can create process encodings
+  of all of the those data types and simply quote them to get those
+  types of names. This illustrates one of the key uses of the notion
+  of \emph{namespace} in the rho calculus.
+\end{remark}
+
+\begin{remark}
+  A namespace is simple a collection of names. This can be given
+  extensionally, such as listing out the names that are members of a
+  set. Or, it can be given intensionally, by providing a rule for
+  recognizing when a name is included in a namespace or
+  not. Namespaces are incredibly powerful, and this account is the
+  first we know about that tames what is otherwise a typically thorny
+  and error-prone account found in mainstream languages.
+\end{remark}
+
 Next, we illustrate how to turn these process states into execution on
 a modern computer.
 
