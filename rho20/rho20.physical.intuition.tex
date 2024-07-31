@@ -12,7 +12,7 @@ Let's begin the discussion by identifying an indexed set of names.
 While process states are perfectly suited for using channels as
 locations at which to rendezvous for data exchange, correlating that
 to more common notions of locations, such as points in a metric space,
-is not immediately obvious. The namespace $mathsf{Z}$, because of its
+is not immediately obvious. The namespace $\mathsf{Z}$, because of its
 natural indexed structure, provides an intuitive bridge between the
 two ways of thinking about locations. Indeed, given a map like this
 from the naturals to names, it should be relatively straightforward
@@ -26,7 +26,7 @@ physical force, such as the electromagnetic force or the strong or
 weak forces.
 
 \begin{mathpar}
-  \mathbb{F}(n) = \mathsf{for}( y \leftarrow \mathsf{Z}(n) )\{\mathsf{Z}(n)\mathsf{!}(\mathsf{*}y) \;\mathsf{|}\;\mathbb{F}(n)\}) \\
+  \mathbb{F}(n) = \mathsf{for}( y \leftarrow \mathsf{Z}(n) )\{\mathsf{Z}(n+1)\mathsf{!}(\mathsf{*}y) \;\mathsf{|}\;\mathbb{F}(n)\} \\
   \mathbb{F} = \Pi_{n \in \mathbb{N}} \mathbb{F}
 \end{mathpar}
 
@@ -41,4 +41,26 @@ $\mathbb{F}$, we notice that $Q$ is relocated first to
 $\mathsf{Z}(i+1)$ and then $\mathsf{Z}(i+2)$ and tends to stay on this
 linear trajectory unless there are other forces at play.
 
+It is also worth noting that there is a natural notion of \emph{rate}
+of travel. Specifically, $\mathsf{COMM}$ events provide a local notion
+of time. We can see that $\mathbb{F}$ moves objects located in
+$\mathsf{Z}$ along at a rate of one unit of distance (as measure by
+the index) per $\mathsf{COMM}$ event.
 
+\begin{mathpar}
+  \mathbb{F}\;\mathsf{|}\;\mathsf{Z}(i)\mathsf{!}(Q) \red \mathbb{F}\;\mathsf{|}\;\mathsf{Z}(i+1)\mathsf{!}(Q) \\
+\end{mathpar}
+
+
+It is quite straightforward to write down forces that are non-linear. For example, 
+
+\begin{mathpar}
+  \mathbb{G}(n) = \mathsf{for}( y \leftarrow \mathsf{Z}(n) )\{\mathsf{Z}(n^{2})\mathsf{!}(\mathsf{*}y) \;\mathsf{|}\;\mathbb{G}(n)\} \\
+  \mathbb{G} = \Pi_{n \in \mathbb{N}} \mathbb{G}
+\end{mathpar}
+
+The reader is invited to write down, following this method, an analog
+of Newtonian gravity. Of course, to do this requires we associate to
+objects a notion of mass. One of the most natural ways to do this is
+to measure the computational complexity of a process and use (a
+function of) this number as a stand in for mass.
