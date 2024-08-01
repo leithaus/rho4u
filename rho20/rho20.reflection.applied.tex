@@ -7,7 +7,7 @@ examples how reflection accounts for an interesting range of phenomena.
 \subsection{Reflective set theory}
 
 This presentation will be just a sketch. A more rigorous formal
-account is most likely built using Awodey's algebraic set theory.
+account is most likely built using algebraic set theory or topos theory.
 
 \begin{mathpar}
   \inferrule* [lab=red-set] {} {\textcolor{red}{\mathsf{S}}[A] \bc \textcolor{red}{\bold{\mathsf{\{}}} (A \bm \textcolor{red}{\mathsf{S}}[A])^{*} \textcolor{red}{\bold{\mathsf{\}}}}}
@@ -32,8 +32,9 @@ red sets.
 
 Again, computer science provides a unique perspective on these age old
 notions. The idea of copies of a theory comes about when we reify meta
-theory as theory, something implicit in Awodey's work. Computer
-science also provides a very practical means for realizing it: we have
+theory as theory, something implicit in Awodey's work on algebraic set
+theory \cite{awodeysteven:algebraicsettheory2005}. Computer science
+also provides a very practical means for realizing it: we have
 different constructors (red braces versus black braces); and different
 accessors (a red element-of operation versus a black element of
 operation). Further, computer science is quite comfortable with these
@@ -41,7 +42,7 @@ kinds of mutually recursive structures. The mutual recursion bottoms
 out in the red empty set and the black empty set.
 
 Now, the presentation above is only suggestive because Kleene star
-would only generate sets with finite cardinality. This is why Awodey's
+would only generate sets with finite cardinality. This is why
 algebraic set theory is the better formalism to adapt to formalize
 these intuitions. But, from the perspective of computer science this
 presentation very much matches how it might be coded up.
