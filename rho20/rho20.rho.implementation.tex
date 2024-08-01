@@ -74,11 +74,12 @@ a modern computer.
 
 \subsection{$\mathsf{RSpace}$: a new kind of key-value store}
 
-It turns out that a variant of the $\mathsf{Linda}$ tuple space where
-input is not blocking is the critical innovation to an efficient
-implementation. Instead of blocking we turn input from a key into the
-storage of a continuation at the key. As the astute reader has already
-guessed, (the hashes of) channels become keys.
+It turns out that a variant of the $\mathsf{Linda}$ tuple space
+\cite{DBLP:conf/parle/Gelernter89} where input is not blocking is the
+critical innovation to an efficient implementation. Instead of
+blocking we turn input from a key into the storage of a continuation
+at the key. As the astute reader has already guessed, (the hashes of)
+channels become keys.
 
 \includegraphics[scale=0.25]{RHO20RSpaceSlide1.pdf} \\
 
