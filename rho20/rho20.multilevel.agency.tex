@@ -175,6 +175,64 @@ that the form procedural reflection takes in the rho calculus is
 perfectly amenable to multi-agent settings in which state is
 partitioned and time cannot be globally rolled back.
 
+Naturally, all of the syntactic sugar described above works with this
+variant of rho. As a result we can provide a very compact
+implementation of exploring the state space of a process.
+
+\begin{lstlisting}
+  contract checkStateSpace( p, c, t, a ) = {
+    // check that we still have a positive number of attempts left
+    match a with { 
+      case 0 => ( p, t.set( @c, { @p : "fails" } ) ) // nope
+      case _ => { // yep
+        // if the state already matches the condition
+        match check( p, c ) with {
+          // we are done
+          case true => (p, t.set( @c, { @p : "succeeds" } ) )
+          // otherwise...
+          case false => {
+            // check to see if p has a successor state
+            match p with {
+              // nope
+              case Nil => ( p, t.set( @c, { @p : "fails" } ) )
+              // yep, so check to see if we have seen p before
+              case _ => { 
+                match t.getOrElse( @c, { @p : p } ) with {
+                  // we have encountered a failure, 
+                  // so we attempt to get a different branch
+                  case { @p : "fail" } => {
+                    checkStateSpace!( p', c, t, a-1 )
+                  }
+                  // we have encountered a loop
+                  // in the state space graph
+                  case { @p : p' } => {
+                    checkStateSpace!( p', c, t, a-1 )
+                  }
+                  // we are descending a branch
+                  case { pcode : pproc } => {
+                    new n in {
+                      // let pproc run for 1 step
+                      n?( pproc )
+                      // catch the next state
+                      | for( @p' <- n ) { 
+                        checkStateSpace!(
+                           p', c,
+                           t.set( @c, { @p : p' } ), a
+                        )
+                      }
+                    }
+                  }
+                  
+                }
+              }
+            }
+          }
+        }        
+      }
+    }
+  }
+\end{lstlisting}
+
 \subsection{Programmable contexts}
 \subsubsection{Context-parameterised $\mathsf{COMM}$ rules}
 By way of introduction we first note a natural variation of the $\mathsf{COMM}$ rule.
