@@ -175,7 +175,21 @@ familiar notation if we also adopt the notation
   \mathsf{let}\; x \;\mathsf{=}\; v \;\mathsf{in}\; P := (\mathsf{new} \; u)(\prefix{u}{@x}P)\mathsf{|}\outputp{u}{v}
 \end{mathpar}
 \subsection{Joins}
-TBD
+
+\begin{mathpar}
+  \inferrule* [lab=io] {} {\mathsf{Proc2} \bc \mathsf{Proc3} \;\bm\; \;\ldots\; \;\bm\; \texttt{for}\; \texttt{(} \mathsf{[Receipt]} \texttt{)} \texttt{\{} \;\mathsf{Proc}\; \texttt{\}}} \\
+    \and
+  \inferrule* [lab=] {} {\mathsf{Receipt} \bc \mathsf{[LinearBind]} \;\bm\; \mathsf{[RepeatedBind]} \;\bm\; \mathsf{[PeekBind]}} \\
+  \inferrule* [lab=] {} {\mathsf{[Receipt]} \bc \mathsf{Receipt} \;\bm\; \mathsf{Receipt} \;\texttt{;}\; \mathsf{[Receipt]}} \\
+  \inferrule* [lab=] {} {\mathsf{LinearBind} \bc \mathsf{[Name]} \; \mathsf{NameRemainder} \;\sngllarrow\; \mathsf{NameSource}} \\
+  \inferrule* [lab=] {} {\mathsf{[LinearBind]} \bc \mathsf{LinearBind} \;\bm\; \mathsf{LinearBind} \;\texttt{\&}\; \mathsf{[LinearBind]}} \\
+  \inferrule* [lab=] {} {\mathsf{NameSource} \bc \mathsf{Name} \;\bm\; \mathsf{Name} \texttt{?!}\;\bm\; \mathsf{Name} \texttt{!?} \texttt{(} \mathsf{[Proc]} \texttt{)}} \\
+  \inferrule* [lab=] {} {\mathsf{RepeatedBind} \bc \mathsf{[Name]}\; \mathsf{NameRemainder} \;\dbltllarrow\; \mathsf{Name}} \\
+  \inferrule* [lab=] {} {\mathsf{[RepeatedBind]} \bc \mathsf{RepeatedBind} \;\bm\; \mathsf{RepeatedBind} \texttt{\&} \mathsf{[RepeatedBind]}} \\
+  \inferrule* [lab=] {} {\mathsf{PeekBind} \bc \mathsf{[Name]}\; \mathsf{NameRemainder} \;\dblhdlarrow\; \mathsf{Name}} \\
+  \inferrule* [lab=] {} {\mathsf{[PeekBind]} \bc \mathsf{PeekBind} \;\bm\; \mathsf{PeekBind} \;\texttt{\&}\; \mathsf{[PeekBind]}} \\
+\end{mathpar}
+
 \subsection{Unguessable versus unforgeable names}
 Since all the names of the rho calculus are generated from the codes
 of processes we know all of them up front. Security on channels,
