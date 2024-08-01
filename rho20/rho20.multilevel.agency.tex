@@ -181,7 +181,8 @@ implementation of exploring the state space of a process.
 
 \begin{lstlisting}
   contract checkStateSpace( p, c, t, a ) = {
-    // check that we still have a positive number of attempts left
+    // check that we still have a positive
+    // number of attempts left
     match a with { 
       case 0 => ( p, t.set( @c, { @p : "fails" } ) ) // nope
       case _ => { // yep
