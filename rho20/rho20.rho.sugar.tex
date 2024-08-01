@@ -1,3 +1,185 @@
+\section{Useful syntactic sugar}
+
+\subsection{First class values}
+While it is standard in calculi such as the $\lambda$-calculus to
+define a variety of common values such as the natural numbers and
+booleans in terms of Church-numeral style encodings, it is equally
+common to simply embed values directly into the calculus. Not being
+higher-order, this presents some challenges for the $\pi$-calculus,
+but for the rho-calculus, everything works out very nicely if we treat
+values, e.g. the naturals, the booleans, the reals, etc as processes. This
+choice means we can meaninfully write expressions like
+$x!(\mathsf{5})$ or $u!(\mathsf{true})$, and in the context
+$\prefix{x}{y}P[*y] \mathsf{|} x!(\mathsf{5})$ the value $\mathsf{5}$
+will be substituted into $P$. Indeed, since operations like addition,
+multiplication, etc.  can also be defined in terms of processes, it is
+meaningful to write expressions like
+$\mathsf{5}\mathsf{|}\mathsf{+}\mathsf{|}\mathsf{1}$, and be confident
+that this expression will reduce to a process representing
+$\mathsf{6}$. Thus, we can also use standard mathematical expressions,
+such as $\mathsf{5+1}$, as processes, and know that these will
+evaluate to their expected values. Further, when combined with
+$\mathsf{for}$-comprehensions, we can write algebraic expressions,
+such as $\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y$, and in
+contexts like
+$(\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y)\mathsf{|}\outputp{x}{\mathsf{1}}$
+this will evaluate as expected, producing the process (aka value)
+$\mathsf{6}$.
+
+\begin{mathpar}
+  \inferrule* [lab=values] {} {\mathsf{Proc} \bc \dots \bm \mathsf{Bool}
+    \bm \mathsf{Long}
+    \bm \mathsf{String}
+    \bm \mathsf{Uri} \bm \mathsf{Collection} \bm \ldots}
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=collection] {} {\mathsf{Collection} \bc \texttt{[} \mathsf{[}\mathsf{Proc}\mathsf{]} \texttt{]}
+    \bm \texttt{(} \mathsf{Proc} \texttt{,}\; \mathsf{[}\mathsf{Proc}\mathsf{]} \texttt{)}
+    \bm \texttt{Set} \texttt{(} \mathsf{[}\mathsf{Proc}\mathsf{]} \texttt{)}
+    \bm \texttt{\{} \mathsf{[}\mathsf{Proc} \texttt{:} \mathsf{Proc} \mathsf{]} \texttt{\}}} \\
+\end{mathpar}
+
+\subsection{Pattern matching}
+Remember that rho allows processes to be sent: $x\mathsf{!}(Q)$. Since
+we can send values, it will be useful to be able to pattern match on
+values. The following pattern-matching syntax captures very commonly
+used idioms.
+
+\subsubsection{Patterns}
+\begin{mathpar}
+  \inferrule* [lab=pattern] {} {\mathsf{ProcPattern} \bc \texttt{\_}
+    \bm \mathsf{Var}
+    \bm \texttt{@} \mathsf{ProcPattern}
+    \bm\; \mathsf{VarRefKind}\; \mathsf{Var} \bm \mathsf{LogicalPattern} \bm \mathsf{ValuePattern}} \\
+  \and
+  \inferrule* [lab=logical-pattern] {} {\mathsf{LogicalPattern} \bc \mathsf{ProcPattern} \;\vee\; \mathsf{ProcPattern}
+    \bm \mathsf{ProcPattern} \;\wedge\; \mathsf{ProcPattern}
+    \bm \texttt{\~{}} \mathsf{ProcPattern}} \\
+  \and
+  \inferrule* [lab=value-pattern] {} {\mathsf{ValuePattern} \bc \mathsf{Ground}
+    \bm \mathsf{Collection}
+    \bm \texttt{Nil}
+    \bm \mathsf{SimpleType}} \\
+  \and
+  \inferrule* [lab=var-ref-kind] {} {\mathsf{VarRefKind} \bc \texttt{=} \bm \texttt{=} \texttt{*}} \\
+\end{mathpar}
+
+\subsubsection{Match targets}
+
+Match targets are the syntactic contexts where patterns may occur and
+thus generate substitutions to be applied in the sequel.
+
+\begin{mathpar}
+  \inferrule* [lab=match-targets] {} {\mathsf{Proc} \bc \ldots \;\bm\; \texttt{contract}\; \mathsf{Name}\; \texttt{(} \mathsf{[Name]}\; \mathsf{NameRemainder} \texttt{)}\; \texttt{=}\; \texttt{\{}\; \mathsf{Proc}\; \texttt{\}} \\
+    \and
+    \;\bm\; \texttt{for}\; \texttt{(} \mathsf{[Receipt]} \texttt{)} \texttt{\{} \;\mathsf{Proc}\; \texttt{\}} \;\bm\; \texttt{select}\; \texttt{\{} \;\mathsf{[Branch]}\; \texttt{\}} \\
+    \and
+    \;\bm\; \texttt{match}\; \mathsf{Proc}\; \texttt{\{} \;\mathsf{[Case]}\; \texttt{\}} \;\bm\; \texttt{let}\; \mathsf{Decl}\; \mathsf{Decls}\; \texttt{in}\; \texttt{\{} \;\mathsf{Proc}\; \texttt{\}} }\\
+\end{mathpar}
+
+\subsubsection{Contracts}
+
+Contracts provide for recursive definitions of processes.
+
+\subsubsection{Comprehensions}
+
+Comprehensions become considerably enriched. They are not only the
+place where data can be matched, but also the place where we introduce
+more subtle control flow. As such, we deal with those together in the
+section on joins.
+
+\subsubsection{Select}
+
+Select represents guarded summation.
+
+\subsubsection{Match}
+
+Match allows dispatch on value shape without incurring the cost of synchronization.
+
+\subsubsection{Let}
+
+Let allows binding without incurring the cost of synchronization.
+
+%% \subsection{Let syntax}
+%% We achieve even greater compression and a more
+%% familiar notation if we also adopt the notation
+
+%% \begin{mathpar}
+%%   \mathsf{let}\; x \;\mathsf{=}\; v \;\mathsf{in}\; P := (\mathsf{new} \; u)(\prefix{u}{@x}P)\mathsf{|}\outputp{u}{v}
+%% \end{mathpar}
+\subsection{Joins}
+
+The basic template for joins is:
+
+\begin{lstlisting}[mathescape=true]
+  for(
+    y$_{11}$ $\sngllarrow$ x$_{11}$ & $\ldots$ & y$_{m1}$ $\sngllarrow$ x$_{m1}$ ; // received in any order, 
+       $\dots$ ; // but all received before the next row
+    y$_{1n}$ $\sngllarrow$ x$_{1n}$ & $\ldots$ & y$_{mn}$ $\sngllarrow$ x$_{mn}$
+  ){ $\ldots$ }
+\end{lstlisting}
+
+We extend this template to include not only linear consumption of
+output ($y \;\sngllarrow\; x$); but also reads ($y \;\dblhdlarrow\;
+x$), where the data is not consumed, but merely copied; and
+subscriptions ($y \;\dbltllarrow\; x$) where the continuation is not
+consumed, but a copy forked off.
+
+Additionally, we add syntax for synchronous interaction. We
+distinguish $y \;\sngllarrow\; x\texttt{?!}$ which is paired with ();
+and $y \;\sngllarrow\; x\texttt{!?}( \ldots )$ the equivalent of an
+remote procedure call (rpc).
+
+\begin{mathpar}
+  \inferrule* [lab=joins] {} {\mathsf{Proc2} \bc \mathsf{Proc3} \;\bm\; \;\ldots\; \;\bm\; \texttt{for}\; \texttt{(} \mathsf{[Receipt]} \texttt{)} \texttt{\{} \;\mathsf{Proc}\; \texttt{\}}} \\
+    \and
+  \inferrule* [lab=] {} {\mathsf{Receipt} \bc \mathsf{[LinearBind]} \;\bm\; \mathsf{[RepeatedBind]} \;\bm\; \mathsf{[PeekBind]}} \\
+  \inferrule* [lab=] {} {\mathsf{[Receipt]} \bc \mathsf{Receipt} \;\bm\; \mathsf{Receipt} \;\texttt{;}\; \mathsf{[Receipt]}} \\
+  \inferrule* [lab=] {} {\mathsf{LinearBind} \bc \mathsf{[Name]} \; \mathsf{NameRemainder} \;\sngllarrow\; \mathsf{NameSource}} \\
+  \inferrule* [lab=] {} {\mathsf{[LinearBind]} \bc \mathsf{LinearBind} \;\bm\; \mathsf{LinearBind} \;\texttt{\&}\; \mathsf{[LinearBind]}} \\
+  \inferrule* [lab=] {} {\mathsf{NameSource} \bc \mathsf{Name} \;\bm\; \mathsf{Name} \texttt{?!}\;\bm\; \mathsf{Name} \texttt{!?} \texttt{(} \mathsf{[Proc]} \texttt{)}} \\
+  \inferrule* [lab=] {} {\mathsf{RepeatedBind} \bc \mathsf{[Name]}\; \mathsf{NameRemainder} \;\dbltllarrow\; \mathsf{Name}} \\
+  \inferrule* [lab=] {} {\mathsf{[RepeatedBind]} \bc \mathsf{RepeatedBind} \;\bm\; \mathsf{RepeatedBind} \texttt{\&} \mathsf{[RepeatedBind]}} \\
+  \inferrule* [lab=] {} {\mathsf{PeekBind} \bc \mathsf{[Name]}\; \mathsf{NameRemainder} \;\dblhdlarrow\; \mathsf{Name}} \\
+  \inferrule* [lab=] {} {\mathsf{[PeekBind]} \bc \mathsf{PeekBind} \;\bm\; \mathsf{PeekBind} \;\texttt{\&}\; \mathsf{[PeekBind]}} \\
+\end{mathpar}
+
+\subsection{Unguessable versus unforgeable names}
+Since all the names of the rho calculus are generated from the codes
+of processes we know all of them up front. Security on channels,
+therefore, amounts to unguessability. There are an infinite number of
+names and we have to arrange our protocols to make it very, very hard
+to guess which channels are in use at any given time. On the one hand,
+we could delegate that to some black box which delivers us the next
+unguessable name when we ask for it. In this sense, it is therefore
+useful to reintroduce the $\pi$-calculus' $\mathsf{new}$ operator as a
+standin for that black box.
+
+However, in many settings, such as in the $\mathsf{RChain}$ and
+$\mathsf{F1R3FLY.io}$ implementations execution is arranged so that
+names are not merely unguessable, but \emph{unforgeable}, meaning that
+the execution environment guarantees not to allow outside agents to
+generate certain names. Thus, even if some malefactor guesses a
+particular name, it cannot eavesdrop on the channel associated with it
+because it can't execute code that uses that name because it didn't
+have the right to generate it. It could only do so had its code been
+in a scope where the generated name was sent to it by a (presumably)
+willing party.
+
+Thus, the $\mathsf{new}$ operator not only provides useful abstraction
+over a black boxed unguessability algorithm, but can also be used to
+support unforgeability. Hence, we reintroduce to rho as a conservative
+extension.
+
+\begin{mathpar}
+  \inferrule* [lab=unforgeable] {} {P \bc \ldots \bm \texttt{new}\; \mathsf{[NameDecl]}\; \texttt{in}\; P} \\
+  \and
+  \inferrule* [lab=] {} {\mathsf{NameDecl} \bc \mathsf{Var} \bm \mathsf{Var} \texttt{(} \mathsf{Uri} \texttt{)}} \\
+  \and
+  \inferrule* [lab=] {} {\mathsf{[NameDecl]} \bc \mathsf{NameDecl} \bm \mathsf{NameDecl} \texttt{,} \mathsf{[NameDecl]}} \\
+\end{mathpar}
+
 \subsection{Summation}
 
 \subsubsection{Mixed summation}
@@ -102,139 +284,16 @@ And contexts are likewise extended in the obvious manner.
 %%   \mathsf{let}\; x_{1} \;\mathsf{=}\; v_{1} \mathsf{;}\; \ldots \mathsf{;}\; x_{n} \;\mathsf{=} \; v_{n}  \;\mathsf{in}\; P
 %% \end{mathpar}
 
-\section{Useful syntactic sugar}
+%% \subsection{Guarded summation}
 
-\subsection{First class values}
-While it is standard in calculi such as the $\lambda$-calculus to
-define a variety of common values such as the natural numbers and
-booleans in terms of Church-numeral style encodings, it is equally
-common to simply embed values directly into the calculus. Not being
-higher-order, this presents some challenges for the $\pi$-calculus,
-but for the rho-calculus, everything works out very nicely if we treat
-values, e.g. the naturals, the booleans, the reals, etc as processes. This
-choice means we can meaninfully write expressions like
-$x!(\mathsf{5})$ or $u!(\mathsf{true})$, and in the context
-$\prefix{x}{y}P[*y] \mathsf{|} x!(\mathsf{5})$ the value $\mathsf{5}$
-will be substituted into $P$. Indeed, since operations like addition,
-multiplication, etc.  can also be defined in terms of processes, it is
-meaningful to write expressions like
-$\mathsf{5}\mathsf{|}\mathsf{+}\mathsf{|}\mathsf{1}$, and be confident
-that this expression will reduce to a process representing
-$\mathsf{6}$. Thus, we can also use standard mathematical expressions,
-such as $\mathsf{5+1}$, as processes, and know that these will
-evaluate to their expected values. Further, when combined with
-$\mathsf{for}$-comprehensions, we can write algebraic expressions,
-such as $\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y$, and in
-contexts like
-$(\prefix{x}{y}\mathsf{5}\mathsf{+}\mathsf{*}y)\mathsf{|}\outputp{x}{\mathsf{1}}$
-this will evaluate as expected, producing the process (aka value)
-$\mathsf{6}$.
+%% One form of summation that \emph{is} a conservative extension of the
+%% core rho calculus is guarded summation. This is so useful that it
+%% deserves its own sugar.
 
-\begin{mathpar}
-  \inferrule* [lab=values] {} {P \bc \dots \bm \mathsf{Bool}
-    \bm \mathsf{Long}
-    \bm \mathsf{String}
-    \bm \mathsf{Uri} \bm \mathsf{Collection} \bm \ldots}
-\end{mathpar}
-
-\begin{mathpar}
-  \inferrule* [lab=collection] {} {\mathsf{Collection} \bc \texttt{[} \mathsf{[}P\mathsf{]} \texttt{]}
-    \bm \texttt{(} P \texttt{,}\; \mathsf{[}P\mathsf{]} \texttt{)}
-    \bm \texttt{Set} \texttt{(} \mathsf{[}P\mathsf{]} \texttt{)}
-    \bm \texttt{\{} \mathsf{[}P \texttt{:} P \mathsf{]} \texttt{\}}} \\
-\end{mathpar}
-
-\subsection{Pattern matching}
-Remember that rho allows processes to be sent: $x\mathsf{!}(Q)$. Since
-we can send values, it will be useful to be able to pattern match on
-values. The following pattern-matching syntax captures very commonly
-used idioms.
-
-\begin{mathpar}
-  \inferrule* [lab=pattern] {} {\mathsf{ProcPattern} \bc \texttt{\_}
-    \bm \mathsf{Var}
-    \bm \texttt{@} \mathsf{ProcPattern}
-    \bm\; \mathsf{VarRefKind}\; \mathsf{Var} \bm \mathsf{LogicalPattern} \bm \mathsf{ValuePattern}} \\
-  \and
-  \inferrule* [lab=logical-pattern] {} {\mathsf{LogicalPattern} \bc \mathsf{ProcPattern} \;\vee\; \mathsf{ProcPattern}
-    \bm \mathsf{ProcPattern} \;\wedge\; \mathsf{ProcPattern}
-    \bm \texttt{\~{}} \mathsf{ProcPattern}} \\
-  \and
-  \inferrule* [lab=value-pattern] {} {\mathsf{ValuePattern} \bc \mathsf{Ground}
-    \bm \mathsf{Collection}
-    \bm \texttt{Nil}
-    \bm \mathsf{SimpleType}} \\
-  \and
-  \inferrule* [lab=var-ref-kind] {} {\mathsf{VarRefKind} \bc \texttt{=} \bm \texttt{=} \texttt{*}} \\
-\end{mathpar}
-\subsection{Let syntax}
-We achieve even greater compression and a more
-familiar notation if we also adopt the notation
-
-\begin{mathpar}
-  \mathsf{let}\; x \;\mathsf{=}\; v \;\mathsf{in}\; P := (\mathsf{new} \; u)(\prefix{u}{@x}P)\mathsf{|}\outputp{u}{v}
-\end{mathpar}
-\subsection{Joins}
-
-\begin{mathpar}
-  \inferrule* [lab=io] {} {\mathsf{Proc2} \bc \mathsf{Proc3} \;\bm\; \;\ldots\; \;\bm\; \texttt{for}\; \texttt{(} \mathsf{[Receipt]} \texttt{)} \texttt{\{} \;\mathsf{Proc}\; \texttt{\}}} \\
-    \and
-  \inferrule* [lab=] {} {\mathsf{Receipt} \bc \mathsf{[LinearBind]} \;\bm\; \mathsf{[RepeatedBind]} \;\bm\; \mathsf{[PeekBind]}} \\
-  \inferrule* [lab=] {} {\mathsf{[Receipt]} \bc \mathsf{Receipt} \;\bm\; \mathsf{Receipt} \;\texttt{;}\; \mathsf{[Receipt]}} \\
-  \inferrule* [lab=] {} {\mathsf{LinearBind} \bc \mathsf{[Name]} \; \mathsf{NameRemainder} \;\sngllarrow\; \mathsf{NameSource}} \\
-  \inferrule* [lab=] {} {\mathsf{[LinearBind]} \bc \mathsf{LinearBind} \;\bm\; \mathsf{LinearBind} \;\texttt{\&}\; \mathsf{[LinearBind]}} \\
-  \inferrule* [lab=] {} {\mathsf{NameSource} \bc \mathsf{Name} \;\bm\; \mathsf{Name} \texttt{?!}\;\bm\; \mathsf{Name} \texttt{!?} \texttt{(} \mathsf{[Proc]} \texttt{)}} \\
-  \inferrule* [lab=] {} {\mathsf{RepeatedBind} \bc \mathsf{[Name]}\; \mathsf{NameRemainder} \;\dbltllarrow\; \mathsf{Name}} \\
-  \inferrule* [lab=] {} {\mathsf{[RepeatedBind]} \bc \mathsf{RepeatedBind} \;\bm\; \mathsf{RepeatedBind} \texttt{\&} \mathsf{[RepeatedBind]}} \\
-  \inferrule* [lab=] {} {\mathsf{PeekBind} \bc \mathsf{[Name]}\; \mathsf{NameRemainder} \;\dblhdlarrow\; \mathsf{Name}} \\
-  \inferrule* [lab=] {} {\mathsf{[PeekBind]} \bc \mathsf{PeekBind} \;\bm\; \mathsf{PeekBind} \;\texttt{\&}\; \mathsf{[PeekBind]}} \\
-\end{mathpar}
-
-\subsection{Unguessable versus unforgeable names}
-Since all the names of the rho calculus are generated from the codes
-of processes we know all of them up front. Security on channels,
-therefore, amounts to unguessability. There are an infinite number of
-names and we have to arrange our protocols to make it very, very hard
-to guess which channels are in use at any given time. On the one hand,
-we could delegate that to some black box which delivers us the next
-unguessable name when we ask for it. In this sense, it is therefore
-useful to reintroduce the $\pi$-calculus' $\mathsf{new}$ operator as a
-standin for that black box.
-
-However, in many settings, such as in the $\mathsf{RChain}$ and
-$\mathsf{F1R3FLY.io}$ implementations execution is arranged so that
-names are not merely unguessable, but \emph{unforgeable}, meaning that
-the execution environment guarantees not to allow outside agents to
-generate certain names. Thus, even if some malefactor guesses a
-particular name, it cannot eavesdrop on the channel associated with it
-because it can't execute code that uses that name because it didn't
-have the right to generate it. It could only do so had its code been
-in a scope where the generated name was sent to it by a (presumably)
-willing party.
-
-Thus, the $\mathsf{new}$ operator not only provides useful abstraction
-over a black boxed unguessability algorithm, but can also be used to
-support unforgeability. Hence, we reintroduce to rho as a conservative
-extension.
-
-\begin{mathpar}
-  \inferrule* [lab=unforgeable] {} {P \bc \ldots \bm \texttt{new}\; \mathsf{[NameDecl]}\; \texttt{in}\; P} \\
-  \and
-  \inferrule* [lab=] {} {\mathsf{NameDecl} \bc \mathsf{Var} \bm \mathsf{Var} \texttt{(} \mathsf{Uri} \texttt{)}} \\
-  \and
-  \inferrule* [lab=] {} {\mathsf{[NameDecl]} \bc \mathsf{NameDecl} \bm \mathsf{NameDecl} \texttt{,} \mathsf{[NameDecl]}} \\
-\end{mathpar}
-
-\subsection{Guarded summation}
-
-One form of summation that \emph{is} a conservative extension of the
-core rho calculus is guarded summation. This is so useful that it
-deserves its own sugar.
-
-\begin{mathpar}
-  \inferrule*[lab=summation]{}{\mathsf{P} \bc \ldots \texttt{select}\; \texttt{\{} \;\mathsf{[Branch]}\; \texttt{\}}} \\
-  \and
-  \inferrule* [lab=] {} {\mathsf{Branch} \bc \mathsf{ReceiptLinearImpl} \texttt{=$>$} \mathsf{Proc3}} \\
-\inferrule* [lab=] {} {\mathsf{[Branch]} \bc \mathsf{Branch} \\
- \;\bm\; \mathsf{Branch} \mathsf{[Branch]}} \\
-\end{mathpar}
+%% \begin{mathpar}
+%%   \inferrule*[lab=summation]{}{\mathsf{P} \bc \ldots \texttt{select}\; \texttt{\{} \;\mathsf{[Branch]}\; \texttt{\}}} \\
+%%   \and
+%%   \inferrule* [lab=] {} {\mathsf{Branch} \bc \mathsf{ReceiptLinearImpl} \texttt{=$>$} \mathsf{Proc3}} \\
+%% \inferrule* [lab=] {} {\mathsf{[Branch]} \bc \mathsf{Branch} \\
+%%  \;\bm\; \mathsf{Branch} \mathsf{[Branch]}} \\
+%% \end{mathpar}
