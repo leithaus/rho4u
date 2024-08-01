@@ -80,7 +80,35 @@ thus generate substitutions to be applied in the sequel.
 
 \subsubsection{Contracts}
 
-Contracts provide for recursive definitions of processes.
+Contracts provide for recursive definitions of processes. Here is an
+example of a contract that computes a (partial) fold over a list.
+
+\begin{lstlisting}
+  contract loop(
+     @accumulatedValue, @lst,
+     combinatorAndCondition, return
+  ) = {
+      match lst {
+        [head ...tail] => {
+          new result in {
+            combinatorAndCondition!(
+               head, accumulatedValue, *result
+            ) |
+            for (@done, @newValue <- result) {
+              if (done){ return!(done, newValue) }
+              else {
+                loop!(
+                   newValue, tail,
+                   *combinatorAndCondition, *return
+                )
+              }
+            }
+          }
+        }
+        _ => { return!(false, accumulatedValue) }
+      }
+    }
+\end{lstlisting}
 
 \subsubsection{Comprehensions}
 
@@ -95,7 +123,31 @@ Select represents guarded summation.
 
 \subsubsection{Match}
 
-Match allows dispatch on value shape without incurring the cost of synchronization.
+Match allows dispatch on value shape without incurring the cost of
+synchronization. We find an example use of match in the fold
+computation above.
+
+\begin{lstlisting}
+  match lst {
+    [head ...tail] => {
+      new result in {
+        combinatorAndCondition!(
+           head, accumulatedValue, *result
+        ) |
+        for (@done, @newValue <- result) {
+          if (done){ return!(done, newValue) }
+          else {
+            loop!(
+               newValue, tail,
+               *combinatorAndCondition, *return
+            )
+          }
+        }
+      }
+    }
+    _ => { return!(false, accumulatedValue) }
+  }
+\end{lstlisting}
 
 \subsubsection{Let}
 
