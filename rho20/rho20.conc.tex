@@ -9,12 +9,17 @@ of the $\pi$-calculus. There are several holes in Milner's calculus:
     processes, and as such constitutes a way to add seamlessly add
     values to the language;
   \item \emph{names} are an input to the theory, which we discussed at length;
-  \item \emph{the source of non-determinism} is an input to the theory.
+  \item \emph{the source of non-determinism} is an input to the
+    theory; the results in the stochastic and quantum regimes can
+    really be seen as an initial exploration of the a general theory
+    of this third dependency. In fact, we submit that recasting
+    Turing's original insights into hypercomputation
+    \cite{WIKI:TuringHyperComputation} in this setting provides a more
+    natural way to think about hypercomputation. Specifically, the
+    oracles at level $n+1$ provide more intelligent or informed ways
+    of making what appear to be non-deterministic choices at level
+    $n$.
 \end{itemize}
-
-The results in the stochastic and quantum regimes can really be seen
-as an initial exploration of the a general theory of this third
-dependency.
 
 Stepping back to an even wider perspective we need to understand the
 rho calculus not as a single model of computation. Instead, it is a
@@ -31,7 +36,7 @@ arises from interaction of particles. Yet, all these disciplines are
 using the computational toolkit initially developed by Newton, which
 again envisages computation as functions acting on data.
 
-Even more modern views of computation, such as are embodied in
+Other more modern views of computation, such as are embodied in
 category theory, are still strongly oriented towards this functional
 view. A topos, for example, is really just a Cartesian closed category
 ($\mathsf{CCC}$) with a subobject classifer; but as a $\mathsf{CCC}$
