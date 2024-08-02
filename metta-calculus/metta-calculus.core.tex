@@ -1,7 +1,7 @@
 \section{A symmetric reflective higher order concurrent calculus with backchaining}
 
 \begin{mathpar}
-  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}( t \sngllrarrow x )P \;\bm\; \mathsf{*}x \;\bm\; P\mathsf{|}Q }
+  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}( t \sngllrarrow x )P \;\bm\; x\mathsf{?}P \;\bm\; \mathsf{*}x \;\bm\; P\mathsf{|}Q }
   \and
   \inferrule* [lab=name] {} {x, y \bc \mathsf{@}P } \\
   \and
