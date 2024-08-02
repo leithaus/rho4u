@@ -1,0 +1,99 @@
+\documentclass[12pt]{llncs}
+%\documentclass{jktr}
+
+\usepackage[pdftex]{hyperref}                   
+\usepackage {mathpartir}
+\usepackage{bigpage}
+\usepackage{bcprules}
+\usepackage {listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{latexsym}
+\usepackage{longtable}
+\usepackage{stmaryrd}
+\usepackage{graphicx} 
+%\usepackage[margins=2.5cm,nohead,nofoot]{geometry}
+%\usepackage{geometry}
+\usepackage{color}
+\usepackage{xcolor}
+
+\graphicspath{ {.} }
+
+
+%\include{myPreamble}
+\include{metta-calculus.local} 
+
+%\ifpdf
+%\usepackage[pdftex]{graphicx}
+%\else
+%\usepackage{graphicx}
+%\fi
+
+ % \ifpdf
+%  \usepackage{pdfsync}
+%  \if
+
+
+%\title{Brief Article}
+%\author{David F. Snyder}
+%\author{L.G. Meredith}
+
+%\address{Dept. of Math., Texas State University--San Marcos, San Marcos, TX 78666}
+       
+\pagestyle{empty}
+
+
+\begin{document}
+
+\lstset{language=[Objective]Caml,frame=shadowbox}
+
+\input{metta-calculus.front}
+
+\input{metta-calculus.intro} 
+ 
+%\input{rho20.process.calculi}
+
+%\input{rho20.rho.core}
+
+%\input{rho20.rho.implementation}
+
+%\input{rho20.rho.sugar}
+
+%\input{rho20.multilevel.agency}
+
+\input{metta-calculus.core}
+
+\input{metta-calculus.implementation}
+
+\input{metta-calculus.tokenized.security}
+
+\input{metta-calculus.spatial-behavioral.types}
+
+%\input{rho20.rho.fuzzy} 
+
+%\input{rho20.rho.probabilistic}
+
+%\input{rho20.rho.translations}
+
+%\input{rho20.reflection.applied}
+
+%\input{rho20.physical.intuition} 
+
+%\input{rho20.conc}
+
+\input{metta-calculus.ack} 
+
+% section acknowledgments (end)
+
+\newpage
+
+
+\bibliographystyle{plain}   
+\bibliography{metta-calculus.bib}
+
+%\input{rho20.appendix.rholang}
+
+\end{document}
+

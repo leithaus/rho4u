@@ -26,12 +26,14 @@ receiver. Instead, both agents may have continuations. In symbols, we have
 
 \begin{mathpar}
   \inferrule* [lab=COMM] {\sigma = \mathsf{unify}(t,u)} {\mathsf{for}( t \leftrightarrow x )P \;\mathsf{|}\; \mathsf{for}( u \leftrightarrow x )Q
-    \red P\sigma\mathsf{|}Q\sigma} \\
+    \red P\dot{\sigma}\mathsf{|}Q\dot{\sigma}} \\
   \and
   \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
   \and
   \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
 \end{mathpar}
+
+where $\dot{\sigma}$ denotes the substitution that replaces all variable to process bindings with variable to name bindings. Thus, $\dot{\{P / x\}} = \{\mathsf{@}P / x\}$.
 
 Note that the $\mathsf{REFL}$ rule for backchaining can also be added
 to this system, providing the semantics for a concurrent form of the
