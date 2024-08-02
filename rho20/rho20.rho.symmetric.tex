@@ -1,0 +1,38 @@
+\section{Symmetric rho}
+
+Before we leave the world of crisp computation, we present one more
+variant that explores unification as the means of data
+exchange. Terms, possibly with variables, in them are passed on
+channels. Interaction only takes place when the terms unify. This
+choice means that there isn't a distinction between sender and
+receiver. Instead, both agents may have continuations. In symbols, we have
+
+\begin{mathpar}
+  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}(
+    t \leftrightarrow x )P \;\bm\; \mathsf{*}x \;\bm\; P\mathsf{|}Q }
+  \and
+  \inferrule* [lab=name] {} {x, y \bc \mathsf{@}P } \\
+  \and
+  \inferrule* [lab=term] {} {t, u \bc atom \;\bm\; \mathsf{(}t^{*}\mathsf{)}} \\
+  \and
+  \inferrule* [lab=term] {} {atom \bc x \;\bm\; \mathsf{Bool} \;\bm\; \mathsf{String} \;\bm\; \mathsf{Int} \;\bm\; P}
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=equiv] {} {P\mathsf{|}\pzero \equiv P \;\; P\mathsf{|}Q \equiv Q\mathsf{|}P \;\; P\mathsf{|}(Q\mathsf{|}R) \equiv (P\mathsf{|}Q)\mathsf{R}} \\
+  \and
+  \inferrule* [lab=alpha] { \mathsf{occurs}(t,y)} {\mathsf{for}(t \leftrightarrow x )P \equiv \mathsf{for}(t\{z/y\} \leftrightarrow x )(P\{z/y\}) \; \mathsf{if} z \notin \mathsf{FN}(P)}
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {\sigma = \mathsf{unify}(t,u)} {\mathsf{for}( t \leftrightarrow x )P \;\mathsf{|}\; \mathsf{for}( u \leftrightarrow x )Q
+    \red P\sigma\mathsf{|}Q\sigma} \\
+  \and
+  \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  \and
+  \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q}
+\end{mathpar}
+
+Note that the $\mathsf{REFL}$ rule for backchaining can also be added
+to this system, providing the semantics for a concurrent form of the
+language $\mathsf{MeTTa}$.
