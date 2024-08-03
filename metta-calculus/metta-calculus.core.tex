@@ -1,13 +1,21 @@
 \section{A symmetric reflective higher order concurrent calculus with backchaining}
 
+Note, in the following spec we use $[e]$ to denote a space-delimited
+finite sequence of $e$'s; and we use $[e]_{seq}$ to denote a
+comma-delimited finite sequence of $e$'s.
+
 \begin{mathpar}
-  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; \mathsf{for}( t \sngllrarrow x )P \;\bm\; x\mathsf{?}P \;\bm\; \mathsf{*}x \;\bm\; P\mathsf{|}Q }
+  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; G \;\bm\; \mathsf{for}( t \sngllrarrow x )P \;\bm\; x\mathsf{?}P \;\bm\; \mathsf{*}x \;\bm\; P\mathsf{|}Q }
   \and
   \inferrule* [lab=name] {} {x, y \bc \mathsf{@}P } \\
   \and
-  \inferrule* [lab=term] {} {t, u \bc atom \;\bm\; \mathsf{(}t^{*}\mathsf{)}} \\
+  \inferrule* [lab=term] {} {t, u \bc atom \;\bm\; \mathsf{(}[t]\mathsf{)}}
   \and
-  \inferrule* [lab=term] {} {atom \bc x \;\bm\; \mathsf{Bool} \;\bm\; \mathsf{String} \;\bm\; \mathsf{Int} \;\bm\; P}
+  \inferrule* [lab=atom] {} {atom \bc x \;\bm\; P} \\
+  \and
+  \inferrule* [lab=ground] {} {G \bc \mathsf{Bool} \;\bm\; \mathsf{String} \;\bm\; \mathsf{Int} \;\bm\; C}
+  \and
+  \inferrule* [lab=collection] {} {C \bc \texttt{[} [t]_{seq} \texttt{]} \;\bm\; \texttt{(} t \;\texttt{,} [t]_{seq} \texttt{)} \;\bm\; \texttt{Set}\texttt{(} [t]_{seq} \texttt{)} \;\bm\; \texttt{\{} [t\texttt{:}t] \texttt{\}}}
 \end{mathpar}
 
 \begin{mathpar}
