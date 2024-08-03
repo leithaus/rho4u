@@ -29,6 +29,11 @@
 
 where $\dot{\sigma}$ denotes the substitution that replaces all variable to process bindings with variable to name bindings. Thus, $\dot{\{P / x\}} = \{\mathsf{@}P / x\}$.
 
+We denote the collection of process states generated
+(resp. recognized) by this grammar by $\mathsf{Proc}$. Likewise, we
+denote the collection of spaces (aka channels or names) by
+$\mathsf{@}\mathsf{Proc}$.
+
 \subsection{Intuitive mapping to $\mathsf{MeTTa}$}
 
 \begin{center}
@@ -51,8 +56,11 @@ that match a given pattern.
 
 Likewise a rewrite rule is a continuation $t \sngllrarrow \mathsf{\{} \;P\;\mathsf{\}}$. When it is tagged with a space, say $x$, i.e. $\mathsf{for}( t \sngllrarrow x )P$, may be thought of as added to the space.
 
-Under this view, a space is equated with all the atoms (and rules) that have been
-tagged as in the space. That is, we may define a function $\mathsf{space}:\mathsf{@}\mathsf{Proc} \rightarrow \mathsf{Proc}$ by $\mathsf{space}(x) = \Pi_{i}\;\mathsf{for}( t_{i} \sngllrarrow x )P_{i}$.
+Under this view, a space is equated with all the atoms (and rules)
+that have been tagged as in the space. That is, we may define a
+function $\mathsf{space}:\mathsf{@}\mathsf{Proc} \rightarrow \mathsf{Proc}$ by $\mathsf{space}(x) = \Pi_{i}\;\mathsf{for}( t_{i} \sngllrarrow x )P_{i}$. Once we make this definition we note  we have two interlated algebras of considerable additional interest. One is the algebra of spaces as tags, which is isomorphic to the algebra of process states, and another is the algebra of the spaces as collections of atoms (and rules).
+
+The first affords the ability to programmatically define tags and filter on tags. The second affords the ability to reason about, filter, and traverse spaces-qua-collections. The fact that these two are interrelated means that spaces can be nested, or more generally composed in a variety of interesting ways. Indeed, some collections of spaces may be mutually recursively defined!
 
 \section{Some useful features}
 
@@ -100,3 +108,23 @@ In case the $\mathsf{BNF}$ is a little opaque, here is the template.
     y$_{1n}$ $\sngllrarrow$ x$_{1n}$ & $\ldots$ & y$_{mn}$ $\sngllrarrow$ x$_{mn}$
   ){ $P$ }
 \end{lstlisting}
+
+As mentioned previously, the predominant pattern of human decision
+making processes (such as loan approval processes, or academic paper
+reviews) involve fork-join concurrency. The syntactic sugar provided
+here certainly supports that kind of coordination amongst processes. For example,
+
+\begin{lstlisting}[mathescape=true]
+  for(
+     // received in any order
+     $\mathsf{true} \;\sngllrarrow\; reviewer_{1}$ & $\mathsf{true} \;\sngllrarrow\; reviewer_{2}$  & $\mathsf{true} \;\sngllrarrow\; reviewer_{3}$ 
+     ){
+       // acceptance notification and publication process
+       $P$
+     } 
+\end{lstlisting}
+
+Yet, it affords much more sophisticated control than this, while also
+providing a programming paradigm that is familiar to modern
+programmers, namely semi-colon delimited sequential assignment-based
+programming.
