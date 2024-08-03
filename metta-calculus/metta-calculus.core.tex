@@ -49,6 +49,11 @@ us to use the same construct (a kind of tagging) for adding atoms to a
 space; removing atoms from a space; and, querying for atoms in a space
 that match a given pattern.
 
+Likewise a rewrite rule is a continuation $t \sngllrarrow \mathsf{\{} \;P\;\mathsf{\}}$. When it is tagged with a space, say $x$, i.e. $\mathsf{for}( t \sngllrarrow x )P$, may be thought of as added to the space.
+
+Under this view, a space is equated with all the atoms (and rules) that have been
+tagged as in the space. That is, we may define a function $\mathsf{space}:\mathsf{@}\mathsf{Proc} \rightarrow \mathsf{Proc}$ by $\mathsf{space}(x) = \Pi_{i}\;\mathsf{for}( t_{i} \sngllrarrow x )P_{i}$.
+
 \section{Some useful features}
 
 \subsection{Replication and freshness}
