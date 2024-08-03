@@ -1,3 +1,21 @@
 \section{Tokenized security}
 
-TBD
+\begin{mathpar}
+  \inferrule* [lab=security-tokens] {} {T \bc () \;\bm\; s \;\bm\; T:T}
+  \and
+  \inferrule* [lab=secured-processes] {} {S \bc \mathsf{\{}P\mathsf{\}}_{s} \;\bm\; T \;\bm\; S\mathsf{|}S} \\
+  \and
+  \inferrule* [lab=multi-party-sigs] {} {s \bc () \;\bm\; \mathsf{hash}( <\!signature\!> ) \;\bm\; s\mathsf{\&}s}
+\end{mathpar}
+
+where $\mathsf{\{}P\mathsf{\}}_{s}$ is a process signed by a digital signature.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM-cosigned-par-external-sequential] {\sigma = \mathsf{unify}(t,u)} {\mathsf{\{}\mathsf{for}( t \sngllrarrow x )P\mathsf{\}}_{s_1} \;\mathsf{|}\; \mathsf{\{}\mathsf{for}( u \sngllrarrow x )P\mathsf{\}}_{s_2}\;\mathsf{|}\; s_{1}\mathsf{\&}s_{2}:T \red \mathsf{\{}P\dot{\sigma}\mathsf{|}Q\dot{\sigma}\mathsf{\}}_{s_1\mathsf{\&}s_2} \;\mathsf{|}\; T} \\
+  \and
+  \inferrule* [lab=COMM-cosigned-par-external-concurrent] {\sigma = \mathsf{unify}(t,u)} {\mathsf{\{}\mathsf{for}( t \sngllrarrow x )P\mathsf{\}}_{s_1} \;\mathsf{|}\; \mathsf{\{}\mathsf{for}( u \sngllrarrow x )P\mathsf{\}}_{s_2}\;\mathsf{|}\; s_{1}:T_{1}\;\mathsf{|}\;s_{2}:T_{1} \red \mathsf{\{}P\dot{\sigma}\mathsf{|}Q\dot{\sigma}\mathsf{\}}_{s_1\mathsf{\&}s_2} \;\mathsf{|}\; T_{1} \;\mathsf{|}\; T_{2}} \\
+  \and
+  \inferrule* [lab=COMM-signed] {P \red P'} {\mathsf{\{}P\mathsf{\}}_{s} \;\mathsf{|}\; s:T \red \mathsf{\{}P'\mathsf{\}}_{s} \;\mathsf{|}\; T} \\
+  \and
+  \inferrule* [lab=COMM-cosigned-par-internal] {P \red P'} {\mathsf{\{}P\mathsf{\}}_{s_1 \& s_2} \;\mathsf{|}\; s_{1}:T_{1} \;\mathsf{|}\; s_{2}:T_{2} \red \mathsf{\{}P'\mathsf{\}}_{s} \;\mathsf{|}\; T_{1}\;\mathsf{|}\;T_{2}}  
+\end{mathpar}
