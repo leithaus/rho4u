@@ -136,3 +136,12 @@ Yet, it affords much more sophisticated control than this, while also
 providing a programming paradigm that is familiar to modern
 programmers, namely semi-colon delimited sequential assignment-based
 programming.
+
+\subsection{The $\mathsf{COMM}$ rule as transactional semantics}
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {\sigma = \mathsf{unify}(t,u)} {\mathsf{for}( t \sngllrarrow x )P \;\mathsf{|}\; \mathsf{for}( u \sngllrarrow x )Q
+    \red P\dot{\sigma}\mathsf{|}Q\dot{\sigma}} \\
+\end{mathpar}
+
+
