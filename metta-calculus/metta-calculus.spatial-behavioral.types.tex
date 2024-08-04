@@ -26,6 +26,12 @@ syntax to conserve horizontal space. The two formats are just
 different ways of writing a type inference rule that depends on a
 collection of judgments to establish a judgment.
 
+Note that the rules below are the ones specific to the
+$\mathsf{MeTTa}$-calculus. The $\mathsf{OSLF}$ algorithm generates a
+host of ambient typing judgments that are common to all such systems
+by the fact that they are expressible as graph structured lambda
+theories.
+
 \begin{mathpar}
   \inferrule* [lab=judgment] {}{Jugment \bc \Gamma \vdash P \;\mathsf{:}\; T}
   \and
