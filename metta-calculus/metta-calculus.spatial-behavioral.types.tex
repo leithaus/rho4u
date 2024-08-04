@@ -1,15 +1,74 @@
 \section{Spatial-behavioral types}
 
+\subsection{Type syntax}
 \begin{mathpar}
   \inferrule* [lab=process-type] {} {T,U \bc \pzero \;\bm\; GT \;\bm\; \mathsf{\langle}( TT \sngllrarrow N )\mathsf{\rangle}T \;\bm\; \mathsf{\langle}x\mathsf{?}\mathsf{\rangle}T \;\bm\; \mathsf{*}N \;\bm\; T\mathsf{|}U }
   \and
   \inferrule* [lab=name-type] {} {N \bc \mathsf{@}T } \\
   \and
-  \inferrule* [lab=term] {} {TT \bc AtomT \;\bm\; \mathsf{(}[T]\mathsf{)}}
+  \inferrule* [lab=term-type] {} {TT \bc AtomT \;\bm\; \mathsf{(}[T]\mathsf{)}}
   \and
-  \inferrule* [lab=atom] {} {AtomT \bc N \;\bm\; T} \\
+  \inferrule* [lab=atom-type] {} {AtomT \bc N \;\bm\; T} \\
   \and
-  \inferrule* [lab=ground] {} {GT \bc \mathsf{Bool} \;\bm\; \mathsf{String} \;\bm\; \mathsf{Int} \;\bm\; C}
+  \inferrule* [lab=ground-type] {} {GT \bc \mathsf{Bool} \;\bm\; \mathsf{String} \;\bm\; \mathsf{Int} \;\bm\; C}
   \and
-  \inferrule* [lab=collection] {} {C \bc \mathsf{List}(TT) \;\bm\; \mathsf{Tuple}\mathsf{(} TT \;\mathsf{,} [TT]_{seq} \mathsf{)} \;\bm\; \mathsf{Set}\mathsf{(} TT \mathsf{)} \;\bm\; \mathsf{Map}\mathsf{\{} [TT\mathsf{:}TT] \mathsf{\}}}
+  \inferrule* [lab=collection-type] {} {C \bc \mathsf{List}(TT) \;\bm\; \mathsf{Tuple}\mathsf{(} TT \;\mathsf{,} [TT]_{seq} \mathsf{)} \;\bm\; \mathsf{Set}\mathsf{(} TT \mathsf{)} \;\bm\; \mathsf{Map}\mathsf{\{} [TT\;\mathsf{:}\;TT] \mathsf{\}}}
+\end{mathpar}
+
+\subsection{Type judgments and type inferences}
+
+\begin{mathpar}
+  \inferrule* [lab=judgment] {}{Jugment \bc \Gamma \vdash P \;\mathsf{:}\; T}
+  \and
+  \inferrule* [lab=inference] {}{Inference \bc [Judgment] \Vdash Judgment}
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=ground-bool] {}{\Vdash \mathsf{Boolliteral} \;\mathsf{:}\; \mathsf{Bool}}
+  \and
+  \inferrule* [lab=ground-string] {}{\Vdash \mathsf{Stringliteral} \;\mathsf{:}\; \mathsf{String}}
+  \and
+  \inferrule* [lab=ground-int] {}{\Vdash \mathsf{Intliteral} \;\mathsf{:}\; \mathsf{Int}} \\
+  \and
+  \inferrule* [lab=for-comprehension] {}{ t : TT, \Gamma \vdash P \;\mathsf{:}\; T \;\;\; \Delta \vdash x \;\mathsf{:}\; V \Vdash \Gamma, \Delta \vdash \mathsf{for}( t \sngllrarrow x )P \;\mathsf{:}\; \mathsf{\langle}(TT \sngllrarrow V)\mathsf{\rangle}}T \\
+  \and
+  \inferrule* [lab=parallel] {}{\Gamma \vdash P \;\mathsf{:}\; T \;\;\; \Delta \vdash Q \;\mathsf{:}\; U \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} \;\mathsf{:}\; T \mathbf{|} U } \\
+  \and
+  \inferrule* [lab=deref] {}{\Gamma \vdash x \;\mathsf{:}\; V \Vdash \Gamma \vdash \mathsf{*}x \;\mathsf{:}\; \mathsf{*}V} \\
+\inferrule* [lab=quote] {}{\Gamma \vdash P \;\mathsf{:}\; T \Vdash \Gamma \vdash \mathsf{@}x \;\mathsf{:}\; \mathsf{@}T} \\
+\end{mathpar}
+
+\subsubsection{Equations}
+\begin{mathpar}
+  \inferrule* [lab=ParMonoidId] {\Gamma \vdash P \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}}{\Gamma \vdash \binpar{P}{0} = P \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}} \\
+  \and
+  \inferrule* [lab=ParMonoidAssoc] {\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}}{\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} = \binpar{P}{(\binpar{Q}{R})} \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}} \\
+  \and
+  \inferrule* [lab=ParMonoidComm] {\Gamma \vdash \binpar{P}{Q} \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}}{\Gamma \vdash \binpar{P}{Q} = \binpar{Q}{P} \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}}
+\end{mathpar}
+
+\subsubsection{Lifted redex constuctors}
+\begin{mathpar}
+  \inferrule* [lab=Comm] {\Gamma_{1} \vdash x \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{N} \;\;\; y \;\mathsf{:}\; \mathbf{\quotep{V}} \;\mathsf{:}\; \mathbf{N}, \Gamma_{2} \vdash P \;\mathsf{:}\; \mathbf{W} \;\mathsf{:}\; \mathbf{P} \;\;\; \Gamma_{3} \vdash Q \;\mathsf{:}\; \mathbf{V} \;\mathsf{:}\; \mathbf{P}}{\Gamma_{1}, \Gamma_{2}, \Gamma_{3} \vdash \commr{x}{y}{P}{Q} \;\mathsf{:}\; \commt{U}{\quotep{V}}{W}{V} \;\mathsf{:}\; \mathbf{R}} \\
+  \and  
+  \inferrule* [lab=Eval] {}{\Gamma \vdash P \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P} \Vdash \Gamma \vdash \mathsf{eval}(P) \;\mathsf{:}\; \mathbf{eval}(\mathbf{U}) \;\mathsf{:}\; \mathbf{R}} \\
+  \and
+  \inferrule* [lab=ParL] {}{\Gamma \vdash R \;\mathsf{:}\; \mathbf{E} \;\mathsf{:}\; \mathbf{R} \;\;\; \Delta \vdash P \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P} \Vdash \Gamma, \Delta \vdash \mathsf{par}_{L}(R, P) \;\mathsf{:}\; \binpartl{E}{U} \;\mathsf{:}\; \mathbf{R}} \\
+  \and
+  \inferrule* [lab=ParR] {}{\Gamma \vdash R \;\mathsf{:}\; \mathbf{E} \;\mathsf{:}\; \mathbf{R} \;\;\; \Delta \vdash P \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P} \Vdash \Gamma, \Delta \vdash \mathsf{par}_{R}(P, R) \;\mathsf{:}\; \binpartr{U}{E} \;\mathsf{:}\; \mathbf{R}}
+\end{mathpar}
+
+\subsubsection{Reductions from the $\lambda$-theory}
+\begin{mathpar}
+  \inferrule* [lab=Comm-Src] {\Gamma \vdash \commr{x}{y}{P}{Q} \;\mathsf{:}\; \commt{U}{\quotep{V}}{W}{V} \;\mathsf{:}\; \mathbf{R}}{\Gamma \vdash \mathsf{src}(\commr{x}{y}{P}{Q}) = \prefix{x}{y}{P} \mathsf{|} \outputp{x}{Q} \;\mathsf{:}\; \prefixt{U}{\quotep{V}}{W} \mathbf{|} \outputt{U}{V} \;\mathsf{:}\; \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Comm-Trgt] {\Gamma \vdash \commr{x}{y}{P}{Q} \;\mathsf{:}\; \commt{U}{V}{W}{V} \;\mathsf{:}\; \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\commr{x}{y}{P}{Q}) = P\substn{\quotep{Q}}{y} \;\mathsf{:}\; \mathbf{W} \;\mathsf{:}\; \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Eval-Src] {}{\Gamma \vdash \mathsf{eval}(P) \;\mathsf{:}\; \mathbf{eval}(\mathbf{U}) \;\mathsf{:}\; \mathbf{R} \Vdash \Gamma \vdash \mathsf{src}(\mathsf{eval}(P)) = \dropn{\quotep{P}} \;\mathsf{:}\; \dropt{\quotet{U}} \;\mathsf{:}\; \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Eval-Trgt] {}{\Gamma \vdash \mathsf{eval}(P) \;\mathsf{:}\; \mathbf{eval}(\mathbf{U}) \;\mathsf{:}\; \mathbf{R} \Vdash \Gamma \vdash \mathsf{trgt}(\mathsf{eval}(P)) = P \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Par-Src] {\Gamma \vdash \binparx{R}{P} \;\mathsf{:}\; \binpart{E}{U} \;\mathsf{:}\; \mathbf{R}}{\Gamma \vdash \mathsf{src}(\binparx{R}{P}) = \binpar{\mathsf{src}(R)}{P}  \;\mathsf{:}\; \binparpt{src(E)}{U} \;\mathsf{:}\; \mathbf{P}} \\
+  \and
+  \inferrule* [lab=Par-Trgt] {\Gamma \vdash \binparx{R}{P} \;\mathsf{:}\; \binpart{E}{U} \;\mathsf{:}\; \mathbf{R}}{\Gamma \vdash \mathsf{trgt}(\binparx{R}{P}) = \binpar{\mathsf{trgt}(R)}{P} \;\mathsf{:}\; \binparpt{trgt(E)}{U} \;\mathsf{:}\; \mathbf{P}} \\
 \end{mathpar}

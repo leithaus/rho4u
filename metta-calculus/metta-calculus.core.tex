@@ -32,7 +32,7 @@ comma-delimited finite sequence of $e$'s.
   \and
   \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q} \\
   \and
-  \inferrule* [lab=REFL] {P \red P'} {x\mathsf{?}P \red x\mathsf{!}\mathsf{(}P'\mathsf{)}} \\
+  \inferrule* [lab=REFL] {P \red P'} {x\mathsf{?}P \red \mathsf{for}( \mathsf{(}P'\mathsf{)} \sngllrarrow x )\pzero} \\
 \end{mathpar}
 
 where $\dot{\sigma}$ denotes the substitution that replaces all variable to process bindings with variable to name bindings. Thus, $\dot{\{P / x\}} = \{\mathsf{@}P / x\}$.
