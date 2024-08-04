@@ -17,10 +17,18 @@
 
 \subsection{Type judgments and type inferences}
 
+We adopt a standard syntax for judgments, but use a horizontal syntax
+for inference to conserve vertical space or the more standard vertical
+syntax to conserve horizontal space. The two formats are just
+different ways of writing a type inference rule that depends on a
+collection of judgments to establish a judgment.
+
 \begin{mathpar}
   \inferrule* [lab=judgment] {}{Jugment \bc \Gamma \vdash P \;\mathsf{:}\; T}
   \and
-  \inferrule* [lab=inference] {}{Inference \bc [Judgment] \Vdash Judgment}
+  \inferrule* [lab=inference-horizontal] {}{Inference \bc [Judgment] \Vdash Judgment} \\
+  \and
+  \inferrule* [lab=inference-vertical] {[Judgment]}{Judgment}
 \end{mathpar}
 
 \begin{mathpar}
@@ -30,7 +38,17 @@
   \and
   \inferrule* [lab=ground-int] {}{\Vdash \mathsf{Intliteral} \;\mathsf{:}\; \mathsf{Int}} \\
   \and
+  \inferrule* [lab=collection-list]{}{\Gamma_{1} \vdash t_{1} \;\mathsf{:}\; TT \ldots \Gamma_{n} \vdash t_{n} \;\mathsf{:}\; TT \Vdash \Gamma_{1}, \ldots, \Gamma_{n} \vdash \mathsf{[}t_{1}, \ldots, t_{n} \mathsf{]} \;\mathsf{:}\; \mathsf{List}\mathsf{[}TT\mathsf{]} } \\
+  \and
+  \inferrule* [lab=collection-tuple]{}{\Gamma_{1} \vdash t_{1} \;\mathsf{:}\; TT_{1} \ldots \Gamma_{n} \vdash t_{n} \;\mathsf{:}\; TT_{n} \Vdash \Gamma_{1}, \ldots, \Gamma_{n} \vdash \mathsf{(}t_{1}, \ldots, t_{n} \mathsf{)} \;\mathsf{:}\; \mathsf{Tuple}\mathsf{(}TT_{1},\ldots,TT_{n}\mathsf{)} } \\
+  \and
+  \inferrule* [lab=collection-set]{}{\Gamma_{1} \vdash t_{1} \;\mathsf{:}\; TT \ldots \Gamma_{n} \vdash t_{n} \;\mathsf{:}\; TT \Vdash \Gamma_{1}, \ldots, \Gamma_{n} \vdash \mathsf{Set}\mathsf{(}t_{1}, \ldots, t_{n} \mathsf{)} \;\mathsf{:}\; \mathsf{Set}\mathsf{(}TT\mathsf{)} } \\
+  \and
+  \inferrule* [lab=collection-map]{\Gamma_{1} \vdash k_{1} \;\mathsf{:}\; TT_{1} \Delta_{1} \vdash v_{1} \;\mathsf{:}\; TT_{2} \ldots \Gamma_{n} \vdash k_{n} \;\mathsf{:}\; TT_{2n-1} \Delta_{n} \vdash v_{n} \;\mathsf{:}\; TT_{2n}}{\Gamma_{1}, \Delta_{n} \ldots, \Gamma_{n}, \Delta_{n} \vdash \mathsf{Map}\mathsf{\{}k_{1}:v_{1} \ldots k_{n}:v_{n} \mathsf{\}} \;\mathsf{:}\; \mathsf{Map}\mathsf{\{}TT_{1}:TT_{2}\;\ldots\;TT_{2n-1}:TT_{2n}\mathsf{\}} } \\
+  \and
   \inferrule* [lab=for-comprehension] {}{ t : TT, \Gamma \vdash P \;\mathsf{:}\; T \;\;\; \Delta \vdash x \;\mathsf{:}\; V \Vdash \Gamma, \Delta \vdash \mathsf{for}( t \sngllrarrow x )P \;\mathsf{:}\; \mathsf{\langle}(TT \sngllrarrow V)\mathsf{\rangle}}T \\
+  \and
+  \inferrule* [lab=refl] {}{ \Gamma \vdash P \;\mathsf{:}\; T \;\;\; \Delta \vdash x \;\mathsf{:}\; V \Vdash \Gamma, \Delta \vdash x\mathsf{?}P \;\mathsf{:}\; \mathsf{\langle}\mathsf{?} V{\rangle}}T \\
   \and
   \inferrule* [lab=parallel] {}{\Gamma \vdash P \;\mathsf{:}\; T \;\;\; \Delta \vdash Q \;\mathsf{:}\; U \Vdash \Gamma, \Delta \vdash {P}\mathsf{|}{Q} \;\mathsf{:}\; T \mathbf{|} U } \\
   \and
@@ -40,11 +58,11 @@
 
 \subsubsection{Equations}
 \begin{mathpar}
-  \inferrule* [lab=ParMonoidId] {\Gamma \vdash P \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}}{\Gamma \vdash \binpar{P}{0} = P \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}} \\
+  \inferrule* [lab=ParMonoidId] {\Gamma \vdash P \;\mathsf{:}\; T}{\Gamma \vdash \binpar{P}{0} = P \;\mathsf{:}\; T} \\
   \and
-  \inferrule* [lab=ParMonoidAssoc] {\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}}{\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} = \binpar{P}{(\binpar{Q}{R})} \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}} \\
+  \inferrule* [lab=ParMonoidAssoc] {\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} \;\mathsf{:}\; T}{\Gamma \vdash \binpar{(\binpar{P}{Q})}{R} = \binpar{P}{(\binpar{Q}{R})} \;\mathsf{:}\; T} \\
   \and
-  \inferrule* [lab=ParMonoidComm] {\Gamma \vdash \binpar{P}{Q} \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}}{\Gamma \vdash \binpar{P}{Q} = \binpar{Q}{P} \;\mathsf{:}\; \mathbf{U} \;\mathsf{:}\; \mathbf{P}}
+  \inferrule* [lab=ParMonoidComm] {\Gamma \vdash \binpar{P}{Q} \;\mathsf{:}\; T}{\Gamma \vdash \binpar{P}{Q} = \binpar{Q}{P} \;\mathsf{:}\; T}
 \end{mathpar}
 
 \subsubsection{Lifted redex constuctors}
