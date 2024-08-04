@@ -145,13 +145,15 @@ programming.
 \end{mathpar}
 
 One of the most interesting aspects of these types of operational
-semantics is that they are implicitly transactional. In the asymmetric
-case it is easier to see because one of the interacting items is a
-write to a space and the other is a read. In the symmetric case both
-threads are reading and writing at the same time. Specifically, all
-the variables in $t$ that are substituted for by terms in $u$ are
-being read from $u$ and written to the continuation by the
-substitution $P\dot{\sigma}$; and symmetrically, all the variables in
-$u$ that are substituted for by terms in $t$ are being read from $t$
-and written to the continuation $Q\dot{\sigma}$. Indeed,
-$\dot{\sigma}$ is the witness of the transaction.
+semantics \footnote{such as are seen in the $\pi$-calculus or the rho
+  calculus} is that they are implicitly transactional. In the
+asymmetric case it is easier to see because one of the interacting
+items is a write to a space and the other is a read. In the symmetric
+case both threads are reading and writing at the same
+time. Specifically, all the variables in $t$ that are substituted for
+by terms in $u$ are being read from $u$ and written to the
+continuation by the substitution $P\dot{\sigma}$; and symmetrically,
+all the variables in $u$ that are substituted for by terms in $t$ are
+being read from $t$ and written to the continuation
+$Q\dot{\sigma}$. Indeed, $\dot{\sigma}$ is the witness of the
+transaction.
