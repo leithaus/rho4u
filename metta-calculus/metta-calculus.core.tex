@@ -13,7 +13,7 @@ comma-delimited finite sequence of $e$'s.
   \and
   \inferrule* [lab=atom] {} {atom \bc x \;\bm\; P} \\
   \and
-  \inferrule* [lab=ground] {} {G \bc \mathsf{Bool} \;\bm\; \mathsf{String} \;\bm\; \mathsf{Int} \;\bm\; C}
+  \inferrule* [lab=ground] {} {G \bc \mathsf{BoolLiteral} \;\bm\; \mathsf{StringLiteral} \;\bm\; \mathsf{IntLiteral} \;\bm\; C}
   \and
   \inferrule* [lab=collection] {} {C \bc \texttt{[} [t]_{seq} \texttt{]} \;\bm\; \texttt{(} t \;\texttt{,} [t]_{seq} \texttt{)} \;\bm\; \texttt{Set}\texttt{(} [t]_{seq} \texttt{)} \;\bm\; \texttt{\{} [t\texttt{:}t] \texttt{\}}}
 \end{mathpar}

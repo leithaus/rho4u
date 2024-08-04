@@ -1,3 +1,15 @@
 \section{Spatial-behavioral types}
 
-TBD
+\begin{mathpar}
+  \inferrule* [lab=process-type] {} {T,U \bc \pzero \;\bm\; GT \;\bm\; \mathsf{\langle}( TT \sngllrarrow N )\mathsf{\rangle}T \;\bm\; \mathsf{\langle}x\mathsf{?}\mathsf{\rangle}T \;\bm\; \mathsf{*}N \;\bm\; T\mathsf{|}U }
+  \and
+  \inferrule* [lab=name-type] {} {N \bc \mathsf{@}T } \\
+  \and
+  \inferrule* [lab=term] {} {TT \bc AtomT \;\bm\; \mathsf{(}[T]\mathsf{)}}
+  \and
+  \inferrule* [lab=atom] {} {AtomT \bc N \;\bm\; T} \\
+  \and
+  \inferrule* [lab=ground] {} {GT \bc \mathsf{Bool} \;\bm\; \mathsf{String} \;\bm\; \mathsf{Int} \;\bm\; C}
+  \and
+  \inferrule* [lab=collection] {} {C \bc \mathsf{List}(TT) \;\bm\; \mathsf{Tuple}\mathsf{(} TT \;\mathsf{,} [TT]_{seq} \mathsf{)} \;\bm\; \mathsf{Set}\mathsf{(} TT \mathsf{)} \;\bm\; \mathsf{Map}\mathsf{\{} [TT\mathsf{:}TT] \mathsf{\}}}
+\end{mathpar}
