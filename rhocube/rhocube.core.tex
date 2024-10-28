@@ -1,0 +1,159 @@
+\section{A symmetric reflective higher order concurrent calculus with backchaining}
+
+Note, in the following spec we use $[e]$ to denote a space-delimited
+finite sequence of $e$'s; and we use $[e]_{seq}$ to denote a
+comma-delimited finite sequence of $e$'s.
+
+\begin{mathpar}
+  \inferrule* [lab=process] {} {P, Q \bc \pzero \;\bm\; G \;\bm\; \mathsf{for}( t \sngllrarrow x )P \;\bm\; x\mathsf{?}P \;\bm\; \mathsf{*}x \;\bm\; P\mathsf{|}Q }
+  \and
+  \inferrule* [lab=name] {} {x, y \bc \mathsf{@}P } \\
+  \and
+  \inferrule* [lab=term] {} {t, u \bc atom \;\bm\; \mathsf{(}[t]\mathsf{)}}
+  \and
+  \inferrule* [lab=atom] {} {atom \bc x \;\bm\; P} \\
+  \and
+  \inferrule* [lab=ground] {} {G \bc \mathsf{BoolLiteral} \;\bm\; \mathsf{StringLiteral} \;\bm\; \mathsf{IntLiteral} \;\bm\; C}
+  \and
+  \inferrule* [lab=collection] {} {C \bc \texttt{[} [t]_{seq} \texttt{]} \;\bm\; \texttt{(} t \;\texttt{,} [t]_{seq} \texttt{)} \;\bm\; \texttt{Set}\texttt{(} [t]_{seq} \texttt{)} \;\bm\; \texttt{\{} [t\texttt{:}t] \texttt{\}}}
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=equiv] {} {P\mathsf{|}\pzero \equiv P \;\; P\mathsf{|}Q \equiv Q\mathsf{|}P \;\; P\mathsf{|}(Q\mathsf{|}R) \equiv (P\mathsf{|}Q)\mathsf{R}} \\
+  \and
+  \inferrule* [lab=alpha] { \mathsf{occurs}(t,y)} {\mathsf{for}(t \sngllrarrow x )P \equiv \mathsf{for}(t\{z/y\} \sngllrarrow x )(P\{z/y\}) \; \mathsf{if} z \notin \mathsf{FN}(P)}
+\end{mathpar}
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {\sigma = \mathsf{unify}(t,u)} {\mathsf{for}( t \sngllrarrow x )P \;\mathsf{|}\; \mathsf{for}( u \sngllrarrow x )Q
+    \red P\dot{\sigma}\mathsf{|}Q\dot{\sigma}} \\
+  \and
+  \inferrule* [lab=PAR]{P \red P'}{P\mathsf{|}Q \red P'\mathsf{|}Q}
+  \and
+  \inferrule* [lab=EQUIV]{{P \;\scong\; P'} \andalso {P' \red Q'} \andalso {Q' \;\scong\; Q}}{P \red Q} \\
+  \and
+  \inferrule* [lab=REFL] {P \red P'} {x\mathsf{?}P \red \mathsf{for}( \mathsf{(}P'\mathsf{)} \sngllrarrow x )\pzero} \\
+\end{mathpar}
+
+where $\dot{\sigma}$ denotes the substitution that replaces all variable to process bindings with variable to name bindings. Thus, $\dot{\{P / x\}} = \{\mathsf{@}P / x\}$.
+
+We denote the collection of process states generated
+(resp. recognized) by this grammar by $\mathsf{Proc}$. Likewise, we
+denote the collection of spaces (aka channels or names) by
+$\mathsf{@}\mathsf{Proc}$.
+
+\subsection{Intuitive mapping to $\mathsf{MeTTa}$}
+
+\begin{center}
+\begin{tabular}{ c c }
+  $\mathsf{MeTTa}$ language & $\mathsf{MeTTa}$ calculus \\ 
+  $\mathsf{(}\mathsf{addAtom}\; space \; term \mathsf{)}$ & $\mathsf{for}( term \;\sngllrarrow\; space )\mathsf{0}$ \\
+  $\mathsf{(}\mathsf{remAtom}\; space \; term \mathsf{)}$ & $\mathsf{for}( term \;\sngllrarrow\; space )\mathsf{0}$ \\
+  $\mathsf{(}\mathsf{?}\; space\; term \mathsf{)}$ & $\mathsf{for}( term \;\sngllrarrow\; space )\mathsf{0}$ \\  
+\end{tabular}
+\end{center}
+
+The key insight is the same one that $\mathsf{Google}$ and other
+$\mathsf{Web 2.0}$ companies made decades ago: $folders = tagging$. In
+other words, rather than actually building a container data structure
+constituting a ``space'' (as in $\mathsf{AtomSpace}$), we merely tag
+atoms with the space(s) they occupy. This shift in perspective allows
+us to use the same construct (a kind of tagging) for adding atoms to a
+space; removing atoms from a space; and, querying for atoms in a space
+that match a given pattern.
+
+Likewise a rewrite rule is a continuation $t \sngllrarrow \mathsf{\{} \;P\;\mathsf{\}}$. When it is tagged with a space, say $x$, i.e. $\mathsf{for}( t \sngllrarrow x )P$, may be thought of as added to the space.
+
+Under this view, a space is equated with all the atoms (and rules)
+that have been tagged as in the space. That is, we may define a
+function $\mathsf{space}:\mathsf{@}\mathsf{Proc} \rightarrow \mathsf{Proc}$ by $\mathsf{space}(x) = \Pi_{i}\;\mathsf{for}( t_{i} \sngllrarrow x )P_{i}$. Once we make this definition we note  we have two interlated algebras of considerable additional interest. One is the algebra of spaces as tags, which is isomorphic to the algebra of process states, and another is the algebra of the spaces as collections of atoms (and rules).
+
+The first affords the ability to programmatically define tags and filter on tags. The second affords the ability to reason about, filter, and traverse spaces-qua-collections. The fact that these two are interrelated means that spaces can be nested, or more generally composed in a variety of interesting ways. Indeed, some collections of spaces may be mutually recursively defined!
+
+\section{Some useful features}
+
+\subsection{Replication and freshness}
+\begin{mathpar}
+  \inferrule* [lab=process] {} {P, Q \bc \ldots \;\bm\; \mathsf{!}P \;\bm\; \mathsf{new}\; x\; \mathsf{in}\; \mathsf{\{} \;P\; \mathsf{\}}}
+\end{mathpar}
+
+In the core calculus, when two terms rendezvous at a space
+($\mathsf{for}( t \sngllrarrow x )P \;\mathsf{|}\; \mathsf{for}( u
+\sngllrarrow x )Q$) they are \emph{consumed} and replaced by their
+continuations ($P\dot{\sigma}\mathsf{|}Q\dot{\sigma}$). It is
+frequently useful in programming applications to leave one or the
+other in place. Thus, when $\mathsf{!}\mathsf{for}( t \sngllrarrow x )P$ rendezvous with $\mathsf{for}( u \sngllrarrow x )Q$ it reduces to $\mathsf{!}\mathsf{for}( t \sngllrarrow x )P\mathsf{|}P\dot{\sigma}\mathsf{|}Q\dot{\sigma}$. 
+
+Likewise, in programming applications it is often useful to guarantee that computations rendezvous in a private space. The state denoted by $\mathsf{new}\; x\; \mathsf{in}\; \mathsf{\{} \;P\; \mathsf{\}}$ guarantees that $x$ is private in the scope $P$. Therefore, $\mathsf{new}\; x\; \mathsf{in}\;\mathsf{\{}\;\mathsf{for}( t \sngllrarrow x )P \;\mathsf{|}\; \mathsf{for}( u \sngllrarrow x )Q\mathsf{\}\;}$ guarantees that the rendezvous happens in a private space.
+
+\subsection{Fork-join concurrency}
+
+This next bit of syntactic sugar illustrates the value of the
+$\mathsf{for}$-comprehension. Specifically, it facilitates the
+introduction of fork-join concurrency, which is predominant in human
+decision-making processes. The following syntax should be read as an
+expansion of the core calculus, \emph{replacing} the much simpler
+$\mathsf{for}$-comprehension with a more articulated one.
+
+\begin{mathpar}
+  \inferrule* [lab=process] {} {P, Q \bc \ldots \;\bm\; \mathsf{for}( [\mathsf{Join}] )P} \\
+  \and
+  \inferrule* [lab=joins] {} { [\mathsf{Join}] \bc \mathsf{Join} \;\bm\; \mathsf{Join} \mathsf{;} [\mathsf{Join}]} \\
+  \and
+  \inferrule* [lab=join] {} { \mathsf{Join} \bc [\mathsf{Query}]} \\
+  \and
+  \inferrule* [lab=queries] {} { [\mathsf{Query}] \bc \mathsf{Query} \;\bm\; \mathsf{Query} \mathsf{\&} [\mathsf{Query}]} \\
+  \and
+  \inferrule* [lab=query] {} { \mathsf{Query} \bc t \;\sngllrarrow\; x} \\
+\end{mathpar}
+
+In case the $\mathsf{BNF}$ is a little opaque, here is the template.
+
+\begin{lstlisting}[mathescape=true]
+  for(
+    y$_{11}$ $\sngllrarrow$ x$_{11}$ & $\ldots$ & y$_{m1}$ $\sngllrarrow$ x$_{m1}$ ; // received in any order, 
+       $\dots$ ; // but all received before the next row
+    y$_{1n}$ $\sngllrarrow$ x$_{1n}$ & $\ldots$ & y$_{mn}$ $\sngllrarrow$ x$_{mn}$
+  ){ $P$ }
+\end{lstlisting}
+
+As mentioned previously, the predominant pattern of human decision
+making processes (such as loan approval processes, or academic paper
+reviews) involve fork-join concurrency. The syntactic sugar provided
+here certainly supports that kind of coordination amongst processes. For example,
+
+\begin{lstlisting}[mathescape=true]
+  for(
+     // received in any order
+     $\mathsf{true} \;\sngllrarrow\; reviewer_{1}$ & $\mathsf{true} \;\sngllrarrow\; reviewer_{2}$  & $\mathsf{true} \;\sngllrarrow\; reviewer_{3}$ 
+     ){
+       // acceptance notification and publication process
+       $P$
+     } 
+\end{lstlisting}
+
+Yet, it affords much more sophisticated control than this, while also
+providing a programming paradigm that is familiar to modern
+programmers, namely semi-colon delimited sequential assignment-based
+programming.
+
+\subsection{The $\mathsf{COMM}$ rule as transactional semantics}
+
+\begin{mathpar}
+  \inferrule* [lab=COMM] {\sigma = \mathsf{unify}(t,u)} {\mathsf{for}( t \sngllrarrow x )P \;\mathsf{|}\; \mathsf{for}( u \sngllrarrow x )Q
+    \red P\dot{\sigma}\mathsf{|}Q\dot{\sigma}} \\
+\end{mathpar}
+
+One of the most interesting aspects of these types of operational
+semantics \footnote{such as are seen in the $\pi$-calculus or the rho
+  calculus} is that they are implicitly transactional. In the
+asymmetric case it is easier to see because one of the interacting
+items is a write to a space and the other is a read. In the symmetric
+case both threads are reading and writing at the same
+time. Specifically, all the variables in $t$ that are substituted for
+by terms in $u$ are being read from $u$ and written to the
+continuation by the substitution $P\dot{\sigma}$; and symmetrically,
+all the variables in $u$ that are substituted for by terms in $t$ are
+being read from $t$ and written to the continuation
+$Q\dot{\sigma}$. Indeed, $\dot{\sigma}$ is the witness of the
+transaction.

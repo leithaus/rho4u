@@ -1,0 +1,124 @@
+\section{From calculus to efficient implementation}
+
+It turns out that a variant of the $\mathsf{Linda}$ tuple space
+\cite{DBLP:conf/parle/Gelernter89} where input is not blocking is the
+critical innovation to an efficient implementation. Instead of
+blocking we turn input from a key into the storage of a continuation
+at the key. As the astute reader has already guessed, (the hashes of)
+channels become keys.\\
+
+%\begin{center}
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.5]{MeTTaCalcImpl1.pdf} \\
+  \caption{Compiler from $\mathsf{MeTTa}$-calculus to $\mathsf{RSpace}$}
+\end{figure}
+%\end{center}
+
+Thus, the diagram above indicates how to turn a given process state
+into an $\mathsf{RSpace}$ instance.
+
+\begin{itemize}
+  \item the first equation says that the $\pzero$ process corresponds
+    to the empty $\mathsf{RSpace}$;
+  \item the second says that a comprehension corresponds to an
+    $\mathsf{RSpace}$ consisting of a single key-value pair; the key
+    being the hash of the channel on which the comprehension is
+    listening (the \emph{source} of the comprehension); and the value
+    being the (multiset containing the single) continuation formed by
+    created a pattern-matching style lambda from \emph{target} of the
+    comprehension to its \emph{body}; \footnote{Sometimes we abuse the
+      terminology and call the body the continuation.}
+  \item the third equation translates the concurrent composition of
+    two processes, say $P$ and $Q$, into the combination of their two
+    $\mathsf{RSpace}$s using an operation $\mathsf{RSpace}$s on we
+    define below.
+\end{itemize}
+
+\subsubsection{Parallel composition of $\mathsf{RSpace}$s}
+
+If we are combining two $\mathsf{RSpaces}$ that only have a single
+key-value pair, each; and the keys are not equal, then we simply
+combing them into a single $\mathsf{RSpace}$ containing both key-value
+pairs. More generally, when combining $\mathsf{RSpace}$s that have no overlap
+in their key-sets, we simply return the $\mathsf{RSpace}$ whose
+key-value pairs is the union of the key-value pairs of the
+$\mathsf{RSpace}$s being combined.\\
+ 
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.5]{MeTTaCalcImpl2.pdf}
+  \caption{Compiler from $\mathsf{MeTTa}$-calculus to $\mathsf{RSpace}$ continued}
+\end{figure}
+
+When combining two $\mathsf{RSpaces}$ that only have a single
+key-value pair, each, their keys are the same, but the patterns of
+their continuations do not unify, then we simply combine them into a
+single $\mathsf{RSpace}$ containing a single key-value pair, the key
+of which is the key of each pair (remember, both pairs share a key)
+and the value of which is the multiset containing the respective
+values (continuations).
+
+More generally, when combining $\mathsf{RSpace}$s that have overlap in
+their key-sets, but the overlapping keys contain no continuations
+whose patterns unify, we simply return the $\mathsf{RSpace}$ whose
+key-value pairs is
+
+\begin{itemize}
+  \item the union of the key-value pairs of the $\mathsf{RSpace}$s
+    being combined for the key-value pairs whose keys do not overlap;
+  \item and constructs a new key-value pair for each pair in the
+    overlap that shares a key, whose key is the key they share and
+    whose value is the union of their respective multisets.
+\end{itemize}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.5]{MeTTaCalcImpl3.pdf}
+  \caption{Compiler from $\mathsf{MeTTa}$-calculus to $\mathsf{RSpace}$ continued again}
+\end{figure}
+
+What remains is the case when combining two key-value pairs that have
+unifying patterns in their multisets. The naive algorithm is quadratic
+in the number of unification checks. However, $\mathsf{MORK}$ provides
+a more efficient way to parallelize these checks.
+
+[$\mathsf{MORK}$ algorithm description goes here.]
+
+\subsubsection{Procedural reflection implementation}
+
+The astute reader will have noticed that we have not addressed the
+execution of procedurally reflective processes. The naive
+implementation instantiates a \emph{copy} of the $\mathsf{RSpace}$ in
+which $x\mathsf{?}P$ is being evaluated and allows one transactonal
+step in the future of $P$, i.e. one $\mathsf{COMM}$ event in the
+future of $P$. Then it makes that state available at $x$ in the
+original $\mathsf{RSpace}$.
+
+Unfortunately, there is no way to avoid the cost of copying the
+original $\mathsf{RSpace}$. We should note that there is a natual way
+to shift all processes into a different namespace.
+
+\begin{mathpar}
+  \inferrule* {}{u * P = P\{ u * x / x | x \in \mathsf{FN}(P) \}} \\
+  \and
+  \inferrule* {}{\mathsf{@}P * \mathsf{@}Q = \mathsf{@}(P\mathsf{|}Q)}
+\end{mathpar}
+
+Thus, all the key-value pairs could remain in the original
+$\mathsf{RSpace}$ and merely be shifted into a distinguished
+namespace. However, this would actually be more costly than a deep
+copy of the original $\mathsf{RSpace}$ because the key-value pairs
+still have to be copied and then shifted.
+
+\subsection{The transactional semantics of $\mathsf{RSpace}$}
+
+A given $\mathsf{RSpace}$ represents a collection of $\mathsf{MeTTa}$
+spaces that share a transactional semantics. Effectively, the
+collection of channels served by the $\mathsf{RSpace}$, that is the
+\emph{namespace} served by a given $\mathsf{RSpace}$, all participate
+in coordinated transactions in the same way that all the tables served
+by a $\mathsf{SQL}$ server participate in coordinated
+transactions. However, unlike $\mathsf{SQL}$'s architecture, the
+$\mathsf{RSpace}$ architecture naturally composes, allowing for a
+hierarchy of transactional coordination over a tree of namespaces served by a network of $\mathsf{RSpace}$s.
