@@ -1,0 +1,49 @@
+\section{Hypercomputation and rho}
+In \cite{WIKI:TuringHyperComputation} Turing already recognized a
+tower of computation beyond the Turing machine. It is widely thought
+that these more powerful systems are not physically realizable. The
+rho calculus, and the mobile process calculi more generally, offer a
+different perspective on this question.
+
+The story begins from a bit of trolling that Carl Hewitt used to
+indulge in. Hewitt was aware of the result that fair communication is
+strictly stronger than Turing machines, and because Hewitt's actor
+model presumes fair communication, to get a rise out of his audience
+Hewitt would regularly say that actors are more powerful than Turing
+machines.
+
+Yet, there is an insight here that should not go unremarked. In more
+recent years the field of computing has recognized randomness,
+entropy, and non-determinism as key resources in computing. In
+particular, introducing this kind of resource can dramatically speed
+up certain computations. In the context of Turing's work and Hewitt's
+trolling the question arises why could we not arrange for ordinal-oracles to
+be the source of the ``non-determinism'' in computations?
+
+More specifically, in the case of the mobile process calculi there is
+effectively only one place where non-determinism arises: race
+conditions. Why then could we not arrange for oracles to supply
+information about the winners of races? Even more specifically, using
+the annihilation version of the $\mathsf{COMM}$ rule we can arrange
+for the complexity of a computation to determine the winners of
+races. That is, we can arrange for complexity-based racing in which
+computations with lower complexity win races on average. Oracles which
+can compute in finite time limits that would require infinite steps or
+infinite storage computation will often win these complexity-based
+races. Moreover, this approach is compositional. At each higher
+ordinal we get new oracles which deliver new answers about the winners
+of races at the current ``level'' of this tower of hypercomputation.
+
+Even further, the rho calculus can track the flow of causal
+information. Specifically, we can track the tree of $\mathsf{COMM}$
+events. In some sense, this is the rho calculus equivalent of a light
+cone. Yet, in this tower of hypercomputation we can track when oracles
+are causing events at lower levels of the tower. Indeed, oracles at
+any level of the tower may influence events at any of the lower levels.
+
+Under the hypothesis that physicality \emph{is} causality we arrive at
+a startling conclusion that the ``physically'' computable universe is
+open, rather than closed. There is a place for limitless novelty and
+this novelty can influence ``physical'' computations, changing the
+course of what might otherwise be a completely deterministic chain of
+events.
