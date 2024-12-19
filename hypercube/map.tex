@@ -1,0 +1,147 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, hyperref}
+\usepackage{graphicx}
+\DeclareUnicodeCharacter{2211}{\ensuremath{\Sigma}}
+
+\title{MeTTa Architecture Proposal}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\subsection{Early MeTTa implementations}
+
+\subsection{Problems}
+
+\subsubsection{Leaking Secrets}
+
+\subsubsection{All paths}
+
+\subsection{GSLTs as a way forward}
+
+\subsubsection{Well-defined semantics}
+
+\subsubsection{Compiles to Rholang}
+
+\subsubsection{Rholang is optimal}
+
+\section{Theories of Operational Semantics}
+
+Our approach to operational semantics is to define a category $\mathsf{Th}$ whose generating objects are \emph{sorts}---the basic atoms out of which the state of the machine is assembled---and whose generating morphisms are term constructors that produce terms of those sorts.
+
+Bill Lawvere pioneered the use of categories to capture grammars modulo equations for structural congruence, so such categories are often called \emph{Lawvere theories}. Lawvere proved that his theories correspond to finitary monads. Our theories are Lawvere theories equipped with extra structure and stuff; specifically, they are \emph{graph-structured magmal multi-sorted lambda theories}, or GSLTs for short.
+
+The extra structure and stuff allow us to talk about reductions between terms, bind variables, and define modal types.
+
+\subsection{Multi-sorted}
+
+Lawvere only considered categories with one generating sort. We need at least two generating sorts, one for terms representing processes, and another for terms representing rewrites between processes. Todd Trimble gave a \href{https://ncatlab.org/toddtrimble/published/multisorted+Lawvere+theories}{definition of multisorted Lawvere theories} on the nLab and proved a similar monadicity theorem.
+
+\subsection{Graph-structured}
+
+We distinguish one of these sorts, say $P$, as the sort of complete machine states, which we call processes. Rewrites are represented as a different sort $R$ equipped with source and target maps from $R$ to $P$. Let $\mathsf{Th(Gph)}$ be the category with two objects and two parallel morphisms between them. A graph-structured theory $\mathsf{Th}$ is one equipped with a functor from $\mathsf{Th(Gph)}$ to $\mathsf{Th}$.
+
+\subsection{Magmal}
+
+We restrict our attention to those programming languages where the source of any rewrite rule is an occurrence of a binary process constructor $\odot$. For example:
+
+\begin{itemize}
+    \item In lambda calculus, beta reduction is of the form $((\lambda x.T) U) \to T[U/x]$, whose source is an application of one process to another.
+    \item In pi calculus, the comm rule is of the form $\text{for}(y \leftarrow x)P \mid x!z \to P[z/y]$, whose source is a juxtaposition of two processes.
+\end{itemize}
+
+Consider the type of terms $\langle \odot([], A) \rangle B$ that when placed into a term context $\odot([], x)$, where $x : A$, may reduce to a term of type $B$. In lambda calculus, this corresponds to the arrow type $A \to B$. In pi calculus, this is a \emph{possibility} modal type; the dual \emph{necessity} modal type is Caires' rely-guarantee type $A \triangleright B$ [citation]. If $B$ can depend on $x$, these are dependent product types.
+
+\subsection{Lambda theories}
+
+Lawvere's theories were cartesian categories; that is, the theories had finite products. While it is possible to define the machinery of bound variables and substitution in a Lawvere theory, it is a hassle and not particularly interesting. Instead, we use cartesian closed categories, which handle bound variables and substitution automatically.
+
+\section{Presentation of finitely generated GSLTs}
+
+A presentation of a GSLT consists of:
+
+\begin{itemize}
+    \item A finite set of \textbf{generating sorts}, including two distinguished sorts $P$ (processes) and $R$ (rewrites) from the graph structure.
+    \item A choice of a distinguished binary morphism $\odot : X \times Y \to P$, called the \textbf{interaction}, for some pair of sorts $X, Y$.
+    \item A finite set of \textbf{generating morphisms}, including the two built-in \textbf{graph structure morphisms} $s, t : R \to P$. Generating morphisms with codomain $P$ are \textbf{term constructors}, and those with codomain $R$ are \textbf{rewrite constructors}:
+    \[
+    r : \prod_i Z_i \to R
+    \]
+    If the codomain does not contain a factor of $R$, it must factor through the interaction:
+    \[
+    \exists f : \prod_i Z_i \to X \times Y. \quad \odot \circ f = s \circ r
+    \]
+    \item A finite set of \textbf{equations} between morphisms. We often write $r : A \to B$ as shorthand for $s(r(z_i \ldots)) = A$, $t(r(z_i \ldots)) = B$.
+\end{itemize}
+
+Rewrite term constructors usually come in two flavors:
+
+\begin{itemize}
+    \item \textbf{Top-level rewrites} whose codomain does not contain a factor of $R$.
+    \item \textbf{In-context rewrites} whose codomain contains a factor of $R$.
+\end{itemize}
+
+For example, here is a GSLT for the untyped lambda calculus with head normal form evaluation:
+
+\begin{itemize}
+    \item \textbf{No generating sorts}
+    \item \textbf{Generating morphisms:}
+    \begin{itemize}
+        \item Graph structure morphisms: $s, t : R \to P$
+        \item Term constructors: 
+        \begin{itemize}
+            \item $\text{App} : P \times P \to P$
+            \item $\text{Lam} : (P \to P) \to P$
+        \end{itemize}
+        \item Rewrite constructors:
+        \begin{itemize}
+            \item $\text{Beta} : (P \to P) \times P \to R$
+            \item $\text{Head} : R \times P \to R$
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Interaction:} $\text{App}$
+    \item \textbf{Equations:}
+    \begin{itemize}
+        \item $\text{Beta}(A, B) : \text{App}(\text{Lam}(A), B) \to ev(A, B)$ (top-level)
+        \item $\text{Head}(A, B) : \text{App}(s(A), B) \to \text{App}(t(A), B)$ (in-context)
+    \end{itemize}
+\end{itemize}
+
+\section{Generating typed GSLTs from untyped ones}
+
+Hypercube functor.
+
+\section{GSLT to Rholang Compilation}
+
+The general idea is to send the current state on a channel (e.g., @0) and then use:
+
+\begin{verbatim}
+Interpreter = ∑ for(LHS_Pattern <- @0) { 0!(RHS) | Interpreter }
+\end{verbatim}
+
+To avoid infinitely large interpreters, we enumerate possible left-hand sides:
+
+\begin{verbatim}
+Interpreter = PatternGen(0)
+PatternGen(n) = for(LHS_Pattern(n) <- @0) { @0!(RHS(n)) | Interpreter } + PatternGen(n+1)
+\end{verbatim}
+
+A smarter enumeration would use:
+
+\begin{verbatim}
+Interpreter = for(state <- @0) { PatternGen'(0, state) | @1!(state) }
+PatternGen'(n, state) = for(LHS_Pattern'(n, state) <- @1) { @0!(RHS(n)) | Interpreter } + PatternGen(n+1, state)
+\end{verbatim}
+
+\section{RSpace}
+
+The Rholang interpreter uses a very efficient data structure called \textbf{RSpace} for storing continuations and matching sends with receives.
+
+\subsection{RSpace on Mork}
+
+foo
+\end{document}
