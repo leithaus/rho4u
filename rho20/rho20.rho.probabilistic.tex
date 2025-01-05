@@ -19,11 +19,127 @@ return to after providing the details of the more standard approaches.
 
 \subsection{Stochastic rho}
 
-TBD
+In the stochastic version of rho, we assume we have a function $r$ which assigns a positive rate to a given channel.  Hence, $r: @\text{Proc} \rightarrow \mathbb{R}^+$, where $@\text{Proc}$ is the name-space, and $\mathbb{R}^+$ is the set of non-negative reals.  For convenience, we write $(c,r')$ for the name of channel $c$ with rate $r'=r(c)$, although we note that $r'$ is fully determined by $c$.  The sets of names and processes for stochastic rho are thus identical to those of rho, while the name equivalence relation is modified such that for names $c$ and $d$, $c\equiv_N d$ iff $r(c)=r(d)$.
+
+We consider the stochastic reduction of a rho process $P$.  In rho, $P$ may have multiple possible reductions, $P'_i$ for $i=1...N$ (where $N$ is finite), corresponding to different possible applications of the $\mathsf{COMM}$-rule.  Each of these will be associated with a channel, and we may write these channels and their associated rates as $(c_1,r_1),...,(c_N,r_N)$.  The rate coefficients may be regarded as reaction propensities in a chemical system.  Hence, following the Gillespie algorithm, to reduce $P$, assuming $\sum_n r_n > 0$ we first sample a time $\tau$ according to the exponential distribution:
+
+\begin{eqnarray}
+\tau \sim \left(\sum_n r_n\right) \exp\left(-\tau\sum_n r_n\right),
+\end{eqnarray}
+
+\noindent and then choose a reduction $Q$ according to the distribution:
+
+\begin{eqnarray}\label{eq:prob_update}
+p(Q^*\equiv P^*_n) \propto \sum_{\{m|P^*_m\equiv P^*_n\}} r_m.
+\end{eqnarray}
+
+\noindent For the case $\sum_n r_n = 0$, $P$ reduces in an infinite time, and hence may be regarded as a terminal state.
 
 \subsection{Quantum rho}
 
-TBD
+In quantum rho, we follow the same approach as the stochastic case, but instead of using real channel rates, instead we allow complex rates, hence we have $r:@\text{Proc} \rightarrow \mathbb{C}$.  Now, in addition to the sort of rho processes, we introduce an additional sort of superimposed rho processes, which we will write as $\text{Proc}^*$:
+
+\begin{eqnarray}
+\phi, \psi ::= \alpha_1 \ket{P_1} \; + \; ... \; + \; \alpha_i \ket{P_i} \; + \; ...  + \alpha_M \ket{P_M},
+\end{eqnarray}
+
+\noindent where $M>0$, $\alpha_1 ... \alpha_M \in \mathbb{C}$, $\sum_i |\alpha_1|^2 = 1$ and we require that, for all $i\neq j$, $P_i \not\equiv P_j$.  Since each channel has a complex rate, in certain cases a rho process $P$ may be associated with a coherent superimposed successor state over its possible rho reductions, $P'_1 \; ... \; P'_I$.  We thus define a further function $s:\text{Proc} \times \mathbb{N} \rightarrow \text{Proc}^*\cup\{\text{null}\}$:
+
+\begin{eqnarray}\label{eq:succ_state}
+s(P,M) = 
+\begin{cases}
+\sum_i r_i \ket{P'_i}/\sqrt{r_0} & \text{if} \; r_0 = \sum_i |r_i|^2 > 0 \; \wedge\forall i\neq j. P'_i \equiv P'_j \Rightarrow r^2_i r^2_j = 0 \\
+\ket{P'_{i^*}}
+ & \text{if} \; r_0 = \sum_i |r_i|^2 > 0 \; \wedge M=1, \; p(i^*=i)=|r_i|^2/r_0 \\
+\text{null} & \text{otherwise,}
+\end{cases}\nonumber\\
+\end{eqnarray}
+
+\noindent We note that $s(P,M)$ is deterministic except when $M=1$ and $\exists i\neq j. P'_i \equiv P'_j \wedge r^2_i>0 \wedge r^2_j > 0$.
+
+In quantum rho, we wish to define an operational semantics over the enhanced processes, $\phi,\psi\in \text{Proc}^*$.  To do so, we consider the matrix $\tilde{U}_{\phi}$, letting $\phi=\sum_{i=1...M} \alpha_i \ket{P_i}$, defined as:
+
+\begin{eqnarray}
+\tilde{U}_{\phi} = \left[\sqrt{r_0^{(1)}}\text{vec}(s(P_1,M)), ... , \sqrt{r_0^{(M)}}\text{vec}(s(P_M),M)\right],
+\end{eqnarray}
+
+\noindent where $\text{vec}(s(P_i),M)$ denotes a vertical vectorization of the state $s(P_i,M)$ when $s(P_i,M) \in \text{Proc}^*$ and the vector $\mathbf{0}$, if $s(P_i,M)=\text{null}$, while $[,]$ denotes horizontal concatenation of column vectors.  Here, we note that $\text{vec}:\text{Proc}^*\cup\{\text{null}\} \rightarrow \mathbb{C}^{|S|}$, where $S=\{Q|\exists i,j, \; Q\equiv P'_{i,j} \vee \exists i, \; Q\equiv P_i\}$, where $P'_{i,j}$ is the $j$'th reduction in rho of $P_i$.  Since all rho terms have finitely many reductions, $|S|<\infty$, and the state $s(P_i,M)$ is vectorized by imposing an ordering on $S$ (for instance, lexicographic) so that $S=\{Q_1,...,Q_{|S|}\}$), and letting:
+
+\begin{eqnarray}
+\text{vec}_k(s(P_i,M)) = 
+\begin{cases}
+\braket{Q_k}{s(P_i,M)} & \text{if} \; s(P_i,M) \neq \text{null} \\
+0 & \text{otherwise,}
+\end{cases}
+\end{eqnarray}
+
+\noindent where $\text{vec}_k(.)$ is the $k$'th entry of $\text{vec}(.)$.
+
+We now consider the matrix $\tilde{U}_\phi$.  If we can find a unitary matrix $U_\phi$ over the basis $\ket{Q_1}...\ket{Q_{|S|}}$ and real value $\alpha_0\in \mathbb{R}^+$ such that:
+
+\begin{eqnarray}\label{eq:unitary}
+\tilde{U}_\phi = \alpha_0 U_\phi[.,\pi(1...M)],
+\end{eqnarray}
+
+\noindent where $\pi$ is a permutation over columns, then we may update $\phi$ according to unitary Schr\"odinger dynamics.  We note that this implies $\alpha^2_0=r_0^{(1)}=...=r_0^{(M)}$.  We call this a `unitary reduction', and in this case, we sample a time according to:
+
+\begin{eqnarray}
+\tau \sim \alpha^2_0 \exp\left(-\tau\alpha^2_0\right),
+\end{eqnarray}
+
+\noindent and update $\phi$ to $\phi'=\sum_j \beta_j \ket{Q_j}$, where $\mathbf{\beta}=U_{\phi} [\alpha_{\pi^{-1}(1)} ; ... ; \alpha_{\pi^{-1}(|S|)}]$, writing $[.;.]$ for vertical concatenation, and letting $\alpha_i = 0$ for $i>M$.
+
+On the other hand, if $\tilde{U}$ cannot be expressed as in Eq. \ref{eq:unitary}, we may apply the Born rule to reduce $\phi$, assuming $\phi$ is a superposition over at least two rho expressions (hence $M>1$), which we call `measurement-based reduction'.  In this case, we let $\tau=0$ (i.e. the reduction is instantaneous), and sample $\phi'$ according to:
+
+\begin{eqnarray}
+p(\phi'=\ket{P_i}) = |\alpha_i|^2.
+\end{eqnarray}
+
+We note that, if $M=1$, so that $\phi=\ket{P}$, and $\phi'=s(P)\in \text{Proc}^*$, but $\tilde{U}_{\phi'}$ cannot be expressed as in Eq. \ref{eq:unitary}, the quantum rho reduction semantics above simplifies to the probabilistic reduction semantics of stochastic rho, replacing the complex channel rates $r_i$ with $|r_i|^2$.  Hence, a reduction time $\tau$ is sampled according to $\tau \sim r_0\exp(-\tau r_0)$, where $r_0=\sum_i |r_i|^2$, and $\phi'=\sum_i r_i/\sqrt{r_0} \ket{P'_i}$, which reduces instantaneously to $\phi''$ using the Born rule, meaning that $p(\phi''=\ket{P_i'})=\alpha_i^2=|r_i|^2/r_0$, as in Eq. \ref{eq:prob_update}. Similarly, if $M=1$ and there exists two possible reductions of $P$ in rho such that $P'_i\equiv P'_j$ with non-zero complex channel weights, the the quantum rho reduction semantics above simplifies to the probabilistic reduction semantics by the probabilistic selection of $i^*$ in Eq. \ref{eq:succ_state}.  Finally, we note that all terminal states in quantum rho are of the form $\phi=\ket{P}$ (since if $M>1$, the Born rule may be applied), and for which $P$ either has no reductions in rho, or has reductions which are all associated with channels having zero complex weight. 
+
+\vspace{0.5cm}
+\noindent \textbf{A universal quantum circuit model in quantum rho.}. We briefly show that quantum rho can be used to express arbitrary quantum computations, by exhibiting a universal quantum gate set.  For this purpose, we use the rho encoding $\mathsf{T} ::= t\mathsf{!}(0)$ and $\mathsf{F} ::= f\mathsf{!}(0)$, for the Booleans True and False respectively, where $t$ and $f$ are two distinguished channels.  We can then encode conditional statements in rho as:
+
+\begin{eqnarray}
+(\mathsf{if} \; y \; P \; Q) ::= \mathsf{*}y \; \mathsf{|} \; (\mathsf{for}(z\leftarrow t)P) + (\mathsf{for}(z\leftarrow f)Q).
+\end{eqnarray}
+
+\noindent For a classical circuit of size $N$ bits, we assume that we can encode process and name tuples in rho, and hence we have encodings for the $2^N$ processes $(\mathsf{F},...,\mathsf{F}),...,(\mathsf{F},...,\mathsf{T}),...,(\mathsf{T},...,\mathsf{T})$, each a tuple of processes of length $N$.  Then, we can write a classical circuit of length $L$ in rho with input provided on channel $x_0$ and output generated on channel $x_L$, as the term:
+
+\begin{eqnarray}
+\mathsf{for}(y\leftarrow x_0)(x_1 \mathsf{!}(G_1)) \mathsf{|} \mathsf{for}(y\leftarrow x_1)(x_2 \mathsf{!}(G_2)) \mathsf{|} \; ... \; \mathsf{|} \mathsf{for}(y\leftarrow x_{L-1})(x_L \mathsf{!}(G_L)),
+\end{eqnarray}
+
+\noindent where $G_l$ is the rho expression for the $l$’th gate in the circuit.  Below, we provide rho expressions for classical $\mathsf{NOT}(n)$, $\mathsf{AND}(n,m)$ and $\mathsf{OR}(n,m)$ gates, where $n,m\in\{1…N\}$ denote the indices of the bits to which the gates are applied:
+
+\begin{eqnarray}
+\mathsf{NOT}(n) &::=& (\mathsf{if} \; y_n \; \mathsf{Replace}(y,n,\mathsf{F}) \; \mathsf{Replace}(y,n,\mathsf{T})) \nonumber \\
+\mathsf{AND}(m,n) &::=& (\mathsf{if} \; y_m \; (\mathsf{if} \; y_n \; y \; \mathsf{Replace}(y,m,\mathsf{F})) \; \mathsf{Replace}(y,n,\mathsf{F})) \nonumber \\
+\mathsf{OR}(m,n) &::=& (\mathsf{if} \; y_m \; \mathsf{Replace}(y,n,\mathsf{T}) \; (\mathsf{if} \; y_n \; \mathsf{Replace}(y,m,\mathsf{T})) \; y),
+\end{eqnarray}
+
+\noindent where $y_n$ denotes the projection onto the $n$’th entry of the tuple $y$, and $\mathsf{Replace}(y,n,P)$ denotes the process formed by replacing the $n$’th entry of the tuple $y$ with $@P$.
+
+To define a universal quantum gate model, we use the same circuit model, where the terms above are now interpreted as terms in quantum rho, where all channels are assumed to have rate $1$, unless explicitly stated.  One possible set of universal quantum gates consists of the Clifford gates ($\mathsf{HADAMARD}$, $\mathsf{PHASE}$ and $\mathsf{CNOT}$) along with the $\mathsf{TOFFOLI}$ gate. Below, we give quantum rho expressions for this gate set:
+
+\begin{eqnarray}
+\mathsf{HADAMARD}(n) &::=& (\mathsf{if} \; y_n \; \mathsf{Replace}(y,n,\mathsf{P}^+) \; \mathsf{Replace}(y,n,\mathsf{P}^-)) \nonumber \\
+\mathsf{PHASE}(n) &::=& (\mathsf{if} \; y_n \; y \; \mathsf{Replace}(y,n,\mathsf{P}^i(\mathsf{F}))) \nonumber \\
+\mathsf{CNOT}(m,n) &::=& (\mathsf{if} \; y_m \; \mathsf{NOT}(n) \; y) \nonumber \\
+\mathsf{TOFFOLI}(m_1,m_2,n) &::=& (\mathsf{if} \; y_{m_1} \; (\mathsf{if} \; y_{m_2} \; \mathsf{NOT}(n) \; y) \; y),
+\end{eqnarray}
+
+\noindent where the processes $\mathsf{P}^+$, $\mathsf{P}^-$ and $\mathsf{P}^i$ are defined as:
+
+\begin{eqnarray}
+\mathsf{P}^+ &::=& ((g_3 \mathsf{!} (\mathsf{T})) \mathsf{|} (\mathsf{for}(y'\leftarrow g_3)\mathsf{T} + \mathsf{for}(y'\leftarrow g_3)\mathsf{F}) \nonumber \\
+\mathsf{P}^- &::=& ((g_3 \mathsf{!} (\mathsf{T}) + g_4 \mathsf{!} (\mathsf{T})) \mathsf{|} (\mathsf{for}(y'\leftarrow g_3)\mathsf{T} + \mathsf{for}(y'\leftarrow g_4)\mathsf{F}) \nonumber \\
+\mathsf{P}^i(z) &::=& ((g_5 \mathsf{!} (z)) \mathsf{|} (\mathsf{for}(z'\leftarrow g_5)z'),
+\end{eqnarray}
+
+\noindent and the channels $g_3$, $g_4$, and $g_5$ have the rates $(1/\sqrt(2))$, $(-1/\sqrt(2))$, and $i$ respectively. 
+
+To allow a quantum state to be provided as input to a quantum circuit, the circuit may always be extended by prefixing a quantum circuit which starts from the $\ket{\mathsf{F},...,\mathsf{F})}$  state and prepares the required input state.  Hence, we may run a circuit in quantum rho by initializing the system to the state $\ket{(x_0 \mathsf{!}(\mathsf{F},…,\mathsf{F})\mathsf{|}C_0 \mathsf{|}C)}$, where  $C_0$ is the quantum rho encoding of the prefix circuit, and $C$ is the desired core circuit encoding.  Reduction of the circuit will result in an expression of the form $\ket{(x_L \mathsf{!}(P))}$ where $P$ is a tuple encoding $N$ Boolean values, representing a measurement of the circuit’s output in the computational basis.  To prevent a measurement occurring in order to apply further processing to the circuit’s final quantum state, for instance using an additional circuit $D$ (which we assume to share no common channel names with $C$), circuits may simply be concatenated compositionally, producing the term $\ket{(x_0 \mathsf{!}(\mathsf{F},…,\mathsf{F})|C_0 |C|D)}$.
 
 \subsection{Stochasticity and annihilation}
 
