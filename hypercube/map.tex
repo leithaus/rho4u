@@ -28,7 +28,7 @@
 
 \section{Introduction}
 
-MeTTa (Meta Type Talk) is a proposed language for AI programming. We propose some solutions for some of its problems.
+MeTTa (Meta Type Talk) is a new, early-stage language for AI programming.  We propose a way in which MeTTa can mature into a language that preserves the features that make MeTTa useful for AI while introducing the necessary rigor of a concrete semantics in the presence of concurrency.
 
 \subsection{Early MeTTa implementations}
 
@@ -38,11 +38,11 @@ MeTTa (Meta Type Talk) is a proposed language for AI programming. We propose som
 
 \subsubsection{All paths}
 
-Given a nondeterministic language, the current implementations of MeTTa explore all possible reductions instead of choosing one at random, resulting in an exponential explosion in runtime under very weak assumptions.
+Given a nondeterministic language, the current implementations of MeTTa explore all possible reductions instead of choosing one at random, resulting in a potentially exponential explosion in runtime.
 
 \subsection{GSLTs as a way forward}
 
-A graph-structured lambda theory (GSLT) is a construction in category theory for specifying the semantics of virtual machines.  Such theories have a bunch of useful features, like automatically handling variable binding and alpha equivalence, including similarity to existing systems like K-framework and Maude.
+A graph-structured lambda theory (GSLT) is a construction in category theory for specifying the semantics of virtual machines.  Such theories have a bunch of useful features, like automatically handling variable binding and alpha equivalence, including similarity to existing systems like K-framework, Maude, and Kiama.
 
 \subsubsection{Well-defined semantics}
 
@@ -258,11 +258,9 @@ This technique produces a single-threaded interpreter that includes in its enume
 
 A GSLT has a finite number of top-level and in-context rewrite constructors.  Top-level rewrites unify against a whole term, while in-context rewrites unify against part of a term and then recurse.  The recursion must terminate because the terms are of finite length.
 
-However, the interpreter is not given rewrites, it's given a term that may be the source of a rewrite.  Matching the state agains the source of a rewrite constructor is a unification problem.
+However, the interpreter is not given rewrites, it's given a term that may be the source of a rewrite.  Matching the state agains the source of a rewrite constructor is a unification problem.  The implementation above needs to verify that the entire term is the source of a rewrite in order to add that edge process to the sum.  Rather than preverifiy and sum the resulting processes, we can delegate the verification to processes that are {\em potentially} edges out of the state and simply run them in parallel.  Any potential edge process that manages to verify that the current state really is the source of that edge can then send a message to a channel waiting for a winner.
 
-Given an in-context rewrite rule like ${\rm Par}_2$ that takes multiple rewrites as input, we can't just unify the state with that context and recurse.  All we know is that {\em if the substructure is the source of a rewrite} then we can apply the in-context rewrite rule.  We have to verify that the term is actually the source of the rewrite rule before adding it to the sum.  If we match the context first and then try to match the substructure, then in the context of a sum, it may win the race to be chosen but then fail to match the substructure.
-
-Rholang supports garbage collection of private names.  For example, in the following Rholang process that uses the public name \verb+@Nil+, one of the sends wins the race and the losing send hangs around forever:
+RHO calculus only has public names, so if we tried this technique in RHO calculus, it would leave a lot of garbage laying around:
 
 \begin{verbatim}
 @Nil!(1) | @Nil!(2) | for (winner <- @Nil) stdout!(*winner)
@@ -273,7 +271,7 @@ Rholang supports garbage collection of private names.  For example, in the follo
 @Nil!(1) | stdout!(2)
 \end{verbatim}
 
-\noindent However, if we use private names, the loser can get garbage collected because we're guaranteed that no other process can synchronize with it:
+\noindent However, Rholang also allows private names, like those used by pi calculus.  If we use private names, the loser can get garbage collected because we're guaranteed that no other process can synchronize with it:
 
 \begin{verbatim}
 new x in { x!(1) | x!(2) | for (winner <- x) stdout!(*winner) }
@@ -296,13 +294,21 @@ Nil | stdout!(2)
 stdout!(2)
 \end{verbatim}
 
-This design pattern allows us to write an interpreter that runs multiple interpreter threads in parallel whenever the pattern matches a rule like ${\rm Par}_2$ involving two parallel rewrites.  We still enumerate potential edge processes, but instead of a sum using Plus, we now have a race using Par.  In the sum case, the interpreter has to verify that the term is actually the left-hand side of a concrete rewrite before adding it to the sum.  In the race case, that verification is delegated to the potential-edge process itself: we can recurse on the structure of a term that matches an in-context rule without verifying that the substructure matches, because even if the substructure fails to match, it's not blocking other edge processes.
+This design pattern allows a much simpler interpreter that has one potential edge process for each rewrite constructor in the GSLT.  If an in-context rewrite constructor matches the state, the interpreter forks new processes that independently try to verify that the substructure is the source of a rewrite, then joins those processes and signals that it found an actual edge.
+
+\subsubsection{Detecting optimization opportunities}
+
+There are often more opportunities for optimization, but they only apply in certian circumstances.  Detecting opportunities for optimization is a standard part of compiler design, and will be important for a compilation pipeline targeting Rholang.  For example, in a programming language with functions and an eager reduction strategy, it doesn't make sense to decompose the state from the top level at each step; instead, subexpressions should be reduced completely before moving up in the syntax tree.  Standard heuristics can be brought to bear on the sets of rewrite constructors, and automated techniques exist for generalizing specific instances of optimizations to the most general applicable situation.
+% https://rosstate.org/publications/proofgen/
 
 \section{RSpace}
 
-The Rholang interpreter uses a very efficient data structure called \textbf{RSpace} for storing continuations and matching sends with receives.  
+The Rholang interpreter uses a very efficient data structure called \textbf{RSpace} for storing continuations and matching sends with receives.  To a first approximation, the Rholang interpreter is just a parser sitting on top of RSpace.
 
-\subsection{RSpace on Mork}
+In the simplest cases, the names on which processes are sending and receiving get hashed, and if there's a process of the opposite polarity waiting in the hash table, they can synchronize.  RSpace also allows processes to bind variables using patterns.  This lets programmers dispatch messages on the same channel to different processes based on the content of the messages, and is the basis of the design of the interpreters above.
 
-foo
+\subsection{RSpace and MORK}
+
+MORK (MeTTa Optimal Reduction Kernel) is a powerful functional language for manipulating graph databases in memory. It represents sets of paths using a trie, which can be exponentially smaller than the original dataset.  It can also act on all the paths in a subtrie simultaneously, which can be exponentially faster than mapping over a data set.  But it does not have any transactional semantics or primitives for concurrency.  As such, RSpace and MORK are complementary languages, well-suited to each other.  Rholang 1.2 will embed MORK as a datatype in the same way that it embeds numbers, strings, lists, maps, and sets.  
+
 \end{document}
