@@ -1,20 +1,6 @@
 \documentclass{article}
 \usepackage{amsmath, amssymb, hyperref}
 \usepackage{graphicx}
-\DeclareUnicodeCharacter{2211}{\ensuremath{\Sigma}}
-
-\makeatletter
-\newcommand{\bigplus}{%
-  \DOTSB\mathop{\mathpalette\mattos@bigplus\relax}\slimits@
-}
-\newcommand\mattos@bigplus[2]{%
-  \vcenter{\hbox{%
-    \sbox\z@{$#1\sum$}%
-    \resizebox{!}{0.9\dimexpr\ht\z@+\dp\z@}{\raisebox{\depth}{$\m@th#1+$}}%
-  }}%
-  \vphantom{\sum}%
-}
-\makeatother
 
 \newcommand{\mycomment}[1]{}
 
