@@ -38,23 +38,18 @@ MeTTa (Meta Type Talk) is a new, early-stage language for AI programming.  We pr
 
 \subsubsection{All paths}
 
-Given a nondeterministic language, the current implementations of MeTTa explore all possible reductions instead of choosing one at random, resulting in a potentially exponential explosion in runtime.
+Given a nondeterministic language, the current implementations of MeTTa explore all possible reductions instead of choosing one at random.  In section \ref{enum_rewrites}, we show how the number of rewrites out of a term in lambda calculus can grow exponentially with the length.  We also show a simple modification of the comm rule in RHO calculus that allows an interacting state to transition to any other state, but since there are infinitely many other states, there are infinitely many rewrites out of an interacting state.  This kind of behavior makes the all-paths approach infeasible for even small toy systems.
+
+That said, the implementers have made it clear that the all-paths behavior is a placeholder for a better strategy, but they haven't specified a different one.  We believe this is a good thing, since different languages will have differet strategies, and propose that the strategy be part of the compilation unit provided by the user.
 
 \subsection{GSLTs as a way forward}
 
-A graph-structured lambda theory (GSLT) is a construction in category theory for specifying the semantics of virtual machines.  Such theories have a bunch of useful features, like automatically handling variable binding and alpha equivalence, including similarity to existing systems like K-framework, Maude, and Kiama.
-
-\subsubsection{Well-defined semantics}
-
-By standardizing on GSLTs, MeTTa users will be able to specify exactly the syntax and semantics they're hoping to implement, as well as be given a type system for their virtual machine.
-
-\subsubsection{Compiles to Rholang}
-
-We outline below a strategy for automatic compilation of GSLTs to Rholang.
-
-\subsubsection{Rholang is optimal}
-
-We prove that any other generic solution must be within a constant factor of the performance of Rholang.
+A graph-structured lambda theory (GSLT) is a construction in category theory for specifying the semantics of virtual machines.  Such theories have a bunch of useful features, like automatically handling variable binding and alpha equivalence, and such close similarity to existing systems like K-framework or Kiama that an implementation would be almost trivial.
+\begin{itemize}
+    \item {\bf Well-defined semantics.}  By standardizing on GSLTs, MeTTa users will be able to specify exactly the syntax and semantics they're hoping to implement. The compiler will also provide a type system custom made for their language.
+    \item {\bf Compiles to Rholang.} We outline a strategy for automatic compilation of GSLTs to Rholang in section \ref{comp_to_rholang}.
+    \item {\bf Rholang is optimal.}  In section \ref{optimality_proof} we prove that any other generic solution must be within a constant factor of the performance of Rholang.
+\end{itemize}
 
 \section{Theories of Operational Semantics}
 
@@ -223,11 +218,13 @@ The second will be a coarse-grained GSLT that abstracts away the implementation 
 
 The proof should show that the fine-grained GSLT is a valid implementation of the coarse-grained one.  One way to do this is with a necessity-preserving functor between the free quivers on the reduction graphs.  Just due to being a functor, given a possible rewrite from one term to another in the coarse-grained GSLT, there is a path of possible rewrites between the corresponding terms in the fine-grained GSLT. Preserving necessity means that given a necessary rewrite from one term to another in the coarse-grained GSLT, there is a path of necessary rewrites between the corresponding terms in the fine-grained GSLT.
 
-\subsection{Translation to Rholang}
+\subsection{Compilation to Rholang}
+\label{comp_to_rholang}
 
 Given a finitely-presented fine-grained GSLT, we would like to produce a Rholang program that implements it.  The general strategy is to send the state of the system on a channel, then produce a sum of ``edge'' processes that implement rewrites out of the state.  Each edge process in the sum attempts to consume the current state and produce the edge's target state.
 
 \subsubsection{Enumerating rewrites}
+\label{enum_rewrites}
 
 Unfortunately, we can't produce a sum of all the edge processes simultaneously, due to a finite amount of memory.  In an implementation of the lambda calculus with a reduction strategy that allows beta reduction anywhere within a term, it is easy to produce an exponential number of possible rewrites out of a term.  For example, suppose we have a bunch of applications of the identity combinator to itself:
 
