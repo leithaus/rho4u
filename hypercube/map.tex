@@ -14,26 +14,65 @@
 
 \section{Introduction}
 
-MeTTa (Meta Type Talk) is a new, early-stage language for AI programming.  We propose a way in which MeTTa can mature into a language that preserves the features that make MeTTa useful for AI while introducing the necessary rigor of a concrete semantics in the presence of concurrency.
+MeTTa (Meta Type Talk) is a new, early-stage language for AI programming.  It draws inspiration from Prolog, in that it allows the declaration of facts, but also includes syntax for defining functions in very a Lisp-like way.  MeTTa inherited some of the defects of these languages as well as the benefits.  We propose a way in which MeTTa can mature into a language that preserves the features that make MeTTa useful for AI while introducing the necessary rigor of a concrete semantics in the presence of concurrency.
 
-\subsection{Early MeTTa implementations}
+\subsection{SingularityNet's goals for MeTTa}
 
-\subsection{Problems}
+[[TODO: private communication with Ben regarding his goals for the project. MeTTa as pun for meta-level framework for specifying different models of computation. ``Intelligence opportunistically cooks up a model of computation to suit a given domain.'']]
 
-\subsubsection{Leaking Secrets}
+SingularityNet's investment in MeTTa is predicated on the idea that intelligence opportunistically creates models of computation to suit the domain in which the intelligence is operating.  They hope that MeTTa will be a language in which one can describe a model of computation and get an efficient interpreter or compiler.
+% Ben Goertzel to Greg Meredith, private communication
 
-\subsubsection{All paths}
+\subsection{Problems with Prolog, Lisp, and MeTTa}
 
-Given a nondeterministic language, the current implementations of MeTTa explore all possible reductions instead of choosing one at random.  In section \ref{enum_rewrites}, we show how the number of rewrites out of a term in lambda calculus can grow exponentially with the length.  We also show a simple modification of the comm rule in RHO calculus that allows an interacting state to transition to any other state, but since there are infinitely many other states, there are infinitely many rewrites out of an interacting state.  This kind of behavior makes the all-paths approach infeasible for even small toy systems.
+Throughout the 2020s, Prolog and Lisp hovered together near 20th to 25th place in the 
+% https://web.archive.org/*/https://www.tiobe.com/tiobe-index/
+TIOBE language popularity index, accounting for a little less than one percent of hits.  A user on Hacker News in 2017 
+% https://news.ycombinator.com/item?id=14439137
+asked why Prolog isn't more popular.  The most upvoted responses included
 
-That said, the implementers have made it clear that the all-paths behavior is a placeholder for a better strategy, but they haven't specified a different one.  We believe this is a good thing, since different languages will have differet strategies, and propose that the strategy be part of the compilation unit provided by the user.
-
-\subsection{GSLTs as a way forward}
-
-A graph-structured lambda theory (GSLT) is a construction in category theory for specifying the semantics of virtual machines.  Such theories have a bunch of useful features, like automatically handling variable binding and alpha equivalence, and such close similarity to existing systems like K-framework or Kiama that an implementation would be almost trivial.
 \begin{itemize}
-    \item {\bf Well-defined semantics.}  By standardizing on GSLTs, MeTTa users will be able to specify exactly the syntax and semantics they're hoping to implement. The compiler will also provide a type system custom made for their language.
-    \item {\bf Compiles to Rholang.} We outline a strategy for automatic compilation of GSLTs to Rholang in section \ref{comp_to_rholang}.
+    \item {\bf Difficulty in reasoning about the complexity of backtracking.} To get reasonable behavior, Prolog needs a very---perhaps infeasibly---smart compiler.  By analogy to SQL, one responder said, ``Query plans need inspecting, and often indexes aren't used appropriately. Queries are written and rewritten several different ways to encourage the database to choose one plan or another.''  Another wrote, ``For me, what killed [Prolog] was the fun of making a simple change to your program and due to a single character mistake insert a bug that turns its run time from $O(n)$ to $O(e^{e^n})$.''
+    \item {\bf Not designed for application programming.} Continuing the SQL analogy, one wrote that while it's technically possible to write application code in SQL, it's considered bad form to do so, since other languages are much better for that purpose.  Another wrote, ``Prolog has a beautiful, powerful idea at its core: Resolution. Datalog shines because it doesn't try to overreach and focuses on making this core nimble and expressive in a domain excellently suited to resolution. Prolog tries to be general purpose and is all the worse for it.''
+    \item {\bf Concurrency doesn't fit well into the language.} ``It’s about 15 or so years ago I tried Prolog in an application for analyzing features of images. I remember two things from that – 1. Even though concurrency is elegantly described through guards, implementation turned out to to be not that easy, 2. You have to bypass the beauty of pure logical statements in practice... Once we get to this level of writing Prolog code, you find other standard languages and libraries more competitive and practical.''
+\end{itemize}
+
+The biggest failing of Lisp, as admitted by its designers, 
+% http://jmc.stanford.edu/articles/lisp/lisp.pdf
+was dynamic scoping.  McCarthy said, ``I considered it a bug.''  Dynamic scoping means that any library can modify the behavior of client code.  Independent of the problems with reasoning about behavior, this also induces security problems for any application that includes cryptographic keys or API tokens.
+
+MeTTa inherited all four of these issues.
+
+Another problem specific to MeTTa is the ``all paths'' evaluation strategy.  Given a nondeterministic language, the current implementations of MeTTa explore all possible reductions instead of choosing one.  In section \ref{enum_rewrites}, we show how the number of rewrites out of a term in lambda calculus can grow exponentially with the length.  We also show a simple modification of the Comm rule in RHO calculus that allows an interacting state to transition to any other state, but since there are infinitely many other states, there are infinitely many rewrites out of an interacting state.  This kind of behavior makes the all-paths approach infeasible for even small toy systems.
+
+That said, the implementers have made it clear that the all-paths behavior is a placeholder for a better strategy, but they haven't specified a different one.  We believe we can make this problem into a feature: since different languages will have differet strategies, we propose that the strategy be part of the compilation unit provided by the user.
+
+A final issue with MeTTa is that there is a single space of facts in which to work; modularity demands the ability to isolate workespaces from each other.
+
+\subsection{A way forward}
+
+A model of computation is really a graph of possible reductions.  The vertices of the graph are the possible states the computation can be in, and the edges are the possible state transitions.  We usually present a model of computation with two grammars, one for the states and the other for the edges.
+
+There are various projects like K-framework 
+% kframework.org
+whose purpose is to provide a language in which to express those grammars and to generate an intepreter from the description.  All of these projects trace their lineage back to William Lawvere's 1963 PhD Thesis.
+% http://www.tac.mta.ca/tac/reprints/articles/5/tr5abs.html
+Lawvere proved that when a mathematical gadget is defined as a set equipped with functions on the set satisfying equations, the category of all such gadgets and the gadget homomorphisms between them is equivalent to the category of product-preserving functors and natural transformations from a finite product category (which Lawvere called a ``theory'') into the category Set.
+
+Since term constructors in a grammar are functions on a set, a slight generalization of Lawvere's theories called graph-structured lambda theories (GSLTs) suffices to describe a theory of computation.  The pattern matching features of MeTTa---particularly the fantastic trie-based matching in the PathMap component of the MeTTa Optimal Reduction Kernel (MORK)---become useful when reflecting on the structure of those terms.  Together, they form the ideal, we believe, that the MeTTa designers were striving for.
+
+\subsubsection{Rholang}
+
+We propose Rholang, extended with a compiler from GSLTs and with PathMap, as the language MeTTa was meant to be.  Adoptimg this vision will provide the following benefits:
+
+\begin{itemize}
+    \item {\bf We can compile GSLTs to Rholang.} We outline a strategy for automatic compilation of GSLTs to Rholang in section \ref{comp_to_rholang}.
+    \item {\bf We can generate a type system from a GSLT.} There are automatic ways to generate a type system from a category.
+% https://arxiv.org/abs/2102.04672
+The generated type system allows for the expression of both spatial and behavioral properties of code that can be typechecked before interpretation.
+    \item {\bf Application programming and concurrency.} Rholang seamlessly combines synchronous datatypes with the best-studied approach to concurrency, the $\pi-$calculus, to provide an efficient, transactional knowledge store.
+    \item {\bf Reasoning about backtracking.} The MORK project has extracted the fact database into a blindingly efficient library called PathMap, with not only clear semantics but also clear complexity guarantees.  It lacks, however, any form of concurrency or notion of transaction.  We propose adding MORK to Rholang, both as a synchronous datatype as well as an augmentation of Rholang's pattern matching capabilities.
+    \item {\bf Spaces remain isolated by default.} When using spaces as a datatype, they remain separate by default, just like maps, sets, and lists are.
     \item {\bf Rholang is optimal.}  In section \ref{optimality_proof} we prove that any other generic solution must be within a constant factor of the performance of Rholang.
 \end{itemize}
 
@@ -54,10 +93,10 @@ and proved a similar monadicity theorem.
 
 \begin{itemize}
     \item In lambda calculus, beta reduction is of the form $((\lambda x.T) U) \to T[U/x]$, whose source is an application of one process to another.  Here, $\odot$ is application.
-    \item In pi calculus, the comm rule is of the form $x?(y).P \mid x!(z) \to P[z/y]$, whose source is a juxtaposition of two processes.  Here, $\odot$ is juxtaposition.
+    \item In pi calculus, the Comm rule is of the form $x?(y).P \mid x!(z) \to P[z/y]$, whose source is a juxtaposition of two processes.  Here, $\odot$ is juxtaposition.
 \end{itemize}
 
-Here's an example of a rewrite where $\odot$ is not the top level term constructor: in lambda calculus, a reduction may occur in the head position of an application term.  We have a rewrite that says given any rewrite $r$ and any term $x$, $s((r x)) = (s(r) x)$ and $t((r x)) = (t(r) x).$  Because these rewrites are constructed from $r,$ they are not subject to the requirement to have $\odot$ at the top level.
+An example of a rewrite where $\odot$ is not the top level term constructor occurs in lambda calculus, where a reduction may occur in the head position of an application term.  We have a rewrite that says given any rewrite $r$ and any term $x$, $s((r x)) = (s(r) x)$ and $t((r x)) = (t(r) x).$  Because these rewrites are constructed from $r,$ they are not subject to the requirement to have $\odot$ at the top level.
 
     \item {\bf Modalities from the interaction.}  Consider the type $[\odot([], A)] B$ of terms that when placed into a term context $\odot([], x)$ with any $x\colon A$ must reduce to a term of type $B$. In lambda calculus, this corresponds to the arrow type $A \to B$. In pi calculus, this is Caires' rely-guarantee type $A \triangleright B$.
 % Caires, Luis. "Logical Semantics of Types for Concurrency". Algebra and Coalgebra in Computer Science, Second International Conference, CALCO 2007, Bergen, Norway, August 20-24, 2007, Proceedings
@@ -220,7 +259,7 @@ Unfortunately, we can't produce a sum of all the edge processes simultaneously, 
 
 There are five different places in this lambda term where a beta reduction could occur, so there are $2^5 = 32$ different parallel reductions that could occur.
 
-Even worse, consider the following rewrite rule we could add to RHO calculus: \bigskip
+Even worse, consider the following modification of RHO calculus' Comm rule: \bigskip
 
 \noindent ${\rm Comm}(x, K, Q_1, Q_2): {\rm Send}(x, Q_1) \;|\; {\rm For}(x, K) \leadsto Q_2.$ \bigskip
 
