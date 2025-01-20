@@ -252,9 +252,9 @@ Modal logic is a kind of logic used to reason about possibility and necessity.  
 
 For example, consider the modal type $\langle (- \; A) \rangle B$ of lambda terms that when applied to a value of type $A$ possibly reduce to a value of type $B$ in one step.  This modal type corresponds precisely to the arrow type $A \to B.$  There is nothing explicit about the arrow type in the theory of the lambda calculus; it simply falls out of the theory by considering terms in the first slot of the interaction.
 
-Similarly, consider the modal type $[ - \; |\; A \rangle B$ of RHO processes that when juxtaposed with a process of type $A$ necessarily reduce to a process of type $B$ in one step.  This modal type corresponds precisely to Caires' rely-guarantee modality $A \\triangleright B$~\cite{Caires2007}.
+Similarly, consider the modal type $[ - \; |\; A \rangle B$ of RHO processes that when juxtaposed with a process of type $A$ necessarily reduce to a process of type $B$ in one step.  This modal type corresponds precisely to Caires' rely-guarantee modality $A \triangleright B$~\cite{Caires2007}.
 
-These modal types will play an important role in the generated type system described in the next ssection
+These modal types will play an important role in the generated type system described in the next section.
 
 \section{Generating an interpreter and a type system}
 \label{Generating an interpreter and a type system}
@@ -266,7 +266,7 @@ In the RHO calculus, the terms form a commutative monoid.  However, there are $n
 
 The first presentation will be of the fine-grained GSLT with all the optimizations and implementation details; it will only have equations pertaining to the source and target of rewrites and will have logic for things like reducing to a normal form or using a hash table.  We can derive a type system from such a GSLT, but it will likely be too complicated to be used by developers writing programs in the language.
 
-The second will be a coarse-grained GSLT that abstracts away the implementation details and things like specific choices of normal form.  This is the GSLT that we feed to the algorithms above to generate a useful type system.  From an arbitrary GSLT we can automatically derive a ``native'' type system~\cite{WilliamsStay2021}---the internal language of the topos of presheaves on the theory---and from an interactive GSLT, we can derive a smaller but still very useful dependent type system similar to Barendregt's lambda cube~\cite{HypercubePaper}.
+The second will be a coarse-grained GSLT that abstracts away the implementation details and things like specific choices of normal form.  This is the GSLT that we feed to the algorithms above to generate a useful type system.  From an arbitrary GSLT we can automatically derive a ``native'' type system~\cite{WilliamsStay2021}---the internal language of the topos of presheaves on the theory---and from an interactive GSLT, we can derive a smaller but still very useful dependent type system similar to Barendregt's lambda cube~\cite{HypercubePaper}.  The modalities in the previous section play the role analogous to that of the dependent product in the lambda cube.
 
 The proof should show that the fine-grained GSLT is a valid implementation of the coarse-grained one.  One way to do this is with a necessity-preserving functor between the free quivers on the reduction graphs.  Possibility is preserved by any functor between the quivers: given a possible rewrite from one term to another in the coarse-grained GSLT, there is a path of possible rewrites between the corresponding terms in the fine-grained GSLT.  Preserving necessity means that given a necessary rewrite from one term to another in the coarse-grained GSLT, there is a path of necessary rewrites between the corresponding terms in the fine-grained GSLT.
 
@@ -365,20 +365,29 @@ However, MORK does not have any transactional semantics or primitives for concur
 
 There is a long tradition of associating types with predicates.  One of the earliest kind of query was whether a term halts or not.  This is, as Church and Turing showed, undecidable.  But the subsequent development of type systems for the lambda calculus focused on that question, and any well-typed program in any of the type systems of the lambda cube is guaranteed to halt.
 
-Many modern languages also use predicates for types.  TypeScript, for example, includes a notion of narrowing the type of a value within \verb+if+ blocks whose condition tests some property of the value.  The native type theory mentioned above is the internal language of the topos of presheaves on the theory, and this internal language includes the ability to express predicates; but more generally, we can simply ask for witnesses of any particular type in a type system.  Finding such witnesses is the subject of an enormous literature and is outside the scope of this paper, but restricted problems can be solved quickly (e.g. MORK handles structural type queries very quickly).  Certainly Prolog's backtracking approach is a brute-force way of finding witnesses, but there are many other ways, and an interpreter supporting queries should expose many different methods with clear complexity guarantees.
+Many modern languages also use predicates for types.  TypeScript, for example, includes a notion of narrowing the type of a value within \verb+if+ blocks whose condition tests some property of the value.  The native type theory mentioned above is the internal language of the topos of presheaves on the theory, and this internal language includes the ability to express predicates; but more generally, we can simply ask for witnesses of any particular type in a type system.  
+
+Finding such witnesses is the subject of an enormous literature and is outside the scope of this paper, but restricted problems can be solved quickly (e.g. MORK handles structural type queries very quickly).  Certainly Prolog's backtracking approach is a brute-force way of finding witnesses, but there are many other ways, and an interpreter supporting queries should expose many different methods with clear complexity guarantees.
+
+The automatically generated type systems above give us grammars in which to express queries in the form of an expanded GSLT including both the original operational semantics and new type-constructing function symbols. Since queries are about terms in a GSLT and the type system itelf is expressed as a GSLT, queries can produce new queries in which facts are added, subtracted, or transformed.
 
 The notion of a theory of computation is very general; one could, for example, model a cell as a computing device where terms are cell states and rewrites involve molecules and cell signaling pathways.  Healthy and diseased cells become types expressible in the type system, and we have modal types corresponding to small molecules that in the context of a diseased cell lead to a healthy cell.
 
 \section{Conclusion}
 
-Our proposed architecture addresses the defects of the current MeTTa implementation.
+Our proposed architecture addresses the defects of the current MeTTa implementation:
 
 \begin{itemize}
-    \item specify the semantics of any discrete theory of computation
-    \item generate an efficient interpreter for that theory
-    \item generate a sound type system customized to that theory
-    \item support concurrency
-    \item support transactions
+    \item GSLTs can specify the semantics of any discrete theory of computation
+    \item From a GSLT, we can generate an efficient interpreter for that theory
+    \item From a GSLT, we can generate a sound type system customized to that theory
+    \item GSLTs allow defining functions inline.
+    \item GSLTs let the programmer specify exactly when subexpressions can reduce.
+    \item Rather than have a single shared fact database, the facts become part of a query, and the intepreter can produce new fact databases in in response to queries.
+    \item Theories can be combined in multiple ways, including concurrent execution.
+    \item State updates are transactional.
+    \item The automatically generated type systems are provably sound.
+    \item When two theories are combined, the system can automatically generate a new type system encompassing both and their interactions.
 \end{itemize}
 
 
@@ -402,18 +411,8 @@ Cardelli, Luca, and Andrew D. Gordon (2000). ``Mobile ambients.'' \emph{Theoreti
 \bibitem{GoertzelMeredith2024}
 Goertzel, Ben, and L. Gregory Meredith. Private communication.
 
-\bibitem{HackerNews}
-Hacker News (2017). 
-\url{https://news.ycombinator.com/item?id=14439137}.
-
 \bibitem{HypercubePaper}
 [Placeholder for the Hypercube functor paper reference; “cite the hypercube functor paper”].
-
-\bibitem{Jacobs1999}
-Jacobs, Bart (1999).  
-\textit{Categorical Logic and Type Theory}.  
-Studies in Logic and the Foundations of Mathematics, Vol.\ 141.  
-North-Holland.
 
 \bibitem{kframework}
 K Framework.
@@ -424,27 +423,11 @@ Lawvere, William (1963).
 ``Functorial Semantics of Algebraic Theories'' (PhD Thesis). 
 \url{http://www.tac.mta.ca/tac/reprints/articles/5/tr5abs.html}.
 
-\bibitem{McCarthy1978}
-McCarthy, John (1978). 
-``History of LISP.'' 
-Presented at the \textit{ACM SIGPLAN History of Programming Languages Conference (HOPL), June 1--3, 1978}.  
-Published in \textit{History of Programming Languages},  
-edited by Richard Wexelblat,  
-Academic Press, 1981.
-
 \bibitem{MeredithRadestock2005}
 Meredith, L.~Gregory, and Matthias Radestock (2005). 
 ``A Reflective Higher-order Calculus.'' 
 \emph{Electronic Notes in Theoretical Computer Science} 141(5), 49--67, 22 December 2005. 
 \url{https://doi.org/10.1016/j.entcs.2005.05.016}
-
-\bibitem{Scott1980}
-Scott, Dana (1980). 
-``Relating Theories of the Lambda-Calculus.'' 
-In Seldin, J.P., and J.R. Hindley (eds.), 
-\textit{To H.B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism},  
-pp.\ 403--450. Academic Press, New York.  
-\url{https://www.andrew.cmu.edu/user/awodey/dump/Scott/ScottRelating.pdf}.
 
 \bibitem{Tate2010}
 Tate, Ross, Michael Stepp, and Sorin Lerner (2010). 
@@ -453,10 +436,6 @@ In \emph{POPL '10: Proceedings of the 37th annual ACM SIGPLAN-SIGACT Symposium o
 pp.\ 389--402, Madrid, Spain. 
 ACM, New York, NY, USA. 
 \url{http://www.cs.cornell.edu/~ross/publications/proofgen/}.
-
-\bibitem{tiobeIndex}
-TIOBE Index (2025). 
-\url{https://web.archive.org/web/20250106055905/www.tiobe.com/tiobe-index/}.
 
 \bibitem{Trimble2018}
 Trimble, Todd (2018). 
