@@ -39,7 +39,7 @@ MeTTa can model the operational semantics of certain virtual machines using a pa
 (: T Sort)
 (: App (-> T T T))
 (: Lam (-> (-> T T) T))
-(= (App (Lam $f) $v) ($f $v)) ; Beta reduction
+(= (App (Lam $f) $v) ($f $v))   ; Beta reduction
 
 ; -- Named functions due to lack of lambda in MeTTa
 
@@ -54,18 +54,18 @@ MeTTa can model the operational semantics of certain virtual machines using a pa
 
 ; -- Example reductions
 
-!(App X (App (Lam ident) Y))  ; [(App X Y)]
-!(Lam Omega)                  ; [(Lam Omega)]
-;!(App (Lam Omega) X)         ; infinite loop
+!(App X (App (Lam ident) Y))    ; [(App X Y)]
+!(Lam Omega)                    ; [(Lam Omega)]
+;!(App (Lam omega) (Lam omega)) ; infinite loop
 \end{verbatim}
 
-The theory introduces \verb+T+ as a sort, essentially the generator in the grammar.  It then declares the term constructors: \verb+App+ takes two terms and produces a term, while \verb+Lam+ takes a function from terms to terms and produces a term.  By using a function type, the theory bootstraps \verb+Lam+ by using the binders in MeTTa itself rather than modeling explicit substitution as part of the grammar.  MeTTa takes care of alpha equivalence of variable names internally.  Finally, the theory declares the beta rule.
+The theory introduces \verb+T+ as a sort, essentially the generator in the grammar for terms.  It then declares the term constructors: \verb+App+ takes two terms and produces a term, while \verb+Lam+ takes a function from terms to terms and produces a term.  By using a function type, the theory can avoid modeling explicit substitution and alpha equivalence as part of the grammar by bootstrapping \verb+Lam+ using the binders in MeTTa itself.  Finally, the theory declares the beta rule.
 
-Note that there's nothing in the theory corresponding to the rule defining the reduction strategy:
+Note that there's nothing in the theory corresponding to the rule defining the evaluation strategy:
 
 \[ \frac{{\tt T} \leadsto {\tt T'} \quad {\tt U} \leadsto {\tt U'}}{\mbox{\tt (App T U)} \leadsto \mbox{\tt (App T' U')}}. \]
 
-The evaluations strategy is hardcoded into the MeTTa interpreter.  We could not, for instance, choose to reduce solely in head position:
+The evaluation strategy is hardcoded into the MeTTa interpreter.  We could not, for instance, choose to reduce solely in head position:
 
 \[ \frac{{\tt T} \leadsto {\tt T'}}{\mbox{\tt (App T U)} \leadsto \mbox{\tt (App T' U)}} \]
 
@@ -73,7 +73,7 @@ or to reduce under a lambda without considerably more machinery.
 
 \subsection{The theory of RHO calculus}
 
-Unfortunately, MeTTa is also unable to model the RHO calculus~\cite{MeredithRadestock2005}, a Reflective Higher-Order pi calculus, in a straightforward way:
+Unfortunately, MeTTa is also unable to model the RHO calculus~\cite{MeredithRadestock2005} (a Reflective Higher-Order pi calculus) in a straightforward way:
 
 \begin{verbatim}
 (: P Sort)
@@ -104,7 +104,7 @@ Unfortunately, MeTTa is also unable to model the RHO calculus~\cite{MeredithRade
 (= (chan) (At Zero))
 
 ; -- Problem: reduction under a Send.
-; -- According to RHO semantics, the printed process should
+; -- According to RHO semantics, the printed process below should
 ; -- not reduce, but MeTTa reduces it to (Send (At Zero) Zero).
 
 (: Proc (-> P))
@@ -134,12 +134,13 @@ Other features missing from MeTTa that impair its ability to implement theories 
     \item A single shared fact database.
     \item No way to have theories execute concurrently.
     \item No transactions.
-    \item No proof of soundness of the type system.
+    \item No proof of soundness of a type system.
+    \item No automatic way to update a type system to include two theories of computation made to interact.
 \end{itemize}
 
 \section{A way forward}
 
-A model of computation generates a reduction graph.  The vertices of the graph are the possible states the computation can be in, and the edges are the possible state transitions.  As shown above, we usually present a model of computation with two grammars, one for the states and the other for the transitions.
+The mathematician William Lawvere's research underpins all approaches to formalizing theories of computation, so we review his contributions and more recent generalizations below.  We show how to use these theories to generate a reduction graph for a theory of computation.  The vertices of the graph are the possible states the computation can be in, and the edges are the possible state transitions.  Next, we discuss how from such theories we can {\em derive} sound type systems instead of being forced to create them in an ad-hoc manner.
 
 \subsection{Lawvere's algebraic theories}
 
@@ -199,9 +200,9 @@ Note that we have function symbols for generating two grammars, the term grammar
 
 We'll adopt syntactic sugar for specifying the source and target of a rewrite and declare that $\rho(\vec{x})\colon T(\vec{x}) \leadsto U(\vec{x})$ is sugar for the pair of equations $s(\rho(\vec{x})) = T(\vec{x})$ and $t(\rho(\vec{x})) = U(\vec{x}).$
 
-\subsection{Lambda theories}
+\subsection{Graph-structured lambda theories}
 
-The inputs to function symbols in algebraic theories can only be product types.  Lambda theories expands the possible inputs to function types as well.  With lambda theories, we can present the theory of lambda calculus with the reduction strategy that we only reduce in the head of an application:
+The inputs to function symbols in algebraic theories can only have product types.  Lambda theories expand the possible inputs to have function types as well.  With graph-structured lambda theories (GSLTs), we can present the theory of lambda calculus with the reduction strategy that we only reduce in the head of an application:
 \begin{enumerate}
     \item A sort $T$ for terms.
     \item A sort $R$ for rewrites.
@@ -214,6 +215,39 @@ The inputs to function symbols in algebraic theories can only be product types. 
     \item Equations $\eta(r, x)\colon (s(r)\; x) \leadsto (t(r)\; x).$
 \end{enumerate}
 Items 5 and 8, like the MeTTa theory of lambda calculus above, use the built-in binders of the lambda theory to avoid the boilerplate of explicit substitution and alpha equivalence.  Items 7 and 9 encode the reduction strategy in the same way as the SKI calculus above.
+
+We can also present the theory of RHO calculus as a GSLT:
+\begin{enumerate}
+    \item Sorts $P$ and $N$ for processes and names, respectively.
+    \item A sort $R$ for rewrites.
+    \item A process function symbol $0\colon 1 \to P$ for \verb+Zero+.
+    \item A process function symbol $|\colon P^2 \to P$ for \verb+Par+.
+    \item A process function symbol $!\colon N \times P \to P$ for \verb+Send+.
+    \item A process function symbol $?\colon N \times (N \to P) \to P$ for \verb+Recv+.
+    \item A name function symbol $@\colon P \to N$ for \verb+At+.
+    \item A process function symbol $*\colon N \to P$ for \verb+Run+.
+    \item A rewrite function symbol $\chi\colon N \times P \times (N \to P) \to R$ for the communication event.
+    \item A rewrite function symbol $\pi\colon R \times R \to R$ for parallel execution.
+    \item Equations $\chi(x, p, q)\colon x!(p)\;| \; x?(q) \leadsto q(p)$ for a send and a receive synchronizing on the name $x.$
+    \item Equations $\pi_1(r_1, x)\colon s(r_1)\;|\;x \leadsto t(r_1)\; |\; x$ for reductions in a par context.
+    \item Equations $\pi_2(r_1, r_2)\colon s(r_1)\;|\;s(r_2) \leadsto t(r_1)\; |\; t(r_2)$ for parallel reductions.
+    \item An equation $p\; |\; q = q\; |\; p$ for commutativity of \verb+Par+.
+    \item An equation $(p\; |\; q)\; |\; r = p\; |\; (q\; |\; r)$ for associativity of \verb+Par+.
+    \item An equation $0 \; |\; p = p$ for \verb+Zero+ being the unit.
+    \item Equations $*@p = p$ and $@*n = n$ for suspension and execution.
+\end{enumerate}
+Under these rules, reduction only happens (as it should) in the context of a \verb+Par+ at the top level (items 9-13), not in a send or receive.
+
+\subsection{Interactive GSLTs}
+
+In the SKI calculus and lambda calculi, reduction is triggered by combining a function and a value in an application context.  In pi calculi and the ambient calculus~\cite{CardelliGordon2000}, reduction is triggered by combining a send and a receive in par context.  In a Turing machine, reduction is triggered by being in a tape context (as opposed to a halting context).  In cellular automata, reduction is triggered by being in a neighborhood context (which is always the case).  Every theory of computation of which we're aware has a term context that triggers reduction. We can model reduction contexts by picking a binary function symbol to be the trigger for reduction; we call this symbol the {\em interaction} and denote it formally by $\odot;$ for example, in pi calculus, $\odot = |.$  
+
+Modal logic is a kind of logic used to reason about possibility and necessity.  In the context of theories of computation, we're interested in identifying properties of terms, like, ``Does this term necessarily terminate?'' or ``Is it possible for a client of this smart contract to extract all the tokens?''  Once we've chosen the interaction, we can derive certain useful modal types.  
+
+For example, consider the modal type $\langle (- \; A) \rangle B$ of lambda terms that when applied to a value of type $A$ possibly reduce to a value of type $B$ in one step.  This modal type corresponds precisely to the arrow type $A \to B.$  There is nothing explicit about the arrow type in the theory of the lambda calculus; it simply falls out of the theory by considering terms in the first slot of the interaction.
+
+Similarly, consider the modal type $[ - \; |\; A \rangle B$ of RHO processes that when juxtaposed with a process of type $A$ necessarily reduce to a process of type $B$ in one step.  This modal type corresponds precisely to Caires' rely-guarantee modality $A \\triangleright B$~\cite{Caires2007}.
+
 
 
 \mycomment{
@@ -229,32 +263,6 @@ Items 5 and 8, like the MeTTa theory of lambda calculus above, use the built-in 
 
 }
 
-\section{Theories of Operational Semantics}
-
-Our approach to operational semantics is to define a category $\mathsf{Th}$ whose generating objects are \emph{sorts}---the basic atoms out of which the state of the machine is assembled---and whose generating morphisms are term constructors that produce terms of those sorts.
-
-Bill Lawvere pioneered the use of categories to capture grammars modulo equations for structural congruence, so such categories are often called \emph{Lawvere theories}. Lawvere proved that his theories correspond to finitary monads. Our theories are Lawvere theories equipped with extra structure and stuff that allow us to talk about reductions between terms, bind variables, and define modal types.  Specifically, they are \emph{graph-structured interactive multisorted lambda theories}, or GSLTs for short.
-
-\begin{itemize}
-    \item {\bf Multisorted.}  Lawvere only considered categories with one generating sort. We need at least two generating sorts, one for terms representing processes, and another for terms representing rewrites between processes. Todd Trimble gave a definition of multisorted Lawvere theories on the nLab~\cite{Trimble2018} and proved a similar monadicity theorem.
-
-    \item {\bf Graph-structured.}  We distinguish one of these sorts, say $P$, as the sort of complete machine states, which we call processes. Rewrites are represented as a different sort $R$ equipped with source and target maps from $R$ to $P$. Let $\mathsf{Th(Gph)}$ be the category with two objects and two parallel morphisms between them. A graph-structured theory ${\rm Th}$ is one equipped with a functor from ${\rm Th}({\rm Gph})$ to ${\rm Th}$.
-
-    \item {\bf Interactive.}  We restrict our attention to those programming languages where any base case rewrite rule---that is, any rewrite rule not constructed from another rewrite---is an occurrence of a binary process constructor $\odot,$ which we call the ``interaction''.  For example:
-
-\begin{itemize}
-    \item In lambda calculus, beta reduction is of the form $((\lambda x.T) U) \to T[U/x]$, whose source is an application of one process to another.  Here, $\odot$ is application.
-    \item In pi calculus, the Comm rule is of the form $x?(y).P \mid x!(z) \to P[z/y]$, whose source is a juxtaposition of two processes.  Here, $\odot$ is juxtaposition.
-\end{itemize}
-
-An example of a rewrite where $\odot$ is not the top level term constructor occurs in lambda calculus, where a reduction may occur in the head position of an application term.  We have a rewrite that says given any rewrite $r$ and any term $x$, $s((r x)) = (s(r) x)$ and $t((r x)) = (t(r) x).$  Because these rewrites are constructed from $r,$ they are not subject to the requirement to have $\odot$ at the top level.
-
-    \item {\bf Modalities from the interaction.}  Consider the type $[\odot([], A)] B$ of terms that when placed into a term context $\odot([], x)$ with any $x\colon A$ must reduce to a term of type $B$. In lambda calculus, this corresponds to the arrow type $A \to B$. In pi calculus, this is Caires' rely-guarantee type $A \triangleright B$~\cite{Caires2007}.  If $B$ can depend on $x$, these are dependent product types.  We can also define the dual notion of a possibility modality.
-
-    \item {\bf Lambda theories.}  Lawvere's theories have finite products. While it is possible to define the machinery of bound variables and substitution in a Lawvere theory, it is a hassle and not particularly interesting. Instead, we use cartesian closed categories, which handle bound variables and substitution automatically.  Our lambda theories are multisorted Lawvere theories with a hom-product adjunction
-$${\rm Th}(A \times B, C) \cong {\rm Th}(B, C^A).$$
-
-\end{itemize}
 
 \section{Presentation of finitely generated GSLTs}
 
@@ -279,82 +287,6 @@ Rewrite term constructors usually come in two flavors:
 \begin{itemize}
     \item \textbf{Top-level rewrites} whose domain does not contain a factor of $R$.
     \item \textbf{In-context rewrites} whose domain contains a factor of $R$.
-\end{itemize}
-
-\subsection{Examples}
-\subsubsection{WHNF $\lambda-$calculus}
-
-\begin{itemize}
-    \item \textbf{Two generating sorts} $P, R$
-    \item \textbf{Generating morphisms:}
-    \begin{itemize}
-        \item Graph structure morphisms: $s, t : R \to P$
-        \item Term constructors: 
-        \begin{itemize}
-            \item ${\tt App} : P \times P \to P$
-            \item ${\tt Lam} : (P \to P) \to P$
-        \end{itemize}
-        \item Rewrite constructors:
-        \begin{itemize}
-            \item ${\tt Beta} : (P \to P) \times P \to R$
-            \item ${\tt Head} : R \times P \to R$
-        \end{itemize}
-    \end{itemize}
-    \item \textbf{Interaction:} ${\tt App}$
-    \item \textbf{Equations:}
-    \begin{itemize}
-        \item ${\tt Beta}(A, B) : {\tt App}({\tt Lam}(A), B) \leadsto ev(A, B)$ (top-level)
-        \item ${\tt Head}(A, B) : {\tt App}(s(A), B) \leadsto {\tt App}(t(A), B)$ (in-context)
-    \end{itemize}
-\end{itemize}
-
-\subsubsection{RHO calculus}
-
-\begin{itemize}
-    \item \textbf{Three generating sorts} $P, R, N$
-    \item \textbf{Generating morphisms:}
-    \begin{itemize}
-        \item Graph structure morphisms: $s, t : R \to P$
-        \item Term constructors: 
-        \begin{itemize}
-            \item ${\tt Zero} : 1 \to P$
-            \item ${\tt Par} : P \times P \to P$
-            \item ${\tt Send} : N \times P \to P$
-            \item ${\tt For} : N \times (N \to P) \to P$
-            \item ${\tt Drop} : N \to P$
-            \item ${\tt Quote} : P \to N$
-        \end{itemize}
-        \item Rewrite constructors:
-        \begin{itemize}
-            \item ${\tt Comm} : N \times (N \to P) \times P \to R$
-            \item ${\tt Par}_1 : R \times P \to R$
-            \item ${\tt Par}_2 : R \times R \to R$
-        \end{itemize}
-    \end{itemize}
-    \item \textbf{Interaction:} ${\tt Par}$
-    \item \textbf{Equations:}
-    \begin{itemize}
-        \item Commutative monoid laws
-            \begin{itemize}
-                \item ${\tt Par}({\tt Zero}, Q) = Q$
-                \item ${\tt Par}(T, U) = {\tt Par}(U, T)$
-                \item ${\tt Par}({\tt Par}(T, U), V) = {\tt Par}(T, {\tt Par}(U, V))$
-            \end{itemize}
-        \item Quotation laws
-            \begin{itemize}
-                \item ${\tt Quote}({\tt Drop}(x)) = x$
-                \item ${\tt Drop}({\tt Quote}(Q)) = Q$ (but see section \ref{TypedGSLTs})
-            \end{itemize}
-        \item Communication
-            \begin{itemize}
-                \item ${\tt Comm}(x, K, Q) : {\tt Par}({\tt For}(x, K), {\tt Send}(x, Q)) \leadsto ev(K, @Q)$
-            \end{itemize}
-        \item Par contexts
-            \begin{itemize}
-                \item ${\tt Par}_1(r, Q) : {\tt Par}(s(r), Q) \leadsto {\tt Par}(t(r), Q)$
-                \item ${\tt Par}_2(r_1, r_2) : {\tt Par}(s(r_1), s(r_2)) \leadsto {\tt Par}(t(r_1), t(r_2))$
-            \end{itemize}
-    \end{itemize}
 \end{itemize}
 
 \section{Generating typed GSLTs from untyped ones}
@@ -491,6 +423,9 @@ Caires, Luis (2007).
 In \emph{Algebra and Coalgebra in Computer Science}, 
 Second International Conference, CALCO 2007, Bergen, Norway, August 20--24, 2007, Proceedings.
 \url{http://ctp.di.fct.unl.pt/~lcaires/papers/CALCO-Caires-1.0.pdf}
+
+\bibitem{CardelliGordon2000}
+Cardelli, Luca, and Andrew D. Gordon (2000). ``Mobile ambients.'' \emph{Theoretical Computer Science}, 240: 177--213.
 
 \bibitem{GoertzelMeredith2024}
 Goertzel, Ben, and L. Gregory Meredith. Private communication.
