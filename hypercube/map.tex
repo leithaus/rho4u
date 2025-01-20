@@ -273,7 +273,7 @@ The proof should show that the fine-grained GSLT is a valid implementation of th
 \subsection{Compilation to Rholang}
 \label{comp_to_rholang}
 
-Rholang is an extension of the RHO calculus that supports transactions.  Given a finitely-presented fine-grained GSLT, we would like to produce a Rholang program that implements it.  The general strategy is to send the state of the system on a channel, then produce a sum of ``edge'' processes that implement rewrites out of the state.  Each edge process in the sum attempts to consume the current state and produce the edge's target state.
+Rholang is an extension of the RHO calculus that seamlessly combines synchronous datatypes with the best-studied approach to concurrency, the $\pi$-calculus, to provide an efficient, transactional knowledge store.  Given a finitely-presented fine-grained GSLT, we would like to produce a Rholang program that implements it.  The general strategy is to send the state of the system on a channel, then produce a sum of ``edge'' processes that implement rewrites out of the state.  Each edge process in the sum attempts to consume the current state and produce the edge's target state.
 
 \subsubsection{Enumerating rewrites}
 \label{enum_rewrites}
@@ -357,12 +357,30 @@ In the simplest cases, the names on which processes are sending and receiving ge
 
 \subsection{RSpace and MORK}
 
-MORK (MeTTa Optimal Reduction Kernel) is a powerful functional language for manipulating graph databases in memory. It represents sets of paths using a trie, which can be exponentially smaller than the original dataset.  It can also act on all the paths in a subtrie simultaneously, which can be exponentially faster than mapping over a data set.  But it does not have any transactional semantics or primitives for concurrency.  As such, RSpace and MORK are complementary languages, well-suited to each other.  Rholang 1.2 will embed MORK as a datatype in the same way that it embeds numbers, strings, lists, maps, and sets.  
+MORK (MeTTa Optimal Reduction Kernel) is a powerful functional language for manipulating graph databases in memory. It represents sets of paths using a trie, which can be exponentially smaller than the original dataset.  It can also act on all the paths in a subtrie simultaneously, which can be exponentially faster than mapping over a data set.  MORK was designed with provable efficiency in mind: each operation provides complexity guarantees.  Using MORK lets a programmer make accurate predictions about the computational complexity of a query.
+
+However, MORK does not have any transactional semantics or primitives for concurrency.  As such, RSpace and MORK are complementary languages, well-suited to each other.  Rholang 1.2 will embed MORK as a datatype in the same way that it embeds numbers, strings, lists, maps, and sets.  It will also use MORK for unification with patterns in receiving processes instead of merely binding a single variable.
 
 \section{Queries}
 
+There is a long tradition of associating types with predicates.  One of the earliest kind of query was whether a term halts or not.  This is, as Church and Turing showed, undecidable.  But the subsequent development of type systems for the lambda calculus focused on that question, and any well-typed program in any of the type systems of the lambda cube is guaranteed to halt.
+
+Many modern languages also use predicates for types.  TypeScript, for example, includes a notion of narrowing the type of a value within \verb+if+ blocks whose condition tests some property of the value.  The native type theory mentioned above is the internal language of the topos of presheaves on the theory, and this internal language includes the ability to express predicates; but more generally, we can simply ask for witnesses of any particular type in a type system.  Finding such witnesses is the subject of an enormous literature and is outside the scope of this paper, but restricted problems can be solved quickly (e.g. MORK handles structural type queries very quickly).  Certainly Prolog's backtracking approach is a brute-force way of finding witnesses, but there are many other ways, and an interpreter supporting queries should expose many different methods with clear complexity guarantees.
+
+The notion of a theory of computation is very general; one could, for example, model a cell as a computing device where terms are cell states and rewrites involve molecules and cell signaling pathways.  Healthy and diseased cells become types expressible in the type system, and we have modal types corresponding to small molecules that in the context of a diseased cell lead to a healthy cell.
 
 \section{Conclusion}
+
+Our proposed architecture addresses the defects of the current MeTTa implementation.
+
+\begin{itemize}
+    \item specify the semantics of any discrete theory of computation
+    \item generate an efficient interpreter for that theory
+    \item generate a sound type system customized to that theory
+    \item support concurrency
+    \item support transactions
+\end{itemize}
+
 
 \begin{thebibliography}{99}
 
@@ -450,20 +468,3 @@ Williams, Christian, and Michael Stay (2021). ``Native Type Theory.'' \emph{Proc
 
 \end{thebibliography}
 \end{document}
-
-
-\mycomment{
-
-    \begin{itemize}
-        \item {\bf We can compile GSLTs to Rholang.} We outline a strategy for automatic compilation of GSLTs to Rholang in section \ref{comp_to_rholang}.
-        \item {\bf We can generate a type system from a GSLT.} There are automatic ways to generate a type system from a category. The generated type system allows for the expression of both spatial and behavioral properties of code that can be typechecked before interpretation.
-        \item {\bf Application programming and concurrency.} Rholang seamlessly combines synchronous datatypes with the best-studied approach to concurrency, the $\pi$-calculus, to provide an efficient, transactional knowledge store.
-        \item {\bf Reasoning about backtracking.} The MORK project has extracted the fact database into a blindingly efficient library called PathMap, with not only clear semantics but also clear complexity guarantees.  It lacks, however, any form of concurrency or notion of transaction.  We propose adding MORK to Rholang, both as a synchronous datatype as well as an augmentation of Rholang's pattern matching capabilities.
-        \item {\bf Spaces remain isolated by default.} When using spaces as a datatype, they remain separate by default, just like maps, sets, and lists are.
-        \item {\bf Rholang is optimal.}  In section \ref{optimality_proof} we prove that any other generic solution must be within a constant factor of the performance of Rholang.
-    \end{itemize}
-
-
-
-
-}
