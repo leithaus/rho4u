@@ -12,6 +12,8 @@
 
 \maketitle
 
+\tableofcontents
+
 \section{Introduction}
 
 SingularityNet's investment in MeTTa is predicated on the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  In fact, the name MeTTa is intended as pun for a meta-level framework for specifying different theories of computation.  SingularityNet hopes that MeTTa will be a language in which one can describe a theory of computation and get an efficient interpreter that is suited for smart contracts on a blockchain~\cite{GoertzelMeredith2024}.
@@ -28,12 +30,14 @@ and more.
 
 Section \ref{Theories of computation} attempts to express some theories of computation in MeTTa and uncovers some problems.  Section \ref{A way forward} describes graph-structured lambda theories (GSLTs), which solve the expressability problems.  Section \ref{Generating an interpreter and a type system} shows how from a GSLT we can generate an efficient interpreter and a sound type system.  The resulting compiled language is concurrent and transactional. Section \ref{Queries} returns to the need to query a fact database and examines the kinds of interesting query one can express in this system.
 
-\section{Theories of computation}
+\section{High-performance MeTTa Kernel}
+
+\subsection{Theories of computation}
 \label{Theories of computation}
 
 In this section, we attempt to implement a couple of theories of computation in MeTTa and uncover some missing features and some problems with the current implementation.
 
-\subsection{The theory of lambda calculus}
+\subsubsection{The theory of lambda calculus}
 MeTTa can model the operational semantics of certain virtual machines using a pattern similar to those of platforms like K Framework~\cite{kframework}.  Here's a formalization of the lambda calculus in MeTTa, with an evaluation strategy that reduces terms everywhere except under a lambda:
 
 \begin{verbatim}
@@ -74,7 +78,7 @@ The evaluation strategy is hardcoded into the MeTTa interpreter.  We could not, 
 
 or to reduce under a lambda without considerably more machinery.
 
-\subsection{The theory of RHO calculus}
+\subsubsection{The theory of RHO calculus}
 
 Unfortunately, MeTTa is also unable to model the RHO calculus~\cite{MeredithRadestock2005} (a Reflective Higher-Order pi calculus) in a straightforward way:
 
@@ -127,7 +131,7 @@ where
 \[\mbox{\tt Proc = (Par (Send (chan) Zero) (Recv (chan) nil))}\]
 should not reduce.  The process \verb+Proc+ will always reduce to \verb+Zero+ if it is permitted to do so; but under the RHO calculus semantics, \verb+Proc+ should be suspended until it is received and executed with the \verb+Run+ constructor.  This matters because when \verb+Proc+ is received, it could be executed in the context of another \verb+Recv+ that could interfere on \verb+(chan)+ and the two \verb+Recv+s would race to claim the \verb+Send+.
 
-\subsection{Other theories}
+\subsubsection{Other theories}
 
 Other features missing from MeTTa that impair its ability to implement theories of computation include:
 \begin{itemize}
@@ -141,14 +145,14 @@ Other features missing from MeTTa that impair its ability to implement theories 
     \item No automatic way to update a type system to include two theories of computation made to interact.
 \end{itemize}
 
-\section{A way forward}
+\subsection{A way forward}
 \label{A way forward}
 
 The mathematician William Lawvere's research underpins all approaches to formalizing theories of computation, so we review his contributions and more recent generalizations below.  In this section, we show how to use these theories to generate a reduction graph for a theory of computation.  The vertices of the graph are the possible states the computation can be in, and the edges are the possible state transitions.  The section culminates in the notion of an interactive graph-structured lambda theory (GSLT), which provides a language for expressing computational theories that includes the ability to express reduction strategies.  
 
 From any of these theories, we can derive a sound type system.  Because it is derived rather than invented, it allows an intelligence to have type systems for interacting theories of computation and to rederive them when it develops a new theory for some domain.
 
-\subsection{Lawvere's algebraic theories}
+\subsubsection{Lawvere's algebraic theories}
 
 In his 1963 PhD thesis~\cite{Lawvere1963}, William Lawvere introduced the concept of an ``algebraic theory''.  His interest was in constructing categories of algebraic structures like monoids, groups, rings, fields, and so on.  A presentation of an algebraic theory looks very much like the MeTTa presentation of a theory of computation.
 
@@ -181,7 +185,7 @@ such that multiplication is associative, unital, and invertible.
 
 Lawvere proved that when an algebraic gadget is a set equipped with some functions satisfying some equations, the category of gadgets and gadget homomorphisms is equivalent to the category of product-preserving functors from the theory of gadgets to Set and the natural transformations between them.  He also proved that the theory is the opposite of the category of finitely generated gadgets.
 
-\subsection{Multi-sorted and graph-structured theories}
+\subsubsection{Multi-sorted and graph-structured theories}
 
 Trimble~\cite{Trimble2018} generalized Lawvere theories, which have a single sort, to multi-sorted theories.  This lets us add interactions between different types of gadget; for example, a group action has both a group and a set for it to act on.  But more importantly for this discussion, it adds the ability to talk about edges in a reduction graph.
 
@@ -206,7 +210,7 @@ Note that we have function symbols for generating two grammars, the term grammar
 
 We'll adopt syntactic sugar for specifying the source and target of a rewrite and declare that $\rho(\vec{x})\colon T(\vec{x}) \leadsto U(\vec{x})$ is sugar for the pair of equations $s(\rho(\vec{x})) = T(\vec{x})$ and $t(\rho(\vec{x})) = U(\vec{x}).$
 
-\subsection{Graph-structured lambda theories}
+\subsubsection{Graph-structured lambda theories}
 
 The inputs to function symbols in algebraic theories can only have product types.  Lambda theories expand the possible inputs to have function types as well.  With graph-structured lambda theories (GSLTs), we can present the theory of lambda calculus with the reduction strategy that we only reduce in the head of an application:
 \begin{enumerate}
@@ -244,7 +248,7 @@ We can also present the theory of RHO calculus as a GSLT:
 \end{enumerate}
 Under these rules, reduction only happens (as it should) in the context of a \verb+Par+ at the top level (items 9-13), not in a send or receive.
 
-\subsection{Interactive GSLTs}
+\subsubsection{Interactive GSLTs}
 
 In the SKI calculus and lambda calculi, reduction is triggered by combining a function and a value in an application context.  In pi calculi and the ambient calculus~\cite{CardelliGordon2000}, reduction is triggered by combining a send and a receive in par context.  In a Turing machine, reduction is triggered by being in a tape context (as opposed to a halting context).  In cellular automata, reduction is triggered by being in a neighborhood context (which is always the case).  Every theory of computation of which we're aware has a term context that triggers reduction. We can model reduction contexts by picking a binary function symbol to be the trigger for reduction; we call this symbol the {\em interaction} and denote it formally by $\odot;$ for example, in pi calculus, $\odot = |.$  
 
@@ -256,12 +260,12 @@ Similarly, consider the modal type $[ - \; |\; A \rangle B$ of RHO processes tha
 
 These modal types will play an important role in the generated type system described in the next section.
 
-\section{Generating an interpreter and a type system}
+\subsection{Generating an interpreter and a type system}
 \label{Generating an interpreter and a type system}
 
 In this section we consider the problem of generating an efficient interpreter and a type system from a GSLT.
 
-\subsection{Fine- and coarse-grained GSLTs}
+\subsubsection{Fine- and coarse-grained GSLTs}
 In the RHO calculus, the terms form a commutative monoid.  However, there are $n!$ permutations of a term with $n-1$ parallel atomic processes; if we had to enumerate all the permutations until we found a term in the right form to reduce, it would be absurdly slow.  Even worse, the general problem of determining whether two words are in the same equivalence class is undecidable.  Actual implementations of process calculi will do things like replace variables with keys into a hash table, store all the receiving processes in buckets under their key, and then iterate over the sends looking for matches.  Therefore, when generating a vm and a type system from a GSLT, a language implementer will likely want to provide two GSLT presentations and a proof.
 
 The first presentation will be of the fine-grained GSLT with all the optimizations and implementation details; it will only have equations pertaining to the source and target of rewrites and will have logic for things like reducing to a normal form or using a hash table.  We can derive a type system from such a GSLT, but it will likely be too complicated to be used by developers writing programs in the language.
@@ -270,12 +274,12 @@ The second will be a coarse-grained GSLT that abstracts away the implementation 
 
 The proof should show that the fine-grained GSLT is a valid implementation of the coarse-grained one.  One way to do this is with a necessity-preserving functor between the free quivers on the reduction graphs.  Possibility is preserved by any functor between the quivers: given a possible rewrite from one term to another in the coarse-grained GSLT, there is a path of possible rewrites between the corresponding terms in the fine-grained GSLT.  Preserving necessity means that given a necessary rewrite from one term to another in the coarse-grained GSLT, there is a path of necessary rewrites between the corresponding terms in the fine-grained GSLT.
 
-\subsection{Compilation to Rholang}
+\subsubsection{Compilation to Rholang}
 \label{comp_to_rholang}
 
 Rholang is an extension of the RHO calculus that seamlessly combines synchronous datatypes with the best-studied approach to concurrency, the $\pi$-calculus, to provide an efficient, transactional knowledge store.  Given a finitely-presented fine-grained GSLT, we would like to produce a Rholang program that implements it.  The general strategy is to send the state of the system on a channel, then produce a sum of ``edge'' processes that implement rewrites out of the state.  Each edge process in the sum attempts to consume the current state and produce the edge's target state.
 
-\subsubsection{Enumerating rewrites}
+\paragraph{Enumerating rewrites}
 \label{enum_rewrites}
 
 We can't produce a sum of all the edge processes out of a state simultaneously due to a finite amount of memory.  In an implementation of the lambda calculus with a reduction strategy that allows beta reduction anywhere within a term, it is easy to produce an exponential number of possible rewrites out of a term.  For example, suppose we have a bunch of applications of the identity combinator \verb+I = +$\lambda x.x$ to itself:
@@ -303,7 +307,7 @@ EdgeGen(state, n) =
 
 This technique produces a single-threaded interpreter that includes in its enumeration parallel rewrites on parts of the state.  It suffices for an interpreter, but does not make good use of the massive parallelization that RSpace provides.
 
-\subsubsection{Adding parallelism}
+\paragraph{Adding parallelism}
 
 A GSLT has a finite number of top-level and in-context rewrite constructors.  Top-level rewrites unify against a whole term, while in-context rewrites unify against part of a term and then recurse.  The recursion must terminate because the terms are of finite length.
 
@@ -345,23 +349,23 @@ stdout!(2)
 
 This design pattern allows a much simpler interpreter that has one potential edge process for each rewrite constructor in the GSLT.  If an in-context rewrite constructor matches the state, the interpreter forks new processes that independently try to verify that the substructure is the source of a rewrite, then joins those processes and signals that it found an actual edge.
 
-\subsubsection{Detecting optimization opportunities}
+\paragraph{Detecting optimization opportunities}
 
 There are often more opportunities for optimization, but they only apply in certian circumstances.  Detecting opportunities for optimization is a standard part of interpreter design, and will be important for a compilation pipeline targeting Rholang.  For example, in a programming language with functions and an eager reduction strategy, it doesn't make sense to decompose the state from the top level at each step; instead, subexpressions should be reduced completely before moving up in the syntax tree.  Standard heuristics can be brought to bear on the sets of rewrite constructors, and automated techniques exist for generalizing specific instances of optimizations to the most general applicable situation~\cite{Tate2010}.
 
-\section{RSpace}
+\subsection{RSpace}
 
 The Rholang interpreter uses a very efficient data structure called \textbf{RSpace} for storing continuations and matching sends with receives.  To a first approximation, the Rholang interpreter is just a parser sitting on top of RSpace.
 
 In the simplest cases, the names on which processes are sending and receiving get hashed, and if there's a process of the opposite polarity waiting in the hash table, they can synchronize.  RSpace also allows processes to bind variables using patterns.  This lets programmers dispatch messages on the same channel to different processes based on the content of the messages, and is the basis of the design of the interpreters above.
 
-\subsection{RSpace and MORK}
+\subsubsection{RSpace and MORK}
 
 MORK (MeTTa Optimal Reduction Kernel) is a powerful functional language for manipulating graph databases in memory. It represents sets of paths using a trie, which can be exponentially smaller than the original dataset.  It can also act on all the paths in a subtrie simultaneously, which can be exponentially faster than mapping over a data set.  MORK was designed with provable efficiency in mind: each operation provides complexity guarantees.  Using MORK lets a programmer make accurate predictions about the computational complexity of a query.
 
 However, MORK does not have any transactional semantics or primitives for concurrency.  As such, RSpace and MORK are complementary languages, well-suited to each other.  Rholang 1.2 will embed MORK as a datatype in the same way that it embeds numbers, strings, lists, maps, and sets.  It will also use MORK for unification with patterns in receiving processes instead of merely binding a single variable.
 
-\section{Queries}
+\subsection{Queries}
 
 There is a long tradition of associating types with predicates.  One of the earliest kind of query was whether a term halts or not.  This is, as Church and Turing showed, undecidable.  But the subsequent development of type systems for the lambda calculus focused on that question, and any well-typed program in any of the type systems of the lambda cube is guaranteed to halt.
 
@@ -372,6 +376,24 @@ Finding such witnesses is the subject of an enormous literature and is outside t
 The automatically generated type systems above give us grammars in which to express queries in the form of an expanded GSLT including both the original operational semantics and new type-constructing function symbols. Since queries are about terms in a GSLT and the type system itelf is expressed as a GSLT, queries can produce new queries in which facts are added, subtracted, or transformed.
 
 The notion of a theory of computation is very general; one could, for example, model a cell as a computing device where terms are cell states and rewrites involve molecules and cell signaling pathways.  Healthy and diseased cells become types expressible in the type system, and we have modal types corresponding to small molecules that in the context of a diseased cell lead to a healthy cell.
+
+\section{Embedding the kernel in a consensus mechanism}
+
+% mention swappable consensus
+
+\subsection{Correct-by-construction Casper}
+
+TBD
+
+\subsection{TODA IP}
+
+TBD
+
+\section{Deployment and integration}
+
+\section{Market requirements}
+
+\section{Roadmap}
 
 \section{Conclusion}
 
