@@ -18,7 +18,7 @@
 
 SingularityNet's investment in MeTTa is predicated on the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  In fact, the name MeTTa is intended as pun for a meta-level framework for specifying different theories of computation.  SingularityNet hopes that MeTTa will be a language in which one can describe a theory of computation and get an efficient interpreter that is suited for smart contracts on a blockchain~\cite{GoertzelMeredith2024}.
 
-Without reproducing much of MeTTa's internals explicitly in the theory, MeTTa currently cannot model different evaluation strategies for lambda calculus, cannot model the semantics of pi calculi, and has several other problems preventing it from living up to this vision.  We propose an architecture based on category theoretical concepts that will enable MeTTa to:
+Without reproducing much of MeTTa's internals explicitly in the theory, MeTTa currently cannot model different evaluation strategies for lambda calculus, cannot model the semantics of the $\pi$ calculus and other mobile process calculi, and has several other problems preventing it from living up to this vision.  We propose an architecture based on category theoretical concepts that will enable MeTTa to:
 \begin{itemize}
     \item specify the semantics of any discrete theory of computation
     \item generate an efficient interpreter for that theory
@@ -29,6 +29,12 @@ Without reproducing much of MeTTa's internals explicitly in the theory, MeTTa cu
 and more.
 
 Section \ref{Theories of computation} attempts to express some theories of computation in MeTTa and uncovers some problems.  Section \ref{A way forward} describes graph-structured lambda theories (GSLTs), which solve the expressability problems.  Section \ref{Generating an interpreter and a type system} shows how from a GSLT we can generate an efficient interpreter and a sound type system.  The resulting compiled language is concurrent and transactional. Section \ref{Queries} returns to the need to query a fact database and examines the kinds of interesting query one can express in this system.
+
+\subsection{Decentralization}
+
+Were the deployment of an execution environment for MeTTa the MeTTaCycle architecture would comprise the elements above. However, SingularityNet's goals include a decentralized framework for AI, AGI, and ASI. As such, the architecture must also address a security model for deployment of execution outside of the protective womb of a firewall. Further, it must embrace integration with a number of third party services. Finally, despite these additional constraints and their corresponding remedies, MeTTaCycle must also be accessible and not hidden behind arcane or cryptic command line interfaces.
+
+To achieve the former we adopt a capabilities driven tokenization model. Access to compute and storage are mediated by (object) capabilities represented as tokens. See the \ref{Security model} for details. To achieve the latter we provide integration of MeTTaCycle with the file systems for the major operating systems; and, with major social media platforms. See \ref{Deployment and integration}.
 
 \section{High-performance MeTTa Kernel}
 
@@ -379,19 +385,25 @@ The automatically generated type systems above give us grammars in which to expr
 
 The notion of a theory of computation is very general; one could, for example, model a cell as a computing device where terms are cell states and rewrites involve molecules and cell signaling pathways.  Healthy and diseased cells become types expressible in the type system, and we have modal types corresponding to small molecules that in the context of a diseased cell lead to a healthy cell.
 
-\section{Embedding the kernel in a consensus mechanism}
+\section{Decentralizing MeTTa}
+
+\subsection{Tokenization and capabilities}
+\label{Security model}
+
+\subsection{Embedding the kernel in a consensus mechanism}
 
 % mention swappable consensus
 
-\subsection{Correct-by-construction Casper}
+\subsubsection{Correct-by-construction Casper}
 
 TBD
 
-\subsection{TODA IP}
+\subsubsection{TODA IP}
 
 TBD
 
 \section{Deployment and integration}
+\label{Deployment and integration}
 
 \subsection{Integration with the OS}
 
