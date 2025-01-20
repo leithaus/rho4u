@@ -14,19 +14,22 @@
 
 \section{Introduction}
 
-SingularityNet's investment in MeTTa is predicated on the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  In fact, the name MeTTa is intended as pun for a meta-level framework for specifying different theories of computation.  SingularityNet hopes that MeTTa will be a language in which one can describe a theory of computation and get an efficient interpreter or compiler that is suited for smart contracts on a blockchain~\cite{GoertzelMeredith2024}.
+SingularityNet's investment in MeTTa is predicated on the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  In fact, the name MeTTa is intended as pun for a meta-level framework for specifying different theories of computation.  SingularityNet hopes that MeTTa will be a language in which one can describe a theory of computation and get an efficient interpreter that is suited for smart contracts on a blockchain~\cite{GoertzelMeredith2024}.
 
 Without reproducing much of MeTTa's internals explicitly in the theory, MeTTa currently cannot model different evaluation strategies for lambda calculus, cannot model the semantics of pi calculi, and has several other problems preventing it from living up to this vision.  We propose an architecture based on category theoretical concepts that will enable MeTTa to:
 \begin{itemize}
     \item specify the semantics of any discrete theory of computation
-    \item generate an efficient compiler for that theory
+    \item generate an efficient interpreter for that theory
     \item generate a sound type system customized to that theory
     \item support concurrency
     \item support transactions
 \end{itemize}
 and more.
 
+Section \ref{Theories of computation} attempts to express some theories of computation in MeTTa and uncovers some problems.  Section \ref{A way forward} describes graph-structured lambda theories (GSLTs), which solve the expressability problems.  Section \ref{Generating an interpreter and a type system} shows how from a GSLT we can generate an efficient interpreter and a sound type system.  The resulting compiled language is concurrent and transactional. Section \ref{Queries} returns to the need to query a fact database and examines the kinds of interesting query one can express in this system.
+
 \section{Theories of computation}
+\label{Theories of computation}
 
 In this section, we attempt to implement a couple of theories of computation in MeTTa and uncover some missing features and some problems with the current implementation.
 
@@ -139,8 +142,11 @@ Other features missing from MeTTa that impair its ability to implement theories 
 \end{itemize}
 
 \section{A way forward}
+\label{A way forward}
 
-The mathematician William Lawvere's research underpins all approaches to formalizing theories of computation, so we review his contributions and more recent generalizations below.  We show how to use these theories to generate a reduction graph for a theory of computation.  The vertices of the graph are the possible states the computation can be in, and the edges are the possible state transitions.  Next, we discuss how from such theories we can {\em derive} sound type systems instead of being forced to create them in an ad-hoc manner.
+The mathematician William Lawvere's research underpins all approaches to formalizing theories of computation, so we review his contributions and more recent generalizations below.  In this section, we show how to use these theories to generate a reduction graph for a theory of computation.  The vertices of the graph are the possible states the computation can be in, and the edges are the possible state transitions.  The section culminates in the notion of an interactive graph-structured lambda theory (GSLT), which provides a language for expressing computational theories that includes the ability to express reduction strategies.  
+
+From any of these theories, we can derive a sound type system.  Because it is derived rather than invented, it allows an intelligence to have type systems for interacting theories of computation and to rederive them when it develops a new theory for some domain.
 
 \subsection{Lawvere's algebraic theories}
 
@@ -248,78 +254,26 @@ For example, consider the modal type $\langle (- \; A) \rangle B$ of lambda term
 
 Similarly, consider the modal type $[ - \; |\; A \rangle B$ of RHO processes that when juxtaposed with a process of type $A$ necessarily reduce to a process of type $B$ in one step.  This modal type corresponds precisely to Caires' rely-guarantee modality $A \\triangleright B$~\cite{Caires2007}.
 
+These modal types will play an important role in the generated type system described in the next ssection
 
+\section{Generating an interpreter and a type system}
+\label{Generating an interpreter and a type system}
 
-\mycomment{
-
-    \begin{itemize}
-        \item {\bf We can compile GSLTs to Rholang.} We outline a strategy for automatic compilation of GSLTs to Rholang in section \ref{comp_to_rholang}.
-        \item {\bf We can generate a type system from a GSLT.} There are automatic ways to generate a type system from a category~\cite{WilliamsStay2021}. The generated type system allows for the expression of both spatial and behavioral properties of code that can be typechecked before interpretation.
-        \item {\bf Application programming and concurrency.} Rholang seamlessly combines synchronous datatypes with the best-studied approach to concurrency, the $\pi$-calculus, to provide an efficient, transactional knowledge store.
-        \item {\bf Reasoning about backtracking.} The MORK project has extracted the fact database into a blindingly efficient library called PathMap, with not only clear semantics but also clear complexity guarantees.  It lacks, however, any form of concurrency or notion of transaction.  We propose adding MORK to Rholang, both as a synchronous datatype as well as an augmentation of Rholang's pattern matching capabilities.
-        \item {\bf Spaces remain isolated by default.} When using spaces as a datatype, they remain separate by default, just like maps, sets, and lists are.
-        \item {\bf Rholang is optimal.}  In section \ref{optimality_proof} we prove that any other generic solution must be within a constant factor of the performance of Rholang.
-    \end{itemize}
-
-}
-
-
-\section{Presentation of finitely generated GSLTs}
-
-A presentation of a GSLT consists of:
-
-\begin{itemize}
-    \item A finite set of \textbf{generating sorts}, including two distinguished sorts $P$ (processes) and $R$ (rewrites) from the graph structure.
-    \item A choice of a distinguished binary morphism $\odot : X \times Y \to P$, called the \textbf{interaction}, for some pair of sorts $X, Y$.
-    \item A finite set of \textbf{generating morphisms}, including the two built-in \textbf{graph structure morphisms} $s, t : R \to P$. Generating morphisms with codomain $P$ are \textbf{term constructors}, and those with codomain $R$ are \textbf{rewrite constructors}:
-    \[
-    r : \prod_i Z_i \to R
-    \]
-    If the domain does not contain a factor of $R$, it must factor through the interaction:
-    \[
-    \exists f : \prod_i Z_i \to X \times Y. \quad \odot \circ f = s \circ r
-    \]
-    \item A finite set of \textbf{equations} between morphisms. We often write $r : A \leadsto B$ as shorthand for $s(r(z)) = A$, $t(r(z)) = B$.
-\end{itemize}
-
-Rewrite term constructors usually come in two flavors:
-
-\begin{itemize}
-    \item \textbf{Top-level rewrites} whose domain does not contain a factor of $R$.
-    \item \textbf{In-context rewrites} whose domain contains a factor of $R$.
-\end{itemize}
-
-\section{Generating typed GSLTs from untyped ones}
-\label{TypedGSLTs}
-% Talk about vm vs coarse graining
-
-\subsection{Native type theory}
-Dana Scott ~\cite{Scott1980} laid out a process for generating a type system from a category, on which Jacobs later much elaborated ~\cite{Jacobs1999} and Willams and Stay advocated~\cite{WilliamsStay2021}:
-given a category $C,$ calculate the internal language of the category ${\rm Set}^{C^{\rm op}}$ of presheaves on $C.$  The category of presheaves is a {\em topos}, a cartesian closed category with finite limits and a subobject classifier.  It is a setting in which to do intuitionistic logic: it allows us to talk about, among other things, product and arrow types; intersection, union, and implication of subtypes; and existential and universal quantification.  
-
-The Yoneda embedding of $C$ into ${\rm Set}^{C^{\rm op}}$ is full and faithful, so the topos is itself a graph-structured lambda theory where we can think of the objects as types that refine the original sorts.
-
-\subsection{A hypercube of type systems}
-
-There are situations in which a smaller type system is more desirable. The lambda cube~\cite{Barendregt1991} is a collection of lambda calculi that include types as part of the term grammar.  A well-typed term is guaranteed to terminate.  
-
-There is an unfortunate collision of jargon here: there is only one generating sort in the sense of a multisorted lambda theory, but Barendregt defines a sort to be either the constant $*,$ meaning ``type'', or the constant $\square,$ meaning ``kind'', and has an axiom $\vdash *\colon \square.$  He has two parametric inference rules for forming the dependent product type and for forming abstractions that depend on two sorts $s_1$ and $s_2.$  All of the calculi allow $s_1 = s_2 = *,$ but when we also allow $s_1, s_2,$ or both to be $\square,$ we get the three axes of the cube.  There is a functor that lets us construct an analogous hypercube of type systems from a GSLT~\cite{HypercubePaper}.
-
-\section{GSLT to Rholang Compilation}
+In this section we consider the problem of generating an efficient interpreter and a type system from a GSLT.
 
 \subsection{Fine- and coarse-grained GSLTs}
 In the RHO calculus, the terms form a commutative monoid.  However, there are $n!$ permutations of a term with $n-1$ parallel atomic processes; if we had to enumerate all the permutations until we found a term in the right form to reduce, it would be absurdly slow.  Even worse, the general problem of determining whether two words are in the same equivalence class is undecidable.  Actual implementations of process calculi will do things like replace variables with keys into a hash table, store all the receiving processes in buckets under their key, and then iterate over the sends looking for matches.  Therefore, when generating a vm and a type system from a GSLT, a language implementer will likely want to provide two GSLT presentations and a proof.
 
-The first will be the fine-grained GSLT with all the optimizations and implementation details; it will only have equations pertaining to the source and target of rewrites and will have logic for things like reducing to a normal form or using a hash table.  We can derive a type system from such a GSLT, but it will likely be too complicated to be used by developers writing programs in the language.
+The first presentation will be of the fine-grained GSLT with all the optimizations and implementation details; it will only have equations pertaining to the source and target of rewrites and will have logic for things like reducing to a normal form or using a hash table.  We can derive a type system from such a GSLT, but it will likely be too complicated to be used by developers writing programs in the language.
 
-The second will be a coarse-grained GSLT that abstracts away the implementation details and things like specific choices of normal form.  This is the GSLT that we feed to the algorithms above to generate a useful type system.
+The second will be a coarse-grained GSLT that abstracts away the implementation details and things like specific choices of normal form.  This is the GSLT that we feed to the algorithms above to generate a useful type system.  From an arbitrary GSLT we can automatically derive a ``native'' type system~\cite{WilliamsStay2021}---the internal language of the topos of presheaves on the theory---and from an interactive GSLT, we can derive a smaller but still very useful dependent type system similar to Barendregt's lambda cube~\cite{HypercubePaper}.
 
-The proof should show that the fine-grained GSLT is a valid implementation of the coarse-grained one.  One way to do this is with a necessity-preserving functor between the free quivers on the reduction graphs.  Just due to being a functor, given a possible rewrite from one term to another in the coarse-grained GSLT, there is a path of possible rewrites between the corresponding terms in the fine-grained GSLT. Preserving necessity means that given a necessary rewrite from one term to another in the coarse-grained GSLT, there is a path of necessary rewrites between the corresponding terms in the fine-grained GSLT.
+The proof should show that the fine-grained GSLT is a valid implementation of the coarse-grained one.  One way to do this is with a necessity-preserving functor between the free quivers on the reduction graphs.  Possibility is preserved by any functor between the quivers: given a possible rewrite from one term to another in the coarse-grained GSLT, there is a path of possible rewrites between the corresponding terms in the fine-grained GSLT.  Preserving necessity means that given a necessary rewrite from one term to another in the coarse-grained GSLT, there is a path of necessary rewrites between the corresponding terms in the fine-grained GSLT.
 
 \subsection{Compilation to Rholang}
 \label{comp_to_rholang}
 
-Given a finitely-presented fine-grained GSLT, we would like to produce a Rholang program that implements it.  The general strategy is to send the state of the system on a channel, then produce a sum of ``edge'' processes that implement rewrites out of the state.  Each edge process in the sum attempts to consume the current state and produce the edge's target state.
+Rholang is an extension of the RHO calculus that supports transactions.  Given a finitely-presented fine-grained GSLT, we would like to produce a Rholang program that implements it.  The general strategy is to send the state of the system on a channel, then produce a sum of ``edge'' processes that implement rewrites out of the state.  Each edge process in the sum attempts to consume the current state and produce the edge's target state.
 
 \subsubsection{Enumerating rewrites}
 \label{enum_rewrites}
@@ -393,7 +347,7 @@ This design pattern allows a much simpler interpreter that has one potential edg
 
 \subsubsection{Detecting optimization opportunities}
 
-There are often more opportunities for optimization, but they only apply in certian circumstances.  Detecting opportunities for optimization is a standard part of compiler design, and will be important for a compilation pipeline targeting Rholang.  For example, in a programming language with functions and an eager reduction strategy, it doesn't make sense to decompose the state from the top level at each step; instead, subexpressions should be reduced completely before moving up in the syntax tree.  Standard heuristics can be brought to bear on the sets of rewrite constructors, and automated techniques exist for generalizing specific instances of optimizations to the most general applicable situation~\cite{Tate2010}.
+There are often more opportunities for optimization, but they only apply in certian circumstances.  Detecting opportunities for optimization is a standard part of interpreter design, and will be important for a compilation pipeline targeting Rholang.  For example, in a programming language with functions and an eager reduction strategy, it doesn't make sense to decompose the state from the top level at each step; instead, subexpressions should be reduced completely before moving up in the syntax tree.  Standard heuristics can be brought to bear on the sets of rewrite constructors, and automated techniques exist for generalizing specific instances of optimizations to the most general applicable situation~\cite{Tate2010}.
 
 \section{RSpace}
 
@@ -405,7 +359,7 @@ In the simplest cases, the names on which processes are sending and receiving ge
 
 MORK (MeTTa Optimal Reduction Kernel) is a powerful functional language for manipulating graph databases in memory. It represents sets of paths using a trie, which can be exponentially smaller than the original dataset.  It can also act on all the paths in a subtrie simultaneously, which can be exponentially faster than mapping over a data set.  But it does not have any transactional semantics or primitives for concurrency.  As such, RSpace and MORK are complementary languages, well-suited to each other.  Rholang 1.2 will embed MORK as a datatype in the same way that it embeds numbers, strings, lists, maps, and sets.  
 
-\section{Optimality}
+\section{Queries}
 
 
 \section{Conclusion}
@@ -496,3 +450,20 @@ Williams, Christian, and Michael Stay (2021). ``Native Type Theory.'' \emph{Proc
 
 \end{thebibliography}
 \end{document}
+
+
+\mycomment{
+
+    \begin{itemize}
+        \item {\bf We can compile GSLTs to Rholang.} We outline a strategy for automatic compilation of GSLTs to Rholang in section \ref{comp_to_rholang}.
+        \item {\bf We can generate a type system from a GSLT.} There are automatic ways to generate a type system from a category. The generated type system allows for the expression of both spatial and behavioral properties of code that can be typechecked before interpretation.
+        \item {\bf Application programming and concurrency.} Rholang seamlessly combines synchronous datatypes with the best-studied approach to concurrency, the $\pi$-calculus, to provide an efficient, transactional knowledge store.
+        \item {\bf Reasoning about backtracking.} The MORK project has extracted the fact database into a blindingly efficient library called PathMap, with not only clear semantics but also clear complexity guarantees.  It lacks, however, any form of concurrency or notion of transaction.  We propose adding MORK to Rholang, both as a synchronous datatype as well as an augmentation of Rholang's pattern matching capabilities.
+        \item {\bf Spaces remain isolated by default.} When using spaces as a datatype, they remain separate by default, just like maps, sets, and lists are.
+        \item {\bf Rholang is optimal.}  In section \ref{optimality_proof} we prove that any other generic solution must be within a constant factor of the performance of Rholang.
+    \end{itemize}
+
+
+
+
+}
