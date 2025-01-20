@@ -279,6 +279,8 @@ The proof should show that the fine-grained GSLT is a valid implementation of th
 
 Rholang is an extension of the RHO calculus that seamlessly combines synchronous datatypes with the best-studied approach to concurrency, the $\pi$-calculus, to provide an efficient, transactional knowledge store.  Given a finitely-presented fine-grained GSLT, we would like to produce a Rholang program that implements it.  The general strategy is to send the state of the system on a channel, then produce a sum of ``edge'' processes that implement rewrites out of the state.  Each edge process in the sum attempts to consume the current state and produce the edge's target state.
 
+%% We want to point out that we are using a variant of rholang. Specifically, version 1.2 with unification. We can summarize explanatory text from metta-calculus paper and reference that.
+
 \paragraph{Enumerating rewrites}
 \label{enum_rewrites}
 
@@ -390,6 +392,24 @@ TBD
 TBD
 
 \section{Deployment and integration}
+
+\subsection{Integration with the OS}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.15]{MeTTaCycleArchitecture2025OSDeployment.pdf} \\
+  \caption{OS/File system deployment}
+  \label{MCArch2025OSDeployment}
+\end{figure}
+
+\subsection{Integration with social media}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.15]{MeTTaCycleArchitecture2025SocialDeployment.pdf} \\
+  \caption{Social deployment}
+  \label{MCArch2025SocialDeployment}
+\end{figure}
 
 \section{Market requirements}
 
