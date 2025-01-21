@@ -262,7 +262,7 @@ Modal logic is a kind of logic used to reason about possibility and necessity.  
 
 For example, consider the modal type $\langle (- \; A) \rangle B$ of lambda terms that when applied to a value of type $A$ possibly reduce to a value of type $B$ in one step.  This modal type corresponds precisely to the arrow type $A \to B.$  There is nothing explicit about the arrow type in the theory of the lambda calculus; it simply falls out of the theory by considering terms in the first slot of the interaction.
 
-Similarly, consider the modal type $[ - \; |\; A \rangle B$ of RHO processes that when juxtaposed with a process of type $A$ necessarily reduce to a process of type $B$ in one step.  This modal type corresponds precisely to Caires' rely-guarantee modality $A \triangleright B$~\cite{Caires2007}.
+Similarly, consider the modal type $[ - \; |\; A ] B$ of RHO processes that when juxtaposed with a process of type $A$ necessarily reduce to a process of type $B$ in one step.  This modal type corresponds precisely to Caires' rely-guarantee modality $A \triangleright B$~\cite{Caires2007}.
 
 These modal types will play an important role in the generated type system described in the next section.
 
@@ -424,6 +424,151 @@ TBD
 \end{figure}
 
 \section{Market requirements}
+
+\begin{itemize}
+    \item Target customer
+    \begin{itemize}
+        \item {\bf Demographics: Age, location, occupation, and relevant personal details.} Everybody uses social media.  People have to be at least 18 to use something like Coinbase.  So probably targeting 18-35 year olds.
+        \item {\bf Goals and Objectives: What the user is aiming to achieve with the product.} 
+        \item {\bf Challenges or Pain Points: The problems or needs the product can help address.}
+        \item {\bf Behaviors and Motivations: Why the user does what they do, how they interact with similar products, and what influences their decisions.}
+    \end{itemize}
+    \item What problems does the product solve?
+    \item How big is the market opportunity?
+    \begin{itemize}
+        \item {\bf Market size}
+        \item {\bf growth potential}
+        \item {\bf any niche specifics}
+    \end{itemize}
+    \item Who are the competitors and what are they offering?
+    \begin{enumerate}
+
+        % 1. Steemit (and Hive)
+        \item \textbf{Steemit (and Hive)}
+          \begin{itemize}
+            \item \textbf{Overview:} One of the earliest blockchain-based social media platforms (launched in 2016). Rewards users for content creation/curation with STEEM tokens.
+            \item \textbf{Token:} STEEM (tradeable on various exchanges). The Hive blockchain (a fork of Steem) uses the HIVE token.
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Users earn tokens by posting, commenting, and upvoting.
+                \item Rewards are distributed based on community feedback (``upvotes'').
+                \item Hive continues Steem's model but aims for more decentralization.
+              \end{itemize}
+          \end{itemize}
+  
+        % 2. Minds
+        \item \textbf{Minds}
+          \begin{itemize}
+            \item \textbf{Overview:} An open-source social network focused on privacy, free speech, and user control.
+            \item \textbf{Token:} MINDS (ERC-20).
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Users earn tokens by contributing popular content, referring new users, and engaging.
+                \item Tokens can be used to boost content visibility or subscribe to exclusive content.
+                \item Emphasizes community governance through token-based actions.
+              \end{itemize}
+          \end{itemize}
+
+        % 3. Reddit (Community Points)
+        \item \textbf{Reddit (Community Points)}
+          \begin{itemize}
+            \item \textbf{Overview:} Mainstream social media platform using ``Community Points'' (blockchain-based) for participating subreddits.
+            \item \textbf{Token:} Each subreddit can have its own token (e.g., MOON for r/CryptoCurrency, BRICK for r/FortNiteBR), running on Arbitrum Nova.
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Distributed to users for engagement and contributions.
+                \item Points can be used for special memberships, badges, or influence in subreddit governance.
+                \item Integrated ``Vault'' (Reddit’s Ethereum-based wallet).
+              \end{itemize}
+          \end{itemize}
+
+        % 4. DeSo (formerly BitClout)
+        \item \textbf{DeSo (formerly BitClout)}
+          \begin{itemize}
+            \item \textbf{Overview:} A blockchain designed for social media applications. Controversially launched as ``BitClout,'' now rebranded to DeSo.
+            \item \textbf{Token:} DESO, used for on-chain transactions (posting, creating profiles, minting tokens).
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Creators can launch their own ``creator coins'' (social tokens).
+                \item Users can buy/sell creator coins to invest in a person’s ``brand.''
+                \item Aims to provide decentralized infrastructure for posts, NFTs, follows, etc.
+              \end{itemize}
+          \end{itemize}
+
+        % 5. SoMee.social (formerly TronChat)
+        \item \textbf{SoMee.social (formerly TronChat)}
+          \begin{itemize}
+            \item \textbf{Overview:} A decentralized social media platform emphasizing privacy, user data control, and monetization.
+            \item \textbf{Token:} \$SME (originated on Tron, expanded to other networks).
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Users earn tokens for content creation, curation, and ad revenue sharing.
+                \item Positions itself as a censorship-resistant platform with secure data ownership.
+              \end{itemize}
+          \end{itemize}
+
+        % 6. Voice (on EOSIO)
+        \item \textbf{Voice (on EOSIO)}
+          \begin{itemize}
+            \item \textbf{Overview:} A social media platform built on the EOSIO blockchain, created by Block.one.
+            \item \textbf{Token:} Voice Token (not widely traded).
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Rewards high-quality, verified content with Voice Tokens.
+                \item Focuses on identity verification to reduce spam/fake accounts.
+              \end{itemize}
+          \end{itemize}
+
+        % 7. Odysee (LBRY)
+        \item \textbf{Odysee (LBRY)}
+          \begin{itemize}
+            \item \textbf{Overview:} A YouTube-like video-sharing platform running on the LBRY protocol, emphasizing decentralization.
+            \item \textbf{Token:} LBC (LBRY Credits).
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Creators can earn LBC from views, tips, and subscriptions.
+                \item Users can tip or support creators directly with LBC.
+                \item Focuses on censorship resistance and open access to content.
+              \end{itemize}
+          \end{itemize}
+
+        % 8. Torum
+        \item \textbf{Torum}
+          \begin{itemize}
+            \item \textbf{Overview:} A crypto-focused social platform connecting cryptocurrency enthusiasts, projects, and influencers.
+            \item \textbf{Token:} XTM (BEP-20 on Binance Smart Chain).
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Users earn XTM by engaging, referring friends, and participating in events.
+                \item Integrates an NFT marketplace for trading digital collectibles.
+              \end{itemize}
+          \end{itemize}
+
+        % 9. DiamondApp (Built on DeSo)
+        \item \textbf{DiamondApp (Built on DeSo)}
+          \begin{itemize}
+            \item \textbf{Overview:} A Twitter-like microblogging platform hosted on the DeSo blockchain.
+            \item \textbf{Token:} Uses DESO for transaction fees and creator coins for monetization.
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item Users can buy/sell creator coins, tip creators, and interact via on-chain transactions.
+                \item Posting, liking, and other interactions incur small DESO fees.
+              \end{itemize}
+          \end{itemize}
+
+        % 10. Audius (Music-Focused)
+        \item \textbf{Audius (Music-Focused Social Layer)}
+          \begin{itemize}
+            \item \textbf{Overview:} Decentralized music streaming platform with social features (comments, follows, playlists).
+            \item \textbf{Token:} AUDIO (ERC-20).
+            \item \textbf{Key Features:}
+              \begin{itemize}
+                \item AUDIO is used for governance, staking, and rewarding artists.
+                \item Social layer includes following artists, liking, and platform engagement.
+              \end{itemize}
+          \end{itemize}
+    \end{enumerate}
+\end{itemize}
 
 \section{Roadmap}
 
