@@ -266,6 +266,9 @@ Similarly, consider the modal type $[ - \; |\; A ] B$ of RHO processes that when
 
 These modal types will play an important role in the generated type system described in the next section.
 
+\subsection{A GSLT for MeTTa}
+In the same way that there is a grammar for BNFC, there is a GSLT Th(GSLT) for presenting finitely presentable GSLTs.  It has no rewrites, because it's just describing the grammar of GSLTs.  We can extend Th(GSLT) with a grammar for facts and queries, with rewrites for processing those queries; see section \ref{Queries} below for more details.
+
 \subsection{Generating an interpreter and a type system}
 \label{Generating an interpreter and a type system}
 
@@ -374,6 +377,7 @@ MORK (MeTTa Optimal Reduction Kernel) is a powerful functional language for mani
 However, MORK does not have any transactional semantics or primitives for concurrency.  As such, RSpace and MORK are complementary languages, well-suited to each other.  Rholang 1.2 will embed MORK as a datatype in the same way that it embeds numbers, strings, lists, maps, and sets.  It will also use MORK for unification with patterns in receiving processes instead of merely binding a single variable.
 
 \subsection{Queries}
+\label{Queries}
 
 There is a long tradition of associating types with predicates.  One of the earliest kind of query was whether a term halts or not.  This is, as Church and Turing showed, undecidable.  But the subsequent development of type systems for the lambda calculus focused on that question, and any well-typed program in any of the type systems of the lambda cube is guaranteed to halt.
 
