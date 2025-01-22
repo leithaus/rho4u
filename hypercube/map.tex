@@ -6,8 +6,11 @@
 \include{map.local} 
 
 \newcommand{\mycomment}[1]{}
+\newcommand{\MC}{MeTTaCycle}
+\newcommand{\FD}{F1R3Dr1v3}
+\newcommand{\FF}{F1R3FLY.io}
 
-\title{MeTTa Architecture Proposal}
+\title{\MC Architecture Proposal}
 \author{}
 \date{}
 
@@ -19,7 +22,15 @@
 
 \section{Introduction}
 
-SingularityNet's investment in MeTTa is predicated on the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  In fact, the name MeTTa is intended as pun for a meta-level framework for specifying different theories of computation.  SingularityNet hopes that MeTTa will be a language in which one can describe a theory of computation and get an efficient interpreter that is suited for smart contracts on a blockchain~\cite{GoertzelMeredith2024}.
+\MC is the codename for a new decentralized AI platform.  The network will have agents, both human and AI, who can share digital assets of all kinds, attenuate and delegate access to those assets, and make powerful queries about each other's content.  
+
+We anticipate at least two interface points between humans and the network; both of these will be based on existing user interfaces with which users are already familiar.  The first is through the operating system, where \FD will be mounted into the filesystem.  The second will be based on existing open source social networking software, currently BlueSky and Mastodon.
+
+\MC, as its name suggests, will feature a version of the MeTTa programming language.  The driving concept for MeTTa is the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  \MC intends to connect many theories operating in many domains, and to enable reasoning about these interactions.
+
+\subsection{The MeTTa Kernel}
+
+SingularityNet hopes that MeTTa will be a language in which one can describe a theory of computation and get an efficient interpreter that is suited for smart contracts on a blockchain~\cite{GoertzelMeredith2024}.
 
 Without reproducing much of MeTTa's internals explicitly in the theory, MeTTa currently cannot model different evaluation strategies for lambda calculus, cannot model the semantics of the $\pi$ calculus and other mobile process calculi, and has several other problems preventing it from living up to this vision.  We propose an architecture based on category theoretical concepts that will enable MeTTa to:
 \begin{itemize}
@@ -35,11 +46,11 @@ Section \ref{Theories of computation} attempts to express some theories of compu
 
 \subsection{Decentralization}
 
-Were the deployment of an execution environment for MeTTa SingularityNet's only goal the MeTTaCycle architecture would comprise the elements above. However, SingularityNet's goals include a decentralized framework for AI, AGI, and ASI. As such, the architecture must also address a security model for deployment of execution outside of the protective womb of a firewall. Further, it must embrace integration with a number of third party services. Despite these additional constraints and their corresponding remedies, MeTTaCycle must also be accessible and not hidden behind arcane or cryptic command line interfaces.
+Were the deployment of an execution environment for MeTTa SingularityNet's only goal the \MC architecture would comprise the elements above. However, SingularityNet's goals include a decentralized framework for AI, AGI, and ASI. As such, the architecture must also address a security model for deployment of execution outside of the protective womb of a firewall. Further, it must embrace integration with a number of third party services. Despite these additional constraints and their corresponding remedies, \MC must also be accessible and not hidden behind arcane or cryptic command line interfaces.
 
-To achieve the former we adopt a capabilities driven tokenization model. Access to compute and storage are mediated by (object) capabilities represented as tokens. See the \ref{Security model} for details. To achieve the latter we provide integration of MeTTaCycle with the file systems for the major operating systems; and, with major social media platforms. See \ref{Deployment and integration}.
+To achieve the former we adopt a capabilities driven tokenization model. Access to compute and storage are mediated by (object) capabilities represented as tokens. See the \ref{Security model} for details. To achieve the latter we provide integration of \MC with the file systems for the major operating systems; and, with major social media platforms. See \ref{Deployment and integration}.
 
-Finally, to achieve decentralization the MeTTaCycle architecture needs to include fault-tolerance balanced against the need to replicate data everywhere. It achieves this by delivering a sharded, heterogeneous consensus mechanism. Each shard represents a unit of fault-tolerance governed by a consensus mechanism. Shards may be organized into a tree. Parent shards delegate to children when transactions only involve resources confined to a single child shard, but provide a governing consensus for transactions that implicate resources spanning sibling shards.
+Finally, to achieve decentralization the \MC architecture needs to include fault-tolerance balanced against the need to replicate data everywhere. It achieves this by delivering a sharded, heterogeneous consensus mechanism. Each shard represents a unit of fault-tolerance governed by a consensus mechanism. Shards may be organized into a tree. Parent shards delegate to children when transactions only involve resources confined to a single child shard, but provide a governing consensus for transactions that implicate resources spanning sibling shards.
 
 \section{Market requirements}
 
@@ -48,7 +59,7 @@ the rise. By digital assets we don’t merely mean “tokens” as used in
 BTC or ETH. Rather, we mean digitally recorded and stored information
 from medical records to code (such as is found in GitHub); and we
 expand this scope to agentic services that act on the behalf of their
-users. The MeTTaCycle architecture provides such a digital asset
+users. The \MC architecture provides such a digital asset
 management service that guarantees the security model of Byzantine
 fault tolerant networks (BTC, ETH) with the throughput and scale of
 crash fault tolerant networks (Google Drive, Dropbox). This makes it
@@ -64,7 +75,7 @@ network for almost two decades without a successful hack that would
 allow such a claim to be made. Nevertheless, although the latter
 networks benefit from using Byzantine fault tolerant technology, they
 are in themselves unable to scale – a significant
-limitation. MeTTaCycle scales to match the throughput characteristics
+limitation. \MC scales to match the throughput characteristics
 of the crash fault tolerant networks (CFTNs) and does this while also
 supplying the security of the Byzantine fault tolerant networks
 (BFTNs).
@@ -74,28 +85,28 @@ searchability. One of the most important features enabling the new
 global economy is search. When everyone with an Internet connection
 became able to search – for jobs or employees, goods, services, news,
 analysis, etc. – the global digital market became a reality,
-supplanting oil as the most valuable sector. MeTTaCycle brings the
+supplanting oil as the most valuable sector. \MC brings the
 searchability of the CFTNs to the BFTNs. This not only means that data
-stored on MeTTaCycle networks can be searched. It also means it can be
+stored on \MC networks can be searched. It also means it can be
 fed to and integrated with emerging AI solutions. Specifically,
-MeTTaCycle’s smart contracting language is, by design, a transactional
-query language that works across an entire MeTTaCycle network at
+\MC’s smart contracting language is, by design, a transactional
+query language that works across an entire \MC network at
 scale, on the one hand; and a state of the art AI language on the other.
 
 Unlike the BFTNs where tokenization seems to be primarily to encourage
-trading, the key role of tokenization in MeTTaCycle networks is
+trading, the key role of tokenization in \MC networks is
 fractional security. A token is a key to a unit of compute or a unit
 of storage. Imagine if, rather than handing over your Netflix password
 to your family members, you gave them an allotment of tokens, each one
 representing a prescribed number of viewing hours. That’s what
-MeTTaCycle tokens represent: a very fine-grained security mechanism
+\MC tokens represent: a very fine-grained security mechanism
 that enables careful accounting and auditing of system use and asset
 access.
 
 Most enterprises need a scalable storage solution. Typical
 implementations bolt the security model and accounting on the side and
 are subject to hacks along both interfaces (security and
-accounting). In MeTTaCycle these two have been seamlessly integrated
+accounting). In \MC these two have been seamlessly integrated
 and baked into searchable, transactional storage.
 
 \section{High-performance MeTTa Kernel}
