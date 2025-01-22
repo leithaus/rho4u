@@ -1,6 +1,9 @@
 \documentclass{article}
 \usepackage{amsmath, amssymb, hyperref}
 \usepackage{graphicx}
+\usepackage {mathpartir}
+
+\include{map.local} 
 
 \newcommand{\mycomment}[1]{}
 
@@ -32,9 +35,11 @@ Section \ref{Theories of computation} attempts to express some theories of compu
 
 \subsection{Decentralization}
 
-Were the deployment of an execution environment for MeTTa the MeTTaCycle architecture would comprise the elements above. However, SingularityNet's goals include a decentralized framework for AI, AGI, and ASI. As such, the architecture must also address a security model for deployment of execution outside of the protective womb of a firewall. Further, it must embrace integration with a number of third party services. Finally, despite these additional constraints and their corresponding remedies, MeTTaCycle must also be accessible and not hidden behind arcane or cryptic command line interfaces.
+Were the deployment of an execution environment for MeTTa SingularityNet's only goal the MeTTaCycle architecture would comprise the elements above. However, SingularityNet's goals include a decentralized framework for AI, AGI, and ASI. As such, the architecture must also address a security model for deployment of execution outside of the protective womb of a firewall. Further, it must embrace integration with a number of third party services. Despite these additional constraints and their corresponding remedies, MeTTaCycle must also be accessible and not hidden behind arcane or cryptic command line interfaces.
 
 To achieve the former we adopt a capabilities driven tokenization model. Access to compute and storage are mediated by (object) capabilities represented as tokens. See the \ref{Security model} for details. To achieve the latter we provide integration of MeTTaCycle with the file systems for the major operating systems; and, with major social media platforms. See \ref{Deployment and integration}.
+
+Finally, to achieve decentralization the MeTTaCycle architecture needs to include a both fault-tolerance balanced against the need to replicate data everywhere. It achieves this by delivering a sharded, heterogeneous consensus mechanism. Each shard represents a unit of fault-tolerance governed by a consensus mechanism. Shards may be organized into a tree. Parent shards delegate to children when transactions only involve resources confined to a single child shard, but provide a governing consensus for transactions that implicate resources spanning sibling shards.
 
 \section{High-performance MeTTa Kernel}
 
@@ -389,6 +394,30 @@ The notion of a theory of computation is very general; one could, for example, m
 
 \subsection{Tokenization and capabilities}
 \label{Security model}
+
+\section{Tokenized security}
+
+This tokenized security model is \emph{generated} from the operational semantics.
+
+\begin{mathpar}
+  \inferrule* [lab=security-tokens] {} {T \bc () \;\bm\; s \;\bm\; T:T}
+  \and
+  \inferrule* [lab=secured-processes] {} {S \bc \mathsf{\{}P\mathsf{\}}_{s} \;\bm\; T \;\bm\; S\mathsf{|}S} \\
+  \and
+  \inferrule* [lab=multi-party-sigs] {} {s \bc () \;\bm\; \mathsf{hash}( <\!signature\!> ) \;\bm\; s\mathsf{\&}s}
+\end{mathpar}
+
+where $\mathsf{\{}P\mathsf{\}}_{s}$ is a process signed by a digital signature.
+
+\begin{mathpar}
+  \inferrule* [lab=COMM-cosigned-par-external-sequential] {\sigma = \mathsf{unify}(t,u)} {\mathsf{\{}\mathsf{for}( t \sngllrarrow x )P\mathsf{\}}_{s_1} \;\mathsf{|}\; \mathsf{\{}\mathsf{for}( u \sngllrarrow x )P\mathsf{\}}_{s_2}\;\mathsf{|}\; s_{1}\mathsf{\&}s_{2}:T \red \mathsf{\{}P\dot{\sigma}\mathsf{|}Q\dot{\sigma}\mathsf{\}}_{s_1\mathsf{\&}s_2} \;\mathsf{|}\; T} \\
+  \and
+  \inferrule* [lab=COMM-cosigned-par-external-concurrent] {\sigma = \mathsf{unify}(t,u)} {\mathsf{\{}\mathsf{for}( t \sngllrarrow x )P\mathsf{\}}_{s_1} \;\mathsf{|}\; \mathsf{\{}\mathsf{for}( u \sngllrarrow x )P\mathsf{\}}_{s_2}\;\mathsf{|}\; s_{1}:T_{1}\;\mathsf{|}\;s_{2}:T_{1} \red \mathsf{\{}P\dot{\sigma}\mathsf{|}Q\dot{\sigma}\mathsf{\}}_{s_1\mathsf{\&}s_2} \;\mathsf{|}\; T_{1} \;\mathsf{|}\; T_{2}} \\
+  \and
+  \inferrule* [lab=COMM-signed] {P \red P'} {\mathsf{\{}P\mathsf{\}}_{s} \;\mathsf{|}\; s:T \red \mathsf{\{}P'\mathsf{\}}_{s} \;\mathsf{|}\; T} \\
+  \and
+  \inferrule* [lab=COMM-cosigned-par-internal] {P \red P'} {\mathsf{\{}P\mathsf{\}}_{s_1 \& s_2} \;\mathsf{|}\; s_{1}:T_{1} \;\mathsf{|}\; s_{2}:T_{2} \red \mathsf{\{}P'\mathsf{\}}_{s} \;\mathsf{|}\; T_{1}\;\mathsf{|}\;T_{2}}  
+\end{mathpar}
 
 \subsection{Embedding the kernel in a consensus mechanism}
 
