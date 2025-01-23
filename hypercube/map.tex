@@ -6,11 +6,12 @@
 \include{map.local} 
 
 \newcommand{\mycomment}[1]{}
-\newcommand{\MC}{MeTTaCycle}
-\newcommand{\FD}{F1R3Dr1v3}
-\newcommand{\FF}{F1R3FLY.io}
+\newcommand{\MC}{\mathsf{MeTTaCycle}}
+\newcommand{\FD}{\mathsf{F1R3Dr1v3}}
+\newcommand{\FF}{\mathsf{F1R3FLY.io}}
+\newcommand{\RS}{\mathsf{RSpace}}
 
-\title{\MC Architecture Proposal}
+\title{$\MC$ Architecture Proposal}
 \author{}
 \date{}
 
@@ -22,11 +23,11 @@
 
 \section{Introduction}
 
-\MC is the codename for a new decentralized AI platform.  The network will have agents, both human and AI, who can share digital assets of all kinds, attenuate and delegate access to those assets, and make powerful queries about each other's content.  
+$\MC$ is the codename for a new decentralized AI platform.  The network will have agents, both human and AI, who can share digital assets of all kinds, attenuate and delegate access to those assets, and make powerful queries about each other's content.  
 
-We anticipate at least two interface points between humans and the network; both of these will be based on existing user interfaces with which users are already familiar.  The first is through the operating system, where \FD will be mounted into the filesystem.  The second will be based on existing open source social networking software, currently BlueSky and Mastodon.
+We anticipate at least two interface points between humans and the network; both of these will be based on existing user interfaces with which users are already familiar.  The first is through the operating system, where $\FD$ will be mounted into the filesystem.  The second will be based on existing open source social networking software, currently BlueSky and Mastodon.
 
-\MC, as its name suggests, will feature a version of the MeTTa programming language.  The driving concept for MeTTa is the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  \MC intends to connect many theories operating in many domains, and to enable reasoning about these interactions.
+$\MC$, as its name suggests, will feature a version of the MeTTa programming language.  The driving concept for MeTTa is the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  $\MC$ intends to connect many theories operating in many domains, and to enable reasoning about these interactions.
 
 \subsection{The MeTTa Kernel}
 
@@ -46,11 +47,11 @@ Section \ref{Theories of computation} attempts to express some theories of compu
 
 \subsection{Decentralization}
 
-Were the deployment of an execution environment for MeTTa SingularityNet's only goal the \MC architecture would comprise the elements above. However, SingularityNet's goals include a decentralized framework for AI, AGI, and ASI. As such, the architecture must also address a security model for deployment of execution outside of the protective womb of a firewall. Further, it must embrace integration with a number of third party services. Despite these additional constraints and their corresponding remedies, \MC must also be accessible and not hidden behind arcane or cryptic command line interfaces.
+Were the deployment of an execution environment for MeTTa SingularityNet's only goal the $\MC$ architecture would comprise the elements above. However, SingularityNet's goals include a decentralized framework for AI, AGI, and ASI. As such, the architecture must also address a security model for deployment of execution outside of the protective womb of a firewall. Further, it must embrace integration with a number of third party services. Despite these additional constraints and their corresponding remedies, $\MC$ must also be accessible and not hidden behind arcane or cryptic command line interfaces.
 
-To achieve the former we adopt a capabilities driven tokenization model. Access to compute and storage are mediated by (object) capabilities represented as tokens. See the \ref{Security model} for details. To achieve the latter we provide integration of \MC with the file systems for the major operating systems; and, with major social media platforms. See \ref{Deployment and integration}.
+To achieve the former we adopt a capabilities driven tokenization model. Access to compute and storage are mediated by (object) capabilities represented as tokens. See the \ref{Security model} for details. To achieve the latter we provide integration of $\MC$ with the file systems for the major operating systems; and, with major social media platforms. See \ref{Deployment and integration}.
 
-Finally, to achieve decentralization the \MC architecture needs to include fault-tolerance balanced against the need to replicate data everywhere. It achieves this by delivering a sharded, heterogeneous consensus mechanism. Each shard represents a unit of fault-tolerance governed by a consensus mechanism. Shards may be organized into a tree. Parent shards delegate to children when transactions only involve resources confined to a single child shard, but provide a governing consensus for transactions that implicate resources spanning sibling shards.
+Finally, to achieve decentralization the $\MC$ architecture needs to include fault-tolerance balanced against the need to replicate data everywhere. It achieves this by delivering a sharded, heterogeneous consensus mechanism. Each shard represents a unit of fault-tolerance governed by a consensus mechanism. Shards may be organized into a tree. Parent shards delegate to children when transactions only involve resources confined to a single child shard, but provide a governing consensus for transactions that implicate resources spanning sibling shards.
 
 \section{Market requirements}
 
@@ -59,7 +60,7 @@ the rise. By digital assets we don’t merely mean “tokens” as used in
 BTC or ETH. Rather, we mean digitally recorded and stored information
 from medical records to code (such as is found in GitHub); and we
 expand this scope to agentic services that act on the behalf of their
-users. The \MC architecture provides such a digital asset
+users. The $\MC$ architecture provides such a digital asset
 management service that guarantees the security model of Byzantine
 fault tolerant networks (BTC, ETH) with the throughput and scale of
 crash fault tolerant networks (Google Drive, Dropbox). This makes it
@@ -70,13 +71,13 @@ While the crash fault tolerant cloud-based networks have scaled to
 serve millions of concurrent active users, they have been plagued by
 hacks like Snowflake, Crowdstrike, and many others. By contrast, the
 Byzantine fault tolerant networks (such as BTC) have huge unclaimed
-“bug bounties”. \$ Bs of assets have been flowing through the BTC
-network for almost two decades without a successful hack that would
-allow such a claim to be made. Nevertheless, although the latter
-networks benefit from using Byzantine fault tolerant technology, they
-are in themselves unable to scale – a significant
-limitation. \MC scales to match the throughput characteristics
-of the crash fault tolerant networks (CFTNs) and does this while also
+“bug bounties”. Billions of dollars of assets have been flowing
+through the BTC network for almost two decades without a successful
+hack that would allow such a claim to be made. Nevertheless, although
+the latter networks benefit from using Byzantine fault tolerant
+technology, they are in themselves unable to scale – a significant
+limitation. $\MC$ scales to match the throughput characteristics of the
+crash fault tolerant networks (CFTNs) and does this while also
 supplying the security of the Byzantine fault tolerant networks
 (BFTNs).
 
@@ -85,29 +86,29 @@ searchability. One of the most important features enabling the new
 global economy is search. When everyone with an Internet connection
 became able to search – for jobs or employees, goods, services, news,
 analysis, etc. – the global digital market became a reality,
-supplanting oil as the most valuable sector. \MC brings the
+supplanting oil as the most valuable sector. $\MC$ brings the
 searchability of the CFTNs to the BFTNs. This not only means that data
-stored on \MC networks can be searched. It also means it can be
+stored on $\MC$ networks can be searched. It also means it can be
 fed to and integrated with emerging AI solutions. Specifically,
-\MC’s smart contracting language is, by design, a transactional
-query language that works across an entire \MC network at
+$\MC$’s smart contracting language is, by design, a transactional
+query language that works across an entire $\MC$ network at
 scale, on the one hand; and a state of the art AI language on the other.
 
 Unlike the BFTNs where tokenization seems to be primarily to encourage
-trading, the key role of tokenization in \MC networks is
+trading, the key role of tokenization in $\MC$ networks is
 fractional security. A token is a key to a unit of compute or a unit
 of storage. Imagine if, rather than handing over your Netflix password
 to your family members, you gave them an allotment of tokens, each one
 representing a prescribed number of viewing hours. That’s what
-\MC tokens represent: a very fine-grained security mechanism
+$\MC$ tokens represent: a very fine-grained security mechanism
 that enables careful accounting and auditing of system use and asset
 access.
 
 Most enterprises need a scalable storage solution. Typical
-implementations bolt the security model and accounting on the side and
-are subject to hacks along both interfaces (security and
-accounting). In \MC these two have been seamlessly integrated
-and baked into searchable, transactional storage.
+implementations bolt the security and accounting models on the side
+and are subject to hacks along both interfaces (security and
+accounting). In $\MC$ these two have been seamlessly integrated and
+baked into searchable, transactional storage.
 
 \section{High-performance MeTTa Kernel}
 
@@ -389,7 +390,7 @@ EdgeGen(state, n) =
     EdgeProcess(state, n) + EdgeGen(state, n + 1)
 \end{verbatim}
 
-This technique produces a single-threaded interpreter that includes in its enumeration parallel rewrites on parts of the state.  It suffices for an interpreter, but does not make good use of the massive parallelization that RSpace provides.
+This technique produces a single-threaded interpreter that includes in its enumeration parallel rewrites on parts of the state.  It suffices for an interpreter, but does not make good use of the massive parallelization that $\RS$ provides.
 
 \paragraph{Adding parallelism}
 
@@ -437,17 +438,17 @@ This design pattern allows a much simpler interpreter that has one potential edg
 
 There are often more opportunities for optimization, but they only apply in certian circumstances.  Detecting opportunities for optimization is a standard part of interpreter design, and will be important for a compilation pipeline targeting Rholang.  For example, in a programming language with functions and an eager reduction strategy, it doesn't make sense to decompose the state from the top level at each step; instead, subexpressions should be reduced completely before moving up in the syntax tree.  Standard heuristics can be brought to bear on the sets of rewrite constructors, and automated techniques exist for generalizing specific instances of optimizations to the most general applicable situation~\cite{Tate2010}.
 
-\subsection{RSpace}
+\subsection{$\RS$}
 
-The Rholang interpreter uses a very efficient data structure called \textbf{RSpace} for storing continuations and matching sends with receives.  To a first approximation, the Rholang interpreter is just a parser sitting on top of RSpace.
+The Rholang interpreter uses a very efficient data structure called $\RS$ for storing continuations and matching sends with receives.  To a first approximation, the Rholang interpreter is just a parser sitting on top of $\RS$.
 
-In the simplest cases, the names on which processes are sending and receiving get hashed, and if there's a process of the opposite polarity waiting in the hash table, they can synchronize.  RSpace also allows processes to bind variables using patterns.  This lets programmers dispatch messages on the same channel to different processes based on the content of the messages, and is the basis of the design of the interpreters above.
+In the simplest cases, the names on which processes are sending and receiving get hashed, and if there's a process of the opposite polarity waiting in the hash table, they can synchronize.  $\RS$ also allows processes to bind variables using patterns.  This lets programmers dispatch messages on the same channel to different processes based on the content of the messages, and is the basis of the design of the interpreters above.
 
-\subsubsection{RSpace and MORK}
+\subsubsection{$\RS$ and MORK}
 
 MORK (MeTTa Optimal Reduction Kernel) is a powerful functional language for manipulating graph databases in memory. It represents sets of paths using a trie, which can be exponentially smaller than the original dataset.  It can also act on all the paths in a subtrie simultaneously, which can be exponentially faster than mapping over a data set.  MORK was designed with provable efficiency in mind: each operation provides complexity guarantees.  Using MORK lets a programmer make accurate predictions about the computational complexity of a query.
 
-However, MORK does not have any transactional semantics or primitives for concurrency.  As such, RSpace and MORK are complementary languages, well-suited to each other.  Rholang 1.2 will embed MORK as a datatype in the same way that it embeds numbers, strings, lists, maps, and sets.  It will also use MORK for unification with patterns in receiving processes instead of merely binding a single variable.
+However, MORK does not have any transactional semantics or primitives for concurrency.  As such, $\RS$ and MORK are complementary languages, well-suited to each other.  Rholang 1.2 will embed MORK as a datatype in the same way that it embeds numbers, strings, lists, maps, and sets.  It will also use MORK for unification with patterns in receiving processes instead of merely binding a single variable.
 
 \subsection{Queries}
 \label{Queries}
@@ -466,8 +467,6 @@ The notion of a theory of computation is very general; one could, for example, m
 
 \subsection{Tokenization and capabilities}
 \label{Security model}
-
-\section{Tokenized security}
 
 This tokenized security model is \emph{generated} from the operational semantics.
 
@@ -491,7 +490,7 @@ where $\mathsf{\{}P\mathsf{\}}_{s}$ is a process signed by a digital signature.
   \inferrule* [lab=COMM-cosigned-par-internal] {P \red P'} {\mathsf{\{}P\mathsf{\}}_{s_1 \& s_2} \;\mathsf{|}\; s_{1}:T_{1} \;\mathsf{|}\; s_{2}:T_{2} \red \mathsf{\{}P'\mathsf{\}}_{s} \;\mathsf{|}\; T_{1}\;\mathsf{|}\;T_{2}}  
 \end{mathpar}
 
-\subsection{Embedding the kernel in a consensus mechanism}
+\section{Fault-tolerance: embedding the kernel in a consensus mechanism}
 
 % mention swappable consensus
 
@@ -506,7 +505,20 @@ TBD
 \section{Deployment and integration}
 \label{Deployment and integration}
 
+To aid adoption and provide practical deployment MeTTaCycle comes with
+integration to major throughways in the creation and dissemination of
+digital assets: the OS and social media.
+
 \subsection{Integration with the OS}
+
+In the case of integration with the OS MeTTaCycle uses
+$\mathsf{libFUSE}$ to mount a remote shard as if it is a local file
+system. Effectively, MeTTaCycle's performance is on par with what
+users normally experience with Dropbox or Google Drive. Using their
+local file browser, with no modifications, they can drag and drop
+assets onto a shard. This allows for users to share data with each
+other over a decentralized network with the security of common BFTNs,
+such as BTC or ETH. See the $\FD$ repo.
 
 \begin{figure}
   \centering
@@ -516,6 +528,18 @@ TBD
 \end{figure}
 
 \subsection{Integration with social media}
+
+In the case of integration with social media MeTTaCycle offers two
+levels of integration. The first of these is importing and exporting
+between local caches. For example, Zulip, BlueSky, and Mastodon all
+use Postgres as their local instance storage. MeTTaCycle allows import
+and export between their Postgres storage and the shard. Thus,
+MeTTaCycle becomes a bus between different instances -- without
+modification of the social media application stack.
+
+The second of these is a tighter integration involving modifications
+to the social media stack in order to add features made possible by
+tokenization of capabilities and the integration of agentic AI.
 
 \begin{figure}
   \centering
