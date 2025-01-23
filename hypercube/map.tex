@@ -71,11 +71,11 @@ While the crash fault tolerant cloud-based networks have scaled to
 serve millions of concurrent active users, they have been plagued by
 hacks like Snowflake, Crowdstrike, and many others. By contrast, the
 Byzantine fault tolerant networks (such as BTC) have huge unclaimed
-“bug bounties”. Billions of dollars of assets have been flowing
+bug bounties”. Billions of dollars of assets have been flowing
 through the BTC network for almost two decades without a successful
 hack that would allow such a claim to be made. Nevertheless, although
 the latter networks benefit from using Byzantine fault tolerant
-technology, they are in themselves unable to scale – a significant
+technology, they are in themselves unable to scale --- a significant
 limitation. $\MC$ scales to match the throughput characteristics of the
 crash fault tolerant networks (CFTNs) and does this while also
 supplying the security of the Byzantine fault tolerant networks
@@ -84,8 +84,8 @@ supplying the security of the Byzantine fault tolerant networks
 Furthermore, one of the crucial features of the CFTNs is their
 searchability. One of the most important features enabling the new
 global economy is search. When everyone with an Internet connection
-became able to search – for jobs or employees, goods, services, news,
-analysis, etc. – the global digital market became a reality,
+became able to search --- for jobs or employees, goods, services, news,
+analysis, etc. --- the global digital market became a reality,
 supplanting oil as the most valuable sector. $\MC$ brings the
 searchability of the CFTNs to the BFTNs. This not only means that data
 stored on $\MC$ networks can be searched. It also means it can be
@@ -465,6 +465,12 @@ The notion of a theory of computation is very general; one could, for example, m
 
 \section{Decentralizing MeTTa}
 
+Rholang is an object capapbilities platform.  On a single logical machine like a blockchain, private names created with the \verb+new+ operator are unforgeable\footnote{A capability is forgeable if you can create an instance of it given only bits. Object references in memory safe languages are unforgeable, since even if you have the memory address of an object, there's no way to turn it into an object reference.} bearer tokens for access to a process.  On an open network, the only things that can be transmitted are bits, so names are necessarily forgeable.  But they can be made unguessable, like the long random strings in API keys.
+
+These names can be attenuated and delegated, and interposing processes can enable arbitrarily fine-grained security patterns~\cite{Stiegler2004}.  For example, Alice can make access to a process $P$ listening for messages on channel $p$ revocable by interposing another forwarder process $F$ that listens on two channels $f$ and $r$.  Alice shares revocable access to $P$ by sending Bob the name $f,$ but she keeps $r$ to herself.  $F$ forwards to $P$ on $p$ any messages that it receives on $f$ from Bob until $F$ receives a revocation trigger from Alice on $r$.  At that point, $F$ shuts down and Bob has no way to contact $P$.
+
+$\MC$, however, will also provide metered access through the use of tokens.
+
 \subsection{Tokenization and capabilities}
 \label{Security model}
 
@@ -605,6 +611,9 @@ Meredith, L.~Gregory, and Matthias Radestock (2005).
 ``A Reflective Higher-order Calculus.'' 
 \emph{Electronic Notes in Theoretical Computer Science} 141(5), 49--67, 22 December 2005. 
 \url{https://doi.org/10.1016/j.entcs.2005.05.016}
+
+\bibitem{Stiegler2004}
+Stiegler, Marc (2004). \emph{A PictureBook of Secure Cooperation}. \url{http://www.erights.org/talks/efun/SecurityPictureBook.pdf}.
 
 \bibitem{Tate2010}
 Tate, Ross, Michael Stepp, and Sorin Lerner (2010). 
