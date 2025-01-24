@@ -71,11 +71,11 @@ While the crash fault tolerant cloud-based networks have scaled to
 serve millions of concurrent active users, they have been plagued by
 hacks like Snowflake, Crowdstrike, and many others. By contrast, the
 Byzantine fault tolerant networks (such as BTC) have huge unclaimed
-“bug bounties”. Billions of dollars of assets have been flowing
+``bug bounties''. Billions of dollars of assets have been flowing
 through the BTC network for almost two decades without a successful
 hack that would allow such a claim to be made. Nevertheless, although
 the latter networks benefit from using Byzantine fault tolerant
-technology, they are in themselves unable to scale – a significant
+technology, they are in themselves unable to scale --- a significant
 limitation. $\MC$ scales to match the throughput characteristics of the
 crash fault tolerant networks (CFTNs) and does this while also
 supplying the security of the Byzantine fault tolerant networks
@@ -84,8 +84,8 @@ supplying the security of the Byzantine fault tolerant networks
 Furthermore, one of the crucial features of the CFTNs is their
 searchability. One of the most important features enabling the new
 global economy is search. When everyone with an Internet connection
-became able to search – for jobs or employees, goods, services, news,
-analysis, etc. – the global digital market became a reality,
+became able to search --- for jobs or employees, goods, services, news,
+analysis, etc. --- the global digital market became a reality,
 supplanting oil as the most valuable sector. $\MC$ brings the
 searchability of the CFTNs to the BFTNs. This not only means that data
 stored on $\MC$ networks can be searched. It also means it can be
@@ -465,6 +465,12 @@ The notion of a theory of computation is very general; one could, for example, m
 
 \section{Decentralizing MeTTa}
 
+Rholang is an object capapbilities platform.  On a single logical machine like a blockchain, private names created with the \verb+new+ operator are unforgeable\footnote{A capability is forgeable if you can create an instance of it given only bits. Object references in memory safe languages are unforgeable, since even if you have the memory address of an object, there's no way to turn it into an object reference.} bearer tokens for access to a process.  On an open network, the only things that can be transmitted are bits, so names are necessarily forgeable.  But they can be made unguessable, like the long random strings in API keys.
+
+These names can be attenuated and delegated, and interposing processes can enable arbitrarily fine-grained security patterns~\cite{Stiegler2004}.  For example, Alice can make access to a process $P$ listening for messages on channel $p$ revocable by interposing another forwarder process $F$ that listens on two channels $f$ and $r$.  Alice shares revocable access to $P$ by sending Bob the name $f,$ but she keeps $r$ to herself.  $F$ forwards to $P$ on $p$ any messages that it receives on $f$ from Bob until $F$ receives a revocation trigger from Alice on $r$.  At that point, $F$ shuts down and Bob has no way to contact $P$.
+
+$\MC$, however, will also provide metered access through the use of tokens.
+
 \subsection{Tokenization and capabilities}
 \label{Security model}
 
@@ -550,6 +556,42 @@ tokenization of capabilities and the integration of agentic AI.
 
 \section{Roadmap}
 
+\section{A few use cases}
+
+\subsection{Ocaps for DevOps PaaS}
+
+A particularly compelling application of the $\MC$ architecture lies in the DevOps Platform-as-a-Service (PaaS) sector, where teams seek to configure and monitor projects with minimal overhead. Developers often rely on centralized providers to share infrastructure and capabilities, which can result in vulnerability to deplatforming (for example, when payment providers or credit card companies refuse service) or require complicated permissioning frameworks.
+
+By incorporating object-capabilities (ocaps) into a DevOps environment, $\MC$ could provide a robust mechanism for delegating and attenuating authorization among team members. Specifically, a lightweight plugin or extension built on top of $\MC$ could let organizations share their DevOps resources (such as CI/CD pipelines, artifact repositories, and monitoring dashboards) via secure tokens. This would allow fine-grained access control---even down to the level of revocable, limited-lifespan tokens for specific tasks.
+
+This approach distinguishes itself from existing DevOps PaaS offerings in that it deploys ocaps as the fundamental security model, rather than as an add-on or ad-hoc wrapper. While no current competitor offers a sharing model based on ocaps, the development of such a plugin would likely require its own dedicated team to ensure seamless integration with existing DevOps tools.
+
+An interesting extension of this model would be to empower autonomous AI agents with delegated ocaps for various DevOps operations. For example, an AI-driven build optimizer could be granted a strictly bounded token that allows it to adjust continuous integration parameters without risking broader system access. Such autonomous agents could also facilitate zero-downtime deployments and real-time resource scaling, all while ensuring that their authority remains precisely delimited by the ocaps architecture.
+
+\subsection{Sensors}
+
+A second use case envisions a network of industrial sensors within a smart factory, all powered by $\MC$'s concurrency and transactional semantics. Many factories rely on streams of data from robotic arms, assembly lines, and inventory management systems, feeding downstream analytics to optimize production. A decentralized “marketplace” for sensor data could allow different agents---both human and AI---to connect, filter, and aggregate these streams.
+
+Using $\MC$, sensors and agents become active participants in an economy of data consumption. The architecture’s flexible query language can filter live streams and route relevant information to different processes for anomaly detection or predictive maintenance. The emphasis on concurrency and fine-grained access tokens could enable secure, selective data sharing among industrial partners or even across entire supply chains.
+
+In this environment, autonomous AI agents could automatically negotiate data access or deploy new analytics modules where they detect certain operational inefficiencies. These agents might, for instance, purchase sensor data streams to train local machine-learning models or dynamically grant short-term access credentials to other agents for collaborative filtering. Crucially, the ocaps mechanism ensures they can only access precisely what they are authorized to, preventing them from overstepping their operational bounds.
+
+\subsection{Sandstorm}
+
+Sandstorm (sandstorm.org) has long provided a platform for sandboxed apps that users can self-host, ensuring data ownership. By deploying $\MC$ as an underlying engine for sandstorm deployments, resource owners can store, share, and collaboratively edit data in a decentralized fashion. Attenuation and delegation of capabilities would be governed by tokens: the owner (or a controlling agent) issues tokens to participants, granting privileged or time-limited access to certain documents, files, or worlds. This model aligns with sandstorm.org’s mission of self-hosting and privacy protection, extending it with the added benefits of a censorship-resistant, Byzantine fault tolerant infrastructure.
+
+Because the integration would require modifications or plugin development within the sandstorm stack itself, it might entail a dedicated development effort. The result, however, would unify the user-friendly collaboration tools sandstorm.org is known for with the secure, decentralized capabilities of $\MC$.
+
+AI agents could automate content moderation tasks, track and summarize collaborative work, or even autonomously curate shared documents for improved knowledge management. By granting these agents time-limited tokens to view and potentially modify files, users could safely outsource tasks such as grammar correction, code review, or content organization to intelligent assistants without risking full administrative access over an entire collection.
+
+\subsection{File hosting}
+
+Finally, an obvious and powerful use case for $\MC$ is straightforward file hosting and sharing, akin to Dropbox or Google Drive. Current commercial solutions often rely on crash fault tolerant architectures that scale well but are prone to deplatforming or security breaches at the central provider. There are also open-source alternatives, such as Tahoe-LAFS, that offer strong decentralization and encryption. $\MC$ naturally aligns with the design philosophy behind censorship-resistant file systems, providing concurrency, transactionality, and token-based access.
+
+Leveraging $\FD$'s existing filesystem bridge, a user could simply drag and drop documents into a folder that is mapped onto $\MC$. This approach already offers encryption at rest, with $\FD$'s environment allowing multi-party access via tokenization. The result is a file hosting platform in which censorship is far more difficult, and availability is improved through blockchain-level fault-tolerance. A key question for future work is how to best integrate advanced encryption and chunk-level redundancy strategies (similar to Tahoe-LAFS) into $\FD$'s architecture to further enhance privacy and reliability.
+
+In this file hosting scenario, autonomous AI agents could assist with document indexing, advanced search capabilities, and automated backups. Using token-limited capabilities, agents might be granted read-only access to large sets of stored files, enabling them to provide semantic search or categorization without the risk of unauthorized edits or deletions. This delegation approach would preserve user control while unlocking AI-driven efficiencies in managing and organizing decentralized data.
+
 \section{Conclusion}
 
 Our proposed architecture addresses the defects of the current MeTTa implementation:
@@ -605,6 +647,9 @@ Meredith, L.~Gregory, and Matthias Radestock (2005).
 ``A Reflective Higher-order Calculus.'' 
 \emph{Electronic Notes in Theoretical Computer Science} 141(5), 49--67, 22 December 2005. 
 \url{https://doi.org/10.1016/j.entcs.2005.05.016}
+
+\bibitem{Stiegler2004}
+Stiegler, Marc (2004). \emph{A PictureBook of Secure Cooperation}. \url{http://www.erights.org/talks/efun/SecurityPictureBook.pdf}.
 
 \bibitem{Tate2010}
 Tate, Ross, Michael Stepp, and Sorin Lerner (2010). 
