@@ -48,22 +48,22 @@ In quantum rho, we follow the same approach as the stochastic case, but instead 
 \begin{eqnarray}\label{eq:succ_state}
 s(P,M) = 
 \begin{cases}
-\sum_i r_i \ket{P'_i}/\sqrt{r_0} & \text{if} \; r_0 = \sum_i |r_i|^2 > 0 \; \wedge\forall i\neq j. P'_i \equiv P'_j \Rightarrow r^2_i r^2_j = 0 \\
-\ket{P'_{i^*}}
- & \text{if} \; r_0 = \sum_i |r_i|^2 > 0 \; \wedge M=1, \; p(i^*=i)=|r_i|^2/r_0 \\
+\sum_i r_i \ket{P'_i}/\sqrt{r_0} & \text{if} \; r_0 = \sum_i |r_i|^2 > 0 \; \wedge\forall i\neq j. P'_i \equiv P'_j \Rightarrow |r_i|^2 |r_j|^2 = 0, \\
+\ket{Q}
+ & \text{if} \; r_0 = \sum_i |r_i|^2 > 0 \; \wedge M=1, \\ & \text{where} \; p(Q\equiv P'_i)\propto \sum_{\{j|P'_i\equiv P'_j\}} |r_j|^2, \\
 \text{null} & \text{otherwise,}
 \end{cases}\nonumber\\
 \end{eqnarray}
 
-\noindent We note that $s(P,M)$ is deterministic except when $M=1$ and $\exists i\neq j. P'_i \equiv P'_j \wedge r^2_i>0 \wedge r^2_j > 0$.
+\noindent We note that $s(P,M)$ is deterministic except when $M=1$ and $\exists i\neq j. P'_i \equiv P'_j \wedge |r_i|^2>0 \wedge |r_j|^2 > 0$.
 
 In quantum rho, we wish to define an operational semantics over the enhanced processes, $\phi,\psi\in \text{Proc}^*$.  To do so, we consider the matrix $\tilde{U}_{\phi}$, letting $\phi=\sum_{i=1...M} \alpha_i \ket{P_i}$, defined as:
 
 \begin{eqnarray}
-\tilde{U}_{\phi} = \left[\sqrt{r_0^{(1)}}\text{vec}(s(P_1,M)), ... , \sqrt{r_0^{(M)}}\text{vec}(s(P_M),M)\right],
+\tilde{U}_{\phi} = \left[\sqrt{r_0^{(1)}}\text{vec}(s(P_1,M)), ... , \sqrt{r_0^{(M)}}\text{vec}(s(P_M,M))\right],
 \end{eqnarray}
 
-\noindent where $\text{vec}(s(P_i),M)$ denotes a vertical vectorization of the state $s(P_i,M)$ when $s(P_i,M) \in \text{Proc}^*$ and the vector $\mathbf{0}$, if $s(P_i,M)=\text{null}$, while $[,]$ denotes horizontal concatenation of column vectors.  Here, we note that $\text{vec}:\text{Proc}^*\cup\{\text{null}\} \rightarrow \mathbb{C}^{|S|}$, where $S=\{Q|\exists i,j, \; Q\equiv P'_{i,j} \vee \exists i, \; Q\equiv P_i\}$, where $P'_{i,j}$ is the $j$'th reduction in rho of $P_i$.  Since all rho terms have finitely many reductions, $|S|<\infty$, and the state $s(P_i,M)$ is vectorized by imposing an ordering on $S$ (for instance, lexicographic) so that $S=\{Q_1,...,Q_{|S|}\}$), and letting:
+\noindent where $\text{vec}(s(P_i,M))$ denotes a vertical vectorization of the state $s(P_i,M)$ when $s(P_i,M) \in \text{Proc}^*$ and the vector $\mathbf{0}$, if $s(P_i,M)=\text{null}$, while $[,]$ denotes horizontal concatenation of column vectors.  Here, we note that $\text{vec}:\text{Proc}^*\cup\{\text{null}\} \rightarrow \mathbb{C}^{|S|}$, where $S=\{Q|\exists i,j, \; Q\equiv P'_{i,j} \vee \exists i, \; Q\equiv P_i\}$, where $P'_{i,j}$ is the $j$'th reduction in rho of $P_i$.  Since all rho terms have finitely many reductions, $|S|<\infty$, and the state $s(P_i,M)$ is vectorized by imposing an ordering on $S$ (for instance, lexicographic) so that $S=\{Q_1,...,Q_{|S|}\}$, and letting:
 
 \begin{eqnarray}
 \text{vec}_k(s(P_i,M)) = 
@@ -139,7 +139,7 @@ To define a universal quantum gate model, we use the same circuit model, where t
 
 \noindent and the channels $g_3$, $g_4$, and $g_5$ have the rates $(1/\sqrt(2))$, $(-1/\sqrt(2))$, and $i$ respectively. 
 
-To allow a quantum state to be provided as input to a quantum circuit, the circuit may always be extended by prefixing a quantum circuit which starts from the $\ket{\mathsf{F},...,\mathsf{F})}$  state and prepares the required input state.  Hence, we may run a circuit in quantum rho by initializing the system to the state $\ket{(x_0 \mathsf{!}(\mathsf{F},…,\mathsf{F})\mathsf{|}C_0 \mathsf{|}C)}$, where  $C_0$ is the quantum rho encoding of the prefix circuit, and $C$ is the desired core circuit encoding.  Reduction of the circuit will result in an expression of the form $\ket{(x_L \mathsf{!}(P))}$ where $P$ is a tuple encoding $N$ Boolean values, representing a measurement of the circuit’s output in the computational basis.  To prevent a measurement occurring in order to apply further processing to the circuit’s final quantum state, for instance using an additional circuit $D$ (which we assume to share no common channel names with $C$), circuits may simply be concatenated compositionally, producing the term $\ket{(x_0 \mathsf{!}(\mathsf{F},…,\mathsf{F})|C_0 |C|D)}$.
+To allow a quantum state to be provided as input to a quantum circuit, the circuit may always be extended by prefixing a quantum circuit which starts from the $\ket{(\mathsf{F},...,\mathsf{F})}$  state and prepares the required input state.  Hence, we may run a circuit in quantum rho by initializing the system to the state $\ket{(x_0 \mathsf{!}(\mathsf{F},…,\mathsf{F})\mathsf{|}C_0 \mathsf{|}C)}$, where  $C_0$ is the quantum rho encoding of the prefix circuit, and $C$ is the desired core circuit encoding.  Reduction of the circuit will result in an expression of the form $\ket{(x_L \mathsf{!}(P))}$ where $P$ is a tuple encoding $N$ Boolean values, representing a measurement of the circuit’s output in the computational basis.  To prevent a measurement occurring in order to apply further processing to the circuit’s final quantum state, for instance using an additional circuit $D$ (which we assume to share no common channel names with $C$), circuits may simply be concatenated compositionally, producing the term $\ket{(x_0 \mathsf{!}(\mathsf{F},…,\mathsf{F})|C_0 |C|D)}$.
 
 \subsection{Stochasticity and annihilation}
 
