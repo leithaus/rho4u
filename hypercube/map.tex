@@ -392,6 +392,30 @@ These modal types will play an important role in the generated type system descr
 \subsection{A GSLT for MeTTa}
 In the same way that there is a grammar for BNFC, there is a GSLT Th(GSLT) for presenting finitely presentable GSLTs.  It has no rewrites, because it's just describing the grammar of GSLTs.  We can extend Th(GSLT) with a grammar for facts and queries, with rewrites for processing those queries; see section \ref{Queries} below for more details.
 
+\subsubsection{MeTTaIL}
+
+$\mathsf{MeTTaIL}$ takes the idea present above seriously and provides
+a clean intermediate language for representing theories in a way that
+is more compiler-friendly than the original $\mathsf{MeTTa}$
+design. That is, $\mathsf{MeTTaIL}$ files represent compilation units
+in much the same way that a file in $\mathsf{Java}$ represents a
+compilation unit.
+
+Beyond this, $\mathsf{MeTTaIL}$ is the input language for the
+algorithm for generating an interpreter and the algorithm for
+generating a type system. The self-describing spec for
+$\mathsf{MeTTaIL}$ is
+$\href{https://github.com/F1R3FLY-io/MeTTa/blob/dev/GSLT/src/main/bnfc/metta_venus.cf}{linked here}$. An example of a specification for $\mathsf{rholang}$ is $\href{https://gist.github.com/leithaus/9cef95f3b703a406385e94cb6b1aab67}{linked here}$.
+
+The $\mathsf{rholang}$ example is of particular note in the
+decentralization space. It is a smart contracting language. We fully
+anticipate being able to provide $\mathsf{MeTTaIL}$ specs for other
+smart contracting languages including $\mathsf{Solidity}$, as well as
+$\mathsf{Solana}$ and $\mathsf{Cardano}$'s smart contracting
+languages. In this way we aim to allow $\MC$ nodes to be fully
+compliant nodes in other chains. However, this nodes will also allow
+data on chain and agentic computation.
+
 \subsection{Generating an interpreter and a type system}
 \label{Generating an interpreter and a type system}
 
