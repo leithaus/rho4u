@@ -682,7 +682,9 @@ In this file hosting scenario, autonomous AI agents could assist with document i
 
 \section{Conclusion}
 
-Our proposed architecture addresses the defects of the current MeTTa implementation:
+If we focus just on the language design for $\mathsf{MeTTa}$ we see
+that our proposed architecture addresses the defects of the current
+MeTTa implementation:
 
 \begin{itemize}
     \item GSLTs can specify the semantics of any discrete theory of computation
@@ -696,6 +698,18 @@ Our proposed architecture addresses the defects of the current MeTTa implementat
     \item The automatically generated type systems are provably sound.
     \item When two theories are combined, the system can automatically generate a new type system encompassing both and their interactions.
 \end{itemize}
+
+But the goal of $\MC$ is to decentralize agentic computing. That means
+much more than simply improving the language. Specifically, it means
+situating a high-speed $\mathsf{MeTTa}$ kernel into a tokenization
+container, much like the EVM situates a more or less standard vm into
+a tokenization container; and then wrapping that in a unit of
+fault-tolerance, i.e. a shard governed by a consensus mechanism.
+
+Further, it means integrating the technology into the existing
+technological ecosystem so that users can use the technology as part
+of their day-to-day workflows, both on their machine, and in the
+cloud.
 
 
 \begin{thebibliography}{99}
