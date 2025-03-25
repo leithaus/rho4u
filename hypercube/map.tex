@@ -25,7 +25,7 @@
 
 $\MC$ is the codename for a new decentralized AI platform.  The network will have agents, both human and AI, who can share digital assets of all kinds, attenuate and delegate access to those assets, and make powerful queries about each other's content.  
 
-We anticipate at least two interface points between humans and the network; both of these will be based on existing user interfaces with which users are already familiar.  The first is through the operating system, where $\FD$ will be mounted into the filesystem.  The second will be based on existing open source social networking software, currently BlueSky and Mastodon.
+We anticipate at least two interface points between humans and the network; both of these will be based on existing user interfaces with which users are already familiar.  The first is through the operating system, where $\FD$ will be mounted into the filesystem.  The second will be based on existing open source social networking software, currently $\mathsf{BlueSky}$ and $\mathsf{Mastodon}$.
 
 $\MC$, as its name suggests, will feature a version of the MeTTa programming language.  The driving concept for MeTTa is the idea that intelligence opportunistically creates theories of computation to suit the domain in which the intelligence is operating.  $\MC$ intends to connect many theories operating in many domains, and to enable reasoning about these interactions.
 
@@ -111,7 +111,53 @@ and are subject to hacks along both interfaces (security and
 accounting). In $\MC$ these two have been seamlessly integrated and
 baked into searchable, transactional storage.
 
+\subsection{Data and agents on chain}
+The real benefit to $\mathsf{AI}$-oriented applications is not merely
+security. Consider, the current generation of $\mathsf{LLM}$s were
+trained primarily on data stolen from the Internet. The next
+generation of models will not be. Instead they will be trained on data
+hard won and costing the companies who developed it billions of
+dollars. These companies will not just hand over their data to
+$\mathsf{OpenAI}$ or $\mathsf{Anthropic}$. Companies like
+$\mathsf{Merck}$ or $\mathsf{Pfizer}$ or $\mathsf{Astrazeneca}$ are
+also loathe to spend additional billions developing in-house models.
+
+A decentralized digital asset management system capable of hosting
+data and agents on chain solves these problems. It allows companies
+who hold highly valuable data sets to tokenize and monetize their data
+and companies, like $\mathsf{Grok}$ who have developed models as a
+service, to bring their services to the chain. We view this as the
+next high growth marketplace. Companies like $\mathsf{OpaqueSystems}$ share
+our view, but not our technology or approach.
+
 \subsection{Integration into the technological ecosystem}
+
+In order for this approach to work $\MC$ needs seamless integration
+into the technological ecosystem. For example, $\MC$ is already
+mountable as a file system on all major desktop platforms. The chain
+just looks like another folder. Users can use their existing file
+browsers to interact with the chain, that is simply drag and drop
+audio, video, and text files directly onto chain and from chain. From
+their point of view $\MC$ looks like a fancy $\mathsf{DropBox}$ or
+$\mathsf{GoogleDrive}$.
+
+Beyond this, a dominant mode of interaction between users is social
+media. People have been trained on $\mathsf{Twitter}$,
+$\mathsf{Facebook}$, and the like for more than a decade. $\MC$
+recognies this fact of user behavior in the market place. Already the
+platform is demonstrating integration with $\mathsf{BlueSky}$ so that
+$\MC$ acts as a backbone between independent $\mathsf{BlueSky}$
+instances.
+
+The plan is to integrate wallet and agent features into a fork of
+$\mathsf{BlueSky}$ and $\mathsf{Mastodon}$ shortly after. This opens
+up a world of new user opportunities. Tokenization takes on entirely
+new meaning in this setting with users being able to share access to
+data sets, compute, and agents directly with each other as part of
+social communication. Likewise, they can moderate and control access
+to feed-delivered content via tokens. Finally, they can create,
+launch, interact with, shut down, and \emph{share} agents directly
+with each other.
 
 \section{High-performance MeTTa Kernel}
 
@@ -502,27 +548,53 @@ where $\mathsf{\{}P\mathsf{\}}_{s}$ is a process signed by a digital signature.
 \section{Fault-tolerance: embedding the kernel in a consensus mechanism}
 
 % mention swappable consensus
+One critical aspect of $\MC$ is that it makes virtually no commitment
+to a particular consensus mechanism. Rather, consensus is viewed as a
+tool for providing fault-tolerance over a community of nodes. As such,
+$\MC$ provides many different consensus mechanisms out of the box and
+will provide more as time goes on.
+
+Fault-tolerance means different things in different use cases. For
+example, high-speed trading where the transactions carry very small
+data payloads can and should be supported by a different algorithm
+than data-on-chain where the data payloads can be arbitrarily
+large. Likewise, computing-at-the-edge use cases where nodes are
+running on mobile devices need yet a different algorithm.
+
+$\MC$ plans to support each of these use cases as part of its roadmap.
 
 \subsubsection{Correct-by-construction Casper}
 
-TBD
+$\mathsf{CBC-Casper}$ was the result of a collaboration amongst
+Vitalik Buterin, Vlad Zamfir, and Lucius Gregory Meredith. Amongst its
+many innovations, it uses ideas from the games semantics of linear
+logic to prevent equivocation. $\MC$ has production implementations in
+both $\mathsf{Scala}$ and $\mathsf{Rust}$ of
+$\mathsf{CBC-Casper}$. Its principle contemplated use case is
+data-on-chain.
 
-\subsubsection{TODA IP}
+\subsubsection{Cassanova}
 
-TBD
+$\mathsf{Cassanova}$ was developed by Pyrofex with a focus on
+high-speed trading.
+
+\subsubsection{Cordial miners}
+
+The cordial miners consensus algorithm was developed by Shapiro, et
+with a focus on computing-at-the-edge.
 
 \section{Deployment and integration}
 \label{Deployment and integration}
 
-To aid adoption and provide practical deployment MeTTaCycle comes with
+To aid adoption and provide practical deployment $\MC$ comes with
 integration to major throughways in the creation and dissemination of
 digital assets: the OS and social media.
 
 \subsection{Integration with the OS}
 
-In the case of integration with the OS MeTTaCycle uses
+In the case of integration with the OS $\MC$ uses
 $\mathsf{libFUSE}$ to mount a remote shard as if it is a local file
-system. Effectively, MeTTaCycle's performance is on par with what
+system. Effectively, $\MC$'s performance is on par with what
 users normally experience with Dropbox or Google Drive. Using their
 local file browser, with no modifications, they can drag and drop
 assets onto a shard. This allows for users to share data with each
@@ -538,13 +610,14 @@ such as BTC or ETH. See the $\FD$ repo.
 
 \subsection{Integration with social media}
 
-In the case of integration with social media MeTTaCycle offers two
+In the case of integration with social media $\MC$ offers two
 levels of integration. The first of these is importing and exporting
-between local caches. For example, Zulip, BlueSky, and Mastodon all
-use Postgres as their local instance storage. MeTTaCycle allows import
-and export between their Postgres storage and the shard. Thus,
-MeTTaCycle becomes a bus between different instances -- without
-modification of the social media application stack.
+between local caches. For example, Zulip, $\mathsf{BlueSky}$, and
+$\mathsf{Mastodon}$ all use Postgres as their local instance
+storage. $\MC$ allows import and export between their Postgres
+storage and the shard. Thus, $\MC$ becomes a bus between
+different instances -- without modification of the social media
+application stack.
 
 The second of these is a tighter integration involving modifications
 to the social media stack in order to add features made possible by
@@ -559,7 +632,19 @@ tokenization of capabilities and the integration of agentic AI.
 
 \section{Roadmap}
 
+$\href{https://docs.google.com/spreadsheets/d/1XqL1_ludowA7YHjDkHuX9lQyY5-NBH-mKOMDr4SUQtc/edit?usp=sharing}{Google sheet}$
+
 \section{A few use cases}
+
+\subsection{Private data and models-as-a-service marketplace}
+
+As mentioned in the requirements analysis, we posit that the next
+generation of models will be trained on privately held data. The
+biggest shift will be a marketplace in which companies with data and
+companies with model infrastructure will be able to consume one
+another's services. $\MC$ is aimed at enabling this
+marketplace. Beyond these we see many other use cases and list a few
+below.
 
 \subsection{Ocaps for DevOps PaaS}
 
